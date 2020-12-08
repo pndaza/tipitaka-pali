@@ -1,0 +1,41 @@
+﻿body {
+	font-family: "NotoSansMyanmar" !important;
+    line-height: 2;
+    word-break: break-all;
+	color: #d0d0d0;
+    background: black;
+    padding-left: 10pt;
+    padding-right: 10pt;
+}
+p { font-size: 1.3em; margin-bottom: 1.3em; text-align: left;}
+a {text-decoration: none; color: white;}
+p.bkname {
+    text-indent: 2em;
+    font-size: x-large;
+    font-style: italic;
+    background: #e1efbb;
+    border: 1px solid gray;}
+.note {color: gray; font-size: 0.9em;}
+.bld {font-weight: bold; color: white;}
+.paranum {font-weight: bold; }
+.hit {background-color: blue; color: white; }
+.context {background-color: green; color: white; }
+.indent { text-indent: 1.3em; margin-left: 2em;}
+.bodytext {  text-indent: 1.3em;}
+.hangnum {  margin-bottom: -3em; text-indent: 1.6em;}
+.centered {  text-align:center;}
+.unindented { font-size: 1.3em; }
+.noindentbodytext { font-size: 1.3em; }
+.book { font-size: 1.9em; text-align:center; font-weight: bold;}
+.chapter { font-size: 1.7em; text-align:center; font-weight: bold;}
+.nikaya { font-size: 1.6em; text-align:center; font-weight: bold;}
+.title { font-size: 1.3em; text-align:center; font-weight: bold;}
+.subhead { font-size: 1.6em; text-align:center; font-weight: bold;}
+.subsubhead { font-size: 1.2em; text-align:center; font-weight: bold;}
+.gatha1 {  margin-bottom: 0em; margin-left: 4em;}
+.gatha2 {   margin-bottom: 0em; margin-left: 4em;}
+.gatha3 {   margin-bottom: 0em; margin-left: 4em;}
+.gathalast {  margin-bottom: 1.3em; margin-left: 4em;}
+.pageheader{font-size: 0.9em; color: darkorange}
+.highlighted {background: darkorange; color: white;}
+.sample {background: #323232; color: white; text-align:center;}

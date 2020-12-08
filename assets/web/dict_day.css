@@ -1,0 +1,16 @@
+﻿body {
+    font-family: "NotoSansMyanmar" !important;
+    font-size: 1.3em;
+    line-height: 1.8;
+    -webkit-user-select: all;
+}
+.book {
+    background-color: #FF8C00;
+    color: white;
+    text-align: center;
+    line-height: 2;
+}
+.word {color: blue;}
+.gender {color:brown; }
+.definition { color: black;}
+.reference { margin-left: 150px; color: gray; text-align: right; }
