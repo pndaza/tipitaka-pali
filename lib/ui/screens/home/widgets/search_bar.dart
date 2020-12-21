@@ -63,6 +63,7 @@ class _SearchBarState extends State<SearchBar> {
                     Icons.search,
                     color: Colors.grey,
                   ),
+                  // suffix: keyBoardButton(),
                   suffixIcon: clearButton(),
                   hintStyle: new TextStyle(color: Colors.grey),
                   hintText: hint,
@@ -87,6 +88,20 @@ class _SearchBarState extends State<SearchBar> {
       },
       icon: Icon(
         Icons.clear,
+        color: Colors.grey,
+      ),
+    );
+  }
+
+  Widget keyBoardButton() {
+    if (!_showClearButton) {
+      return null;
+    }
+    return IconButton(
+      onPressed: () {
+      },
+      icon: Icon(
+        Icons.keyboard,
         color: Colors.grey,
       ),
     );

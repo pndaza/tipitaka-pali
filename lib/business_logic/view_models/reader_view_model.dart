@@ -12,6 +12,7 @@ import 'package:tipitaka_pali/business_logic/models/paragraph_mapping.dart';
 import 'package:tipitaka_pali/business_logic/models/recent.dart';
 import 'package:tipitaka_pali/data/constants.dart';
 import 'package:tipitaka_pali/services/database/database_provider.dart';
+import 'package:tipitaka_pali/services/repositories/book_repo.dart';
 import 'package:tipitaka_pali/services/repositories/bookmark_repo.dart';
 import 'package:tipitaka_pali/services/repositories/page_content_repo.dart';
 import 'package:tipitaka_pali/services/repositories/paragraph_mapping_repo.dart';
@@ -38,9 +39,8 @@ class ReaderViewModel with ChangeNotifier {
   String _cssData;
   String javascriptData;
   bool loadFinished = false;
-  final int preLoadPageCount = 3;
+  final int preLoadPageCount = 5;
   PreloadPageController pageController;
-  WebViewController webViewController;
   List<WebViewController> webViewControllers;
   final BuildContext context;
 
@@ -51,7 +51,7 @@ class ReaderViewModel with ChangeNotifier {
     this.textToHighlight,
   });
 
-  Future<void> loadAllData() async {
+  Future<bool> loadAllData() async {
     // print('loading all required data');
     final fontName = 'NotoSansMyanmar-Regular.otf';
     _cssFont = await loadCssFont(fontName: fontName);
@@ -59,12 +59,13 @@ class ReaderViewModel with ChangeNotifier {
     _cssData = await loadCssData();
     javascriptData = await loadJavaScript('click.js');
     pages = await loadBook(book.id);
-    debugPrint('number of pages: ${pages.length}');
-    book.firstPage = 1;
-    book.lastPage = pages.length;
+    await _loadBookInfo(book.id);
+    // book.firstPage = 1;
+    // book.lastPage = pages.length;
     numberOfPage = pages.length;
     webViewControllers = List<WebViewController>(pages.length);
-    notifyListeners();
+
+    return true;
     // print('number of pages: ${pages.length}');
     // print('loading finished');
   }
@@ -103,6 +104,17 @@ class ReaderViewModel with ChangeNotifier {
     return await pageContentRepository.getPages(bookID);
   }
 
+  Future<void> _loadBookInfo(String bookID) async {
+    final DatabaseProvider databaseProvider = DatabaseProvider();
+    final BookRepository bookRepository =
+        BookDatabaseRepository(databaseProvider);
+    book.firstPage = await bookRepository.getFirstPage(bookID);
+    book.lastPage = await bookRepository.getLastPage(bookID);
+    if (currentPage == null) {
+      currentPage = book.firstPage;
+    }
+  }
+
   Uri getPageContent(int index) {
     String pageContent = pages[index].content;
     if (textToHighlight != null) {
@@ -123,7 +135,7 @@ class ReaderViewModel with ChangeNotifier {
             $_cssData
           </style>
           <body>
-            <p>${MmNumber.get(index + 1)}</p>
+            <p>${MmNumber.get(index + book.firstPage)}</p>
             $pageContent
           </body>
           </html>
@@ -155,7 +167,9 @@ class ReaderViewModel with ChangeNotifier {
 
   String _fixSafari(String pageContent) {
     // add space bofore span content
-    return pageContent.replaceAll('class="bld">', 'class="bld"> ');
+    pageContent = pageContent.replaceAll('class="bld">', 'class="bld"> ');
+    pageContent = pageContent.replaceAll('class="note">', 'class="note"> ');
+    return pageContent;
   }
 
   Future<int> getFirstParagraph() async {
@@ -194,71 +208,72 @@ class ReaderViewModel with ChangeNotifier {
   }
 
   Future onPageChanged(int index) async {
-    currentPage = index + 1;
+    currentPage = book.firstPage + index + 1;
     notifyListeners();
     await _saveToRecent();
   }
 
-  Future setCurrentPage(double value) async {
+  Future onSliderChanged(double value) async {
     currentPage = value.toInt();
     notifyListeners();
-    await _saveToRecent();
   }
 
   Future gotoPage(double value) async {
     currentPage = value.toInt();
-    pageController.jumpToPage(currentPage - 1);
+    pageController.jumpToPage(currentPage - book.firstPage);
     await _saveToRecent();
   }
 
   Future<int> loadFontSize() async {
-    return await SharedPrefProvider.getInt(key: 'font-size');
+    return await SharedPrefProvider.getInt(key: k_key_fontSize);
   }
 
   void increaseFontSize() {
     _fontSize += 5;
-    webViewControllers[currentPage - 1]
-        .loadUrl(getPageContent(currentPage - 1).toString());
-    notifyListeners();
+    var currentPageIndex = currentPage - book.firstPage;
+    webViewControllers[currentPageIndex]
+        .loadUrl(getPageContent(currentPageIndex).toString());
+    // notifyListeners();
     SharedPrefProvider.setInt(key: k_key_fontSize, value: _fontSize);
     // update preload pages
-    // right pages
+    // for right pages
     var count = 0;
-    var pageIndex = currentPage - 1;
+    var pageIndex = currentPageIndex;
     while (pageIndex++ < numberOfPage && count++ < preLoadPageCount) {
       webViewControllers[pageIndex]
           .loadUrl(getPageContent(pageIndex).toString());
     }
-    // left pages
+    // for left pages
     count = 0;
-    pageIndex = currentPage - 1;
-    while (pageIndex--> 0 && count++ < preLoadPageCount) {
+    pageIndex = currentPageIndex;
+    while (pageIndex-- > 0 && count++ < preLoadPageCount) {
       webViewControllers[pageIndex]
           .loadUrl(getPageContent(pageIndex).toString());
-    }  
+    }
   }
 
   void decreaseFontSize() {
     _fontSize -= 5;
-    webViewControllers[currentPage - 1]
-        .loadUrl(getPageContent(currentPage - 1).toString());
-    notifyListeners();
+    var currentPageIndex = currentPage - book.firstPage;
+    webViewControllers[currentPageIndex]
+        .loadUrl(getPageContent(currentPageIndex).toString());
+    // notifyListeners();
     SharedPrefProvider.setInt(key: k_key_fontSize, value: _fontSize);
     // update preload pages
-    // right pages
+    // for right pages
     var count = 0;
-    var pageIndex = currentPage - 1;
+    var pageIndex = currentPageIndex;
     while (pageIndex++ < numberOfPage && count++ < preLoadPageCount) {
       webViewControllers[pageIndex]
           .loadUrl(getPageContent(pageIndex).toString());
     }
     // left pages
     count = 0;
-    pageIndex = currentPage - 1;
-    while (pageIndex--> 0 && count++ < preLoadPageCount) {
+    pageIndex = currentPageIndex;
+    while (pageIndex-- > 0 && count++ < preLoadPageCount) {
       webViewControllers[pageIndex]
           .loadUrl(getPageContent(pageIndex).toString());
-    } 
+    }
   }
 
   bool _isDarkTheme() {

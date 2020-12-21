@@ -1,57 +1,63 @@
-const body = document.querySelector('body');
-    
-body.addEventListener('click', function() {
-    
-    var sel = window.getSelection();
-    var part_one = "";
-    var part_two = "";
-    var click_word = null;
+document.addEventListener('click', function(e) {
+    // e.preventDefault();
 
-    if (sel.isCollapsed) {
-        //extend selection to backward until founding space
-        //get one character before and after of cursor click
-        sel.modify('extend', 'backward', 'character');
-        var before_char = sel.toString();
-        sel.modify('move', 'forward', 'character');
-        sel.modify('extend', 'forward', 'character');
-        var after_char = sel.toString();
-        // check if space contains in one of them,
-        // if not, user click on word
-        if ( /\s/.test(before_char) || /\s/.test(after_char)) {
-            //user does not click on word
-            sel.removeAllRanges();
-            ReadBookInterface.showHideBars();
+    var caret, range;
+    if (document.caretRangeFromPoint) { // webkit/chrome
+    // alert('browser is webkit');
+        range = document.caretRangeFromPoint(e.clientX, e.clientY);
+    } else if (document.caretPositionFromPoint) { // gecko/firefox
+        caret = document.caretPositionFromPoint(e.clientX, e.clientY);
+        range = document.createRange();
+        range.setStart(caret.offsetNode, caret.offset); // DOM element and position
+    }
 
+    // get word
+    if (range) { // chrome and firefox
+        selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        // selection.modify('move', 'backward', 'word');
+        // selection.modify('extend', 'forward', 'word');
+
+        var part_one = "";
+        var part_two = "";
+        var click_word;
+        part_one = selection.toString();
+        
+        while(! /\s/.test(part_one)){
+            selection.modify('extend', 'backward', 'character');
+            part_one = selection.toString();
         }
-        else {
-            //user click on word
-            //collect the whole word
-            part_one = sel.toString();
-            while(! /\s/.test(part_one)){
-                sel.modify('extend', 'backward', 'character');
-                part_one = sel.toString();
-            }
-            part_one = part_one.trim();
+        part_one = part_one.trim();
+        selection.modify('move', 'forward', 'character');
 
-            sel.modify('move', 'forward', 'character');
+        //extend selection to forward until founding space
+        selection.modify('extend', 'forward', 'character');
+        part_two = selection.toString();
 
-            //extend selection to forward until founding space
-            sel.modify('extend', 'forward', 'character');
-            part_two = sel.toString();
+        while(! /\s/.test(part_two)){
+            selection.modify('extend', 'forward', 'character');
+            part_two = selection.toString();
+        }
+        part_two = part_two.trim();
+        click_word = part_one + part_two;
 
-            while(! /\s/.test(part_two)){
-                sel.modify('extend', 'forward', 'character');
-                part_two = sel.toString();
-            }
-            part_two = part_two.trim();
-            click_word = part_one + part_two;
+        // alert(click_word);
+        selection.removeAllRanges();
+        // for callback
+        if (click_word){
+            Define.postMessage(click_word);
+        }
+        // Define.postMessage('ကုသလာ');
+        selection.collapse(selection.anchorNode, 0);
+
+    } else if (document.body.createTextRange) {
+        // internet explorer
+        // get word
+        range = document.body.createTextRange();
+        range.moveToPoint(event.clientX, event.clientY);
+        range.select();
+        range.expand('word');
+        alert(range.text);
     }
-    }
-
-    sel.removeAllRanges();
-    // for callback
-    if (click_word){
-        Define.postMessage(click_word);
-    }
-
-});
+}, false);

@@ -24,22 +24,26 @@ class DictionaryDialog extends StatelessWidget {
                   height: 40,
                   child: Builder(
                     builder: (BuildContext buildContext) {
-                      return TextField(
+                      return TextField(                        
                         controller: textEditingController,
-                        decoration: new InputDecoration(
+                        style: TextStyle(color: Colors.white),
+                        decoration: new InputDecoration( 
+                          // filled: true,
+                          // fillColor: Colors.grey,                         
                             focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
+                              borderSide: BorderSide(color: Colors.white70),
                             ),
                             enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
+                              borderSide: BorderSide(color: Colors.white70),
                             ),
-                            isDense: true, // Added this
+                            isDense: true,
                             contentPadding: EdgeInsets.fromLTRB(24, 4, 24, 4)),
-                        cursorColor: Colors.white,
+                        cursorColor: Colors.redAccent,
                         onChanged: (text) => _onTextChanged(buildContext, text),
                       );
                     },
                   )),
+                  actions: [SizedBox(width: 50,)],
             ),
             body: Consumer<DictionaryViewModel>(builder: (context, vm, child) {
               final pageContent = vm.definition;

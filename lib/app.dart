@@ -6,7 +6,7 @@ import 'package:tipitaka_pali/routes.dart';
 import 'data/theme_data.dart';
 import 'ui/screens/splash_screen.dart';
 
-final Logger logger = Logger(
+final Logger myLogger = Logger(
     printer: PrettyPrinter(
   methodCount: 0,
   errorMethodCount: 5,

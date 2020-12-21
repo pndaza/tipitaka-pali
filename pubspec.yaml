@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 1.0.1+1
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -25,7 +25,6 @@ dependencies:
     sdk: flutter
   sqflite: ^1.3.1
   path: ^1.7.0
-  dio: ^3.0.10
   path_provider: ^1.6.24
   theme_provider: ^0.3.3
   webview_flutter: ^0.3.22+1
@@ -36,12 +35,11 @@ dependencies:
   provider: ^4.3.2+2
   substring_highlight: ^0.1.2
   toggle_switch: ^0.1.8
-  # progress_dialog: ^1.2.4
   keyboard_actions: ^3.3.1+1
   collection: ^1.14.13
-  archive: ^2.0.13
   logger: ^0.9.4
   preload_page_view: ^0.1.4
+  # uni_links: ^0.4.0
 
   cupertino_icons: ^0.1.3
 
@@ -60,10 +58,6 @@ flutter_icons:
 
 # The following section is specific to Flutter.
 flutter:
-
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
@@ -71,17 +65,6 @@ flutter:
     # - assets/database/tipitaka_pali.db
     - assets/web/
 
-  # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.dev/assets-and-images/#resolution-aware.
-
-  # For details regarding adding assets from package dependencies, see
-  # https://flutter.dev/assets-and-images/#from-packages
-
-  # To add custom fonts to your application, add a fonts section here,
-  # in this "flutter" section. Each entry in this list should have a
-  # "family" key with the font family name, and a "fonts" key with a
-  # list giving the asset and other descriptors for the font. For
-  # example:
   fonts:
     - family: NotoSansMyanmar
       fonts:

@@ -6,6 +6,8 @@ abstract class BookRepository {
   Future<List<Book>> getBooks(String basket, String category);
   Future<List<Book>> getAllBooks();
   Future<String> getName(String id);
+  Future<int> getFirstPage(String id);
+  Future<int> getLastPage(String id);
 }
 
 class BookDatabaseRepository implements BookRepository {
@@ -39,5 +41,25 @@ class BookDatabaseRepository implements BookRepository {
         where: '${dao.columnID} = ?',
         whereArgs: [id]);
     return maps.first[dao.columnName];
+  }
+
+  @override
+  Future<int> getFirstPage(String id) async{
+      final db = await databaseProvider.database;
+    List<Map> maps = await db.query(dao.tableName,
+        columns: [dao.columnFirstPage],
+        where: '${dao.columnID} = ?',
+        whereArgs: [id]);
+    return maps.first[dao.columnFirstPage];
+    }
+  
+    @override
+    Future<int> getLastPage(String id) async{
+    final db = await databaseProvider.database;
+    List<Map> maps = await db.query(dao.tableName,
+        columns: [dao.columnLastPage],
+        where: '${dao.columnID} = ?',
+        whereArgs: [id]);
+    return maps.first[dao.columnLastPage];
   }
 }

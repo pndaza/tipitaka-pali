@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:theme_provider/theme_provider.dart';
+import 'package:tipitaka_pali/app.dart';
 import 'package:tipitaka_pali/business_logic/view_models/reader_view_model.dart';
 import 'package:tipitaka_pali/ui/dialogs/simple_input_dialog.dart';
 
@@ -10,6 +11,7 @@ class ReaderAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final vm = Provider.of<ReaderViewModel>(context, listen: false);
+    myLogger.i('Building Appbar');
     return AppBar(
       title: Text('${vm.book.name}'),
       actions: [

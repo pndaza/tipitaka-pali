@@ -26,7 +26,6 @@ class DictionaryProvider {
     _cssData = await AssetsProvider.loadCSS(cssFileName);
     _fontSize = await SharedPrefProvider.getInt(
         key: k_key_fontSize);
-    print('fontsize: $_fontSize');
   }
 
   Future<String> getDefinition(String word,

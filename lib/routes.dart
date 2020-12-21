@@ -32,11 +32,9 @@ RouteFactory buildRoutes() {
           );
           break;
         case ReaderRoute:
-          final currentPage =
-              arguments['currentPage'] == null ? 1 : arguments['currentPage'];
           screen = Reader(
             book: arguments['book'],
-            currentPage: currentPage,
+            currentPage: arguments['currentPage'],
             textToHighlight: arguments['textToHighlight'],
           );
           break;

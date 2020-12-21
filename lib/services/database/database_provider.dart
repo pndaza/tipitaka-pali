@@ -1,13 +1,10 @@
 import 'dart:async';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:tipitaka_pali/app.dart';
+import 'package:tipitaka_pali/data/constants.dart';
 
 class DatabaseProvider {
-  // static final String _assetsFolder = 'assets';
-  // static final String _databasePath = 'database';
-  static final String _databaseName = 'tipitaka_pali.db';
-  // static final int _currentDatabaseVersion = 2;
-
   DatabaseProvider._internal();
   static final DatabaseProvider _instance = DatabaseProvider._internal();
   factory DatabaseProvider() => _instance;
@@ -22,42 +19,11 @@ class DatabaseProvider {
 
 // Open Assets Database
   _initDatabase() async {
-    print('initializing Database');
+    myLogger.i('initializing Database');
     var dbPath = await getDatabasesPath();
-    var path = join(dbPath, _databaseName);
+    var path = join(dbPath, k_databaseName);
 
-    // var exists = await databaseExists(path);
-
-    // if (exists) {
-    //   var savedDatabaseVersion = await SharedPrefProvider.getInt(
-    //       key: SharedPrefProvider.key_db_version);
-    //   if (savedDatabaseVersion == _currentDatabaseVersion) {
-    //     print('opening Exiting Database ...');
-    //     return await openDatabase(path);
-    //   } else {
-    //     // deleting old database
-    //     print('deleting old databse');
-    //     await File(path).delete();
-    //   }
-    // }
-
-    // print('creating new copy from asset');
-    // try {
-    //   await Directory(dirname(path)).create(recursive: true);
-    // } catch (_) {}
-
-    // // Copy from asset
-    // ByteData data = await rootBundle
-    //     .load(join(_assetsFolder, _databasePath, _databaseName));
-    // List<int> bytes =
-    //     data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-
-    // await File(path).writeAsBytes(bytes, flush: true);
-    // // building index
-    // await _buildIndex(await openDatabase(path));
-
-    // Read ONLY for dictionary
-    print('opening Database ...');
+    myLogger.i('opening Database ...');
     return await openDatabase(path);
   }
 
@@ -83,7 +49,7 @@ class DatabaseProvider {
   //       key: SharedPrefProvider.key_db_version, value: _currentDatabaseVersion);
   // }
 
-  Future<bool> isDatabaseCopied() async {
-    return true;
-  }
+  // Future<bool> isDatabaseCopied() async {
+  //   return true;
+  // }
 }

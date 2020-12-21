@@ -12,30 +12,27 @@ class SearchResultListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-          child: InkWell(
-        splashColor: Theme.of(context).accentColor ,
-            child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '${result.book.name}၊ နှာ - ${MmNumber.get(result.pageNumber)}',
-                textAlign: TextAlign.left,
-                style:
-                    TextStyle(fontSize: 16, color: Theme.of(context).accentColor),
-              ),
-              SubstringHighlight(
-                text: result.description,
-                textStyle: TextStyle(
-                    fontSize: 18,
-                    color: Theme.of(context).textTheme.bodyText2.color),
-                term: textToHighlight,
-                textStyleHighlight:
-                    TextStyle(fontSize: 18, color: Theme.of(context).accentColor),
-              )
-            ],
-          ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '${result.book.name}၊ နှာ - ${MmNumber.get(result.pageNumber)}',
+              textAlign: TextAlign.left,
+              style:
+                  TextStyle(fontSize: 16, color: Theme.of(context).accentColor),
+            ),
+            SubstringHighlight(
+              text: result.description,
+              textStyle: TextStyle(
+                  fontSize: 18,
+                  color: Theme.of(context).textTheme.bodyText2.color),
+              term: textToHighlight,
+              textStyleHighlight:
+                  TextStyle(fontSize: 20, color: Theme.of(context).accentColor),
+            )
+          ],
         ),
       ),
     );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:theme_provider/theme_provider.dart';
+import 'package:tipitaka_pali/app.dart';
 import 'package:tipitaka_pali/business_logic/models/book.dart';
 import 'package:tipitaka_pali/business_logic/models/paragraph_mapping.dart';
 import 'package:tipitaka_pali/business_logic/view_models/reader_view_model.dart';
@@ -13,9 +14,10 @@ import 'package:tipitaka_pali/utils/mm_number.dart';
 import '../../../../routes.dart';
 
 class ControlBar extends StatelessWidget {
+  const ControlBar({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    print('building control bar');
+    myLogger.i('building control bar');
     final vm = Provider.of<ReaderViewModel>(context, listen: false);
     return Container(
       height: 56.0,
@@ -30,7 +32,7 @@ class ControlBar extends StatelessWidget {
           IconButton(
               icon: Icon(Icons.repeat),
               onPressed: () => _selectParagraphDialog(context, vm)),
-          Expanded(child: MySlider()),
+          const Expanded(child: MySlider()),
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
             child: IconButton(
