@@ -1,4 +1,5 @@
-document.addEventListener('click', function(e) {
+var pageContent = document.getElementById("page_content");
+pageContent.addEventListener('click', function(e) {
     // e.preventDefault();
 
     var caret, range;

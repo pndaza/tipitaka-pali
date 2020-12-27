@@ -380,7 +380,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = mm.pndaza.tipitakapali;
 				PRODUCT_NAME = "Tipitaka Pali";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -521,7 +521,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = mm.pndaza.tipitakapali;
 				PRODUCT_NAME = "Tipitaka Pali";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -556,7 +556,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = mm.pndaza.tipitakapali;
 				PRODUCT_NAME = "Tipitaka Pali";
 				PROVISIONING_PROFILE_SPECIFIER = "";

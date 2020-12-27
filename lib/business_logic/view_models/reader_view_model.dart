@@ -39,7 +39,7 @@ class ReaderViewModel with ChangeNotifier {
   String _cssData;
   String javascriptData;
   bool loadFinished = false;
-  final int preLoadPageCount = 5;
+  final int preLoadPageCount = 3;
   PreloadPageController pageController;
   List<WebViewController> webViewControllers;
   final BuildContext context;
@@ -136,7 +136,9 @@ class ReaderViewModel with ChangeNotifier {
           </style>
           <body>
             <p>${MmNumber.get(index + book.firstPage)}</p>
-            $pageContent
+            <div id="page_content">
+              $pageContent
+            </div>
           </body>
           </html>
     ''', mimeType: 'text/html', encoding: Encoding.getByName('utf-8'));

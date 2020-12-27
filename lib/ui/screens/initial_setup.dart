@@ -6,6 +6,7 @@ import 'package:tipitaka_pali/business_logic/view_models/initial_setup_view_mode
 class InitialSetup extends StatelessWidget {
   final bool isUpdateMode;
   const InitialSetup({Key key, this.isUpdateMode = false}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -28,9 +29,13 @@ class InitialSetup extends StatelessWidget {
         SizedBox(
           height: 10,
         ),
-        isUpdateMode?
-        Text('အချက်အလက်အသစ်များ ထည့်သွင်းနေပါသည်။\nခေတ္တစောင့်ပါ', textAlign: TextAlign.center,) :
-        Text('အချက်အလက်များ ထည့်သွင်းနေပါသည်။\nခေတ္တစောင့်ပါ', textAlign: TextAlign.center)
+        isUpdateMode
+            ? Text(
+                'အချက်အလက်အသစ်များ ထည့်သွင်းနေပါသည်။\nခေတ္တစောင့်ပါ',
+                textAlign: TextAlign.center,
+              )
+            : Text('အချက်အလက်များ ထည့်သွင်းနေပါသည်။\nခေတ္တစောင့်ပါ',
+                textAlign: TextAlign.center)
       ],
     );
   }
