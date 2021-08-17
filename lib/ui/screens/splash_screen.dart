@@ -19,13 +19,10 @@ class SplashScreen extends StatelessWidget {
               switch (databaseStatus) {
                 case DatabaseStatus.notExist:
                   return InitialSetup();
-                  break;
                 case DatabaseStatus.outOfDate:
                   return InitialSetup(isUpdateMode: true);
-                  break;
                 default:
                   return Home();
-                  break;
               }
             }
             return Container();
@@ -36,7 +33,7 @@ class SplashScreen extends StatelessWidget {
   Future<DatabaseStatus> _getDatabaseStatus() async {
     final isExist =
         await SharedPrefProvider.getBool(key: k_key_isDatabaseSaved);
-    if (isExist == null) return DatabaseStatus.notExist;
+    if (isExist == false) return DatabaseStatus.notExist;
 
     final dbVersion =
         await SharedPrefProvider.getInt(key: k_key_databaseVersion);

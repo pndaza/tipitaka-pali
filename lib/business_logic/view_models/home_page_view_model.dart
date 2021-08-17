@@ -6,7 +6,7 @@ import 'package:tipitaka_pali/services/repositories/category_repo.dart';
 class HomePageViewModel {
   Future<List<ListItem>> fecthItems(String category) async {
     final databaseProvider = DatabaseProvider();
-    List<ListItem> listItems = List<ListItem>();
+    List<ListItem> listItems = [];
     final subCategories = await CategoryDatabaseRepository(databaseProvider)
         .getCategories(category);
 

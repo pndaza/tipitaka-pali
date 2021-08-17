@@ -41,8 +41,8 @@ class HomePage extends StatelessWidget {
             future: buildTabBarView(),
             builder:
                 (BuildContext context, AsyncSnapshot<List<Widget>> snapshot) {
-              if (snapshot.data != null) {
-                return TabBarView(children: snapshot.data);
+              if (snapshot.hasData) {
+                return TabBarView(children: snapshot.data!);
               }
               return Container();
             },
@@ -84,7 +84,7 @@ class HomePage extends StatelessWidget {
 
   _openBook(BuildContext context, ListItem listItem) {
     if (listItem.runtimeType == BookItem) {
-      BookItem bookItem = listItem;
+      BookItem bookItem = listItem as BookItem;
       debugPrint('book name: ${bookItem.book.name}');
       Navigator.pushNamed(context, ReaderRoute,
           arguments: {'book': bookItem.book});

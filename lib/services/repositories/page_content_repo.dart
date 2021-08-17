@@ -15,7 +15,7 @@ class PageContentDatabaseRepository implements PageContentRepository {
   @override
   Future<List<PageContent>> getPages(String bookID) async {
     final db = await databaseProvider.database;
-    List<Map> maps = await db.query(dao.tableName,
+    List<Map<String, dynamic>> maps = await db.query(dao.tableName,
         columns: [
           dao.columnPage,
           dao.columnContent,
@@ -28,7 +28,7 @@ class PageContentDatabaseRepository implements PageContentRepository {
   @override
   Future<PageContent> getPage(int id) async {
     final db = await databaseProvider.database;
-    List<Map> maps = await db.query(dao.tableName,
+    List<Map<String, dynamic>> maps = await db.query(dao.tableName,
         columns: [
           dao.columnPage,
           dao.columnContent,

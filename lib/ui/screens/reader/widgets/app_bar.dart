@@ -6,7 +6,7 @@ import 'package:tipitaka_pali/business_logic/view_models/reader_view_model.dart'
 import 'package:tipitaka_pali/ui/dialogs/simple_input_dialog.dart';
 
 class ReaderAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const ReaderAppBar({Key key}) : super(key: key);
+  const ReaderAppBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

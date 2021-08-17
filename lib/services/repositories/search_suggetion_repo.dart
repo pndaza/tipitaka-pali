@@ -14,7 +14,7 @@ class SearchSuggestionDatabaseRepository implements SearchSuggestionRepository {
   @override
   Future<List<SearchSuggestion>> getWords(String filterWord) async {
     final db = await databaseProvider.database;
-    List<Map> maps = await db.query(dao.tableWords,
+    List<Map<String, dynamic>> maps = await db.query(dao.tableWords,
         columns: [dao.columnWord],
         where: "${dao.columnWord} LIKE '$filterWord%'");
     return dao.fromList(maps);

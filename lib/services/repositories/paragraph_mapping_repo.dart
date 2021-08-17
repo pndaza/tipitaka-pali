@@ -18,7 +18,7 @@ class ParagraphMappingDatabaseRepository implements ParagraphMappingRepository {
       String bookID, int pageNumber) async {
     final db = await databaseProvider.database;
 
-    List<Map> maps = await db.rawQuery('''
+    List<Map<String, dynamic>> maps = await db.rawQuery('''
       SELECT ${dao.columnParagraph}, ${dao.columnExpBookID}, ${dao.columnBookName}, ${dao.columnExpPageNumber}
       FROM ${dao.tableParagraphMapping}
       INNER JOIN ${dao.tableBooks} ON ${dao.columnBookID} = 

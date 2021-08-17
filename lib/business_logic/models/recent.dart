@@ -1,7 +1,7 @@
 class Recent {
   String bookID;
   int pageNumber;
-  String bookName;
+  String? bookName;
 
   Recent(this.bookID, this.pageNumber,[this.bookName]);
 

@@ -4,7 +4,7 @@ class SearchBar extends StatefulWidget {
   final void Function(String) onSubmitted;
   final void Function(String) onTextChanged;
   final String hint;
-  SearchBar({this.onSubmitted, this.onTextChanged, this.hint = 'ရှာလိုရာ စကားလုံး ရိုက်ပါ'});
+  SearchBar({required this.onSubmitted, required this.onTextChanged, this.hint = 'ရှာလိုရာ စကားလုံး ရိုက်ပါ'});
 
   @override
   _SearchBarState createState() => _SearchBarState(onSubmitted, onTextChanged, hint);
@@ -19,7 +19,7 @@ class _SearchBarState extends State<SearchBar> {
   bool _showClearButton = false;
 
   Color borderColor = Colors.grey;
-  Color textColor = Colors.grey[350];
+  Color textColor = Colors.grey[350] as  Color;
   TextDecoration textDecoration = TextDecoration.lineThrough;
   TextEditingController controller = TextEditingController();
 
@@ -78,7 +78,7 @@ class _SearchBarState extends State<SearchBar> {
     );
   }
 
-  Widget clearButton() {
+  Widget? clearButton() {
     if (!_showClearButton) {
       return null;
     }
@@ -93,7 +93,7 @@ class _SearchBarState extends State<SearchBar> {
     );
   }
 
-  Widget keyBoardButton() {
+  Widget? keyBoardButton() {
     if (!_showClearButton) {
       return null;
     }

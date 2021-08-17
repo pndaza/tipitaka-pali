@@ -17,7 +17,7 @@ class SearchResultDatabaseRepository implements SearchResultRepository {
   @override
   Future<PageContent> getPageContent(int pageID) async {
     final db = await databaseProvider.database;
-    List<Map> maps = await db.query(dao.tablePages,
+    List<Map<String, dynamic>> maps = await db.query(dao.tablePages,
         columns: [dao.columnBookID, dao.columnPage, dao.columnContent],
         where: "${dao.columnID} = ?",
         whereArgs: [pageID]);

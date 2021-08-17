@@ -3,5 +3,5 @@ class Definition {
   String definition;
   String book;
 
-  Definition({this.word, this.definition, this.book});
+  Definition({required this.word,required this.definition,required this.book});
 }

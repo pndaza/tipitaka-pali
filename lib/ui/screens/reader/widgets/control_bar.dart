@@ -14,7 +14,7 @@ import 'package:tipitaka_pali/utils/mm_number.dart';
 import '../../../../routes.dart';
 
 class ControlBar extends StatelessWidget {
-  const ControlBar({Key key}) : super(key: key);
+  const ControlBar({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     myLogger.i('building control bar');
@@ -52,8 +52,8 @@ class ControlBar extends StatelessWidget {
     final gotoResult = await showDialog<GotoDialogResult>(
       context: context,
       builder: (BuildContext context) => GotoDialog(
-        firstPage: vm.book.firstPage,
-        lastPage: vm.book.lastPage,
+        firstPage: vm.book.firstPage!,
+        lastPage: vm.book.lastPage!,
         firstParagraph: firstParagraph,
         lastParagraph: lastParagraph,
       ),
@@ -158,7 +158,7 @@ class ControlBar extends StatelessWidget {
         ),
         expand: false,
         context: context,
-        builder: (context, _) {
+        builder: (context) {
           return ThemeConsumer(child: TocDialog(vm.book.id));
         });
     if (pageNumber != null) {

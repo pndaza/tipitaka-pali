@@ -9,12 +9,12 @@ class DatabaseProvider {
   static final DatabaseProvider _instance = DatabaseProvider._internal();
   factory DatabaseProvider() => _instance;
 
-  static Database _database;
+  static Database? _database;
   Future<Database> get database async {
-    if (_database != null) return _database;
+    if (_database != null) return _database!;
     // lazily instantiate the db the first time it is accessed
     _database = await _initDatabase();
-    return _database;
+    return _database!;
   }
 
 // Open Assets Database
@@ -28,7 +28,7 @@ class DatabaseProvider {
   }
 
   Future close() async {
-    return _database.close();
+    return _database?.close();
   }
 
   // Future<void> _buildIndex(Database database) async {

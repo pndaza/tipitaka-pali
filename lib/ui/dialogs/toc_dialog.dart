@@ -5,6 +5,7 @@ import 'package:tipitaka_pali/business_logic/view_models/toc_view_model.dart';
 class TocDialog extends StatelessWidget {
   final String bookID;
   TocDialog(this.bookID);
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +31,7 @@ class TocDialog extends StatelessWidget {
               future: TocViewModel(bookID).fetchTocListItems(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  final listItems = snapshot.data;
+                  final listItems = snapshot.data!;
                   return Expanded(
                     child: ListView.separated(
                       itemCount: listItems.length,

@@ -9,9 +9,9 @@ import '../../routes.dart';
 
 class SearchViewModel extends ChangeNotifier {
   List<SearchSuggestion> suggestions = [];
-  List<Index> results;
+  List<Index>? results;
   bool isSearching = false;
-  String _searchWord;
+  String _searchWord = '';
 
   String get searchWord => _searchWord;
 
@@ -28,7 +28,7 @@ class SearchViewModel extends ChangeNotifier {
   Future<void> doSearch(String searchWord) async {
     _searchWord = searchWord;
     if (results != null) {
-      results.clear();
+      results?.clear();
     }
     _searchWord = MMStringNormalizer.normalize(_searchWord);
     isSearching = true;

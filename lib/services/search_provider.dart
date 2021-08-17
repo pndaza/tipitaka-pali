@@ -54,8 +54,8 @@ class SearchProvider {
   }
 
   static List<Index> _findAdjacents(
-      {List<Index> smallList,
-      List<Index> largeList,
+      {required List<Index> smallList,
+      required List<Index> largeList,
       bool reverseSearchMode = false}) {
     Comparator<Index> indexComparator = (a, b) => a.pageID.compareTo(b.pageID);
     List<Index> adjacentItems = [];
@@ -107,8 +107,8 @@ class SearchProvider {
         await searchSuggestionRepository.getPageContent(index.pageID);
 
     final bookRepository = BookDatabaseRepository(databaseProvider);
-    final bookName = await bookRepository.getName(pageContent.bookID);
-    final book = Book(id: pageContent.bookID, name: bookName);
+    final bookName = await bookRepository.getName(pageContent.bookID!);
+    final book = Book(id: pageContent.bookID!, name: bookName);
 
     final description =
         _extractDescription(pageContent.content, query, index.position);
@@ -117,7 +117,7 @@ class SearchProvider {
         textToHighlight: query,
         description: description,
         book: book,
-        pageNumber: pageContent.pageNumber);
+        pageNumber: pageContent.pageNumber!);
 
     return result;
   }
@@ -132,7 +132,7 @@ class SearchProvider {
       String content, String query, int wordPosition) {
     // remmove HTML tag from source
     content = content.replaceAllMapped(
-        new RegExp(r'</span>(န္တိ|တိ)'), (match) => match.group(1));
+        new RegExp(r'</span>(န္တိ|တိ)'), (match) => match.group(1)!);
     // content = content.replaceAll(new RegExp(r'<.*?>'), " ");
     content = _removeAllHtmlTags(content);
     content = content.replaceAll(new RegExp(r' +'), ' ');
@@ -163,7 +163,7 @@ class SearchProvider {
 
     //fix some formatting
     wordsBeforeQuery = wordsBeforeQuery.replaceAllMapped(
-        "([\u1040-\u1049]+။)\n", (match) => match.group(1));
+        "([\u1040-\u1049]+။)\n", (match) => match.group(1)!);
 
     // get 20 words after query word if available
     for (int i = 20; i >= 0; i--) {
@@ -179,7 +179,7 @@ class SearchProvider {
 
     //fix some formatting
     wordsAfterQuery = wordsAfterQuery.replaceAllMapped(
-        "([\u1040-\u1049]+။)\n", (match) => match.group(1));
+        "([\u1040-\u1049]+။)\n", (match) => match.group(1)!);
 
     String description =
         wordsBeforeQuery + wordList[wordIndex] + wordsAfterQuery;

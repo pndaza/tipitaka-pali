@@ -6,11 +6,11 @@ class ParagraphMapping {
   int expPageNumber;
   String bookName;
   ParagraphMapping({
-    this.paragraph,
-    this.baseBookID,
-    this.basePageNumber,
-    this.expBookID,
-    this.expPageNumber,
-    this.bookName
+    required this.paragraph,
+    required this.baseBookID,
+    required this.basePageNumber,
+    required this.expBookID,
+    required this.expPageNumber,
+    required this.bookName
   });
 }

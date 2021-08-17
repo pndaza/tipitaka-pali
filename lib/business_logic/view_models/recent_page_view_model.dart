@@ -29,7 +29,7 @@ class RecentPageViewModel extends ChangeNotifier {
   }
 
   void openBook(Recent recent, BuildContext context) {
-    final book = Book(id: recent.bookID, name: recent.bookName);
+    final book = Book(id: recent.bookID, name: recent.bookName!);
     Navigator.pushNamed(context, ReaderRoute, arguments: {
       'book': book,
       'currentPage': recent.pageNumber,

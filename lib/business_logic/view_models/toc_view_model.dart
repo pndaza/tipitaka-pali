@@ -5,9 +5,9 @@ import 'package:tipitaka_pali/services/repositories/toc_repo.dart';
 
 class TocViewModel {
   final String bookID;
+  List<TocListItem>? listItems;
 
   TocViewModel(this.bookID);
-  List<TocListItem> listItems;
 
   Future<List<TocListItem>> fetchTocListItems() async {
     final tocs = await _fetchToc();
@@ -21,7 +21,7 @@ class TocViewModel {
   }
 
   List<TocListItem> _fromList(List<Toc> tocs) {
-    List<TocListItem> listItems = List<TocListItem>();
+    List<TocListItem> listItems = [];
     tocs.forEach((toc) {
       switch (toc.type) {
         case "chapter":

@@ -12,36 +12,39 @@ const ReaderRoute = '/reader';
 const SearchResultRoute = '/search_result_view';
 const FakeHomeRoute = '/fake_home';
 
-RouteFactory buildRoutes() {
-    return (settings) {
-      final Map<String, dynamic> arguments = settings.arguments;
-      Widget screen;
-      switch (settings.name) {
-        case SplashRoute:
-          screen = SplashScreen();
-          break;
-        case HomeRoute:
-          screen = Home();
-          break;
-        case FakeHomeRoute:
-          screen = FakeHome();
-          break;
-        case SearchResultRoute:
+class RouteGenerator {
+  static Route<dynamic> generateRoute(RouteSettings settings) {
+    final arguments = settings.arguments;
+
+    late Widget screen;
+    switch (settings.name) {
+      case SplashRoute:
+        screen = SplashScreen();
+        break;
+      case HomeRoute:
+        screen = Home();
+        break;
+      case FakeHomeRoute:
+        screen = FakeHome();
+        break;
+      case SearchResultRoute:
+        if (arguments is Map) {
           screen = SearchResultView(
             searchWord: arguments['searchWord'],
           );
-          break;
-        case ReaderRoute:
+        }
+        break;
+      case ReaderRoute:
+        if (arguments is Map) {
           screen = Reader(
             book: arguments['book'],
             currentPage: arguments['currentPage'],
             textToHighlight: arguments['textToHighlight'],
           );
-          break;
-        default:
-          return null;
-      }
-      return MaterialPageRoute(
-          builder: (BuildContext context) => ThemeConsumer(child: screen));
-    };
+        }
+        break;
+    }
+    return MaterialPageRoute(
+        builder: (BuildContext context) => ThemeConsumer(child: screen));
   }
+}

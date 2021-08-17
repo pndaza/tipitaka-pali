@@ -9,7 +9,7 @@ class ConfirmDialog extends StatelessWidget {
   final String okLabel;
 
   const ConfirmDialog(
-      {Key key, this.title, this.message, this.cancelLabel, this.okLabel})
+      {Key? key, required this.title, required this.message, required this.cancelLabel, required this.okLabel})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -57,7 +57,7 @@ class ConfirmDialog extends StatelessWidget {
   }
 
   Widget _buildActions(
-      {String cancellabel, String okLabel, BuildContext context}) {
+      {required String cancellabel, required String okLabel, required BuildContext context}) {
     return Row(
       children: [
         Expanded(

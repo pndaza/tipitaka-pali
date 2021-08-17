@@ -18,7 +18,7 @@ class BookDatabaseRepository implements BookRepository {
   @override
   Future<List<Book>> getBooks(String basket, String category) async {
     final db = await databaseProvider.database;
-    List<Map> maps = await db.query(dao.tableName,
+    List<Map<String, dynamic>> maps = await db.query(dao.tableName,
         columns: [dao.columnID, dao.columnName],
         where: '${dao.columnBasket} = ? AND ${dao.colunmnCategory} = ?',
         whereArgs: [basket, category]);
@@ -28,7 +28,7 @@ class BookDatabaseRepository implements BookRepository {
   @override
   Future<List<Book>> getAllBooks() async {
     final db = await databaseProvider.database;
-    List<Map> maps =
+    List<Map<String, dynamic>> maps =
         await db.query(dao.tableName, columns: [dao.columnID, dao.columnName]);
     return dao.fromList(maps);
   }
