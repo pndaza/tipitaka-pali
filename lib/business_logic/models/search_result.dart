@@ -7,8 +7,8 @@ class SearchResult {
   final int pageNumber;
 
   SearchResult(
-      {this.textToHighlight,
-      this.description,
-      this.book,
-      this.pageNumber});
+      {required this.textToHighlight,
+      required this.description,
+      required this.book,
+      required this.pageNumber});
 }

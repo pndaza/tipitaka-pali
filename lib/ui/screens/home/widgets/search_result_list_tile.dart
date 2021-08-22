@@ -7,7 +7,7 @@ class SearchResultListTile extends StatelessWidget {
   final SearchResult result;
   final String textToHighlight;
 
-  const SearchResultListTile({Key key, this.result, this.textToHighlight})
+  const SearchResultListTile({Key? key, required this.result, required this.textToHighlight})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class SearchResultListTile extends StatelessWidget {
               text: result.description,
               textStyle: TextStyle(
                   fontSize: 18,
-                  color: Theme.of(context).textTheme.bodyText2.color),
+                  color: Theme.of(context).textTheme.bodyText2?.color),
               term: textToHighlight,
               textStyleHighlight:
                   TextStyle(fontSize: 20, color: Theme.of(context).accentColor),

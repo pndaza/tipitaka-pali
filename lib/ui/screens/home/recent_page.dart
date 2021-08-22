@@ -50,7 +50,7 @@ class _RecentPageState extends State<RecentPage> {
 }
 
 class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const BaseAppBar({Key key}) : super(key: key);
+  const BaseAppBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -73,12 +73,13 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => new Size.fromHeight(AppBar().preferredSize.height);
 
-  Future<OkCancelAction> _getConfirmataion(BuildContext context) async {
+  Future<OkCancelAction?> _getConfirmataion(BuildContext context) async {
     return await showCupertinoDialog<OkCancelAction>(
         context: context,
         builder: (context) {
           return ThemeConsumer(
               child: ConfirmDialog(
+            title: 'Comfirmation',
             message: 'ဖတ်လက်စစာအုပ်စာရင်း အားလုံးကို ဖျက်ရန် သေချာပြီလား',
             cancelLabel: 'မဖျက်တော့ဘူး',
             okLabel: 'ဖျက်မယ်',

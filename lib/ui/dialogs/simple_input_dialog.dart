@@ -7,7 +7,7 @@ class SimpleInputDialog extends StatelessWidget {
   final TextEditingController _controller = TextEditingController();
 
   SimpleInputDialog(
-      {Key key, this.hintText, this.cancelLabel, this.okLabel})
+      {Key? key, required this.hintText, required this.cancelLabel, required this.okLabel})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -50,7 +50,7 @@ class SimpleInputDialog extends StatelessWidget {
   }
 
   Widget _buildActions(
-      {String cancellabel, String okLabel, BuildContext context}) {
+      {required String cancellabel, required String okLabel, required BuildContext context}) {
     return Row(
       children: [
         Expanded(

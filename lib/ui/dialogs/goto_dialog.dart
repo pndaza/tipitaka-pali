@@ -17,11 +17,11 @@ class GotoDialog extends StatefulWidget {
   final double radius;
 
   GotoDialog(
-      {Key key,
-      this.firstPage,
-      this.lastPage,
-      this.firstParagraph,
-      this.lastParagraph,
+      { Key? key,
+      required this.firstPage,
+      required this.lastPage,
+      required this.firstParagraph,
+      required this.lastParagraph,
       this.radius = 16.0})
       : super(key: key);
 
@@ -42,16 +42,16 @@ class _GotoDialogState extends State<GotoDialog> {
   final double radius;
   TextEditingController controller = TextEditingController();
   GotoType selectedType = GotoType.page;
-  int selectedTypeIndex;
-  String hintText;
+  int? selectedTypeIndex;
+  String? hintText;
   bool isValid = false;
 
   _GotoDialogState(
-      {this.firstPage,
-      this.lastPage,
-      this.firstParagraph,
-      this.lastParagraph,
-      this.radius});
+      {required this.firstPage,
+      required this.lastPage,
+      required this.firstParagraph,
+      required this.lastParagraph,
+      required this.radius});
 
   @override
   void initState() {
@@ -106,8 +106,9 @@ class _GotoDialogState extends State<GotoDialog> {
 
   ToggleSwitch _buildInputType(BuildContext context) {
     return ToggleSwitch(
+      totalSwitches: 2,
       labels: ['စာမျက်နှာ', 'စာပိုဒ်'],
-      initialLabelIndex: selectedTypeIndex,
+      initialLabelIndex: selectedTypeIndex!,
       onToggle: (index) {
         setState(() {
           selectedTypeIndex = index;
@@ -120,7 +121,7 @@ class _GotoDialogState extends State<GotoDialog> {
           }
         });
       },
-      activeBgColor: Theme.of(context).accentColor,
+      // activeBgColor: Theme.of(context).accentColor,
       minWidth: 100.0,
     );
   }

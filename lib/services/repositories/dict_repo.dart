@@ -14,7 +14,7 @@ class DictionaryDatabaseRepository implements DictionaryRepository {
   @override
   Future<List<Definition>> getDefinition(String word) async {
     final db = await databaseProvider.database;
-    List<Map> maps = await db.query(dao.tableDict,
+    List<Map<String, dynamic>> maps = await db.query(dao.tableDict,
         columns: [dao.columnDefinition, dao.colunmnBook],
         where: '${dao.columnWord} = ?',
         whereArgs: [word]);

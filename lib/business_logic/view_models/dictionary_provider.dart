@@ -13,8 +13,8 @@ const kblackTheme = 'black';
 
 class DictionaryProvider {
   final BuildContext context;
-  String _cssData;
-  int _fontSize;
+  String? _cssData;
+  int? _fontSize;
 
   DictionaryProvider(this.context) {
     init(context);

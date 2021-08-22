@@ -17,7 +17,7 @@ class MmNumber {
     };
 
     for (int i = 0; i < engNumber.length; i++) {
-      mmNumber += map[engNumber[i]];
+      mmNumber += map[engNumber[i]]!;
     }
     return mmNumber;
   }

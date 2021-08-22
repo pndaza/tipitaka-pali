@@ -9,13 +9,13 @@ class GotoViewModel with ChangeNotifier {
   GotoViewModel(this.book);
   final Book book;
 
-  int firstParagraph;
-  int lastParagraph;
+  int? firstParagraph;
+  int? lastParagraph;
   String pagehintText = '';
   String parahintText = '';
   Goto selected = Goto.page;
   bool isValid = false;
-  int inputValue;
+  int? inputValue;
 
   final ParagraphRepository repository =
       ParagraphDatabaseRepository(DatabaseProvider());
@@ -44,25 +44,25 @@ class GotoViewModel with ChangeNotifier {
 
     switch (selected) {
       case Goto.page:
-        isValid = isValidPageNumber(inputValue) ? true : false;
+        isValid = isValidPageNumber(inputValue!) ? true : false;
         break;
       case Goto.paragraph:
-        isValid = isValidParagraphNumber(inputValue) ? true : false;
+        isValid = isValidParagraphNumber(inputValue!) ? true : false;
         break;
     }
     notifyListeners();
   }
 
   bool isValidPageNumber(int pageNumber) {
-    return book.firstPage <= pageNumber && pageNumber <= book.lastPage;
+    return book.firstPage! <= pageNumber && pageNumber <= book.lastPage!;
   }
 
   bool isValidParagraphNumber(int paragraphNumber) {
-    return firstParagraph <= paragraphNumber &&
-        paragraphNumber <= lastParagraph;
+    return firstParagraph! <= paragraphNumber &&
+        paragraphNumber <= lastParagraph!;
   }
 
   Future<int> getPageNumber(int paragraphNumber) async {
-    return await repository.getPageNumber(book.id, inputValue);
+    return await repository.getPageNumber(book.id, inputValue!);
   }
 }

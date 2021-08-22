@@ -4,7 +4,7 @@ import 'package:theme_provider/theme_provider.dart';
 import 'package:tipitaka_pali/business_logic/view_models/reader_view_model.dart';
 
 class MySlider extends StatelessWidget {
-  const MySlider({Key key}) : super(key: key);
+  const MySlider({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final themeData = ThemeProvider.themeOf(context).data;
@@ -19,9 +19,9 @@ class MySlider extends StatelessWidget {
           valueIndicatorColor: themeData.accentColor,
           valueIndicatorTextStyle: themeData.accentTextTheme.bodyText1),
       child: Slider(
-        value: vm.currentPage.toDouble(),
-        min: vm.book.firstPage.toDouble(),
-        max: vm.book.lastPage.toDouble(),
+        value: vm.currentPage!.toDouble(),
+        min: vm.book.firstPage!.toDouble(),
+        max: vm.book.lastPage!.toDouble(),
         label: vm.currentPage.toString(),
         divisions: vm.pages.length,
         onChanged: (value) {

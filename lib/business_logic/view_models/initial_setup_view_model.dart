@@ -64,7 +64,7 @@ class InitialSetupViewModel extends ChangeNotifier {
         onExtracting: (zipEntry, progress) {
           myLogger.i('progress: ${progress.toStringAsFixed(1)}%');
           myLogger.i('name: ${zipEntry.name}');
-          return ExtractOperation.extract;
+          return ZipFileOperation.includeItem;
         });
   }
 

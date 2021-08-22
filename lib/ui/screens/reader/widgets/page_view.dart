@@ -15,7 +15,7 @@ class MyPageView extends StatelessWidget {
     final vm = Provider.of<ReaderViewModel>(context, listen: false);
 
     vm.pageController =
-        PreloadPageController(initialPage: vm.currentPage - vm.book.firstPage);
+        PreloadPageController(initialPage: vm.currentPage! - vm.book.firstPage!);
 
     return PreloadPageView.builder(
       physics: RangeMaintainingScrollPhysics(),
@@ -40,13 +40,13 @@ class MyPageView extends StatelessWidget {
           onWebViewCreated: (controller) =>
               vm.webViewControllers[index] = controller,
           onPageFinished: (_) {
-            vm.webViewControllers[index].evaluateJavascript('''
+            vm.webViewControllers[index]!.evaluateJavascript('''
                       var goto = document.getElementById("goto_001");
                       if(goto != null){
                         goto.scrollIntoView();
                       }
                       ''');
-            vm.webViewControllers[index].evaluateJavascript(vm.javascriptData);
+            vm.webViewControllers[index]!.evaluateJavascript(vm.javascriptData);
           },
         );
       },

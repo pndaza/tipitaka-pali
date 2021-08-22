@@ -3,7 +3,7 @@ import 'package:tipitaka_pali/services/dao/bookmark_dao.dart';
 import 'package:tipitaka_pali/services/database/database_provider.dart';
 
 abstract class BookmarkRepository {
-  DatabaseProvider databaseProvider;
+  late DatabaseProvider databaseProvider;
 
   Future<int> insert(Bookmark bookmark);
 

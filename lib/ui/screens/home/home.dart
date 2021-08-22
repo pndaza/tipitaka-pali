@@ -21,7 +21,7 @@ class _HomeState extends State<Home> {
         ThemeProvider.themeOf(context).data.scaffoldBackgroundColor;
     Color _selectedItemColor = ThemeProvider.themeOf(context).data.accentColor;
     Color _unselectedItemColor =
-        ThemeProvider.themeOf(context).data.textTheme.bodyText2.color;
+        ThemeProvider.themeOf(context).data.textTheme.bodyText2?.color as Color;
     return Scaffold(
         body: _getScreen(_currentIndex),
         bottomNavigationBar: BottomNavigationBar(
@@ -56,16 +56,12 @@ class _HomeState extends State<Home> {
     switch (index) {
       case 0:
         return HomePage();
-        break;
       case 1:
         return BookmarkPage();
-        break;
       case 2:
         return RecentPage();
-        break;
       case 3:
         return SearchPage();
-        break;
     }
   }
 }

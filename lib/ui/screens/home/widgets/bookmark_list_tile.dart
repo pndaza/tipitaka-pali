@@ -11,7 +11,7 @@ class BookmarkListTile extends StatelessWidget {
   final BookmarkPageViewModel bookmarkViewmodel;
   final int index;
 
-  const BookmarkListTile({Key key, this.bookmarkViewmodel, this.index})
+  const BookmarkListTile({Key? key, required this.bookmarkViewmodel, required this.index})
       : super(key: key);
 
   @override
@@ -31,7 +31,7 @@ class BookmarkListTile extends StatelessWidget {
       child: GestureDetector(
         child: ListTile(
           title: Text(bookmark.note),
-          subtitle: Text(bookmark.bookName),
+          subtitle: Text(bookmark.bookName!),
           trailing: Container(
             width: 80,
             child: Row(
@@ -55,7 +55,7 @@ class BookmarkListTile extends StatelessWidget {
 
   _openBook(BuildContext context, Bookmark bookmark) {
     Navigator.pushNamed(context, ReaderRoute, arguments: {
-      'book': Book(id: bookmark.bookID, name: bookmark.bookName),
+      'book': Book(id: bookmark.bookID, name: bookmark.bookName!),
       'currentPage': bookmark.pageNumber
     });
   }

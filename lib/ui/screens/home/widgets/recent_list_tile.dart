@@ -26,7 +26,7 @@ class RecentListTile extends StatelessWidget {
       ],
       child: GestureDetector(
         child: ListTile(
-          title: Text(recent.bookName),
+          title: Text(recent.bookName!),
           trailing: Container(
             width: 80,
             child: Row(
@@ -50,7 +50,7 @@ class RecentListTile extends StatelessWidget {
 
   _openBook(BuildContext context, Recent recent) {
     Navigator.pushNamed(context, ReaderRoute, arguments: {
-      'book': Book(id: recent.bookID, name: recent.bookName),
+      'book': Book(id: recent.bookID, name: recent.bookName!),
       'currentPage': recent.pageNumber
     });
   }

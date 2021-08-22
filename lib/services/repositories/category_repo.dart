@@ -3,7 +3,7 @@ import 'package:tipitaka_pali/services/dao/catergory_dao.dart';
 import 'package:tipitaka_pali/services/database/database_provider.dart';
 
 abstract class CategoryRepository {
-  DatabaseProvider databaseProvider;
+  late DatabaseProvider databaseProvider;
   Future<List<Category>> getCategories(String basket);
 }
 
@@ -19,7 +19,7 @@ class CategoryDatabaseRepository implements CategoryRepository {
       basket = 'tri';
     }
     final db = await databaseProvider.database;
-    List<Map> maps = await db.query(dao.tableName,
+    List<Map<String, dynamic>> maps = await db.query(dao.tableName,
         columns: [dao.columnID, dao.columnName],
         where: '${dao.columnBasket} = ?',
         whereArgs: [basket]);

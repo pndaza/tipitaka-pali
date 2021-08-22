@@ -4,7 +4,7 @@ import 'package:tipitaka_pali/services/dao/recent_dao.dart';
 import 'package:tipitaka_pali/services/database/database_provider.dart';
 
 abstract class RecentRepository {
-  DatabaseProvider databaseProvider;
+  late DatabaseProvider databaseProvider;
 
   Future<int> insertOrReplace(Recent recent);
 
@@ -56,7 +56,7 @@ class RecentDatabaseRepository implements RecentRepository {
   @override
   Future<List<Recent>> getRecents() async {
     final db = await databaseProvider.database;
-    List<Map> maps = await db.rawQuery('''
+    List<Map<String, dynamic>> maps = await db.rawQuery('''
       SELECT ${dao.columnBookId}, ${dao.columnPageNumber}, ${dao.columnName}
       FROM ${dao.tableRecent}
       INNER JOIN ${dao.tableBooks} ON ${dao.tableBooks}.${dao.columnID} = ${dao.tableRecent}.${dao.columnBookId}

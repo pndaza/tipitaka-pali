@@ -5,7 +5,7 @@ import 'package:tipitaka_pali/business_logic/view_models/initial_setup_view_mode
 
 class InitialSetup extends StatelessWidget {
   final bool isUpdateMode;
-  const InitialSetup({Key key, this.isUpdateMode = false}) : super(key: key);
+  const InitialSetup({Key? key, this.isUpdateMode = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

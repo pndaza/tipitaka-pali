@@ -3,15 +3,15 @@ class Category {
   String name;
 
   Category(this.id, this.name);
-  
-  Map<String, dynamic> toMap(){
-        return {
+
+  Map<String, dynamic> toMap() {
+    return {
       'id': id,
       'name': name,
     };
   }
-  Category.fromMap(Map<String, dynamic> map){
-    this.id = map['id'];
-    this.name = map['name'];
+
+  factory Category.fromMap(Map<String, dynamic> map) {
+    return Category(map['id'], map['name']);
   }
 }

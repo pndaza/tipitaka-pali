@@ -29,7 +29,7 @@ class BookmarkPageViewModel extends ChangeNotifier {
   }
 
   void openBook(Bookmark bookmark, BuildContext context) {
-    final book = Book(id: bookmark.bookID, name: bookmark.bookName);
+    final book = Book(id: bookmark.bookID, name: bookmark.bookName!);
     Navigator.pushNamed(context, ReaderRoute,
         arguments: {'book': book, 'currentPage': bookmark.pageNumber});
   }

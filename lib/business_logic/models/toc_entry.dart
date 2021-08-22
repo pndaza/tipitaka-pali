@@ -2,7 +2,7 @@ import 'toc.dart';
 
 class TocEntry {
   final Toc header;
-  List<TocEntry> children;
+  List<TocEntry>? children;
 
   TocEntry(this.header, [this.children]);
 

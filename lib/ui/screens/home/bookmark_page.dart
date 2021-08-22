@@ -55,7 +55,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
 }
 
 class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const BaseAppBar({Key key}) : super(key: key);
+  const BaseAppBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -78,12 +78,13 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => new Size.fromHeight(AppBar().preferredSize.height);
 
-  Future<OkCancelAction> _getConfirmataion(BuildContext context) async {
+  Future<OkCancelAction?> _getConfirmataion(BuildContext context) async {
     return await showDialog<OkCancelAction>(
         context: context,
         builder: (context) {
           return ThemeConsumer(
             child: ConfirmDialog(
+              title: 'Comfirmation',
               message: 'မှတ်သားထားသမျှ အားလုံးကို ဖျက်ရန် သေချာပြီလား',
               okLabel: 'ဖျက်မယ်',
               cancelLabel: 'မဖျက်တော့ဘူး',

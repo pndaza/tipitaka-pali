@@ -1,13 +1,13 @@
 class PageContent {
-  int id;
-  String bookID;
-  int pageNumber;
+  int? id;
+  String? bookID;
+  int? pageNumber;
   String content;
-  String paragraphNumber;
+  String? paragraphNumber;
   PageContent(
       {this.id,
       this.bookID,
       this.pageNumber,
-      this.content,
+      required this.content,
       this.paragraphNumber});
 }

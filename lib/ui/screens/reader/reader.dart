@@ -9,10 +9,10 @@ import 'package:tipitaka_pali/ui/screens/reader/widgets/page_view.dart';
 
 class Reader extends StatelessWidget {
   final Book book;
-  final int currentPage;
-  final String textToHighlight;
-  const Reader(
-      {Key key, @required this.book, this.currentPage, this.textToHighlight})
+  int? currentPage;
+  String? textToHighlight;
+   Reader(
+      {Key? key, required this.book, this.currentPage, this.textToHighlight})
       : super(key: key);
 
   @override

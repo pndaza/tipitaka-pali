@@ -29,30 +29,29 @@ const kblackTheme = 'black';
 const String kGotoID = 'goto_001';
 
 class ReaderViewModel with ChangeNotifier {
+  final BuildContext context;
   final Book book;
-  final String textToHighlight;
-  int currentPage;
-  List<PageContent> pages;
-  int numberOfPage;
-  int _fontSize;
-  String _cssFont;
-  String _cssData;
-  String javascriptData;
+  int? currentPage;
+  String? textToHighlight;
+  late List<PageContent> pages;
+  late int numberOfPage;
+  late int _fontSize;
+  late String _cssFont;
+  late String _cssData;
+  late String javascriptData;
   bool loadFinished = false;
   final int preLoadPageCount = 3;
-  PreloadPageController pageController;
-  List<WebViewController> webViewControllers;
-  final BuildContext context;
+  late PreloadPageController pageController;
+  late List<WebViewController?> webViewControllers;
 
   ReaderViewModel({
-    this.context,
-    this.book,
+    required this.context,
+    required this.book,
     this.currentPage,
     this.textToHighlight,
   });
 
   Future<bool> loadAllData() async {
-    // print('loading all required data');
     final fontName = 'NotoSansMyanmar-Regular.otf';
     _cssFont = await loadCssFont(fontName: fontName);
     _fontSize = await loadFontSize();
@@ -63,7 +62,8 @@ class ReaderViewModel with ChangeNotifier {
     // book.firstPage = 1;
     // book.lastPage = pages.length;
     numberOfPage = pages.length;
-    webViewControllers = List<WebViewController>(pages.length);
+    webViewControllers = List.filled(pages.length, null);
+    // List<WebViewController>(pages.length);
 
     return true;
     // print('number of pages: ${pages.length}');
@@ -75,7 +75,7 @@ class ReaderViewModel with ChangeNotifier {
   }
 
   Future<String> loadCssFont(
-      {@required String fontName,
+      {required String fontName,
       String fontExt = 'otf',
       String fontMineType = 'font/truetype'}) async {
     final fontData = await loadFont(fontName);
@@ -111,14 +111,14 @@ class ReaderViewModel with ChangeNotifier {
     book.firstPage = await bookRepository.getFirstPage(bookID);
     book.lastPage = await bookRepository.getLastPage(bookID);
     if (currentPage == null) {
-      currentPage = book.firstPage;
+      currentPage = book.firstPage!;
     }
   }
 
   Uri getPageContent(int index) {
     String pageContent = pages[index].content;
     if (textToHighlight != null) {
-      pageContent = setHighlight(pageContent, textToHighlight);
+      pageContent = setHighlight(pageContent, textToHighlight!);
     }
 
     pageContent = _fixSafari(pageContent);
@@ -135,7 +135,7 @@ class ReaderViewModel with ChangeNotifier {
             $_cssData
           </style>
           <body>
-            <p>${MmNumber.get(index + book.firstPage)}</p>
+            <p>${MmNumber.get(index + book.firstPage!)}</p>
             <div id="page_content">
               $pageContent
             </div>
@@ -199,7 +199,7 @@ class ReaderViewModel with ChangeNotifier {
     final ParagraphMappingRepository repository =
         ParagraphMappingDatabaseRepository(databaseProvider);
 
-    return await repository.getParagraphMappings(book.id, currentPage);
+    return await repository.getParagraphMappings(book.id, currentPage!);
   }
 
   Future<int> getPageNumber(int paragraphNumber) async {
@@ -210,7 +210,7 @@ class ReaderViewModel with ChangeNotifier {
   }
 
   Future onPageChanged(int index) async {
-    currentPage = book.firstPage + index + 1;
+    currentPage = book.firstPage! + index + 1;
     notifyListeners();
     await _saveToRecent();
   }
@@ -222,7 +222,7 @@ class ReaderViewModel with ChangeNotifier {
 
   Future gotoPage(double value) async {
     currentPage = value.toInt();
-    pageController.jumpToPage(currentPage - book.firstPage);
+    pageController.jumpToPage(currentPage! - book.firstPage!);
     await _saveToRecent();
   }
 
@@ -232,8 +232,8 @@ class ReaderViewModel with ChangeNotifier {
 
   void increaseFontSize() {
     _fontSize += 5;
-    var currentPageIndex = currentPage - book.firstPage;
-    webViewControllers[currentPageIndex]
+    var currentPageIndex = currentPage! - book.firstPage!;
+    webViewControllers[currentPageIndex]!
         .loadUrl(getPageContent(currentPageIndex).toString());
     // notifyListeners();
     SharedPrefProvider.setInt(key: k_key_fontSize, value: _fontSize);
@@ -242,22 +242,22 @@ class ReaderViewModel with ChangeNotifier {
     var count = 0;
     var pageIndex = currentPageIndex;
     while (pageIndex++ < numberOfPage && count++ < preLoadPageCount) {
-      webViewControllers[pageIndex]
+      webViewControllers[pageIndex]!
           .loadUrl(getPageContent(pageIndex).toString());
     }
     // for left pages
     count = 0;
     pageIndex = currentPageIndex;
     while (pageIndex-- > 0 && count++ < preLoadPageCount) {
-      webViewControllers[pageIndex]
+      webViewControllers[pageIndex]!
           .loadUrl(getPageContent(pageIndex).toString());
     }
   }
 
   void decreaseFontSize() {
     _fontSize -= 5;
-    var currentPageIndex = currentPage - book.firstPage;
-    webViewControllers[currentPageIndex]
+    var currentPageIndex = currentPage! - book.firstPage!;
+    webViewControllers[currentPageIndex]!
         .loadUrl(getPageContent(currentPageIndex).toString());
     // notifyListeners();
     SharedPrefProvider.setInt(key: k_key_fontSize, value: _fontSize);
@@ -266,14 +266,14 @@ class ReaderViewModel with ChangeNotifier {
     var count = 0;
     var pageIndex = currentPageIndex;
     while (pageIndex++ < numberOfPage && count++ < preLoadPageCount) {
-      webViewControllers[pageIndex]
+      webViewControllers[pageIndex]!
           .loadUrl(getPageContent(pageIndex).toString());
     }
     // left pages
     count = 0;
     pageIndex = currentPageIndex;
     while (pageIndex-- > 0 && count++ < preLoadPageCount) {
-      webViewControllers[pageIndex]
+      webViewControllers[pageIndex]!
           .loadUrl(getPageContent(pageIndex).toString());
     }
   }
@@ -286,14 +286,14 @@ class ReaderViewModel with ChangeNotifier {
   void saveToBookmark(String note) {
     BookmarkRepository repository =
         BookmarkDatabaseRepository(DatabaseProvider());
-    repository.insert(Bookmark(book.id, currentPage, note));
+    repository.insert(Bookmark(book.id, currentPage!, note));
   }
 
   Future _saveToRecent() async {
     final DatabaseProvider databaseProvider = DatabaseProvider();
     final RecentRepository recentRepository =
         RecentDatabaseRepository(databaseProvider);
-    recentRepository.insertOrReplace(Recent(book.id, currentPage));
+    recentRepository.insertOrReplace(Recent(book.id, currentPage!));
   }
 
   Future<void> showDictionary(String word) async {
@@ -303,7 +303,7 @@ class ReaderViewModel with ChangeNotifier {
         ),
         expand: false,
         context: context,
-        builder: (context, _) {
+        builder: (context) {
           return ThemeConsumer(child: DictionaryDialog(word));
         });
   }

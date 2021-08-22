@@ -18,32 +18,34 @@ class SharedPrefProvider {
   // static const String key_font_size = 'font-size';
   // static const String key_db_version = 'database_version';
 
-  static Future<int> getInt({String key}) async {
+  static Future<int> getInt({required String key}) async {
     final pref = await SharedPreferences.getInstance();
     return pref.getInt(key) ?? 100;
   }
 
-  static Future<bool> setInt({String key, int value}) async {
+  static Future<bool> setInt({required String key, required int value}) async {
     final pref = await SharedPreferences.getInstance();
     return await pref.setInt(key, value);
   }
 
-  static Future<String> getString({String key}) async {
+  static Future<String> getString({required String key}) async {
     final pref = await SharedPreferences.getInstance();
-    return pref.getString(key);
+    return pref.getString(key)!;
   }
 
-  static Future<bool> setString({String key, String value}) async {
+  static Future<bool> setString(
+      {required String key, required String value}) async {
     final pref = await SharedPreferences.getInstance();
     return await pref.setString(key, value);
   }
 
-  static Future<bool> getBool({String key}) async {
+  static Future<bool> getBool({required String key}) async {
     final pref = await SharedPreferences.getInstance();
-    return pref.getBool(key);
+    return pref.getBool(key) ?? false;
   }
 
-  static Future<bool> setBool({String key, bool value}) async {
+  static Future<bool> setBool(
+      {required String key, required bool value}) async {
     final pref = await SharedPreferences.getInstance();
     return await pref.setBool(key, value);
   }

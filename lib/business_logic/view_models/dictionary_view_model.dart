@@ -5,10 +5,10 @@ import 'package:tipitaka_pali/business_logic/view_models/dictionary_provider.dar
 import 'package:webview_flutter/webview_flutter.dart';
 
 class DictionaryViewModel with ChangeNotifier {
-  String _word;
   BuildContext _context;
+  String _word;
   String _definition = '';
-  WebViewController webViewController;
+  WebViewController? webViewController;
   DictionaryViewModel(this._context, this._word);
 
   String get definition {
@@ -27,7 +27,7 @@ class DictionaryViewModel with ChangeNotifier {
 
   Future<void> doSearch(String word) async {
     await getDefinition(word, isStem: true);
-    webViewController.loadUrl(_getUri(_definition).toString());
+    webViewController?.loadUrl(_getUri(_definition).toString());
     notifyListeners();
   }
 
