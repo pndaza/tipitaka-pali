@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:substring_highlight/substring_highlight.dart';
 import 'package:tipitaka_pali/business_logic/models/search_result.dart';
-import 'package:tipitaka_pali/utils/mm_number.dart';
 
 class SearchResultListTile extends StatelessWidget {
   final SearchResult result;
@@ -15,13 +14,13 @@ class SearchResultListTile extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              '${result.book.name}၊ နှာ - ${MmNumber.get(result.pageNumber)}',
-              textAlign: TextAlign.left,
+              '${result.book.name}၊ page - ${result.pageNumber}',
+              textAlign: TextAlign.right,
               style:
-                  TextStyle(fontSize: 16, color: Theme.of(context).accentColor),
+                  TextStyle(fontSize: 16, color: Theme.of(context).accentColor, ),
             ),
             SubstringHighlight(
               text: result.description,

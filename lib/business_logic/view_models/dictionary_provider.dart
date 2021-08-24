@@ -24,8 +24,7 @@ class DictionaryProvider {
     final cssFileName =
         _isDarkTheme(context) ? 'dict_night.css' : 'dict_day.css';
     _cssData = await AssetsProvider.loadCSS(cssFileName);
-    _fontSize = await SharedPrefProvider.getInt(
-        key: k_key_fontSize);
+    _fontSize = await SharedPrefProvider.getInt(key: k_key_fontSize);
   }
 
   Future<String> getDefinition(String word,
@@ -33,6 +32,9 @@ class DictionaryProvider {
     if (!isAlreadyStem) {
       word = PaliStemmer.getStem(word);
     }
+
+    print('dict word: $word');
+
     final DatabaseProvider databaseProvider = DatabaseProvider();
     final DictionaryRepository dictRepository =
         DictionaryDatabaseRepository(databaseProvider);

@@ -4,10 +4,14 @@ class SearchBar extends StatefulWidget {
   final void Function(String) onSubmitted;
   final void Function(String) onTextChanged;
   final String hint;
-  SearchBar({required this.onSubmitted, required this.onTextChanged, this.hint = 'ရှာလိုရာ စကားလုံး ရိုက်ပါ'});
+  SearchBar(
+      {required this.onSubmitted,
+      required this.onTextChanged,
+      this.hint = 'search'});
 
   @override
-  _SearchBarState createState() => _SearchBarState(onSubmitted, onTextChanged, hint);
+  _SearchBarState createState() =>
+      _SearchBarState(onSubmitted, onTextChanged, hint);
 }
 
 class _SearchBarState extends State<SearchBar> {
@@ -19,7 +23,7 @@ class _SearchBarState extends State<SearchBar> {
   bool _showClearButton = false;
 
   Color borderColor = Colors.grey;
-  Color textColor = Colors.grey[350] as  Color;
+  Color textColor = Colors.grey[350] as Color;
   TextDecoration textDecoration = TextDecoration.lineThrough;
   TextEditingController controller = TextEditingController();
 
@@ -56,7 +60,7 @@ class _SearchBarState extends State<SearchBar> {
               controller: controller,
               textInputAction: TextInputAction.search,
               onSubmitted: (text) => onSummited(text),
-              onChanged: (text) => onTextChanged(text),
+              onChanged: (text) => onTextChanged(toUni(text)),
               decoration: InputDecoration(
                   border: InputBorder.none,
                   prefixIcon: Icon(
@@ -98,12 +102,54 @@ class _SearchBarState extends State<SearchBar> {
       return null;
     }
     return IconButton(
-      onPressed: () {
-      },
+      onPressed: () {},
       icon: Icon(
         Icons.keyboard,
         color: Colors.grey,
       ),
     );
+  }
+
+  String toUni(String input) {
+    if (input == '') return input;
+
+    var nigahita = 'ṃ';
+    var capitalNigahita = 'Ṃ';
+
+    input = input
+        .replaceAll('aa', 'ā')
+        .replaceAll('ii', 'ī')
+        .replaceAll('uu', 'ū')
+        .replaceAll('\.t', 'ṭ')
+        .replaceAll('\.d', 'ḍ')
+        .replaceAll('\"nk', 'ṅk')
+        .replaceAll('\"ng', 'ṅg')
+        .replaceAll('\.n', 'ṇ')
+        .replaceAll('\.m', nigahita)
+        .replaceAll('\u1E41', nigahita)
+        .replaceAll('\~n', 'ñ')
+        .replaceAll('\.l', 'ḷ')
+        .replaceAll('AA', 'Ā')
+        .replaceAll('II', 'Ī')
+        .replaceAll('UU', 'Ū')
+        .replaceAll('\.T', 'Ṭ')
+        .replaceAll('\.D', 'Ḍ')
+        .replaceAll('\"N', 'Ṅ')
+        .replaceAll('\.N', 'Ṇ')
+        .replaceAll('\.M', capitalNigahita)
+        .replaceAll('\~N', 'Ñ')
+        .replaceAll('\.L', 'Ḷ')
+        .replaceAll('\.ll', 'ḹ')
+        .replaceAll('\.r', 'ṛ')
+        .replaceAll('\.rr', 'ṝ')
+        .replaceAll('\.s', 'ṣ')
+        .replaceAll('"s', 'ś')
+        .replaceAll('\.h', 'ḥ');
+
+    controller.text = input;
+    controller.selection = TextSelection.fromPosition(TextPosition(offset: controller.text.length));
+
+
+    return input;
   }
 }
