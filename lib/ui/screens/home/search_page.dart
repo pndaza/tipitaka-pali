@@ -11,7 +11,7 @@ class SearchPage extends StatelessWidget {
       create: (_) => SearchViewModel(),
       child: Scaffold(
           appBar: AppBar(
-            title: Text('စာရှာ'),
+            title: Text('Search'),
             centerTitle: true,
           ),
           body: Consumer<SearchViewModel>(builder: (context, vm, child) {

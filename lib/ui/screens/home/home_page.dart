@@ -12,7 +12,7 @@ class HomePage extends StatelessWidget {
       length: 4,
       child: Scaffold(
           appBar: AppBar(
-            title: Center(child: Text('တိပိဋကပါဠိ')),
+            title: Center(child: Text('Tipitaka Pali Reader')),
             actions: [
               IconButton(
                   icon: Icon(Icons.palette),
@@ -30,10 +30,10 @@ class HomePage extends StatelessWidget {
             ],
             bottom: TabBar(
               tabs: [
-                Tab(text: 'ပါဠိ'),
-                Tab(text: 'အဋ္ဌကထာ'),
-                Tab(text: 'ဋီကာ'),
-                Tab(text: 'အည'),
+                Tab(text: 'Pāḷi'),
+                Tab(text: 'Aṭṭhakathā'),
+                Tab(text: 'Ṭīkā'),
+                Tab(text: 'Añña'),
               ],
             ),
           ),

@@ -4,7 +4,6 @@ import 'package:tipitaka_pali/business_logic/models/index.dart';
 import 'package:tipitaka_pali/business_logic/models/search_result.dart';
 import 'package:tipitaka_pali/business_logic/view_models/search_result_provider.dart';
 import 'package:tipitaka_pali/ui/screens/home/widgets/search_result_list_tile.dart';
-import 'package:tipitaka_pali/utils/mm_number.dart';
 
 class SearchResultView extends StatelessWidget {
   final String searchWord;
@@ -36,7 +35,7 @@ required this.searchWord,
                               floating: true,
                               pinned: false,
                               snap: true,
-                              title: Text('တွေ့ရှိမှု - ${MmNumber.get(indexes.length)} ကြိမ်'),
+                              title: Text('found - ${indexes.length}'),
                             )
                           ];
                         },
@@ -71,7 +70,7 @@ required this.searchWord,
                 return Scaffold(
                   appBar: AppBar(),
                   body: Center(
-                      child: Text('$searchWord ဟူသော စကားလုံးကို ရှာမတွေ့ပါ')),
+                      child: Text('cannot find $searchWord.')),
                 );
               });
         },
