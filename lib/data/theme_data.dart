@@ -5,12 +5,12 @@ class MyTheme {
   static final _light = AppTheme.light().copyWith(
       id: 'default_light_theme',
       description: 'default light theme',
-      data: ThemeData(fontFamily: 'NotoSansMyanmar'));
+      data: ThemeData());
 
   static final _dark = AppTheme.dark().copyWith(
       id: 'default_dark_theme',
       description: 'default dark theme',
-      data: ThemeData(brightness: Brightness.dark ,fontFamily: 'NotoSansMyanmar'));
+      data: ThemeData(brightness: Brightness.dark ,));
 
   static final _grey = AppTheme(
       id: 'grey',
@@ -19,7 +19,7 @@ class MyTheme {
           brightness: Brightness.light,
           primarySwatch: Colors.grey,
           accentColor: Colors.blueAccent,
-          fontFamily: 'NotoSansMyanmar'));
+          ));
 
   static final _black = AppTheme(
       id: 'black',
@@ -31,39 +31,39 @@ class MyTheme {
           accentColor: Colors.deepOrangeAccent,
           backgroundColor: Colors.black,
           scaffoldBackgroundColor: Colors.black,
-          fontFamily: 'NotoSansMyanmar'));
+          ));
 
   static final _purple = AppTheme(
       id: "purple",
       description: 'purple',
       data: ThemeData(
-          primarySwatch: Colors.purple, fontFamily: 'NotoSansMyanmar'));
+          primarySwatch: Colors.purple, ));
 
   static final _brown = AppTheme(
       id: "brown",
       description: 'brown',
       data: ThemeData(
-          primarySwatch: Colors.brown, fontFamily: 'NotoSansMyanmar'));
+          primarySwatch: Colors.brown, ));
   static final _orange = AppTheme(
       id: "orange",
       description: 'orange',
       data: ThemeData(
-          primarySwatch: Colors.orange, fontFamily: 'NotoSansMyanmar'));
+          primarySwatch: Colors.orange, ));
   static final _cyan = AppTheme(
       id: "cyan",
       description: 'cyan',
       data:
-          ThemeData(primarySwatch: Colors.cyan, fontFamily: 'NotoSansMyanmar'));
+          ThemeData(primarySwatch: Colors.cyan, ));
   static final _pink = AppTheme(
       id: "pink",
       description: 'pink',
       data:
-          ThemeData(primarySwatch: Colors.pink, fontFamily: 'NotoSansMyanmar'));
+          ThemeData(primarySwatch: Colors.pink, ));
   static final _red = AppTheme(
       id: "red",
       description: 'red',
       data:
-          ThemeData(primarySwatch: Colors.red, fontFamily: 'NotoSansMyanmar'));
+          ThemeData(primarySwatch: Colors.red, ));
 
   static List<AppTheme> fetchAll() {
     // return [white, black, ];
