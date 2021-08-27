@@ -1,5 +1,5 @@
-import 'package:tipitaka_pali/business_logic/models/Definition.dart';
-import 'package:tipitaka_pali/services/dao/dict_dao.dart';
+import 'package:tipitaka_pali/business_logic/models/definition.dart';
+import 'package:tipitaka_pali/services/dao/dictionary_dao.dart';
 import 'package:tipitaka_pali/services/database/database_provider.dart';
 
 abstract class DictionaryRepository {
@@ -14,10 +14,13 @@ class DictionaryDatabaseRepository implements DictionaryRepository {
   @override
   Future<List<Definition>> getDefinition(String word) async {
     final db = await databaseProvider.database;
-    List<Map<String, dynamic>> maps = await db.query(dao.tableDict,
-        columns: [dao.columnDefinition, dao.colunmnBook],
-        where: '${dao.columnWord} = ?',
-        whereArgs: [word]);
+    final sql = '''
+      SELECT word, definition, dictionary_books.name from dictionary, dictionary_books 
+      WHERE word = '$word' AND dictionary.book_id = dictionary_books.id
+      AND dictionary_books.user_choice = 1
+      ORDER BY dictionary_books.user_order
+    ''';
+    List<Map<String, dynamic>> maps = await db.rawQuery(sql);
     return dao.fromList(maps);
   }
 }

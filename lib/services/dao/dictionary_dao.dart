@@ -1,12 +1,13 @@
-import 'package:tipitaka_pali/business_logic/models/Definition.dart';
+import 'package:tipitaka_pali/business_logic/models/definition.dart';
 import 'package:tipitaka_pali/services/dao/dao.dart';
 
 class DictionaryDao implements Dao<Definition> {
   final String tableDict = 'dictionary';
   final String columnWord = 'word';
   final String columnDefinition = 'definition';
-  final String colunmnBook = 'book';
-
+  final String colunmnBookID = 'book_id';
+  final String colunmnBookName = 'name';
+/*
   final List<String> _books = [
     " ",
     "တိပိဋက ပါဠိ-မြန်မာ အဘိဓာန်",
@@ -17,7 +18,7 @@ class DictionaryDao implements Dao<Definition> {
     "Concise Pali-English Dictionary",
     "Pali-English Dictionary"
   ];
-
+*/
   @override
   List<Definition> fromList(List<Map<String, dynamic>> query) {
     return query.map((e) => fromMap(e)).toList();
@@ -28,7 +29,7 @@ class DictionaryDao implements Dao<Definition> {
     return Definition(
         word: query[columnWord],
         definition: query[columnDefinition],
-        book: _getBookName(query[colunmnBook]));
+        bookName: query[colunmnBookName]);
   }
 
   @override
@@ -36,7 +37,7 @@ class DictionaryDao implements Dao<Definition> {
     throw UnimplementedError();
   }
 
-  String _getBookName(int id) {
-    return _books[id];
-  }
+  // String _getBookName(int id) {
+  //   return _books[id];
+  // }
 }

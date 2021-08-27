@@ -1,7 +1,7 @@
 class Definition {
   String? word;
   String definition;
-  String book;
+  String bookName;
 
-  Definition({this.word,required this.definition,required this.book});
+  Definition({this.word,required this.definition,required this.bookName});
 }

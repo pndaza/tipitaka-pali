@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:theme_provider/theme_provider.dart';
 import 'package:tipitaka_pali/business_logic/models/list_item.dart';
 import 'package:tipitaka_pali/business_logic/view_models/home_page_view_model.dart';
+import 'package:tipitaka_pali/ui/screens/settings/settings.dart';
 
 import '../../../routes.dart';
 
@@ -14,6 +15,8 @@ class HomePage extends StatelessWidget {
           appBar: AppBar(
             title: Center(child: Text('Tipitaka Pali Reader')),
             actions: [
+              IconButton(
+                  onPressed: () => _openSettingPage(context), icon: Icon(Icons.settings)),
               IconButton(
                   icon: Icon(Icons.palette),
                   onPressed: () => showDialog(
@@ -91,6 +94,12 @@ class HomePage extends StatelessWidget {
     }
   }
 
+_openSettingPage(BuildContext context){
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => SettingPage()),
+  );
+}
   _showAboutDialog(BuildContext context) {
     showAboutDialog(
         context: context,

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:theme_provider/theme_provider.dart';
-import 'package:tipitaka_pali/business_logic/models/Definition.dart';
+import 'package:tipitaka_pali/business_logic/models/definition.dart';
 import 'package:tipitaka_pali/data/constants.dart';
 import 'package:tipitaka_pali/services/database/database_provider.dart';
-import 'package:tipitaka_pali/services/repositories/dict_repo.dart';
+import 'package:tipitaka_pali/services/repositories/ditionary_repo.dart';
 import 'package:tipitaka_pali/services/storage/asset_loader.dart';
 import 'package:tipitaka_pali/utils/pali_stemmer.dart';
 import 'package:tipitaka_pali/utils/shared_preferences_provider.dart';
@@ -46,11 +46,11 @@ class DictionaryProvider {
   String _formatDefinitions(List<Definition> definitions) {
     String htmlContent = '';
     for (Definition definition in definitions) {
-      htmlContent += _addStyleToBook(definition.book);
+      htmlContent += _addStyleToBook(definition.bookName);
       htmlContent += definition.definition;
     }
     if (definitions.isEmpty) {
-      htmlContent = '<p style = "text-align:center">မတွေ့ပါ</p>';
+      htmlContent = '<p style = "text-align:center">not found</p>';
     }
     return '''
     <html>
