@@ -6,6 +6,14 @@ import 'package:tipitaka_pali/routes.dart';
 import 'data/theme_data.dart';
 import 'ui/screens/splash_screen.dart';
 
+// #docregion LocalizationDelegatesImport
+import 'package:flutter_localizations/flutter_localizations.dart';
+
+// #enddocregion LocalizationDelegatesImport
+// #docregion AppLocalizationsImport
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+// #enddocregion AppLocalizationsImport
+
 final Logger myLogger = Logger(
     printer: PrettyPrinter(
   methodCount: 0,
@@ -29,6 +37,17 @@ class App extends StatelessWidget {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           onGenerateRoute: RouteGenerator.generateRoute,
+          localizationsDelegates: [
+            AppLocalizations.delegate, // Add this line
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: [
+            Locale('en', ''), // English, no country code
+            Locale('my', ''), // Myanmar, no country code
+            Locale('si', ''), // Myanmar, no country code
+          ],
           home: ThemeConsumer(child: SplashScreen()),
         ));
   }
