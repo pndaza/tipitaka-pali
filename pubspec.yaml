@@ -23,6 +23,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations: # Add this line
+    sdk: flutter         # Add this line
+# #enddocregion FlutterLocalizations
+  intl: ^0.17.0 # Add this line
+# #enddocregion Intl
+
   sqflite: ^2.0.0+3
   path: ^1.8.0
   path_provider: ^2.0.2
@@ -60,6 +66,9 @@ flutter_icons:
 # The following section is specific to Flutter.
 flutter:
   uses-material-design: true
+  generate: true # Add this line
+  # #enddocregion Generate
+
 
   # To add assets to your application, add an assets section, like this:
   assets:
