@@ -13,7 +13,7 @@ class TocDialog extends StatelessWidget {
         children: [
           Stack(alignment: Alignment.center, children: [
             Text(
-              'မာတိကာ',
+              'Table of Contents',
               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
             ),
             Align(
@@ -22,7 +22,7 @@ class TocDialog extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 16.0),
                   child: IconButton(
                     icon: Icon(Icons.close),
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: () => Navigator.pop(context, null),
                   ),
                 ))
           ]),
@@ -38,8 +38,8 @@ class TocDialog extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
-                            final pageNumber = listItems[index].getPageNumber();
-                            Navigator.pop(context, pageNumber);
+                            // final pageNumber = listItems[index].getPageNumber();
+                            Navigator.pop(context, listItems[index].toc);
                           },
                           child: ListTile(
                             title: listItems[index].build(context),

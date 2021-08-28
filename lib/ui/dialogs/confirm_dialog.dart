@@ -9,7 +9,11 @@ class ConfirmDialog extends StatelessWidget {
   final String okLabel;
 
   const ConfirmDialog(
-      {Key? key, required this.title, required this.message, required this.cancelLabel, required this.okLabel})
+      {Key? key,
+      required this.title,
+      required this.message,
+      required this.cancelLabel,
+      required this.okLabel})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -38,7 +42,7 @@ class ConfirmDialog extends StatelessWidget {
     );
   }
 
-  Widget _buildTitle(String title, BuildContext context) {
+  Widget _buildTitle(String? title, BuildContext context) {
     return Center(
       child: title == null
           ? Container(
@@ -57,7 +61,9 @@ class ConfirmDialog extends StatelessWidget {
   }
 
   Widget _buildActions(
-      {required String cancellabel, required String okLabel, required BuildContext context}) {
+      {required String cancellabel,
+      required String okLabel,
+      required BuildContext context}) {
     return Row(
       children: [
         Expanded(

@@ -5,6 +5,7 @@ import 'package:theme_provider/theme_provider.dart';
 import 'package:tipitaka_pali/app.dart';
 import 'package:tipitaka_pali/business_logic/models/book.dart';
 import 'package:tipitaka_pali/business_logic/models/paragraph_mapping.dart';
+import 'package:tipitaka_pali/business_logic/models/toc.dart';
 import 'package:tipitaka_pali/business_logic/view_models/reader_view_model.dart';
 import 'package:tipitaka_pali/ui/dialogs/goto_dialog.dart';
 import 'package:tipitaka_pali/ui/dialogs/toc_dialog.dart';
@@ -152,7 +153,7 @@ class ControlBar extends StatelessWidget {
   }
 
   void _openTocDialog(BuildContext context, ReaderViewModel vm) async {
-    int pageNumber = await showBarModalBottomSheet(
+    final toc = await showBarModalBottomSheet<Toc>(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
         ),
@@ -161,8 +162,8 @@ class ControlBar extends StatelessWidget {
         builder: (context) {
           return ThemeConsumer(child: TocDialog(vm.book.id));
         });
-    if (pageNumber != null) {
-      vm.gotoPage(pageNumber.toDouble());
+    if (toc != null) {
+      vm.gotoPageAndScroll(toc.pageNumber.toDouble(), toc.name);
     }
   }
 }

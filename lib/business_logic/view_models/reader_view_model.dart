@@ -20,7 +20,6 @@ import 'package:tipitaka_pali/services/repositories/paragraph_repo.dart';
 import 'package:tipitaka_pali/services/repositories/recent_repo.dart';
 import 'package:tipitaka_pali/services/storage/asset_loader.dart';
 import 'package:tipitaka_pali/ui/dialogs/dictionary_dialog.dart';
-import 'package:tipitaka_pali/utils/mm_number.dart';
 import 'package:tipitaka_pali/utils/shared_preferences_provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -135,7 +134,7 @@ class ReaderViewModel with ChangeNotifier {
             $_cssData
           </style>
           <body>
-            <p>${MmNumber.get(index + book.firstPage!)}</p>
+            <p>${index + book.firstPage!}</p>
             <div id="page_content">
               $pageContent
             </div>
@@ -222,6 +221,13 @@ class ReaderViewModel with ChangeNotifier {
 
   Future gotoPage(double value) async {
     currentPage = value.toInt();
+    pageController.jumpToPage(currentPage! - book.firstPage!);
+    await _saveToRecent();
+  }
+
+  Future gotoPageAndScroll(double value, String tocText) async {
+    currentPage = value.toInt();
+    textToHighlight = tocText;
     pageController.jumpToPage(currentPage! - book.firstPage!);
     await _saveToRecent();
   }

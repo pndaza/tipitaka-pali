@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:tipitaka_pali/business_logic/models/toc.dart';
 
 abstract class TocListItem {
+  late Toc toc;
   int getPageNumber();
   Widget build(BuildContext context);
 }
 
 class TocHeadingOne implements TocListItem {
   TocHeadingOne(this.toc);
+
+  @override
   final Toc toc;
+  set toc(Toc _toc) => toc = _toc;
 
   @override
   int getPageNumber() {
@@ -24,7 +28,9 @@ class TocHeadingOne implements TocListItem {
 
 class TocHeadingTwo implements TocListItem {
   TocHeadingTwo(this.toc);
+  @override
   final Toc toc;
+  set toc(Toc _toc) => toc = _toc;
 
   @override
   int getPageNumber() {
@@ -42,7 +48,9 @@ class TocHeadingTwo implements TocListItem {
 
 class TocHeadingThree implements TocListItem {
   TocHeadingThree(this.toc);
+  @override
   final Toc toc;
+  set toc(Toc _toc) => toc = _toc;
 
   @override
   int getPageNumber() {
@@ -59,7 +67,9 @@ class TocHeadingThree implements TocListItem {
 
 class TocHeadingFour implements TocListItem {
   TocHeadingFour(this.toc);
+  @override
   final Toc toc;
+  set toc(Toc _toc) => toc = _toc;
 
   @override
   int getPageNumber() {
@@ -76,7 +86,9 @@ class TocHeadingFour implements TocListItem {
 
 class TocHeadingFive implements TocListItem {
   TocHeadingFive(this.toc);
+  @override
   final Toc toc;
+  set toc(Toc _toc) => toc = _toc;
 
   @override
   int getPageNumber() {

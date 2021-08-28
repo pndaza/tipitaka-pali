@@ -56,7 +56,7 @@ class _GotoDialogState extends State<GotoDialog> {
   @override
   void initState() {
     super.initState();
-    hintText = 'စာမျက်နှာ ($firstPage-$lastPage)';
+    hintText = 'page ($firstPage-$lastPage)';
     selectedTypeIndex = 0;
   }
 
@@ -98,7 +98,7 @@ class _GotoDialogState extends State<GotoDialog> {
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: Text(
-        'သို့',
+        'Goto',
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
       ),
     );
@@ -107,17 +107,17 @@ class _GotoDialogState extends State<GotoDialog> {
   ToggleSwitch _buildInputType(BuildContext context) {
     return ToggleSwitch(
       totalSwitches: 2,
-      labels: ['စာမျက်နှာ', 'စာပိုဒ်'],
+      labels: ['page', 'paragraph'],
       initialLabelIndex: selectedTypeIndex!,
       onToggle: (index) {
         setState(() {
           selectedTypeIndex = index;
           if (index == 0) {
             selectedType = GotoType.page;
-            hintText = 'စာမျက်နှာ ($firstPage-$lastPage)';
+            hintText = 'page ($firstPage-$lastPage)';
           } else {
             selectedType = GotoType.paragraph;
-            hintText = 'စာပိုဒ် ($firstParagraph-$lastParagraph)';
+            hintText = 'paragraph ($firstParagraph-$lastParagraph)';
           }
         });
       },
@@ -145,15 +145,15 @@ class _GotoDialogState extends State<GotoDialog> {
       buttonTextTheme: ButtonTextTheme.accent,
       buttonMinWidth: 120.0,
       children: [
-        FlatButton(
+        TextButton(
           child: Text(
-            'မသွားတော့ဘူး',
+            'Cancel',
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        FlatButton(
+        TextButton(
             child: Text(
-              'သွားမယ်',
+              'Go',
             ),
             onPressed: !isValid
                 ? null
