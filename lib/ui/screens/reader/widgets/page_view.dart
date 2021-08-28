@@ -14,8 +14,8 @@ class MyPageView extends StatelessWidget {
     myLogger.i('building pageview');
     final vm = Provider.of<ReaderViewModel>(context, listen: false);
 
-    vm.pageController =
-        PreloadPageController(initialPage: vm.currentPage! - vm.book.firstPage!);
+    vm.pageController = PreloadPageController(
+        initialPage: vm.currentPage! - vm.book.firstPage!);
 
     return PreloadPageView.builder(
       physics: RangeMaintainingScrollPhysics(),
@@ -38,7 +38,7 @@ class MyPageView extends StatelessWidget {
             ..add(Factory<VerticalDragGestureRecognizer>(
                 () => VerticalDragGestureRecognizer())),
           onWebViewCreated: (controller) =>
-              vm.webViewControllers[index] = controller,
+            vm.webViewControllers[index] = controller,
           onPageFinished: (_) {
             vm.webViewControllers[index]!.evaluateJavascript('''
                       var goto = document.getElementById("goto_001");

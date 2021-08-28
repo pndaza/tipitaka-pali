@@ -32,6 +32,8 @@ class ReaderViewModel with ChangeNotifier {
   final Book book;
   int? currentPage;
   String? textToHighlight;
+  // will be use this for scroll to this
+  String? tocHeader;
   late List<PageContent> pages;
   late int numberOfPage;
   late int _fontSize;
@@ -41,7 +43,7 @@ class ReaderViewModel with ChangeNotifier {
   bool loadFinished = false;
   final int preLoadPageCount = 3;
   late PreloadPageController pageController;
-  late List<WebViewController?> webViewControllers;
+  late final List<WebViewController?> webViewControllers;
 
   ReaderViewModel({
     required this.context,
@@ -51,8 +53,11 @@ class ReaderViewModel with ChangeNotifier {
   });
 
   Future<bool> loadAllData() async {
-    final fontName = 'NotoSansMyanmar-Regular.otf';
-    _cssFont = await loadCssFont(fontName: fontName);
+    // disable embedding font
+    // final fontName = 'NotoSansMyanmar-Regular.otf';
+    // _cssFont = await loadCssFont(fontName: fontName);
+    print('loading all data');
+    _cssFont = '';
     _fontSize = await loadFontSize();
     _cssData = await loadCssData();
     javascriptData = await loadJavaScript('click.js');
@@ -61,12 +66,21 @@ class ReaderViewModel with ChangeNotifier {
     // book.firstPage = 1;
     // book.lastPage = pages.length;
     numberOfPage = pages.length;
+    print('inititalizing controllers for pages');
     webViewControllers = List.filled(pages.length, null);
     // List<WebViewController>(pages.length);
+
+    loadFinished = true;
 
     return true;
     // print('number of pages: ${pages.length}');
     // print('loading finished');
+  }
+
+// current fix for reloading data
+// Todo to find why widget is rebuilding
+  Future<bool> loadCached() async {
+    return true;
   }
 
   Future<ByteData> loadFont(String fontName) async {
@@ -120,6 +134,10 @@ class ReaderViewModel with ChangeNotifier {
       pageContent = setHighlight(pageContent, textToHighlight!);
     }
 
+    if (tocHeader != null) {
+      pageContent = addIDforScroll(pageContent, tocHeader!);
+    }
+
     pageContent = _fixSafari(pageContent);
     return Uri.dataFromString('''
     <!DOCTYPE html>
@@ -149,8 +167,8 @@ class ReaderViewModel with ChangeNotifier {
         '<span class = "highlighted">' + textToHighlight + "</span>";
     if (!content.contains(textToHighlight)) {
       // Log.d("if not found highlight", "yes");
-      // removing တိ at end
-      String trimHighlight = textToHighlight.replaceAll(r'(န္တိ|တိ)$', '');
+      // removing ti (တိ) at end
+      String trimHighlight = textToHighlight.replaceAll(r'(nti|ti)$', '');
       highlightedText =
           '<span class = "highlighted">' + trimHighlight + "</span>";
 
@@ -163,6 +181,13 @@ class ReaderViewModel with ChangeNotifier {
     content = content.replaceAll(textToHighlight, highlightedText);
     content = content.replaceFirst('<span class = "highlighted">',
         '<span id="goto_001" class="highlighted">');
+    return content;
+  }
+
+  String addIDforScroll(String content, String tocHeader) {
+    String _tocHeader = '<span id="goto_001">' + tocHeader + "</span>";
+    content = content.replaceAll(tocHeader, _tocHeader);
+
     return content;
   }
 
@@ -209,7 +234,7 @@ class ReaderViewModel with ChangeNotifier {
   }
 
   Future onPageChanged(int index) async {
-    currentPage = book.firstPage! + index + 1;
+    currentPage = book.firstPage! + index ;
     notifyListeners();
     await _saveToRecent();
   }
@@ -227,7 +252,7 @@ class ReaderViewModel with ChangeNotifier {
 
   Future gotoPageAndScroll(double value, String tocText) async {
     currentPage = value.toInt();
-    textToHighlight = tocText;
+    tocHeader = tocText;
     pageController.jumpToPage(currentPage! - book.firstPage!);
     await _saveToRecent();
   }
@@ -238,7 +263,8 @@ class ReaderViewModel with ChangeNotifier {
 
   void increaseFontSize() {
     _fontSize += 5;
-    var currentPageIndex = currentPage! - book.firstPage!;
+    var currentPageIndex = currentPage! - book.firstPage! ;
+
     webViewControllers[currentPageIndex]!
         .loadUrl(getPageContent(currentPageIndex).toString());
     // notifyListeners();

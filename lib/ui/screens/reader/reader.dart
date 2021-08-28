@@ -11,8 +11,7 @@ class Reader extends StatelessWidget {
   final Book book;
   int? currentPage;
   String? textToHighlight;
-   Reader(
-      {Key? key, required this.book, this.currentPage, this.textToHighlight})
+  Reader({Key? key, required this.book, this.currentPage, this.textToHighlight})
       : super(key: key);
 
   @override
@@ -30,8 +29,8 @@ class Reader extends StatelessWidget {
             textToHighlight: textToHighlight),
         builder: (context, child) {
           final vm = Provider.of<ReaderViewModel>(context);
-          return FutureBuilder(
-              future: vm.loadAllData(),
+          return FutureBuilder<bool>(
+              future: !vm.loadFinished ? vm.loadAllData() : vm.loadCached(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return Scaffold(

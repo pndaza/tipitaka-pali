@@ -84,6 +84,8 @@ class ControlBar extends StatelessWidget {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
+                // if current book is mula pali , it opens corresponded atthakatha
+                // if attha, will open tika
                 Text('ယခု စာမျက်နှာအတွက် အဖွင့် ကြည့်ရှု မရနိုင်ပါ။'),
               ],
             ),
