@@ -1,18 +1,51 @@
 # Tipitaka Pali
 
-A new Flutter project.
+A new Flutter project forked from Tipitaka Pali
 
-<a href="https://apps.apple.com/us/app/tipitaka-pali/id1543874006?itsct=apps_box&amp;itscg=30200" style="display: inline-block; overflow: hidden; border-radius: 13px; width: 250px; height: 83px;"><img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-US?size=250x83&amp;releaseDate=1607990400&h=3cf347b703073929b9c0f13748145571" alt="Download on the App Store" style="border-radius: 13px; width: 250px; height: 83px;"></a>
+Functional requirements.
+https://docs.google.com/document/d/1gQ5B16EjiGMyDUy9S6viJaBv-vZqiZpggkDQHn3z4kc/edit#heading=h.7yusba36e4f6
 
-# တိပိဋကပါဠိ
+Function Requirements Document (FRC)
 
-ဆဋ္ဌသင်္ဂါယနာမူ ပါဠိ၊ အဋ္ဌကထာ၊ ဋီကာ နှင့် အခြားသော ပါဠိကျမ်းစာများကို မြန်မာပုံနှိပ်မူ စာမျက်နှာ အလိုက် ကြည့်ရှုနိုင်ပါသည်။
 
-## စာရှာ
-ပုဒ် တပုဒ်တည်းသာ မကဘဲ ပုဒ်နှစ်ပုဒ်တွဲ အလိုက်လည်း ရှာနိုင်ပါသည်။ လမ်းညွှန်ပုဒ် ( suggestion word ) ကိုကား တပုဒ်တည်းအတွက်သာ ပြပေးနိုင်ပါသေးသည်။
+The Tipitaka Pali Projector will be overhauled and rewritten with the tpp used as a functional requirement model and partial design.  Many things will be redesigned from the base upwards.  The new TPP will be referred to as TPP2 and perhaps renamed to TUPR
 
-## အဘိဓာန်ကြည့်
-စကားလုံးပေါ်ထောက်၍ အဘိဓာန်ကြည့်ရှုနိုင်ပါသည်။ ပကတိပုဒ်ရင်းကို အမှန်အတိုင်း မှန်းမဆရ၍ မှားယွင်းစွာ ပြသနေပါက ပြင်ဆင်၍ ကြည့်ရှုနိုင်ပါသည်။
+
+#Phase 1:  
+Decide on a new name:  Tipitaka Pali Reader
+Add all English TPP dictionary support and word break.
+Refresh the Pali from cscd disk.  (I will get most up to date from Frank Snow)
+Automate One Click refresh to db (any language is fine).
+Add to Play store.
+
+#Phase 2:  
+Merge the two programs (Tipitaka Pali and TPP) for android ios
+Research how to display in desktop with webview replacement
+Normalize the data in the database
+Phase 3 Desktop + Mobile:  
+Add multiview fo (M A T) similar and better than tipitaka.app and digitalpalireader.online
+Research how to display in desktop without webview.  It does not look like anything is going to be written for desktop webview. 
+Simple html widgets exist
+Consider simplifying the html
+Normalize the paragraphs by db instead of <div>
+ 
+Normalize the data in the database
+
+
+#Philosophy Issues agreed on:
+Flutter as base language
+Sqlite
+Better Normalization
+Philosophy Issues needed for working together:
+ Page separation by MM pages
+In phase II, we should have the ability to display the data in any separate method.  Ie. MM para num, PTS, MM Page, etc.  It needs to be thought out, however, for the history.
+Continuous Scrolling books.  Sometimes, you just want to scroll to find something without using search methods.  This is part of TPP philosophy.
+I was thinking of merging issue 1 with this.. We could have a vertical list with raised cards.  We could fill the individual cards by _getPaliByChosenSeparationMethod  -- or something like this.
+Single Click / Tap word lookup.  
+I believe this is important, but I am willing to sacrifice long press or double click for word selections.  There is a global gesture widget that can get any input.  This might be the prefered method.  There are widgets that exist with callbacks, some without .  This needs to be researched for Desktop Phase.
+
+
+
 
 
 [Database ရယူရန်](https://www.dropbox.com/s/013ynfsa859tus0/tipitaka_pali.db.zip?dl=0) 
