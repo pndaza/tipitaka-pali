@@ -39,7 +39,7 @@ class DictionaryDialog extends StatelessWidget {
                             isDense: true,
                             contentPadding: EdgeInsets.fromLTRB(24, 4, 24, 4)),
                         cursorColor: Colors.redAccent,
-                        onChanged: (text) => _onTextChanged(buildContext, text),
+                        onChanged: (text) => _onTextChanged(buildContext, text, textEditingController),
                       );
                     },
                   )),
@@ -66,8 +66,9 @@ class DictionaryDialog extends StatelessWidget {
         mimeType: 'text/html', encoding: Encoding.getByName('utf-8'));
   }
 
-  void _onTextChanged(BuildContext context, String text) async {
+  void _onTextChanged(BuildContext context, String text, TextEditingController controller) async {
     final vm = context.read<DictionaryViewModel>();
     vm.doSearch(text);
+    controller.selection = TextSelection.fromPosition(TextPosition(offset: controller.text.length));
   }
 }
