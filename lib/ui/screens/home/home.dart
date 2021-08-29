@@ -3,6 +3,7 @@ import 'package:theme_provider/theme_provider.dart';
 import './bookmark_page.dart';
 import './recent_page.dart';
 import './search_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'home_page.dart';
 
@@ -32,15 +33,18 @@ class _HomeState extends State<Home> {
           currentIndex: _currentIndex,
           items: [
             BottomNavigationBarItem(
-              label: 'Home',
+              label: AppLocalizations.of(context)!.home,
               icon: Icon(Icons.home),
             ),
             BottomNavigationBarItem(
-                label: 'Bookmark', icon: Icon(Icons.bookmark)),
+                label: AppLocalizations.of(context)!.bookmark,
+                icon: Icon(Icons.bookmark)),
             BottomNavigationBarItem(
-                label: 'Recent', icon: Icon(Icons.history)),
+                label: AppLocalizations.of(context)!.recent,
+                icon: Icon(Icons.history)),
             BottomNavigationBarItem(
-                label: 'Search', icon: Icon(Icons.search)),
+                label: AppLocalizations.of(context)!.search,
+                icon: Icon(Icons.search)),
           ],
           onTap: _changePage,
         ));

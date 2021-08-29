@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tipitaka_pali/business_logic/view_models/search_page_view_model.dart';
 import 'package:tipitaka_pali/ui/screens/home/widgets/search_bar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class SearchPage extends StatelessWidget {
   @override
@@ -11,7 +13,7 @@ class SearchPage extends StatelessWidget {
       create: (_) => SearchViewModel(),
       child: Scaffold(
           appBar: AppBar(
-            title: Text('Search'),
+            title: Text(AppLocalizations.of(context)!.search),
             centerTitle: true,
           ),
           body: Consumer<SearchViewModel>(builder: (context, vm, child) {

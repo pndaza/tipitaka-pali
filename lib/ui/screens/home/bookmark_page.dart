@@ -5,6 +5,7 @@ import 'package:theme_provider/theme_provider.dart';
 import 'package:tipitaka_pali/business_logic/view_models/bookmark_page_view_model.dart';
 import 'package:tipitaka_pali/ui/dialogs/confirm_dialog.dart';
 import 'package:tipitaka_pali/ui/screens/home/widgets/bookmark_list_tile.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // enum OkCancelAction { OK, CANCEL }
 
@@ -32,7 +33,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
         body: Consumer<BookmarkPageViewModel>(
           builder: (context, vm, child) {
             return vm.bookmarks.isEmpty
-                ? Center(child: Text('မှတ်ထားသည်များ မရှိပါ'))
+                ? Center(child: Text(AppLocalizations.of(context)!.bookmark))
                 : ListView.separated(
                     itemCount: vm.bookmarks.length,
                     itemBuilder: (context, index) {
@@ -61,7 +62,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final vm = Provider.of<BookmarkPageViewModel>(context, listen: false);
     return AppBar(
-      title: Text('မှတ်သားချက်များ'),
+      title: Text(AppLocalizations.of(context)!.bookmark),
       actions: [
         IconButton(
             icon: Icon(Icons.delete),
