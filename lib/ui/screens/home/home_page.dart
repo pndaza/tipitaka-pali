@@ -9,12 +9,14 @@ import 'package:tipitaka_pali/business_logic/view_models/home_page_view_model.da
 import '../../../routes.dart';
 
 class HomePage extends StatelessWidget {
-  final List<String> mainCategories = [
-    'mula',
-    'attha',
-    'tika',
-    'annya',
-  ];
+  // key will be use for load book list from database
+  // value will be use for TabBar Title
+  final Map<String, String> _mainCategories = {
+    'mula': 'Pāḷi',
+    'attha': 'Aṭṭhakathā',
+    'tika': 'Ṭīkā',
+    'annya': 'Añña'
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -34,14 +36,14 @@ class HomePage extends StatelessWidget {
                   onPressed: () => _showAboutDialog(context))
             ],
             bottom: TabBar(
-              tabs: mainCategories
-                  .map((category) => Tab(text: category))
+              tabs: _mainCategories.entries
+                  .map((category) => Tab(text: category.value))
                   .toList(),
             ),
           ),
           body: TabBarView(
-              children: mainCategories
-                  .map((category) => _buildBookList(category))
+              children: _mainCategories.entries
+                  .map((category) => _buildBookList(category.key))
                   .toList())),
     );
   }

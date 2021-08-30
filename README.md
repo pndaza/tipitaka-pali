@@ -1,4 +1,4 @@
-# Tipitaka Pali
+# Tipitaka Pali Reader
 
 A new Flutter project forked from Tipitaka Pali
 
@@ -7,22 +7,23 @@ https://docs.google.com/document/d/1gQ5B16EjiGMyDUy9S6viJaBv-vZqiZpggkDQHn3z4kc/
 
 Function Requirements Document (FRC)
 
-
 The Tipitaka Pali Projector will be overhauled and rewritten with the tpp used as a functional requirement model and partial design.  Many things will be redesigned from the base upwards.  The new TPP will be referred to as TPP2 and perhaps renamed to TUPR
 
 
-#Phase 1:  
+# Phase 1:  
 Decide on a new name:  Tipitaka Pali Reader
 Add all English TPP dictionary support and word break.
 Refresh the Pali from cscd disk.  (I will get most up to date from Frank Snow)
 Automate One Click refresh to db (any language is fine).
 Add to Play store.
 
-#Phase 2:  
+# Phase 2:  
 Merge the two programs (Tipitaka Pali and TPP) for android ios
 Research how to display in desktop with webview replacement
 Normalize the data in the database
-Phase 3 Desktop + Mobile:  
+
+# Phase 3
+Desktop + Mobile:  
 Add multiview fo (M A T) similar and better than tipitaka.app and digitalpalireader.online
 Research how to display in desktop without webview.  It does not look like anything is going to be written for desktop webview. 
 Simple html widgets exist
@@ -32,7 +33,7 @@ Normalize the paragraphs by db instead of <div>
 Normalize the data in the database
 
 
-#Philosophy Issues agreed on:
+# Philosophy Issues agreed on:
 Flutter as base language
 Sqlite
 Better Normalization
@@ -48,4 +49,4 @@ I believe this is important, but I am willing to sacrifice long press or double 
 
 
 
-[Database ရယူရန်](https://www.dropbox.com/s/013ynfsa859tus0/tipitaka_pali.db.zip?dl=0) 
+[Download Database](https://drive.google.com/file/d/1M9wiw8z4az3Fqbhxkq52cHRx3U2N-hPw/view?usp=sharing) 
