@@ -1,94 +1,80 @@
 import 'package:flutter/material.dart';
-import 'package:theme_provider/theme_provider.dart';
-import 'package:tipitaka_pali/business_logic/models/list_item.dart';
-import 'package:tipitaka_pali/business_logic/view_models/home_page_view_model.dart';
-import 'package:tipitaka_pali/ui/screens/settings/settings.dart';
 // #docregion AppLocalizationsImport
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:tipitaka_pali/business_logic/models/list_item.dart';
+import 'package:tipitaka_pali/business_logic/view_models/home_page_view_model.dart';
+
 // #enddocregion AppLocalizationsImport
 
 import '../../../routes.dart';
 
 class HomePage extends StatelessWidget {
+  final List<String> mainCategories = [
+    'mula',
+    'attha',
+    'tika',
+    'annya',
+  ];
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 4,
       child: Scaffold(
           appBar: AppBar(
-            title: Center(
-                child:
-                    Text(AppLocalizations.of(context)!.tipitaka_pali_reader)),
+            title: Text(AppLocalizations.of(context)!.tipitaka_pali_reader),
+            centerTitle: true,
             actions: [
               IconButton(
-                  onPressed: () => _openSettingPage(context),
-                  icon: Icon(Icons.settings)),
-              IconButton(
-                  icon: Icon(Icons.palette),
-                  onPressed: () => showDialog(
-                      context: context,
-                      builder: (_) => ThemeConsumer(
-                              child: ThemeDialog(
-                            hasDescription: false,
-                          )))),
+                icon: Icon(Icons.settings),
+                onPressed: () => _openSettingPage(context),
+              ),
               IconButton(
                   icon: Icon(Icons.info),
-                  onPressed: () {
-                    _showAboutDialog(context);
-                  })
+                  onPressed: () => _showAboutDialog(context))
             ],
             bottom: TabBar(
-              tabs: [
-                Tab(text: 'Pāḷi'),
-                Tab(text: 'Aṭṭhakathā'),
-                Tab(text: 'Ṭīkā'),
-                Tab(text: 'Añña'),
-              ],
+              tabs: mainCategories
+                  .map((category) => Tab(text: category))
+                  .toList(),
             ),
           ),
-          body: FutureBuilder(
-            future: buildTabBarView(),
-            builder:
-                (BuildContext context, AsyncSnapshot<List<Widget>> snapshot) {
-              if (snapshot.hasData) {
-                return TabBarView(children: snapshot.data!);
-              }
-              return Container();
-            },
-          )),
+          body: TabBarView(
+              children: mainCategories
+                  .map((category) => _buildBookList(category))
+                  .toList())),
     );
   }
 
-  Future<List<Widget>> buildTabBarView() async {
-    List<String> mainCategories = [
-      'mula',
-      'attha',
-      'tika',
-      'annya',
-    ];
-    List<Widget> views = [];
-    for (final category in mainCategories) {
-      final listItems = await HomePageViewModel().fecthItems(category);
+  Widget _buildBookList(String category) {
+    return FutureBuilder(
+        future: _loadBooks(category),
+        builder: (context, AsyncSnapshot<List<ListItem>> snapshot) {
+          if (snapshot.hasData) {
+            final listItems = snapshot.data!;
+            return ListView.separated(
+                itemCount: listItems.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    child: ListTile(
+                      title: listItems[index].build(context),
+                    ),
+                    onTap: () => _openBook(context, listItems[index]),
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return Divider(
+                    color: Colors.grey,
+                  );
+                });
+          }
+          // will be dispaly blank while loading instead of circular progress indicator
+          return Container();
+        });
+  }
 
-      final listView = ListView.separated(
-          itemCount: listItems.length,
-          itemBuilder: (context, index) {
-            return GestureDetector(
-              child: ListTile(
-                title: listItems[index].build(context),
-              ),
-              onTap: () => _openBook(context, listItems[index]),
-            );
-          },
-          separatorBuilder: (context, index) {
-            return Divider(
-              color: Colors.grey,
-            );
-          });
-
-      views.add(listView);
-    }
-    return views;
+  Future<List<ListItem>> _loadBooks(String category) async {
+    return await HomePageViewModel().fecthItems(category);
   }
 
   _openBook(BuildContext context, ListItem listItem) {
@@ -101,10 +87,7 @@ class HomePage extends StatelessWidget {
   }
 
   _openSettingPage(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => SettingPage()),
-    );
+    Navigator.pushNamed(context, SettingRoute);
   }
 
   _showAboutDialog(BuildContext context) {

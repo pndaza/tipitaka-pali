@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:theme_provider/theme_provider.dart';
 import 'package:tipitaka_pali/business_logic/view_models/settings_page_view_model.dart';
 
 class SettingPage extends StatelessWidget {
@@ -14,7 +15,16 @@ class SettingPage extends StatelessWidget {
           return vm;
         },
         child: Scaffold(
-            appBar: AppBar(title: Text('Settings')),
+            appBar: AppBar(title: Text('Settings'), actions: [
+              IconButton(
+                  icon: Icon(Icons.palette),
+                  onPressed: () => showDialog(
+                      context: context,
+                      builder: (_) => ThemeConsumer(
+                              child: ThemeDialog(
+                            hasDescription: false,
+                          )))),
+            ],),
             body: Consumer<SettingPageViewModel>(builder: (context, vm, child) {
               // var userDicts = vm.userDicts;
               // print(userDicts);

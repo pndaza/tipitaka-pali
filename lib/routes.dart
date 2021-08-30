@@ -4,12 +4,14 @@ import 'package:tipitaka_pali/ui/screens/fask_home.dart';
 import 'package:tipitaka_pali/ui/screens/home/home.dart';
 import 'package:tipitaka_pali/ui/screens/reader/reader.dart';
 import 'package:tipitaka_pali/ui/screens/search_result_view.dart';
+import 'package:tipitaka_pali/ui/screens/settings/settings.dart';
 import 'package:tipitaka_pali/ui/screens/splash_screen.dart';
 
 const SplashRoute = '/';
 const HomeRoute = '/home';
 const ReaderRoute = '/reader';
 const SearchResultRoute = '/search_result_view';
+const SettingRoute = '/setting';
 const FakeHomeRoute = '/fake_home';
 
 class RouteGenerator {
@@ -42,6 +44,9 @@ class RouteGenerator {
             textToHighlight: arguments['textToHighlight'],
           );
         }
+        break;
+      case SettingRoute:
+        screen = SettingPage();
         break;
     }
     return MaterialPageRoute(
