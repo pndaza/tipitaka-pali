@@ -3,7 +3,7 @@ description: Tipitaka Pali Reader
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -24,10 +24,10 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_localizations: # Add this line
-    sdk: flutter         # Add this line
-# #enddocregion FlutterLocalizations
+    sdk: flutter # Add this line
+  # #enddocregion FlutterLocalizations
   intl: ^0.17.0 # Add this line
-# #enddocregion Intl
+  # #enddocregion Intl
 
   sqflite: ^2.0.0+3
   path: ^1.8.0
@@ -69,7 +69,6 @@ flutter:
   generate: true # Add this line
   # #enddocregion Generate
 
-
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/database/tipitaka_pali.db.zip
@@ -80,6 +79,6 @@ flutter:
       fonts:
         - asset: assets/fonts/NotoSansMyanmar-Regular.otf
         - asset: assets/fonts/NotoSansMyanmar-Bold.otf
-  
+
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
