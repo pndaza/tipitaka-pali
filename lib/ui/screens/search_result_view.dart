@@ -58,7 +58,7 @@ required this.searchWord,
                                       },
                                     );
                                   }
-                                  return Container();
+                                  return Center(child: CircularProgressIndicator());
                                 },
                               );
                             },

@@ -1,4 +1,4 @@
-package mm.pndaza.tipitakapali
+package com.paauk.tipitakapalireader
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -17,7 +17,7 @@ class SearchResultListTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              '${result.book.name}၊ page - ${result.pageNumber}',
+              '${result.book.name} (page - ${result.pageNumber})',
               textAlign: TextAlign.right,
               style:
                   TextStyle(fontSize: 16, color: Theme.of(context).accentColor, ),
