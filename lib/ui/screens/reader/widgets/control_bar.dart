@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
-import 'package:theme_provider/theme_provider.dart';
 import 'package:tipitaka_pali/app.dart';
 import 'package:tipitaka_pali/business_logic/models/book.dart';
 import 'package:tipitaka_pali/business_logic/models/paragraph_mapping.dart';
@@ -162,7 +161,7 @@ class ControlBar extends StatelessWidget {
         expand: false,
         context: context,
         builder: (context) {
-          return ThemeConsumer(child: TocDialog(vm.book.id));
+          return  TocDialog(vm.book.id);
         });
     if (toc != null) {
       vm.gotoPageAndScroll(toc.pageNumber.toDouble(), toc.name);

@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:theme_provider/theme_provider.dart';
 import 'package:tipitaka_pali/business_logic/view_models/bookmark_page_view_model.dart';
 import 'package:tipitaka_pali/ui/dialogs/confirm_dialog.dart';
 import 'package:tipitaka_pali/ui/screens/home/widgets/bookmark_list_tile.dart';
@@ -83,14 +82,14 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
     return await showDialog<OkCancelAction>(
         context: context,
         builder: (context) {
-          return ThemeConsumer(
-            child: ConfirmDialog(
+          return 
+ ConfirmDialog(
               title: 'Comfirmation',
               message: 'မှတ်သားထားသမျှ အားလုံးကို ဖျက်ရန် သေချာပြီလား',
               okLabel: 'ဖျက်မယ်',
               cancelLabel: 'မဖျက်တော့ဘူး',
-            ),
-          );
+            );
+          
         });
   }
 }

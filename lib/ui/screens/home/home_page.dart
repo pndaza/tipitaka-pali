@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:tipitaka_pali/business_logic/models/list_item.dart';
 import 'package:tipitaka_pali/business_logic/view_models/home_page_view_model.dart';
+import 'package:tipitaka_pali/ui/widgets/select_language_widget.dart';
+import 'package:tipitaka_pali/ui/widgets/select_theme_widget.dart';
+import 'package:tipitaka_pali/ui/widgets/colored_text.dart';
 
 // #enddocregion AppLocalizationsImport
 
@@ -33,7 +36,10 @@ class HomePage extends StatelessWidget {
               ),
               IconButton(
                   icon: Icon(Icons.info),
-                  onPressed: () => _showAboutDialog(context))
+                  onPressed: () => _showAboutDialog(context)),
+              IconButton(
+                  icon: Icon(Icons.settings_applications_outlined),
+                  onPressed: () => _showLanguageAndThemeSettingsDialog(context))
             ],
             bottom: TabBar(
               tabs: _mainCategories.entries
@@ -111,6 +117,34 @@ class HomePage extends StatelessWidget {
           စကားလုံးပေါ်ထောက်၍ အဘိဓာန်ကြည့်ရှုနိုင်ပါသည်။
           ပကတိပုဒ်ရင်းကို အမှန်အတိုင်း မှန်းမဆရ၍ မှားယွင်းစွာ ပြသနေပါက တည်ပုဒ်ကို ကိုယ်တိုင် ပြင်ဆင်၍ ကြည့်ရှုနိုင်ပါသည်။
           ''')
+        ]);
+  }
+
+  _showLanguageAndThemeSettingsDialog(BuildContext context) {
+    showAboutDialog(
+        context: context,
+        applicationName: 'Set Theme Color and Language ',
+        applicationVersion: 'new',
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ColoredText("Theme:"),
+                  SizedBox(
+                    width: 30,
+                  ),
+                  SelectThemeWidget(),
+                ],
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              SelectLanguageWidget(),
+            ],
+          ),
         ]);
   }
 }

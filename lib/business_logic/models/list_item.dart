@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'book.dart';
-import 'package:theme_provider/theme_provider.dart';
 
 import 'category.dart';
 
@@ -20,7 +19,7 @@ class CategoryItem implements ListItem {
             style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: ThemeProvider.themeOf(context).data.accentColor)));
+                color:Theme.of(context).accentColor) ));
   }
 }
 

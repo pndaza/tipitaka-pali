@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:theme_provider/theme_provider.dart';
 import 'package:tipitaka_pali/app.dart';
 import 'package:tipitaka_pali/business_logic/view_models/reader_view_model.dart';
 import 'package:tipitaka_pali/ui/dialogs/simple_input_dialog.dart';
@@ -37,13 +36,12 @@ class ReaderAppBar extends StatelessWidget implements PreferredSizeWidget {
     final note = await showDialog<String>(
       context: context,
       builder: (context) {
-        return ThemeConsumer(
-          child: SimpleInputDialog(
+        return  SimpleInputDialog(
             hintText: 'မှတ်လိုသောစာသား ထည့်ပါ',
             cancelLabel: 'မမှတ်တော့ဘူး',
             okLabel: 'မှတ်မယ်',
-          ),
         );
+        
       },
     );
     print(note);

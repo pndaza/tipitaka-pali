@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:theme_provider/theme_provider.dart';
 import 'package:tipitaka_pali/business_logic/view_models/settings_page_view_model.dart';
+import 'package:tipitaka_pali/ui/widgets/select_theme_widget.dart';
 
 class SettingPage extends StatelessWidget {
   const SettingPage({Key? key}) : super(key: key);
@@ -15,16 +15,10 @@ class SettingPage extends StatelessWidget {
           return vm;
         },
         child: Scaffold(
-            appBar: AppBar(title: Text('Settings'), actions: [
-              IconButton(
-                  icon: Icon(Icons.palette),
-                  onPressed: () => showDialog(
-                      context: context,
-                      builder: (_) => ThemeConsumer(
-                              child: ThemeDialog(
-                            hasDescription: false,
-                          )))),
-            ],),
+            appBar: AppBar(
+              title: Text('Settings'),
+              actions: [],
+            ),
             body: Consumer<SettingPageViewModel>(builder: (context, vm, child) {
               // var userDicts = vm.userDicts;
               // print(userDicts);

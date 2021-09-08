@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:theme_provider/theme_provider.dart';
 import 'package:tipitaka_pali/business_logic/view_models/recent_page_view_model.dart';
 import 'package:tipitaka_pali/ui/dialogs/confirm_dialog.dart';
 import 'package:tipitaka_pali/ui/screens/home/widgets/recent_list_tile.dart';
@@ -78,13 +77,12 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
     return await showCupertinoDialog<OkCancelAction>(
         context: context,
         builder: (context) {
-          return ThemeConsumer(
-              child: ConfirmDialog(
+          return  ConfirmDialog(
             title: 'Comfirmation',
             message: 'ဖတ်လက်စစာအုပ်စာရင်း အားလုံးကို ဖျက်ရန် သေချာပြီလား',
             cancelLabel: 'မဖျက်တော့ဘူး',
             okLabel: 'ဖျက်မယ်',
-          ));
+          );
         });
   }
 }

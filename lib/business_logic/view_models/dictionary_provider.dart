@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:theme_provider/theme_provider.dart';
 import 'package:tipitaka_pali/business_logic/models/definition.dart';
 import 'package:tipitaka_pali/data/constants.dart';
 import 'package:tipitaka_pali/services/database/database_provider.dart';
@@ -71,7 +70,8 @@ class DictionaryProvider {
   }
 
   bool _isDarkTheme(BuildContext context) {
-    final themeID = ThemeProvider.themeOf(context).id;
-    return (themeID == kdartTheme || themeID == kblackTheme);
+    return false;
+    /*final themeID = ThemeProvider.themeOf(context).id;
+    return (themeID == kdartTheme || themeID == kblackTheme);*/
   }
 }

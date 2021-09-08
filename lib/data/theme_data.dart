@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:theme_provider/theme_provider.dart';
-
+/*
 class MyTheme {
   static final _light = AppTheme.light().copyWith(
       id: 'default_light_theme',
@@ -81,3 +80,4 @@ class MyTheme {
     ];
   }
 }
+*/

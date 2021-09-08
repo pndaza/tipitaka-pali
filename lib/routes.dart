@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:theme_provider/theme_provider.dart';
 import 'package:tipitaka_pali/ui/screens/fask_home.dart';
 import 'package:tipitaka_pali/ui/screens/home/home.dart';
 import 'package:tipitaka_pali/ui/screens/reader/reader.dart';
@@ -50,6 +49,6 @@ class RouteGenerator {
         break;
     }
     return MaterialPageRoute(
-        builder: (BuildContext context) => ThemeConsumer(child: screen));
+        builder: (BuildContext context) =>  screen);
   }
 }

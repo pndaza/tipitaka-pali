@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:preload_page_view/preload_page_view.dart';
-import 'package:theme_provider/theme_provider.dart';
+//import 'package:theme_provider/theme_provider.dart';
 import 'package:tipitaka_pali/business_logic/models/book.dart';
 import 'package:tipitaka_pali/business_logic/models/bookmark.dart';
 import 'package:tipitaka_pali/business_logic/models/page_content.dart';
@@ -234,7 +234,7 @@ class ReaderViewModel with ChangeNotifier {
   }
 
   Future onPageChanged(int index) async {
-    currentPage = book.firstPage! + index ;
+    currentPage = book.firstPage! + index;
     notifyListeners();
     await _saveToRecent();
   }
@@ -263,7 +263,7 @@ class ReaderViewModel with ChangeNotifier {
 
   void increaseFontSize() {
     _fontSize += 5;
-    var currentPageIndex = currentPage! - book.firstPage! ;
+    var currentPageIndex = currentPage! - book.firstPage!;
 
     webViewControllers[currentPageIndex]!
         .loadUrl(getPageContent(currentPageIndex).toString());
@@ -311,8 +311,9 @@ class ReaderViewModel with ChangeNotifier {
   }
 
   bool _isDarkTheme() {
-    final themeID = ThemeProvider.themeOf(context).id;
-    return (themeID == kdartTheme || themeID == kblackTheme);
+    //final themeID = ThemeProvider.themeOf(context).id;
+    return false;
+   // (themeID == kdartTheme || themeID == kblackTheme);
   }
 
   void saveToBookmark(String note) {
@@ -336,7 +337,7 @@ class ReaderViewModel with ChangeNotifier {
         expand: false,
         context: context,
         builder: (context) {
-          return ThemeConsumer(child: DictionaryDialog(word));
+          return DictionaryDialog(word);
         });
   }
 }

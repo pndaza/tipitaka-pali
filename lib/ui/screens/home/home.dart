@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:theme_provider/theme_provider.dart';
 import './bookmark_page.dart';
 import './recent_page.dart';
 import './search_page.dart';
@@ -18,18 +17,13 @@ class _HomeState extends State<Home> {
   int _currentIndex = 0;
   @override
   Widget build(BuildContext context) {
-    Color _backgroundColor =
-        ThemeProvider.themeOf(context).data.scaffoldBackgroundColor;
-    Color _selectedItemColor = ThemeProvider.themeOf(context).data.accentColor;
-    Color _unselectedItemColor =
-        ThemeProvider.themeOf(context).data.textTheme.bodyText2?.color as Color;
     return Scaffold(
         body: _getScreen(_currentIndex),
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.shifting,
-          backgroundColor: _backgroundColor,
-          selectedItemColor: _selectedItemColor,
-          unselectedItemColor: _unselectedItemColor,
+          backgroundColor: Theme.of(context).primaryColor,
+          selectedItemColor: Theme.of(context).selectedRowColor,
+          unselectedItemColor: Theme.of(context).unselectedWidgetColor,
           currentIndex: _currentIndex,
           items: [
             BottomNavigationBarItem(

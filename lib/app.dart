@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:theme_provider/theme_provider.dart';
 import 'package:tipitaka_pali/routes.dart';
 
 import 'data/theme_data.dart';
@@ -14,6 +13,12 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // #enddocregion AppLocalizationsImport
 
+// theme and localization provider includes
+// for multiProvider here
+import 'package:provider/provider.dart';
+import 'package:tipitaka_pali/services/provider/locale_change_notifier.dart';
+import 'package:tipitaka_pali/services/provider/theme_change_notifier.dart';
+
 final Logger myLogger = Logger(
     printer: PrettyPrinter(
   methodCount: 0,
@@ -25,30 +30,43 @@ final Logger myLogger = Logger(
 ));
 
 class App extends StatelessWidget {
-  final List<AppTheme> themes = MyTheme.fetchAll();
+  //final List<AppTheme> themes = MyTheme.fetchAll();
 
   @override
-  Widget build(BuildContext context) {
-    return ThemeProvider(
-        saveThemesOnChange: true,
-        loadThemeOnInit: true,
-        defaultThemeId: themes.first.id,
-        themes: themes,
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          onGenerateRoute: RouteGenerator.generateRoute,
-          localizationsDelegates: [
-            AppLocalizations.delegate, // Add this line
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
+  Widget build(BuildContext context) => MultiProvider(
+          providers: [
+            ChangeNotifierProvider<ThemeChangeNotifier>(
+              create: (context) => ThemeChangeNotifier(),
+            ),
+            ChangeNotifierProvider<LocaleChangeNotifier>(
+              create: (context) => LocaleChangeNotifier(),
+            ),
           ],
-          supportedLocales: [
-            Locale('en', ''), // English, no country code
-            Locale('my', ''), // Myanmar, no country code
-            Locale('si', ''), // Myanmar, no country code
-          ],
-          home: ThemeConsumer(child: SplashScreen()),
-        ));
-  }
+          builder: (context, _) {
+            final themeChangeNotifier =
+                Provider.of<ThemeChangeNotifier>(context);
+            final localChangeNotifier =
+                Provider.of<LocaleChangeNotifier>(context);
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              themeMode: themeChangeNotifier.themeMode,
+              theme: themeChangeNotifier.themeData,
+              darkTheme: themeChangeNotifier.darkTheme,
+              locale: Locale(localChangeNotifier.localeString, ''),
+              onGenerateRoute: RouteGenerator.generateRoute,
+              localizationsDelegates: [
+                AppLocalizations.delegate, // Add this line
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              supportedLocales: [
+                Locale('en', ''), // English, no country code
+                Locale('my', ''), // Myanmar, no country code
+                Locale('si', ''), // Myanmar, no country code
+              ],
+              home:  SplashScreen(),
+            );
+          } // builder
+          );
 }
