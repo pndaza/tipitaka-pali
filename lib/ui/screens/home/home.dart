@@ -22,7 +22,7 @@ class _HomeState extends State<Home> {
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.shifting,
           backgroundColor: Theme.of(context).primaryColor,
-          selectedItemColor: Theme.of(context).selectedRowColor,
+          selectedItemColor: Theme.of(context).primaryColor,
           unselectedItemColor: Theme.of(context).unselectedWidgetColor,
           currentIndex: _currentIndex,
           items: [
