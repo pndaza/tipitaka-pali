@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tipitaka_pali/ui/screens/fask_home.dart';
 import 'package:tipitaka_pali/ui/screens/home/home.dart';
 import 'package:tipitaka_pali/ui/screens/reader/reader.dart';
-import 'package:tipitaka_pali/ui/screens/search_result_view.dart';
+import 'package:tipitaka_pali/ui/screens/search_result/search_result_page.dart';
 import 'package:tipitaka_pali/ui/screens/settings/settings.dart';
 import 'package:tipitaka_pali/ui/screens/splash_screen.dart';
 
@@ -30,7 +30,7 @@ class RouteGenerator {
         break;
       case SearchResultRoute:
         if (arguments is Map) {
-          screen = SearchResultView(
+          screen = SearchResultPage(
             searchWord: arguments['searchWord'],
           );
         }

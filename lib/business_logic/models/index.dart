@@ -1,8 +1,9 @@
 class Index {
   final int _pageID;
   final int _position;
+  String? bookID;
 
-  Index(this._pageID, this._position);
+  Index(this._pageID, this._position, [this.bookID]);
 
   int get pageID {
     return _pageID;
@@ -11,4 +12,5 @@ class Index {
   int get position {
     return _position;
   }
+
 }

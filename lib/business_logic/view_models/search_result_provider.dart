@@ -5,15 +5,26 @@ import 'package:tipitaka_pali/services/search_provider.dart';
 
 import '../../routes.dart';
 
-class SearchResultProvider {
+class SearchResultNotifier extends ChangeNotifier {
   final String searchWord;
-  List<Index> _indexes = [];
+  List<Index> _allIndexList = [];
+  // List<Index> _filterIndexList = [];
+  List<Index> get indexList =>   _allIndexList;
 
-  SearchResultProvider(this.searchWord);
+
+  SearchResultNotifier(this.searchWord) {
+    _init();
+  }
+
+  void _init() async {
+    _allIndexList = await SearchProvider.getResults(searchWord);
+    notifyListeners();
+  }
 
   Future<List<Index>> getResults() async {
-    _indexes = await SearchProvider.getResults(searchWord);
-    return _indexes;
+    _allIndexList = await SearchProvider.getResults(searchWord);
+    // print('from SearchProvider.getResults: ${_allIndexList.length}');
+    return _allIndexList;
   }
 
   Future<SearchResult> getDetailResult(Index index) async {

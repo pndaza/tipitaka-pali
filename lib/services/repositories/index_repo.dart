@@ -19,6 +19,24 @@ class IndexDatabaseRepository implements IndexRepository {
         columns: [dao.columnIndex],
         where: '${dao.columnWord} = ?',
         whereArgs: [word]);
-    return results.isNotEmpty ? dao.fromList(results) : <Index>[];
+    List<Index> indexList = dao.fromList(results);
+
+    if (indexList.isEmpty) return <Index>[];
+
+    // adding bookname to index
+    final int length = indexList.length;
+    for (int i = 0; i < length; ++i) {
+      final pageId = indexList[i].pageID;
+      // final positon = indexList[i].position;
+
+      // var map = await db.query('pages',
+      //     columns: ['bookid'], where: 'id = ?', whereArgs: [pageId]);
+      var map =
+          await db.rawQuery('SELECT bookid FROM pages WHERE id = $pageId');
+      final bookID = map[0]['bookid'] as String;
+      indexList[i].bookID = bookID;
+    }
+
+    return indexList;
   }
 }
