@@ -3,31 +3,37 @@ import 'package:provider/provider.dart';
 import './search_filter_provider.dart';
 
 class SearchFilterView extends StatelessWidget {
-  SearchFilterView({Key? key,}) : super(key: key);
-
+  SearchFilterView({
+    Key? key,
+  }) : super(key: key);
 
   Widget build(BuildContext context) {
     final notifier = context.watch<SearchFilterNotifier>();
-    return Container(
-      // height: 200,
-      child: ListView(
-        shrinkWrap: true,
+    final closeButton = Positioned(
+        top: -28,
+        child: FloatingActionButton(
+          child: Icon(Icons.close),
+          onPressed: () => Navigator.pop(context),
+        ));
+
+    return Stack(
+        clipBehavior: Clip.none,
+        alignment: Alignment.topCenter,
         children: [
+          
           Container(
-              height: 56,
-              // color: Colors.blueAccent,
-              child: ListTile(
-                title: Text('filter'),
-                trailing: ElevatedButton(
-                  child: Text('close'),
-                  onPressed: () => Navigator.pop(context),
-                ),
-              )),
-          _buildMainCategoryFilter(notifier),
-          _buildSubCategoryFilters(notifier),
-        ],
-      ),
-    );
+            // height: 200,
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                Container(height: 22),
+                _buildMainCategoryFilter(notifier),
+                _buildSubCategoryFilters(notifier),
+              ],
+            ),
+          ),
+          closeButton,
+        ]);
   }
 
   Widget _buildMainCategoryFilter(SearchFilterNotifier notifier) {
