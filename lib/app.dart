@@ -1,23 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
-import 'package:tipitaka_pali/routes.dart';
-
-import 'data/theme_data.dart';
-import 'ui/screens/splash_screen.dart';
-
-// #docregion LocalizationDelegatesImport
-import 'package:flutter_localizations/flutter_localizations.dart';
-
 // #enddocregion LocalizationDelegatesImport
 // #docregion AppLocalizationsImport
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-// #enddocregion AppLocalizationsImport
-
+// #docregion LocalizationDelegatesImport
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:logger/logger.dart';
 // theme and localization provider includes
 // for multiProvider here
 import 'package:provider/provider.dart';
+import 'package:tipitaka_pali/routes.dart';
 import 'package:tipitaka_pali/services/provider/locale_change_notifier.dart';
 import 'package:tipitaka_pali/services/provider/theme_change_notifier.dart';
+
+import 'ui/screens/splash_screen.dart';
 
 final Logger myLogger = Logger(
     printer: PrettyPrinter(

@@ -10,8 +10,8 @@ import 'package:tipitaka_pali/business_logic/models/bookmark.dart';
 import 'package:tipitaka_pali/business_logic/models/page_content.dart';
 import 'package:tipitaka_pali/business_logic/models/paragraph_mapping.dart';
 import 'package:tipitaka_pali/business_logic/models/recent.dart';
-import 'package:tipitaka_pali/data/constants.dart';
-import 'package:tipitaka_pali/services/database/database_provider.dart';
+import 'package:tipitaka_pali/services/database/database_helper.dart';
+import 'package:tipitaka_pali/services/prefs.dart';
 import 'package:tipitaka_pali/services/repositories/book_repo.dart';
 import 'package:tipitaka_pali/services/repositories/bookmark_repo.dart';
 import 'package:tipitaka_pali/services/repositories/page_content_repo.dart';
@@ -20,7 +20,6 @@ import 'package:tipitaka_pali/services/repositories/paragraph_repo.dart';
 import 'package:tipitaka_pali/services/repositories/recent_repo.dart';
 import 'package:tipitaka_pali/services/storage/asset_loader.dart';
 import 'package:tipitaka_pali/ui/dialogs/dictionary_dialog.dart';
-import 'package:tipitaka_pali/utils/shared_preferences_provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 const kdartTheme = 'default_dark_theme';
@@ -58,7 +57,7 @@ class ReaderViewModel with ChangeNotifier {
     // _cssFont = await loadCssFont(fontName: fontName);
     print('loading all data');
     _cssFont = '';
-    _fontSize = await loadFontSize();
+    _fontSize = Prefs.fontSize;
     _cssData = await loadCssData();
     javascriptData = await loadJavaScript('click.js');
     pages = await loadBook(book.id);
@@ -111,14 +110,14 @@ class ReaderViewModel with ChangeNotifier {
   }
 
   Future<List<PageContent>> loadBook(String bookID) async {
-    final DatabaseProvider databaseProvider = DatabaseProvider();
+    final DatabaseHelper databaseProvider = DatabaseHelper();
     final PageContentRepository pageContentRepository =
         PageContentDatabaseRepository(databaseProvider);
     return await pageContentRepository.getPages(bookID);
   }
 
   Future<void> _loadBookInfo(String bookID) async {
-    final DatabaseProvider databaseProvider = DatabaseProvider();
+    final DatabaseHelper databaseProvider = DatabaseHelper();
     final BookRepository bookRepository =
         BookDatabaseRepository(databaseProvider);
     book.firstPage = await bookRepository.getFirstPage(bookID);
@@ -199,14 +198,14 @@ class ReaderViewModel with ChangeNotifier {
   }
 
   Future<int> getFirstParagraph() async {
-    final DatabaseProvider databaseProvider = DatabaseProvider();
+    final DatabaseHelper databaseProvider = DatabaseHelper();
     final ParagraphRepository repository =
         ParagraphDatabaseRepository(databaseProvider);
     return await repository.getFirstParagraph(book.id);
   }
 
   Future<int> getLastParagraph() async {
-    final DatabaseProvider databaseProvider = DatabaseProvider();
+    final DatabaseHelper databaseProvider = DatabaseHelper();
     final ParagraphRepository repository =
         ParagraphDatabaseRepository(databaseProvider);
     return await repository.getLastParagraph(book.id);
@@ -219,7 +218,7 @@ class ReaderViewModel with ChangeNotifier {
   }
 
   Future<List<ParagraphMapping>> getParagraphs() async {
-    final DatabaseProvider databaseProvider = DatabaseProvider();
+    final DatabaseHelper databaseProvider = DatabaseHelper();
     final ParagraphMappingRepository repository =
         ParagraphMappingDatabaseRepository(databaseProvider);
 
@@ -227,7 +226,7 @@ class ReaderViewModel with ChangeNotifier {
   }
 
   Future<int> getPageNumber(int paragraphNumber) async {
-    final DatabaseProvider databaseProvider = DatabaseProvider();
+    final DatabaseHelper databaseProvider = DatabaseHelper();
     final ParagraphRepository repository =
         ParagraphDatabaseRepository(databaseProvider);
     return await repository.getPageNumber(book.id, paragraphNumber);
@@ -257,9 +256,6 @@ class ReaderViewModel with ChangeNotifier {
     await _saveToRecent();
   }
 
-  Future<int> loadFontSize() async {
-    return await SharedPrefProvider.getInt(key: k_key_fontSize);
-  }
 
   void increaseFontSize() {
     _fontSize += 5;
@@ -268,7 +264,7 @@ class ReaderViewModel with ChangeNotifier {
     webViewControllers[currentPageIndex]!
         .loadUrl(getPageContent(currentPageIndex).toString());
     // notifyListeners();
-    SharedPrefProvider.setInt(key: k_key_fontSize, value: _fontSize);
+    Prefs.fontSize = _fontSize;
     // update preload pages
     // for right pages
     var count = 0;
@@ -292,7 +288,7 @@ class ReaderViewModel with ChangeNotifier {
     webViewControllers[currentPageIndex]!
         .loadUrl(getPageContent(currentPageIndex).toString());
     // notifyListeners();
-    SharedPrefProvider.setInt(key: k_key_fontSize, value: _fontSize);
+    Prefs.fontSize = _fontSize;
     // update preload pages
     // for right pages
     var count = 0;
@@ -313,17 +309,17 @@ class ReaderViewModel with ChangeNotifier {
   bool _isDarkTheme() {
     //final themeID = ThemeProvider.themeOf(context).id;
     return false;
-   // (themeID == kdartTheme || themeID == kblackTheme);
+    // (themeID == kdartTheme || themeID == kblackTheme);
   }
 
   void saveToBookmark(String note) {
     BookmarkRepository repository =
-        BookmarkDatabaseRepository(DatabaseProvider());
+        BookmarkDatabaseRepository(DatabaseHelper());
     repository.insert(Bookmark(book.id, currentPage!, note));
   }
 
   Future _saveToRecent() async {
-    final DatabaseProvider databaseProvider = DatabaseProvider();
+    final DatabaseHelper databaseProvider = DatabaseHelper();
     final RecentRepository recentRepository =
         RecentDatabaseRepository(databaseProvider);
     recentRepository.insertOrReplace(Recent(book.id, currentPage!));

@@ -1,6 +1,6 @@
 import 'package:tipitaka_pali/business_logic/models/definition.dart';
 import 'package:tipitaka_pali/services/dao/dictionary_dao.dart';
-import 'package:tipitaka_pali/services/database/database_provider.dart';
+import 'package:tipitaka_pali/services/database/database_helper.dart';
 
 abstract class DictionaryRepository {
   Future<List<Definition>> getDefinition(String id);
@@ -8,7 +8,7 @@ abstract class DictionaryRepository {
 
 class DictionaryDatabaseRepository implements DictionaryRepository {
   final dao = DictionaryDao();
-  final DatabaseProvider databaseProvider;
+  final DatabaseHelper databaseProvider;
   DictionaryDatabaseRepository(this.databaseProvider);
 
   @override

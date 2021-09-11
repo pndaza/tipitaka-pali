@@ -1,6 +1,6 @@
 import 'package:tipitaka_pali/business_logic/models/index.dart';
 import 'package:tipitaka_pali/services/dao/index_dao.dart';
-import 'package:tipitaka_pali/services/database/database_provider.dart';
+import 'package:tipitaka_pali/services/database/database_helper.dart';
 
 abstract class IndexRepository {
   Future<List<Index>> getIndexes(String word);
@@ -8,7 +8,7 @@ abstract class IndexRepository {
 
 class IndexDatabaseRepository implements IndexRepository {
   final dao = IndexDao();
-  final DatabaseProvider databaseProvider;
+  final DatabaseHelper databaseProvider;
 
   IndexDatabaseRepository(this.databaseProvider);
 

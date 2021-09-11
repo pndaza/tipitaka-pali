@@ -2,17 +2,17 @@ import 'package:tipitaka_pali/business_logic/models/book.dart';
 import 'package:tipitaka_pali/business_logic/models/index.dart';
 import 'package:tipitaka_pali/business_logic/models/search_result.dart';
 import 'package:tipitaka_pali/business_logic/models/search_suggestion.dart';
-import 'package:tipitaka_pali/services/database/database_provider.dart';
+import 'package:tipitaka_pali/services/database/database_helper.dart';
 import 'package:tipitaka_pali/services/repositories/book_repo.dart';
 import 'package:tipitaka_pali/services/repositories/index_repo.dart';
 import 'package:tipitaka_pali/services/repositories/search_result_repo.dart';
 import 'package:tipitaka_pali/services/repositories/search_suggetion_repo.dart';
 import 'package:collection/collection.dart';
 
-class SearchProvider {
+class SearchService {
   static Future<List<SearchSuggestion>> getSuggestions(
       String filterWord) async {
-    final databaseProvider = DatabaseProvider();
+    final databaseProvider = DatabaseHelper();
     final SearchSuggestionRepository repository =
         SearchSuggestionDatabaseRepository(databaseProvider);
     final suggestions = await repository.getWords(filterWord);
@@ -21,7 +21,7 @@ class SearchProvider {
 
   static Future<List<Index>> getResults(String searchWord) async {
     List<List<Index>> results = [];
-    final DatabaseProvider databaseProvider = DatabaseProvider();
+    final DatabaseHelper databaseProvider = DatabaseHelper();
     final IndexRepository repository =
         IndexDatabaseRepository(databaseProvider);
     List<String> queryWords = searchWord.trim().split(' ');
@@ -100,7 +100,7 @@ class SearchProvider {
   }
 
   static Future<SearchResult> getDetail(String query, Index index) async {
-    final databaseProvider = DatabaseProvider();
+    final databaseProvider = DatabaseHelper();
     final searchSuggestionRepository =
         SearchResultDatabaseRepository(databaseProvider);
     final pageContent =

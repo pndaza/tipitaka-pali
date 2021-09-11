@@ -1,6 +1,6 @@
 import 'package:tipitaka_pali/business_logic/models/paragraph_mapping.dart';
 import 'package:tipitaka_pali/services/dao/paragraph_mapping_dao.dart';
-import 'package:tipitaka_pali/services/database/database_provider.dart';
+import 'package:tipitaka_pali/services/database/database_helper.dart';
 
 abstract class ParagraphMappingRepository {
   Future<List<ParagraphMapping>> getParagraphMappings(
@@ -9,7 +9,7 @@ abstract class ParagraphMappingRepository {
 
 class ParagraphMappingDatabaseRepository implements ParagraphMappingRepository {
   final dao = ParagraphMappingDao();
-  final DatabaseProvider databaseProvider;
+  final DatabaseHelper databaseProvider;
   ParagraphMappingDatabaseRepository(this.databaseProvider);
 
   @override

@@ -1,13 +1,14 @@
 import 'dart:async';
+
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:tipitaka_pali/app.dart';
 import 'package:tipitaka_pali/data/constants.dart';
 
-class DatabaseProvider {
-  DatabaseProvider._internal();
-  static final DatabaseProvider _instance = DatabaseProvider._internal();
-  factory DatabaseProvider() => _instance;
+class DatabaseHelper {
+  DatabaseHelper._internal();
+  static final DatabaseHelper _instance = DatabaseHelper._internal();
+  factory DatabaseHelper() => _instance;
 
   static Database? _database;
   Future<Database> get database async {
@@ -45,8 +46,7 @@ class DatabaseProvider {
   //       "CREATE INDEX IF NOT EXISTS paragraph_index ON paragraphs ( book_id )");
 
   //   // save db version
-  //   await SharedPrefProvider.setInt(
-  //       key: SharedPrefProvider.key_db_version, value: _currentDatabaseVersion);
+  // Prefs.databaseVerson = _currentDatabaseVersion;
   // }
 
   // Future<bool> isDatabaseCopied() async {

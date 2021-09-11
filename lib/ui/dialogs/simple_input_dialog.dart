@@ -7,7 +7,10 @@ class SimpleInputDialog extends StatelessWidget {
   final TextEditingController _controller = TextEditingController();
 
   SimpleInputDialog(
-      {Key? key, required this.hintText, required this.cancelLabel, required this.okLabel})
+      {Key? key,
+      required this.hintText,
+      required this.cancelLabel,
+      required this.okLabel})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -37,32 +40,38 @@ class SimpleInputDialog extends StatelessWidget {
 
   Widget _buildTextField(String hintText) {
     return TextField(
-        controller: _controller,
-        decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: TextStyle(fontSize: 13),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0), gapPadding: 0.0),
-        ),
-        maxLines: null,
-        maxLength: 50,
-        // autofocus: true,
+      controller: _controller,
+      decoration: InputDecoration(
+        hintText: hintText,
+        hintStyle: TextStyle(fontSize: 13),
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16.0), gapPadding: 0.0),
+      ),
+      maxLines: null,
+      maxLength: 50,
+      // autofocus: true,
     );
   }
 
   Widget _buildActions(
-      {required String cancellabel, required String okLabel, required BuildContext context}) {
+      {required String cancellabel,
+      required String okLabel,
+      required BuildContext context}) {
+    final buttonStyle = ButtonStyle(
+        foregroundColor:
+            MaterialStateProperty.all(Theme.of(context).primaryColor));
     return Row(
       children: [
         Expanded(
-            child: FlatButton(
+            child: TextButton(
           child: Text(cancelLabel),
-              textTheme: ButtonTextTheme.accent,
+          style: buttonStyle,
           onPressed: () => Navigator.of(context).pop(),
         )),
         Expanded(
-            child: FlatButton(
+            child: TextButton(
           child: Text(okLabel),
-          textTheme: ButtonTextTheme.accent,
+          style: buttonStyle,
           onPressed: () => Navigator.of(context).pop(_controller.text),
         )),
       ],

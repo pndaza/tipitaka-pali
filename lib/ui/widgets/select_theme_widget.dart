@@ -9,7 +9,6 @@ class SelectThemeWidget extends StatelessWidget {
   /*const*/ SelectThemeWidget({Key? key}) : super(key: key);
 
   @override
-  @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
@@ -52,7 +51,7 @@ class SelectThemeWidget extends StatelessWidget {
           Icon(
         Icons.lens,
         color: colorScheme.primary,
-        size: 20,
+        size: 26,
       ),
       //),
     );

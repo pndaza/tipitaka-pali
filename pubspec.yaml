@@ -35,7 +35,6 @@ dependencies:
   webview_flutter: ^2.0.12
   shared_preferences: ^2.0.6
   modal_bottom_sheet: ^2.0.0
-  expandable: ^5.0.1
   flutter_slidable: ^0.6.0
   provider: ^6.0.0
   substring_highlight: ^1.0.33
@@ -51,11 +50,14 @@ dependencies:
   flex_color_scheme: ^3.0.1
   sqflite_common: ^2.0.1+1
   sqflite_common_ffi: ^2.0.0+3
+  freezed: ^0.14.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: ^0.9.1
+  freezed_annotation: ^0.14.2
+  build_runner: ^2.1.2
 
 flutter_icons:
   android: "launcher_icon"

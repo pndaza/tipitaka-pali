@@ -1,6 +1,6 @@
 import 'package:tipitaka_pali/business_logic/models/toc.dart';
 import 'package:tipitaka_pali/business_logic/models/toc_list_item.dart';
-import 'package:tipitaka_pali/services/database/database_provider.dart';
+import 'package:tipitaka_pali/services/database/database_helper.dart';
 import 'package:tipitaka_pali/services/repositories/toc_repo.dart';
 
 class TocViewModel {
@@ -15,7 +15,7 @@ class TocViewModel {
   }
 
   Future<List<Toc>> _fetchToc() async {
-    final DatabaseProvider databaseProvider = DatabaseProvider();
+    final DatabaseHelper databaseProvider = DatabaseHelper();
     final TocRepository tocRepository = TocDatabaseRepository(databaseProvider);
     return await tocRepository.getTocs(bookID);
   }

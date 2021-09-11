@@ -2,7 +2,7 @@ import 'package:tipitaka_pali/business_logic/models/index.dart';
 import 'package:tipitaka_pali/business_logic/models/page_content.dart';
 import 'package:tipitaka_pali/business_logic/models/search_result.dart';
 import 'package:tipitaka_pali/services/dao/search_result_dao.dart';
-import 'package:tipitaka_pali/services/database/database_provider.dart';
+import 'package:tipitaka_pali/services/database/database_helper.dart';
 
 abstract class SearchResultRepository {
   Future<PageContent> getPageContent(int pageID);
@@ -11,7 +11,7 @@ abstract class SearchResultRepository {
 
 class SearchResultDatabaseRepository implements SearchResultRepository {
   final dao = SearchResultDao();
-  final DatabaseProvider databaseProvider;
+  final DatabaseHelper databaseProvider;
   SearchResultDatabaseRepository(this.databaseProvider);
 
   @override

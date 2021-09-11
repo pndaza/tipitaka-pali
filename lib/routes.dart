@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tipitaka_pali/ui/screens/fask_home.dart';
-import 'package:tipitaka_pali/ui/screens/home/home.dart';
+import 'package:tipitaka_pali/ui/screens/home/home_container.dart';
 import 'package:tipitaka_pali/ui/screens/reader/reader.dart';
 import 'package:tipitaka_pali/ui/screens/search_result/search_result_page.dart';
 import 'package:tipitaka_pali/ui/screens/settings/settings.dart';

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tipitaka_pali/business_logic/models/definition.dart';
-import 'package:tipitaka_pali/data/constants.dart';
-import 'package:tipitaka_pali/services/database/database_provider.dart';
+import 'package:tipitaka_pali/services/database/database_helper.dart';
+import 'package:tipitaka_pali/services/prefs.dart';
 import 'package:tipitaka_pali/services/repositories/ditionary_repo.dart';
 import 'package:tipitaka_pali/services/storage/asset_loader.dart';
 import 'package:tipitaka_pali/utils/pali_stemmer.dart';
-import 'package:tipitaka_pali/utils/shared_preferences_provider.dart';
 
 const kdartTheme = 'default_dark_theme';
 const kblackTheme = 'black';
@@ -23,7 +22,7 @@ class DictionaryProvider {
     final cssFileName =
         _isDarkTheme(context) ? 'dict_night.css' : 'dict_day.css';
     _cssData = await AssetsProvider.loadCSS(cssFileName);
-    _fontSize = await SharedPrefProvider.getInt(key: k_key_fontSize);
+    _fontSize = Prefs.fontSize;
   }
 
   Future<String> getDefinition(String word,
@@ -34,7 +33,7 @@ class DictionaryProvider {
 
     print('dict word: $word');
 
-    final DatabaseProvider databaseProvider = DatabaseProvider();
+    final DatabaseHelper databaseProvider = DatabaseHelper();
     final DictionaryRepository dictRepository =
         DictionaryDatabaseRepository(databaseProvider);
     var definitions = await dictRepository.getDefinition(word);

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tipitaka_pali/business_logic/models/index.dart';
 import 'package:tipitaka_pali/business_logic/models/search_result.dart';
 import 'package:tipitaka_pali/business_logic/models/search_suggestion.dart';
-import 'package:tipitaka_pali/services/search_provider.dart';
+import 'package:tipitaka_pali/services/search_service.dart';
 import 'package:tipitaka_pali/utils/mm_string_normalizer.dart';
 
 import '../../routes.dart';
@@ -16,7 +16,7 @@ class SearchViewModel extends ChangeNotifier {
   String get searchWord => _searchWord;
 
   Future<void> getSuggestions(String filterWord) async {
-    suggestions = await SearchProvider.getSuggestions(filterWord);
+    suggestions = await SearchService.getSuggestions(filterWord);
     notifyListeners();
   }
 
@@ -33,7 +33,7 @@ class SearchViewModel extends ChangeNotifier {
     _searchWord = MMStringNormalizer.normalize(_searchWord);
     isSearching = true;
     notifyListeners();
-    results = await SearchProvider.getResults(_searchWord);
+    results = await SearchService.getResults(_searchWord);
     isSearching = false;
     notifyListeners();
   }

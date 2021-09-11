@@ -1,16 +1,16 @@
 import 'package:tipitaka_pali/business_logic/models/category.dart';
 import 'package:tipitaka_pali/services/dao/catergory_dao.dart';
-import 'package:tipitaka_pali/services/database/database_provider.dart';
+import 'package:tipitaka_pali/services/database/database_helper.dart';
 
 abstract class CategoryRepository {
-  late DatabaseProvider databaseProvider;
+  late DatabaseHelper databaseProvider;
   Future<List<Category>> getCategories(String basket);
 }
 
 class CategoryDatabaseRepository implements CategoryRepository {
   final dao = CategoryDao();
   @override
-  DatabaseProvider databaseProvider;
+  DatabaseHelper databaseProvider;
   CategoryDatabaseRepository(this.databaseProvider);
 
   @override

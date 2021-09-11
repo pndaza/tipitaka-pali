@@ -1,4 +1,4 @@
-import 'package:tipitaka_pali/services/database/database_provider.dart';
+import 'package:tipitaka_pali/services/database/database_helper.dart';
 
 abstract class ParagraphRepository {
   Future<int> getFirstParagraph(String bookID);
@@ -10,7 +10,7 @@ abstract class ParagraphRepository {
 
 class ParagraphDatabaseRepository implements ParagraphRepository {
   ParagraphDatabaseRepository(this.databaseProvider);
-  final DatabaseProvider databaseProvider;
+  final DatabaseHelper databaseProvider;
 
   final tableName = 'paragraphs';
   final columnBookId = 'book_id';

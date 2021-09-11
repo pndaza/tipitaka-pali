@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class SearchFilterNotifier extends ChangeNotifier {
+class SearchFilterController extends ChangeNotifier {
   final Map<String, String> _mainCategoryFilters = const {
     'mula': 'Mūla',
     'attha': 'Aṭṭhakathā',
@@ -25,12 +25,12 @@ class SearchFilterNotifier extends ChangeNotifier {
   List<String> get selectedMainCategoryFilters => _selectedMainCategoryFilters;
   List<String> get selectedSubCategoryFilters => _selectedSubCategoryFilters;
 
-  SearchFilterNotifier(){
+  SearchFilterController(){
     _selectedMainCategoryFilters = mainCategoryFilters.keys.toList();
     _selectedSubCategoryFilters = subCategoryFilters.keys.toList();
   }
 
-  void onChangedOnMain(String filterID, bool isSelected) {
+  void onMainFilterChange(String filterID, bool isSelected) {
     if (isSelected) {
       _selectedMainCategoryFilters.add(filterID);
     } else {
@@ -38,7 +38,7 @@ class SearchFilterNotifier extends ChangeNotifier {
     }
     notifyListeners();
   }
-  void onChangedOnSub(String filterID, bool isSelected) {
+  void onSubFilterChange(String filterID, bool isSelected) {
     if (isSelected) {
       _selectedSubCategoryFilters.add(filterID);
     } else {

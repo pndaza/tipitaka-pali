@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:tipitaka_pali/business_logic/models/book.dart';
 import 'package:tipitaka_pali/business_logic/models/recent.dart';
-import 'package:tipitaka_pali/services/database/database_provider.dart';
+import 'package:tipitaka_pali/services/database/database_helper.dart';
 import 'package:tipitaka_pali/services/repositories/recent_repo.dart';
 
 import '../../routes.dart';
 
 class RecentPageViewModel extends ChangeNotifier {
   List<Recent> recents = [];
-  RecentRepository _repository = RecentDatabaseRepository(DatabaseProvider());
+  RecentRepository _repository = RecentDatabaseRepository(DatabaseHelper());
 
   Future<void> fetchRecents() async {
     recents = await _repository.getRecents();

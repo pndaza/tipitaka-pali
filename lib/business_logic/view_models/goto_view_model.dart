@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tipitaka_pali/business_logic/models/book.dart';
-import 'package:tipitaka_pali/services/database/database_provider.dart';
+import 'package:tipitaka_pali/services/database/database_helper.dart';
 import 'package:tipitaka_pali/services/repositories/paragraph_repo.dart';
 
 enum Goto { page, paragraph }
@@ -18,7 +18,7 @@ class GotoViewModel with ChangeNotifier {
   int? inputValue;
 
   final ParagraphRepository repository =
-      ParagraphDatabaseRepository(DatabaseProvider());
+      ParagraphDatabaseRepository(DatabaseHelper());
 
   Future init() async {
     firstParagraph = await repository.getFirstParagraph(book.id);

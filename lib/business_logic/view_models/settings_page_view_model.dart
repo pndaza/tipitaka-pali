@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:tipitaka_pali/business_logic/models/book.dart';
 import 'package:tipitaka_pali/business_logic/models/recent.dart';
 import 'package:tipitaka_pali/business_logic/models/dictionary.dart';
-import 'package:tipitaka_pali/services/database/database_provider.dart';
+import 'package:tipitaka_pali/services/database/database_helper.dart';
 import 'package:tipitaka_pali/services/repositories/dictionary_book_repo.dart';
 
 import '../../routes.dart';
 
-class SettingPageViewModel extends ChangeNotifier {
+class DictionarySettingController extends ChangeNotifier {
   List<Dictionary> userDicts = [];
   UserDictRepository _repository =
-      UserDictDatabaseRepository(DatabaseProvider());
+      UserDictDatabaseRepository(DatabaseHelper());
 
   Future<void> fetchUserDicts() async {
     userDicts = await _repository.getUserDicts();

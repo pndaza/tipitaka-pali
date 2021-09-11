@@ -1,9 +1,9 @@
 import 'package:tipitaka_pali/business_logic/models/bookmark.dart';
 import 'package:tipitaka_pali/services/dao/bookmark_dao.dart';
-import 'package:tipitaka_pali/services/database/database_provider.dart';
+import 'package:tipitaka_pali/services/database/database_helper.dart';
 
 abstract class BookmarkRepository {
-  late DatabaseProvider databaseProvider;
+  late DatabaseHelper databaseProvider;
 
   Future<int> insert(Bookmark bookmark);
 
@@ -18,7 +18,7 @@ class BookmarkDatabaseRepository extends BookmarkRepository {
   final dao = BookmarkDao();
 
   @override
-  DatabaseProvider databaseProvider;
+  DatabaseHelper databaseProvider;
 
   BookmarkDatabaseRepository(this.databaseProvider);
 

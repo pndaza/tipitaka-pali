@@ -64,18 +64,22 @@ class ConfirmDialog extends StatelessWidget {
       {required String cancellabel,
       required String okLabel,
       required BuildContext context}) {
+    final buttonStyle = ButtonStyle(
+        foregroundColor:
+            MaterialStateProperty.all(Theme.of(context).primaryColor));
     return Row(
       children: [
         Expanded(
-            child: FlatButton(
+            child: TextButton(
           child: Text(cancelLabel),
-          textTheme: ButtonTextTheme.accent,
+          style: buttonStyle,
+          // textTheme: ButtonTextTheme.accent,
           onPressed: () => Navigator.of(context).pop(OkCancelAction.CANCEL),
         )),
         Expanded(
-            child: FlatButton(
+            child: TextButton(
           child: Text(okLabel),
-          textTheme: ButtonTextTheme.accent,
+          style: buttonStyle,
           onPressed: () => Navigator.of(context).pop(OkCancelAction.OK),
         )),
       ],

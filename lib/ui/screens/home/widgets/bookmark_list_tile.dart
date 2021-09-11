@@ -3,8 +3,6 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:tipitaka_pali/business_logic/models/book.dart';
 import 'package:tipitaka_pali/business_logic/models/bookmark.dart';
 import 'package:tipitaka_pali/business_logic/view_models/bookmark_page_view_model.dart';
-import 'package:tipitaka_pali/utils/mm_number.dart';
-
 import '../../../../routes.dart';
 
 class BookmarkListTile extends StatelessWidget {
@@ -36,10 +34,10 @@ class BookmarkListTile extends StatelessWidget {
             width: 80,
             child: Row(
               children: [
-                Text('နှာ   - '),
+                Text('page  - '),
                 Expanded(
                     child: Text(
-                  '${MmNumber.get(bookmark.pageNumber)}',
+                  '${bookmark.pageNumber}',
                   textAlign: TextAlign.end,
                 )),
               ],

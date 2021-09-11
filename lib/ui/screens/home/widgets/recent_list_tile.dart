@@ -3,7 +3,6 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:tipitaka_pali/business_logic/models/book.dart';
 import 'package:tipitaka_pali/business_logic/models/recent.dart';
 import 'package:tipitaka_pali/business_logic/view_models/recent_page_view_model.dart';
-import 'package:tipitaka_pali/utils/mm_number.dart';
 
 import '../../../../routes.dart';
 
@@ -31,10 +30,10 @@ class RecentListTile extends StatelessWidget {
             width: 80,
             child: Row(
               children: [
-                Text('နှာ   - '),
+                Text('page  - '),
                 Expanded(
                     child: Text(
-                  '${MmNumber.get(recent.pageNumber)}',
+                  '${recent.pageNumber}',
                   textAlign: TextAlign.end,
                 )),
               ],

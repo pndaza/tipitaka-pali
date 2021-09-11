@@ -1,5 +1,5 @@
 import 'package:tipitaka_pali/services/dao/book_dao.dart';
-import 'package:tipitaka_pali/services/database/database_provider.dart';
+import 'package:tipitaka_pali/services/database/database_helper.dart';
 import 'package:tipitaka_pali/business_logic/models/book.dart';
 
 abstract class BookRepository {
@@ -12,7 +12,7 @@ abstract class BookRepository {
 
 class BookDatabaseRepository implements BookRepository {
   final dao = BookDao();
-  final DatabaseProvider databaseProvider;
+  final DatabaseHelper databaseProvider;
   BookDatabaseRepository(this.databaseProvider);
 
   @override

@@ -8,7 +8,7 @@ class SearchFilterView extends StatelessWidget {
   }) : super(key: key);
 
   Widget build(BuildContext context) {
-    final notifier = context.watch<SearchFilterNotifier>();
+    final notifier = context.watch<SearchFilterController>();
     final closeButton = Positioned(
         top: -28,
         child: FloatingActionButton(
@@ -36,7 +36,7 @@ class SearchFilterView extends StatelessWidget {
         ]);
   }
 
-  Widget _buildMainCategoryFilter(SearchFilterNotifier notifier) {
+  Widget _buildMainCategoryFilter(SearchFilterController notifier) {
     print('building main filter');
     final _mainCategoryFilters = notifier.mainCategoryFilters;
     final _selectedMainCategoryFilters = notifier.selectedMainCategoryFilters;
@@ -50,14 +50,14 @@ class SearchFilterView extends StatelessWidget {
                     selectedColor: Colors.lightBlueAccent,
                     selected: _selectedMainCategoryFilters.contains(e.key),
                     onSelected: (isSelected) {
-                      notifier.onChangedOnMain(e.key, isSelected);
+                      notifier.onMainFilterChange(e.key, isSelected);
                     }))
                 .toList()),
       ),
     );
   }
 
-  Widget _buildSubCategoryFilters(SearchFilterNotifier notifier) {
+  Widget _buildSubCategoryFilters(SearchFilterController notifier) {
     final _subCategoryFilters = notifier.subCategoryFilters;
     final _selectedSubCategoryFilters = notifier.selectedSubCategoryFilters;
     return Padding(
@@ -70,7 +70,7 @@ class SearchFilterView extends StatelessWidget {
                     selectedColor: Colors.lightBlueAccent,
                     selected: _selectedSubCategoryFilters.contains(e.key),
                     onSelected: (isSelected) {
-                      notifier.onChangedOnSub(e.key, isSelected);
+                      notifier.onSubFilterChange(e.key, isSelected);
                     }))
                 .toList()),
       ),

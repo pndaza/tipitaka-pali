@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tipitaka_pali/business_logic/models/book.dart';
 import 'package:tipitaka_pali/business_logic/models/bookmark.dart';
-import 'package:tipitaka_pali/services/database/database_provider.dart';
+import 'package:tipitaka_pali/services/database/database_helper.dart';
 import 'package:tipitaka_pali/services/repositories/bookmark_repo.dart';
 
 import '../../routes.dart';
@@ -11,7 +11,7 @@ class BookmarkPageViewModel extends ChangeNotifier {
 
   Future<void> fetchBookmarks() async {
     bookmarks =
-        await BookmarkDatabaseRepository(DatabaseProvider()).getBookmarks();
+        await BookmarkDatabaseRepository(DatabaseHelper()).getBookmarks();
     notifyListeners();
   }
 
@@ -19,13 +19,13 @@ class BookmarkPageViewModel extends ChangeNotifier {
     final bookmark = bookmarks[index];
     bookmarks.removeAt(index);
     notifyListeners();
-    await BookmarkDatabaseRepository(DatabaseProvider()).delete(bookmark);
+    await BookmarkDatabaseRepository(DatabaseHelper()).delete(bookmark);
   }
 
   Future<void> deleteAll() async {
     bookmarks.clear();
     notifyListeners();
-    await BookmarkDatabaseRepository(DatabaseProvider()).deleteAll();
+    await BookmarkDatabaseRepository(DatabaseHelper()).deleteAll();
   }
 
   void openBook(Bookmark bookmark, BuildContext context) {

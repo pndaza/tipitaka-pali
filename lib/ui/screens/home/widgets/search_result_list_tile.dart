@@ -20,7 +20,7 @@ class SearchResultListTile extends StatelessWidget {
               '${result.book.name} (page - ${result.pageNumber})',
               textAlign: TextAlign.right,
               style:
-                  TextStyle(fontSize: 16, color: Theme.of(context).accentColor, ),
+                  TextStyle(fontSize: 16, color: Theme.of(context).primaryColor, ),
             ),
             SubstringHighlight(
               text: result.description,
@@ -29,7 +29,7 @@ class SearchResultListTile extends StatelessWidget {
                   color: Theme.of(context).textTheme.bodyText2?.color),
               term: textToHighlight,
               textStyleHighlight:
-                  TextStyle(fontSize: 20, color: Theme.of(context).accentColor),
+                  TextStyle(fontSize: 20, color: Theme.of(context).primaryColor),
             )
           ],
         ),

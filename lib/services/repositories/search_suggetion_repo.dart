@@ -1,6 +1,6 @@
 import 'package:tipitaka_pali/business_logic/models/search_suggestion.dart';
 import 'package:tipitaka_pali/services/dao/search_suggestion_dao.dart';
-import 'package:tipitaka_pali/services/database/database_provider.dart';
+import 'package:tipitaka_pali/services/database/database_helper.dart';
 
 abstract class SearchSuggestionRepository {
   Future<List<SearchSuggestion>> getWords(String filterWord);
@@ -8,7 +8,7 @@ abstract class SearchSuggestionRepository {
 
 class SearchSuggestionDatabaseRepository implements SearchSuggestionRepository {
   final dao = SearchSuggestionDao();
-  final DatabaseProvider databaseProvider;
+  final DatabaseHelper databaseProvider;
   SearchSuggestionDatabaseRepository(this.databaseProvider);
 
   @override

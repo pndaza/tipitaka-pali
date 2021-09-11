@@ -1,6 +1,6 @@
 import 'package:tipitaka_pali/business_logic/models/toc.dart';
 import 'package:tipitaka_pali/services/dao/toc_dao.dart';
-import 'package:tipitaka_pali/services/database/database_provider.dart';
+import 'package:tipitaka_pali/services/database/database_helper.dart';
 
 abstract class TocRepository {
   Future<List<Toc>> getTocs(String bookID);
@@ -8,7 +8,7 @@ abstract class TocRepository {
 
 class TocDatabaseRepository implements TocRepository {
   final dao = TocDao();
-  final DatabaseProvider databaseProvider;
+  final DatabaseHelper databaseProvider;
 
   TocDatabaseRepository(this.databaseProvider);
 

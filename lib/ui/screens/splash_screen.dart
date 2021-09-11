@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tipitaka_pali/data/constants.dart';
-import 'package:tipitaka_pali/utils/shared_preferences_provider.dart';
+import 'package:tipitaka_pali/services/prefs.dart';
 
-import 'home/home.dart';
+import 'home/home_container.dart';
 import 'initial_setup.dart';
 
 enum DatabaseStatus { uptoDate, outOfDate, notExist }
@@ -10,35 +10,34 @@ enum DatabaseStatus { uptoDate, outOfDate, notExist }
 class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: FutureBuilder<DatabaseStatus>(
-          future: _getDatabaseStatus(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              final databaseStatus = snapshot.data;
-              switch (databaseStatus) {
-                case DatabaseStatus.notExist:
-                  return InitialSetup();
-                case DatabaseStatus.outOfDate:
-                  return InitialSetup(isUpdateMode: true);
-                default:
-                  return Home();
-              }
-            }
-            return Container();
-          }),
-    );
+    final databaseStatus = _getDatabaseStatus();
+    late final Widget child;
+
+    switch (databaseStatus) {
+      case DatabaseStatus.notExist:
+        child = InitialSetup();
+        break;
+      case DatabaseStatus.outOfDate:
+        child = InitialSetup(isUpdateMode: true);
+        break;
+      case DatabaseStatus.uptoDate:
+        child = Home();
+        break;
+      default:
+        child = Home();
+        break;
+    }
+
+    return Material(child: child);
   }
 
-  Future<DatabaseStatus> _getDatabaseStatus() async {
-    final isExist =
-        await SharedPrefProvider.getBool(key: k_key_isDatabaseSaved);
-    if (isExist == false) return DatabaseStatus.notExist;
+  DatabaseStatus _getDatabaseStatus() {
+    final isExist = Prefs.isDatabaseSaved;
+    if (!isExist) return DatabaseStatus.notExist;
 
-    final dbVersion =
-        await SharedPrefProvider.getInt(key: k_key_databaseVersion);
-    if (k_currentDatabaseVersion != dbVersion) return DatabaseStatus.outOfDate;
+    final dbVersion = Prefs.databaseVersion;
+    if (k_currentDatabaseVersion == dbVersion) return DatabaseStatus.uptoDate;
 
-    return DatabaseStatus.uptoDate;
+    return DatabaseStatus.outOfDate;
   }
 }

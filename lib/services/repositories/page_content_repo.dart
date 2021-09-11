@@ -1,6 +1,6 @@
 import 'package:tipitaka_pali/business_logic/models/page_content.dart';
 import 'package:tipitaka_pali/services/dao/page_content_dao.dart';
-import 'package:tipitaka_pali/services/database/database_provider.dart';
+import 'package:tipitaka_pali/services/database/database_helper.dart';
 
 abstract class PageContentRepository {
   Future<List<PageContent>> getPages(String bookID);
@@ -9,7 +9,7 @@ abstract class PageContentRepository {
 
 class PageContentDatabaseRepository implements PageContentRepository {
   final dao = PageContentDao();
-  final DatabaseProvider databaseProvider;
+  final DatabaseHelper databaseProvider;
   PageContentDatabaseRepository(this.databaseProvider);
 
   @override
