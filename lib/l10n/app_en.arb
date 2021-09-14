@@ -18,7 +18,40 @@
   "search": "Search",
   "@searcht": {
     "description": "Search label for bottom nav bar"
+  },
+  "new_info_adding": "New information is being added. \nPlease wait",
+  "@new_info_adding": {
+    "description": "initial setup screen"
+  },
+  "entering_info": "Entering information. \nPlease wait",
+  "@entering_info": {
+    "description": "initial setup screen"
+  },
+  "settinngs": "Settings",
+  "@settinngs": {
+    "description": "settings page title"
+  },
+  "theme": "Theme",
+  "@theme": {
+    "description": "for setting color"
+  },
+  "language": "Language",
+  "@language": {
+    "description": "setting the language"
+  },
+  "dictionaries": "Dictionaries",
+  "@dictionaries": {
+    "description": "setting the dictionaries"
   }
+  
+
+
+
+  
+
+  
+
+
 }
 
 

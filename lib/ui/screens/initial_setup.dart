@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tipitaka_pali/business_logic/view_models/initial_setup_view_model.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class InitialSetup extends StatelessWidget {
   final bool isUpdateMode;
@@ -15,13 +16,13 @@ class InitialSetup extends StatelessWidget {
         builder: (context, child) {
           final vm = Provider.of<InitialSetupViewModel>(context);
           vm.setUp(isUpdateMode);
-          return Center(child: _buildHomeView(vm));
+          return Center(child: _buildHomeView(context, vm));
         },
       ),
     );
   }
 
-  Widget _buildHomeView(InitialSetupViewModel vm) {
+  Widget _buildHomeView(BuildContext context, InitialSetupViewModel vm) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -31,10 +32,10 @@ class InitialSetup extends StatelessWidget {
         ),
         isUpdateMode
             ? Text(
-                'အချက်အလက်အသစ်များ ထည့်သွင်းနေပါသည်။\nခေတ္တစောင့်ပါ',
+                AppLocalizations.of(context)!.new_info_adding,
                 textAlign: TextAlign.center,
               )
-            : Text('အချက်အလက်များ ထည့်သွင်းနေပါသည်။\nခေတ္တစောင့်ပါ',
+            : Text(AppLocalizations.of(context)!.entering_info,
                 textAlign: TextAlign.center)
       ],
     );
