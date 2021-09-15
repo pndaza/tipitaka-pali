@@ -37,9 +37,6 @@ class HomePage extends StatelessWidget {
               IconButton(
                   icon: Icon(Icons.info),
                   onPressed: () => _showAboutDialog(context)),
-              IconButton(
-                  icon: Icon(Icons.settings_applications_outlined),
-                  onPressed: () => _showLanguageAndThemeSettingsDialog(context))
             ],
             bottom: TabBar(
               tabs: _mainCategories.entries
