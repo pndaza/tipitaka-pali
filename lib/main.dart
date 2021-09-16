@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'app.dart';
 import 'package:tipitaka_pali/services/prefs.dart';
-import 'package:sqflite_common/sqflite_dev.dart';
-import 'package:sqflite_common/sql.dart';
-import 'package:sqflite_common/sqlite_api.dart';
-import 'package:sqflite_common/utils/utils.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:sqflite/sqflite.dart';
-
 
 import 'dart:io' show Platform;
 
