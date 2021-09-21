@@ -23,4 +23,5 @@ class DictionaryDatabaseRepository implements DictionaryRepository {
     List<Map<String, dynamic>> maps = await db.rawQuery(sql);
     return dao.fromList(maps);
   }
+
 }

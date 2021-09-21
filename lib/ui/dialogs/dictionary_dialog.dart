@@ -15,60 +15,89 @@ class DictionaryDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     var textEditingController = new TextEditingController(text: word);
 
+    // final currentAlgorithmMode = DictAlgorithm.values.first.toShortString();
+
     return ChangeNotifierProvider<DictionaryViewModel>(
-        create: (content) => DictionaryViewModel(content, word),
-        child: Scaffold(
-            appBar: AppBar(
-              centerTitle: true,
-              title: Container(
-                  height: 40,
-                  child: Builder(
-                    builder: (BuildContext buildContext) {
-                      return TextField(                        
-                        controller: textEditingController,
-                        style: TextStyle(color: Colors.white),
-                        decoration: new InputDecoration( 
-                          // filled: true,
-                          // fillColor: Colors.grey,                         
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white70),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white70),
-                            ),
-                            isDense: true,
-                            contentPadding: EdgeInsets.fromLTRB(24, 4, 24, 4)),
-                        cursorColor: Colors.redAccent,
-                        onChanged: (text) => _onTextChanged(buildContext, text, textEditingController),
-                      );
+      create: (content) => DictionaryViewModel(content, word),
+      builder: (context, child) {
+        return Consumer(builder: (context, DictionaryViewModel vm, __) {
+          final currentAlgorithmMode = vm.currentAlgorithmMode;
+          final pageContent = vm.definition;
+
+          vm.webViewController?.loadUrl(_getUri(pageContent).toString());
+
+          return Material(
+            child: Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 56.0),
+                  child: WebView(
+                    initialUrl: _getUri(pageContent).toString(),
+                    onWebViewCreated: (controller) {
+                      vm.webViewController = controller;
                     },
-                  )),
-                  actions: [SizedBox(width: 50,)],
+                    gestureRecognizers: Set()
+                      ..add(Factory<VerticalDragGestureRecognizer>(
+                          () => VerticalDragGestureRecognizer())),
+                  ),
+                ),
+                ListTile(
+                  leading: IconButton(
+                    icon: Icon(
+                      Icons.close,
+                      color: Colors.black,
+                    ),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                  title: TextField(
+                    controller: textEditingController,
+                    // style: TextStyle(
+                    //     color: Theme.of(context).colorScheme.onBackground),
+                    decoration: new InputDecoration(
+                        // filled: true,
+                        // fillColor: Theme.of(context).colorScheme.background,
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey),
+                        ),
+                        contentPadding: EdgeInsets.fromLTRB(24, 4, 24, 4)),
+                    cursorColor: Colors.redAccent,
+                    onChanged: (text) {
+                      textEditingController.selection =
+                          TextSelection.fromPosition(TextPosition(
+                              offset: textEditingController.text.length));
+                      context.read<DictionaryViewModel>().onTextChanged(text);
+                    },
+                  ),
+                  trailing: DropdownButton<DictAlgorithm>(
+                    value: currentAlgorithmMode,
+                    items: DictAlgorithm.values
+                        .map((algo) => DropdownMenuItem<DictAlgorithm>(
+                            value: algo,
+                            child: Text(
+                              algo.toShortString(),
+                              // style: TextStyle(
+                              //   color: Theme.of(context).colorScheme.onSecondary,
+                              //   backgroundColor: Theme.of(context).colorScheme.secondary),
+                            )))
+                        .toList(),
+                    onChanged: context
+                        .read<DictionaryViewModel>()
+                        .onAlgorithmModeChanged,
+                  ),
+                ),
+              ],
             ),
-            body: Consumer<DictionaryViewModel>(builder: (context, vm, child) {
-              final pageContent = vm.definition;
-              return pageContent.isEmpty
-                  ? Container()
-                  : WebView(
-                          initialUrl: _getUri(pageContent).toString(),
-                          onWebViewCreated: (controller) {
-                            vm.webViewController = controller;
-                          },
-                          gestureRecognizers: Set()
-              ..add(Factory<VerticalDragGestureRecognizer>(
-                  () => VerticalDragGestureRecognizer())),
-                    );
-            })));
+          );
+        });
+      },
+    );
   }
 
   Uri _getUri(String pageContent) {
     return Uri.dataFromString('<!DOCTYPE html> $pageContent',
         mimeType: 'text/html', encoding: Encoding.getByName('utf-8'));
-  }
-
-  void _onTextChanged(BuildContext context, String text, TextEditingController controller) async {
-    final vm = context.read<DictionaryViewModel>();
-    vm.doSearch(text);
-    controller.selection = TextSelection.fromPosition(TextPosition(offset: controller.text.length));
   }
 }

@@ -25,47 +25,34 @@ class DictionaryProvider {
     _fontSize = Prefs.fontSize;
   }
 
-  Future<String> getDefinition(String word,
+  Future<List<Definition>> getDefinition(String word,
       {bool isAlreadyStem = false}) async {
+    late String stemWord;
     if (!isAlreadyStem) {
-      word = PaliStemmer.getStem(word);
+      stemWord = PaliStemmer.getStem(word);
     }
-
-    print('dict word: $word');
 
     final DatabaseHelper databaseProvider = DatabaseHelper();
     final DictionaryRepository dictRepository =
         DictionaryDatabaseRepository(databaseProvider);
-    var definitions = await dictRepository.getDefinition(word);
 
-    return _formatDefinitions(definitions);
+    // lookup using estimated stem word
+    // print('dict word: $stemWord');
+    final definitions = await dictRepository.getDefinition(word);
+    return definitions;
+
+    // return _formatDefinitions(definitions);
   }
 
-  String _formatDefinitions(List<Definition> definitions) {
-    String htmlContent = '';
-    for (Definition definition in definitions) {
-      htmlContent += _addStyleToBook(definition.bookName);
-      htmlContent += definition.definition;
-    }
-    if (definitions.isEmpty) {
-      htmlContent = '<p style = "text-align:center">not found</p>';
-    }
-    return '''
-    <html>
-    <head><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
-    <style>
-    html {font-size: $_fontSize%}
-    $_cssData
-    </style>
-    <body>
-    $htmlContent
-    </body>
-    </html>
-    ''';
-  }
-
-  String _addStyleToBook(String book) {
-    return '\n<p class="book">$book</p>\n';
+  Future<String> getBreakup(String word) async {
+    final db = await DatabaseHelper().database;
+    final List<Map<String, dynamic>> maps = await db.query('dpr_breakup',
+        columns: ['breakup'], where: 'word = ?', whereArgs: [word]);
+    // word column is unqiue
+    // so list always one entry
+    if (maps.isEmpty) return '';
+    final breakup = maps.first['breakup'] as String;
+    return breakup;
   }
 
   bool _isDarkTheme(BuildContext context) {

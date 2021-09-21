@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:preload_page_view/preload_page_view.dart';
+import 'package:sliding_sheet/sliding_sheet.dart';
 //import 'package:theme_provider/theme_provider.dart';
 import 'package:tipitaka_pali/business_logic/models/book.dart';
 import 'package:tipitaka_pali/business_logic/models/bookmark.dart';
@@ -256,7 +256,6 @@ class ReaderViewModel with ChangeNotifier {
     await _saveToRecent();
   }
 
-
   void increaseFontSize() {
     _fontSize += 5;
     var currentPageIndex = currentPage! - book.firstPage!;
@@ -326,14 +325,35 @@ class ReaderViewModel with ChangeNotifier {
   }
 
   Future<void> showDictionary(String word) async {
-    showCupertinoModalBottomSheet(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+    await showSlidingBottomSheet(context, builder: (context) {
+      return SlidingSheetDialog(
+        elevation: 8,
+        cornerRadius: 16,
+        // minHeight: 200,
+        snapSpec: const SnapSpec(
+          snap: true,
+          snappings: [0.4, 0.6, 0.8, 1.0],
+          positioning: SnapPositioning.relativeToSheetHeight,
         ),
-        expand: false,
-        context: context,
-        builder: (context) {
-          return DictionaryDialog(word);
-        });
+        headerBuilder: (context, _) {
+          // building drag handle view
+          return Center(
+            heightFactor: 1,
+              child: Container(
+            width: 56,
+            height: 10,
+            // color: Colors.black45,
+            decoration: BoxDecoration(
+              // border: Border.all(color: Colors.red),
+              color: Theme.of(context).primaryColor,
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ));
+        },
+        builder: (context, state) {
+          return Container(height: 2000, child: DictionaryDialog(word));
+        },
+      );
+    });
   }
 }

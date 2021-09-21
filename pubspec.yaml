@@ -51,6 +51,8 @@ dependencies:
   sqflite_common: ^2.0.1+1
   sqflite_common_ffi: ^2.0.0+3
   freezed: ^0.14.2
+  sliding_sheet: ^0.5.0
+  bottom_sheet: ^1.0.1
 
 dev_dependencies:
   flutter_test:
