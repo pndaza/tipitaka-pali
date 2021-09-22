@@ -5,6 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tipitaka_pali/business_logic/view_models/dictionary_view_model.dart';
+import 'package:tipitaka_pali/utils/pali_tools.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class DictionaryDialog extends StatelessWidget {
@@ -65,10 +66,13 @@ class DictionaryDialog extends StatelessWidget {
                         contentPadding: EdgeInsets.fromLTRB(24, 4, 24, 4)),
                     cursorColor: Colors.redAccent,
                     onChanged: (text) {
+                      final uniText =
+                          PaliTools.velthuisToUni(velthiusInput: text);
+                      textEditingController.text = uniText;
                       textEditingController.selection =
                           TextSelection.fromPosition(TextPosition(
                               offset: textEditingController.text.length));
-                      context.read<DictionaryViewModel>().onTextChanged(text);
+                      context.read<DictionaryViewModel>().onTextChanged(uniText);
                     },
                   ),
                   trailing: DropdownButton<DictAlgorithm>(

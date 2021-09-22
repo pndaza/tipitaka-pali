@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tipitaka_pali/utils/pali_tools.dart';
 
 class SearchBar extends StatefulWidget {
   final void Function(String) onSubmitted;
@@ -111,44 +112,11 @@ class _SearchBarState extends State<SearchBar> {
   }
 
   String toUni(String input) {
-    if (input == '') return input;
-
-    var nigahita = 'ṃ';
-    var capitalNigahita = 'Ṃ';
-
-    input = input
-        .replaceAll('aa', 'ā')
-        .replaceAll('ii', 'ī')
-        .replaceAll('uu', 'ū')
-        .replaceAll('\.t', 'ṭ')
-        .replaceAll('\.d', 'ḍ')
-        .replaceAll('\"nk', 'ṅk')
-        .replaceAll('\"ng', 'ṅg')
-        .replaceAll('\.n', 'ṇ')
-        .replaceAll('\.m', nigahita)
-        .replaceAll('\u1E41', nigahita)
-        .replaceAll('\~n', 'ñ')
-        .replaceAll('\.l', 'ḷ')
-        .replaceAll('AA', 'Ā')
-        .replaceAll('II', 'Ī')
-        .replaceAll('UU', 'Ū')
-        .replaceAll('\.T', 'Ṭ')
-        .replaceAll('\.D', 'Ḍ')
-        .replaceAll('\"N', 'Ṅ')
-        .replaceAll('\.N', 'Ṇ')
-        .replaceAll('\.M', capitalNigahita)
-        .replaceAll('\~N', 'Ñ')
-        .replaceAll('\.L', 'Ḷ')
-        .replaceAll('\.ll', 'ḹ')
-        .replaceAll('\.r', 'ṛ')
-        .replaceAll('\.rr', 'ṝ')
-        .replaceAll('\.s', 'ṣ')
-        .replaceAll('"s', 'ś')
-        .replaceAll('\.h', 'ḥ');
+    input = PaliTools.velthuisToUni(velthiusInput: input);
 
     controller.text = input;
-    controller.selection = TextSelection.fromPosition(TextPosition(offset: controller.text.length));
-
+    controller.selection = TextSelection.fromPosition(
+        TextPosition(offset: controller.text.length));
 
     return input;
   }
