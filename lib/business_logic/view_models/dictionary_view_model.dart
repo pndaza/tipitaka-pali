@@ -48,8 +48,6 @@ class DictionaryViewModel with ChangeNotifier {
         break;
       case DictAlgorithm.TPR:
         _definition = await searchWithTPR(word);
-        print('tpr mode');
-        print(_definition);
         break;
       case DictAlgorithm.DPR:
         _definition = await searchWithDPR(word);
@@ -57,7 +55,6 @@ class DictionaryViewModel with ChangeNotifier {
     }
 
     if (_definition.isEmpty) {
-      print('not found dict');
       _definition = _buildNotFoundInfo();
     }
 

@@ -325,6 +325,10 @@ class ReaderViewModel with ChangeNotifier {
   }
 
   Future<void> showDictionary(String word) async {
+    // removing puntuations etc.
+    word = word.replaceAll(new RegExp(r'[^a-zA-ZāīūṅñṭḍṇḷṃĀĪŪṄÑṬḌHṆḶṂ]'), '');
+    // convert ot lower case
+    word = word.toLowerCase();
     await showSlidingBottomSheet(context, builder: (context) {
       return SlidingSheetDialog(
         elevation: 8,
@@ -338,17 +342,17 @@ class ReaderViewModel with ChangeNotifier {
         headerBuilder: (context, _) {
           // building drag handle view
           return Center(
-            heightFactor: 1,
+              heightFactor: 1,
               child: Container(
-            width: 56,
-            height: 10,
-            // color: Colors.black45,
-            decoration: BoxDecoration(
-              // border: Border.all(color: Colors.red),
-              color: Theme.of(context).primaryColor,
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ));
+                width: 56,
+                height: 10,
+                // color: Colors.black45,
+                decoration: BoxDecoration(
+                  // border: Border.all(color: Colors.red),
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ));
         },
         builder: (context, state) {
           return Container(height: 2000, child: DictionaryDialog(word));
