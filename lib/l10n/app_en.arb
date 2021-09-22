@@ -19,13 +19,13 @@
   "@searcht": {
     "description": "Search label for bottom nav bar"
   },
-  "new_info_adding": "New information is being added. \nPlease wait",
-  "@new_info_adding": {
-    "description": "initial setup screen"
+  "updatingStatus": "Please wait While updating Database",
+  "@nupdatingStatus": {
+    "description": "update status in initial setup screen"
   },
-  "entering_info": "Entering information. \nPlease wait",
-  "@entering_info": {
-    "description": "initial setup screen"
+  "copyingStatus": "Please wait While copying Database",
+  "@copyingStatus": {
+    "description": "Copyint status in initial setup screen"
   },
   "settinngs": "Settings",
   "@settinngs": {
@@ -35,6 +35,10 @@
   "@theme": {
     "description": "for setting color"
   },
+  "darkMode": "Dark Mode",
+  "@darkMode": {
+    "description": "for Dark Mode"
+  },
   "language": "Language",
   "@language": {
     "description": "setting the language"
@@ -42,15 +46,27 @@
   "dictionaries": "Dictionaries",
   "@dictionaries": {
     "description": "setting the dictionaries"
+  },
+  "paliScript": "Pāḷi Script",
+  "@paliScript": {
+    "description": "setting for Pāḷi Script"
+  },
+  "showAlternatePali": "Show Alternate Pāḷi",
+  "@showAlternatePali": {
+    "description": "for Show Alternate Pāḷi Option"
+  },
+  "showPTSPageNumber": "Show PTS PageNumber",
+  "@showPTSPageNumber": {
+    "description": "for PTS PageNumber Show Hide Option"
+  },
+  "showThaiPageNumber": "Show Thai PageNumber",
+  "@showThaiPageNumber": {
+    "description": "for Thai PageNumber Show Hide Option"
+  },
+  "showVRIPageNumber": "Show VRI PageNumber",
+  "@showVRIPageNumber": {
+    "description": "for VRI PageNumber Show Hide Option"
   }
-  
-
-
-
-  
-
-  
-
 
 }
 

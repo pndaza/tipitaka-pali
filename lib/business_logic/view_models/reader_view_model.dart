@@ -44,6 +44,14 @@ class ReaderViewModel with ChangeNotifier {
   late PreloadPageController pageController;
   late final List<WebViewController?> webViewControllers;
 
+  late final bool _isDarkMode;
+
+  // script features
+  late final bool _isShowAlternatePali;
+  late final bool _isShowPtsPageNumber;
+  late final bool _isShowThaiPageNumber;
+  late final bool _isShowVriPageNubmer;
+
   ReaderViewModel({
     required this.context,
     required this.book,
@@ -58,6 +66,13 @@ class ReaderViewModel with ChangeNotifier {
     print('loading all data');
     _cssFont = '';
     _fontSize = Prefs.fontSize;
+    _isDarkMode = Prefs.dartThemeOn;
+    // load script feature and will modify css value
+    _isShowAlternatePali = Prefs.isShowAlternatePali;
+    _isShowPtsPageNumber = Prefs.isShowPtsNumber;
+    _isShowThaiPageNumber = Prefs.isShowThaiNumber;
+    _isShowVriPageNubmer = Prefs.isShowVriNumber;
+
     _cssData = await loadCssData();
     javascriptData = await loadJavaScript('click.js');
     pages = await loadBook(book.id);
@@ -100,9 +115,13 @@ class ReaderViewModel with ChangeNotifier {
   }
 
   Future<String> loadCssData() async {
-    final cssFileName = _isDarkTheme() ? 'style_night.css' : 'style_day.css';
-
-    return await AssetsProvider.loadCSS(cssFileName);
+    final cssFileName = _isDarkMode ? 'style_night.css' : 'style_day.css';
+    String cssData = await AssetsProvider.loadCSS(cssFileName);
+    // alternate pali will be displayed based on user setting
+    if (_isShowAlternatePali) {
+      cssData = cssData.replaceAll('display: none;', '');
+    }
+    return cssData;
   }
 
   Future<String> loadJavaScript(String fileName) async {
@@ -135,6 +154,25 @@ class ReaderViewModel with ChangeNotifier {
 
     if (tocHeader != null) {
       pageContent = addIDforScroll(pageContent, tocHeader!);
+    }
+
+    // showing page number based on user settings
+    var publicationKeys = <String>['P', 'T', 'V'];
+    if (!_isShowPtsPageNumber) publicationKeys.remove('P');
+    if (!_isShowThaiPageNumber) publicationKeys.remove('T');
+    if (!_isShowVriPageNubmer) publicationKeys.remove('V');
+
+    if (publicationKeys.isNotEmpty) {
+      publicationKeys.forEach((publicationKey) {
+        final publicationFormat =
+            RegExp('(<a name="$publicationKey(\\d+)\\.(\\d+)">)');
+        pageContent = pageContent.replaceAllMapped(publicationFormat, (match) {
+          final volume = match.group(2)!;
+          // remove leading zero from page number
+          final pageNumber = int.parse(match.group(3)!).toString();
+          return '${match.group(1)}[$publicationKey $volume.$pageNumber]';
+        });
+      });
     }
 
     pageContent = _fixSafari(pageContent);
@@ -303,12 +341,6 @@ class ReaderViewModel with ChangeNotifier {
       webViewControllers[pageIndex]!
           .loadUrl(getPageContent(pageIndex).toString());
     }
-  }
-
-  bool _isDarkTheme() {
-    //final themeID = ThemeProvider.themeOf(context).id;
-    return false;
-    // (themeID == kdartTheme || themeID == kblackTheme);
   }
 
   void saveToBookmark(String note) {

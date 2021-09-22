@@ -313,7 +313,7 @@ class ColoredText extends StatelessWidget {
         fontWeight: fontWeight,
         fontSize: fontSize,
         color: color ??
-            ((Prefs.lightThemeOn) ? Theme.of(context).primaryColor : null),
+            ((Prefs.dartThemeOn) ? Theme.of(context).primaryColor : null),
       ),
     );
     if (MediaQuery.boldTextOverride(context)) {

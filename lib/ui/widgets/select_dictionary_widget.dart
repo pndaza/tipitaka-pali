@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tipitaka_pali/business_logic/view_models/settings_page_view_model.dart';
+import 'package:tipitaka_pali/business_logic/view_models/dictionary_settings_view_model.dart';
 
 class SelectDictionaryWidget extends StatelessWidget {
   const SelectDictionaryWidget({Key? key}) : super(key: key);

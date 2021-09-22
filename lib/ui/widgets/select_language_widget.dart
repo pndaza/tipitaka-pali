@@ -12,10 +12,8 @@ class SelectLanguageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButton<String>(
         value: _languageItmes[Prefs.localeVal],
-        style: TextStyle(
-          color: Theme.of(context).primaryColor,
-        ),
-        isDense: true,
+        // style: TextStyle(color: Theme.of(context).primaryColor),
+        // isDense: true, 
         onChanged: (newValue) {
           Prefs.localeVal = _languageItmes.indexOf(newValue!);
           final localeProvider =
@@ -28,12 +26,10 @@ class SelectLanguageWidget extends StatelessWidget {
               value: value,
               child: ColoredText(
                 value,
-                style: TextStyle(
-                    color: (Prefs.lightThemeOn)
-                        ? Theme.of(context).primaryColor
-                        : Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold),
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white
+                    : Theme.of(context).primaryColor,
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
               ),
             );
           },

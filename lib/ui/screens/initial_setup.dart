@@ -32,10 +32,10 @@ class InitialSetup extends StatelessWidget {
         ),
         isUpdateMode
             ? Text(
-                AppLocalizations.of(context)!.new_info_adding,
+                AppLocalizations.of(context)!.updatingStatus,
                 textAlign: TextAlign.center,
               )
-            : Text(AppLocalizations.of(context)!.entering_info,
+            : Text(AppLocalizations.of(context)!.copyingStatus,
                 textAlign: TextAlign.center)
       ],
     );

@@ -12,13 +12,13 @@ class ChangeThemeWidget extends StatelessWidget {
     //final themeProvider = Provider.of<ThemeChangeNotifier>(context);
 
     return Switch(
-      value: Prefs.lightThemeOn,
+      value: Prefs.dartThemeOn,
       activeThumbImage: AssetImage("assets/sun.png"),
       inactiveThumbImage: AssetImage("assets/moon.png"),
       onChanged: (value) {
         final provider =
             Provider.of<ThemeChangeNotifier>(context, listen: false);
-        Prefs.lightThemeOn = value;
+        Prefs.dartThemeOn = value;
         provider.toggleTheme(value);
       },
     );

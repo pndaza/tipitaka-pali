@@ -4,16 +4,18 @@
     "bookmark": "မှတ်စု",
     "recent": "ဖတ်ဆဲ",
     "search": "စာရှာ",
-    "new_info_adding": "အချက်အလက်အသစ်များ ထည့်သွင်းနေပါသည်။\nခေတ္တစောင့်ပါ",
-    "entering_info": "အချက်အလက်များ ထည့်သွင်းနေပါသည်။\nခေတ္တစောင့်ပါ",
+    "updatingStatus": "အချက်အလက်အသစ်များ ထည့်သွင်းနေပါသည်။\nခေတ္တစောင့်ပါ",
+    "copyingStatus": "အချက်အလက်များ ထည့်သွင်းနေပါသည်။\nခေတ္တစောင့်ပါ",
     "settinngs": "ဆက်တင်များ",
     "theme": "အရောင်",
+    "darkMode": "အမှောင်နောက်ခံ",
     "language": "ဘာသာစကား",
-    "dictionaries": "အဘိဓာန်များ"
+    "dictionaries": "အဘိဓာန်များ",
+    "paliScript": "စာသားဖော်ပြမှု",
+    "showAlternatePali": "မူကွဲပါဠိ ဖော်ပြပါ",
+    "showPTSPageNumber": "PTSမူစာမျက်နှာ ပြ",
+    "showThaiPageNumber": "ထိုင်းမူစာမျက်နှာ ပြ",
+    "showVriPageNumber": "VRIမူစာမျက်နှာ ပြ"
 
-
-
-
-  
     
 }

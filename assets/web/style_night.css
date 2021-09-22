@@ -8,14 +8,14 @@
     padding-right: 10pt;
 }
 p { font-size: 1.3em; margin-bottom: 1.3em; text-align: left;}
-a {text-decoration: none; color: white;}
+a {text-decoration: none; color: orange; font-size: 0.8em;}
 p.bkname {
     text-indent: 2em;
     font-size: x-large;
     font-style: italic;
     background: #e1efbb;
     border: 1px solid gray;}
-.note {color: gray; font-size: 0.9em;}
+.note {display: none; color: gray; font-size: 0.9em;}
 .bld {font-weight: bold; color: white;}
 .paranum {font-weight: bold; }
 .hit {background-color: blue; color: white; }
