@@ -387,8 +387,11 @@ class ReaderViewModel with ChangeNotifier {
               ));
         },
         builder: (context, state) {
+          final statusBarHeight = MediaQuery.of(context).padding.top;
+          final screenHeight = MediaQuery.of(context).size.height;
+          final marginTop = 24.0;
           return Container(
-            height: MediaQuery.of(context).size.height,
+            height: screenHeight - (statusBarHeight + marginTop),
             child: DictionaryDialog(word),
           );
         },

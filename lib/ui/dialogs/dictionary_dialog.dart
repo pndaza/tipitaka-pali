@@ -36,14 +36,18 @@ class DictionaryDialog extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 56.0),
-                  child: WebView(
-                    key: _key,
-                    initialUrl: _getUri(pageContent).toString(),
-                    onWebViewCreated: (controller) {
-                      vm.webViewController = controller;
-                    },
-                    gestureRecognizers: gestureRecognizers,
-                  ),
+                  child: pageContent.isEmpty
+                      ? Container(
+                        height: 100,
+                        child: Center(child: CircularProgressIndicator()))
+                      : WebView(
+                          key: _key,
+                          initialUrl: _getUri(pageContent).toString(),
+                          onWebViewCreated: (controller) {
+                            vm.webViewController = controller;
+                          },
+                          gestureRecognizers: gestureRecognizers,
+                        ),
                 ),
                 ListTile(
                   leading: IconButton(
