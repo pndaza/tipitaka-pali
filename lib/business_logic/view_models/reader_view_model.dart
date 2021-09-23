@@ -387,7 +387,10 @@ class ReaderViewModel with ChangeNotifier {
               ));
         },
         builder: (context, state) {
-          return Container(height: 2000, child: DictionaryDialog(word));
+          return Container(
+            height: MediaQuery.of(context).size.height,
+            child: DictionaryDialog(word),
+          );
         },
       );
     });

@@ -36,7 +36,7 @@ class DictionaryViewModel with ChangeNotifier {
   Future<void> _init() async {
     // load resources
     _cssData = await AssetsProvider.loadCSS(
-        Prefs.dartThemeOn ? 'dict_day.css' : 'dict_night.css');
+        Prefs.dartThemeOn ? 'dict_night.css' : 'dict_day.css');
     _fontSize = Prefs.fontSize;
     loadDefinition(_word);
   }

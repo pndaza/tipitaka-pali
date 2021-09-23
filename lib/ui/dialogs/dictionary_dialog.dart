@@ -16,8 +16,6 @@ class DictionaryDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     var textEditingController = new TextEditingController(text: word);
 
-    // final currentAlgorithmMode = DictAlgorithm.values.first.toShortString();
-
     return ChangeNotifierProvider<DictionaryViewModel>(
       create: (content) => DictionaryViewModel(content, word),
       builder: (context, child) {
@@ -27,19 +25,24 @@ class DictionaryDialog extends StatelessWidget {
 
           vm.webViewController?.loadUrl(_getUri(pageContent).toString());
 
+          // fix for webview scroll in modal bottom sheet
+          // https://stackoverflow.com/a/62276169/
+          final Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers =
+              [Factory(() => EagerGestureRecognizer())].toSet();
+          UniqueKey _key = UniqueKey();
+
           return Material(
             child: Stack(
               children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 56.0),
                   child: WebView(
+                    key: _key,
                     initialUrl: _getUri(pageContent).toString(),
                     onWebViewCreated: (controller) {
                       vm.webViewController = controller;
                     },
-                    gestureRecognizers: Set()
-                      ..add(Factory<VerticalDragGestureRecognizer>(
-                          () => VerticalDragGestureRecognizer())),
+                    gestureRecognizers: gestureRecognizers,
                   ),
                 ),
                 ListTile(
@@ -72,7 +75,9 @@ class DictionaryDialog extends StatelessWidget {
                       textEditingController.selection =
                           TextSelection.fromPosition(TextPosition(
                               offset: textEditingController.text.length));
-                      context.read<DictionaryViewModel>().onTextChanged(uniText);
+                      context
+                          .read<DictionaryViewModel>()
+                          .onTextChanged(uniText);
                     },
                   ),
                   trailing: DropdownButton<DictAlgorithm>(
