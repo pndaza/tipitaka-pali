@@ -362,6 +362,15 @@ class ReaderViewModel with ChangeNotifier {
     // convert ot lower case
     word = word.toLowerCase();
     await showSlidingBottomSheet(context, builder: (context) {
+      //Widget for SlidingSheetDialog's builder method
+      final statusBarHeight = MediaQuery.of(context).padding.top;
+      final screenHeight = MediaQuery.of(context).size.height;
+      final marginTop = 24.0;
+      final slidingSheetDialogContent = Container(
+        height: screenHeight - (statusBarHeight + marginTop),
+        child: DictionaryDialog(word),
+      );
+
       return SlidingSheetDialog(
         elevation: 8,
         cornerRadius: 16,
@@ -386,15 +395,13 @@ class ReaderViewModel with ChangeNotifier {
                 ),
               ));
         },
-        builder: (context, state) {
-          final statusBarHeight = MediaQuery.of(context).padding.top;
-          final screenHeight = MediaQuery.of(context).size.height;
-          final marginTop = 24.0;
-          return Container(
-            height: screenHeight - (statusBarHeight + marginTop),
-            child: DictionaryDialog(word),
-          );
-        },
+        // this builder is called when state change
+        // normaly three states occurs
+        // first state - isLaidOut = false
+        // second state - islaidOut = true , isShown = false
+        // thirs state - islaidOut = true , isShown = ture
+        // to avoid there times rebuilding, return  prebuild content
+        builder: (context, state) => slidingSheetDialogContent,
       );
     });
   }

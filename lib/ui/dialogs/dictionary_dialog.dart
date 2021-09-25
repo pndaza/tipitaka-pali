@@ -38,8 +38,8 @@ class DictionaryDialog extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 56.0),
                   child: pageContent.isEmpty
                       ? Container(
-                        height: 100,
-                        child: Center(child: CircularProgressIndicator()))
+                          height: 100,
+                          child: Center(child: CircularProgressIndicator()))
                       : WebView(
                           key: _key,
                           initialUrl: _getUri(pageContent).toString(),
