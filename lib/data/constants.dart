@@ -1,4 +1,4 @@
-const k_currentDatabaseVersion = 1;
+const k_currentDatabaseVersion = 2;
 const k_databaseName = 'tipitaka_pali.db';
 const k_assetsDatabaseArchive = 'tipitaka_pali.db.zip';
 
