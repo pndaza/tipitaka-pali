@@ -29,19 +29,55 @@ class HomePage extends StatelessWidget {
           appBar: AppBar(
             title: Text(AppLocalizations.of(context)!.tipitaka_pali_reader),
             centerTitle: true,
-            actions: [
-              IconButton(
-                icon: Icon(Icons.settings),
-                onPressed: () => _openSettingPage(context),
-              ),
-              IconButton(
-                  icon: Icon(Icons.info),
-                  onPressed: () => _showAboutDialog(context)),
-            ],
+            actions: [],
             bottom: TabBar(
               tabs: _mainCategories.entries
                   .map((category) => Tab(text: category.value))
                   .toList(),
+            ),
+          ),
+          drawer: Drawer(
+            // Add a ListView to the drawer. This ensures the user can scroll
+            // through the options in the drawer if there isn't enough vertical
+            // space to fit everything.
+            child: ListView(
+              // Important: Remove any padding from the ListView.
+              padding: EdgeInsets.zero,
+              children: [
+                DrawerHeader(
+                  decoration: BoxDecoration(),
+                  child: Column(
+                    children: [
+                      ColoredText(
+                          AppLocalizations.of(context)!.tipitaka_pali_reader,
+                          style: TextStyle(
+                            fontSize: 17,
+                          )),
+                      SizedBox(height: 15.0),
+                      Image.asset(
+                        "assets/icon/icon.png",
+                        height: 60,
+                        width: 60,
+                      ),
+                    ],
+                  ),
+                ),
+                ListTile(
+                  title: ColoredText(AppLocalizations.of(context)!.about,
+                      style: TextStyle()),
+                  onTap: () {
+                    _showAboutDialog(context);
+                  },
+                ),
+                ListTile(
+                  title: ColoredText(AppLocalizations.of(context)!.settings,
+                      style: TextStyle()),
+                  onTap: () {
+                    _openSettingPage(context);
+                    ;
+                  },
+                ),
+              ],
             ),
           ),
           body: TabBarView(
@@ -98,23 +134,9 @@ class HomePage extends StatelessWidget {
   _showAboutDialog(BuildContext context) {
     showAboutDialog(
         context: context,
-        applicationName: 'တိပိဋကပါဠိ',
+        applicationName: AppLocalizations.of(context)!.tipitaka_pali_reader,
         applicationVersion: 'ဗားရှင်း။ ။ ၁.၀.၀',
-        children: [
-          Text('''
-                ကျမ်းစာများ
-          ပါဠိ၊ အဋ္ဌကထာ၊ ဋီကာ နှင့် အခြား ပိဋကတ်ဆိုင်ရာ ကျမ်းစာများ ပါဝင်ပါသည်။
-
-                စာရှာ
-          ယူနီကုဒ်အသုံးပြု၍ ရှာနိုင်ပါသည်။ ( ဇော်ဂျီဖြင့် မရပါ။ )
-          ပုဒ်တပုဒ်တည်းသာ မကဘဲ နှစ်ပုဒ်တွဲအားဖြင့်လည်း ရှာနိုင်ပါသည်။ (သုံးပုဒ်တွဲနှင့်အထက် မရသေးပါ။)
-          တပုဒ်တည်း ရှာဖွေရာအခါ၌ လမ်းညွှန်ပုဒ်များ ( suggestion words ) ကို ပြသပေးပါလိမ့်မည်။
-
-              အဘိဓာန်ကြည့်
-          စကားလုံးပေါ်ထောက်၍ အဘိဓာန်ကြည့်ရှုနိုင်ပါသည်။
-          ပကတိပုဒ်ရင်းကို အမှန်အတိုင်း မှန်းမဆရ၍ မှားယွင်းစွာ ပြသနေပါက တည်ပုဒ်ကို ကိုယ်တိုင် ပြင်ဆင်၍ ကြည့်ရှုနိုင်ပါသည်။
-          ''')
-        ]);
+        children: [ColoredText(AppLocalizations.of(context)!.about_info)]);
   }
 
   _showLanguageAndThemeSettingsDialog(BuildContext context) {

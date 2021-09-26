@@ -27,7 +27,7 @@
   "@copyingStatus": {
     "description": "Copyint status in initial setup screen"
   },
-  "settinngs": "Settings",
+  "settings": "Settings",
   "@settinngs": {
     "description": "settings page title"
   },
@@ -66,7 +66,17 @@
   "showVRIPageNumber": "Show VRI PageNumber",
   "@showVRIPageNumber": {
     "description": "for VRI PageNumber Show Hide Option"
+  },
+  "about": "About",
+  "@about": {
+    "description": "menu item for about"
+  },
+  "about_info":"This app is still in Beta.  However, it should be useful for accessing the Tipitaka Texts, and getting most dictionary definitions.  You can create issues and request features on the github website https://github.com/bksubhuti/tipitaka-pali-reader/issues",
+  "@about_info": {
+    "description": "about content"
   }
+
+  
 
 }
 
