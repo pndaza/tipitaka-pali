@@ -1,64 +1,63 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:tipitaka_pali/business_logic/models/definition.dart';
-import 'package:tipitaka_pali/business_logic/view_models/dictionary_provider.dart';
-import 'package:tipitaka_pali/services/prefs.dart';
-import 'package:tipitaka_pali/services/storage/asset_loader.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:tipitaka_pali/business_logic/view_models/dictionary_state.dart';
+import 'package:tipitaka_pali/services/database/database_helper.dart';
+import 'package:tipitaka_pali/services/database/dictionary_service.dart';
+import 'package:tipitaka_pali/services/repositories/ditionary_repo.dart';
 
 enum DictAlgorithm { Auto, TPR, DPR }
 
 extension ParseToString on DictAlgorithm {
-  String toShortString() {
+  String toStr() {
     return this.toString().split('.').last;
   }
 }
 
 class DictionaryViewModel with ChangeNotifier {
-  BuildContext _context;
-  String _word;
-  String _definition = '';
-  late String _cssData;
-  late int _fontSize;
-  // DictAlgorithm dictAlgorithm = DictAlgorithm.Auto;
+  String? _word;
+
+  late DictionaryState _dictionaryState;
+  DictionaryState get dictionaryState => _dictionaryState;
   DictAlgorithm _currentAlgorithmMode = DictAlgorithm.Auto;
   DictAlgorithm get currentAlgorithmMode => _currentAlgorithmMode;
 
-  WebViewController? webViewController;
-  DictionaryViewModel(this._context, this._word) {
-// init
+  DictionaryViewModel(this._word) {
     _init();
   }
 
-  String get definition => _definition;
-
   Future<void> _init() async {
-    // load resources
-    _cssData = await AssetsProvider.loadCSS(
-        Prefs.dartThemeOn ? 'dict_night.css' : 'dict_day.css');
-    _fontSize = Prefs.fontSize;
-    await loadDefinition(_word);
+    if (_word == null) {
+      print('there is no initial lookup word');
+      _dictionaryState = DictionaryState.initial();
+      notifyListeners();
+      return;
+    }
+    _lookupDefinition();
   }
 
-  Future<void> loadDefinition(String word) async {
+  Future<void> _lookupDefinition() async {
+    _dictionaryState = DictionaryState.loading();
+    notifyListeners();
+    // loading definitions
+    final definition = await loadDefinition(_word!);
+    if (definition.isEmpty) {
+      _dictionaryState = DictionaryState.noData();
+      notifyListeners();
+    } else {
+      _dictionaryState = DictionaryState.data(definition);
+      notifyListeners();
+    }
+  }
+
+  Future<String> loadDefinition(String word) async {
     switch (_currentAlgorithmMode) {
       case DictAlgorithm.Auto:
-        _definition = await searchAuto(word);
-        break;
+        return await searchAuto(word);
       case DictAlgorithm.TPR:
-        _definition = await searchWithTPR(word);
-        break;
+        return searchWithTPR(word);
       case DictAlgorithm.DPR:
-        _definition = await searchWithDPR(word);
-        break;
+        return searchWithDPR(word);
     }
-
-    if (_definition.isEmpty) {
-      _definition = _buildNotFoundInfo();
-    }
-
-    notifyListeners();
   }
 
   Future<String> searchAuto(String word) async {
@@ -73,20 +72,20 @@ class DictionaryViewModel with ChangeNotifier {
 
   Future<String> searchWithTPR(String word) async {
     // looking up using estimated stem word
-    final dictionaryProvider = DictionaryProvider(_context);
+    final dictionaryProvider =
+        DictionarySerice(DictionaryDatabaseRepository(DatabaseHelper()));
     final definitions =
         await dictionaryProvider.getDefinition(word, isAlreadyStem: false);
 
     if (definitions.isEmpty) return '';
 
-    print('stemming algorithm is works for $word word ');
-    print('formmatting result for display');
     return _formatDefinitions(definitions);
   }
 
   Future<String> searchWithDPR(String word) async {
     // looking up using dpr breakup words
-    final dictionaryProvider = DictionaryProvider(_context);
+    final dictionaryProvider =
+        DictionarySerice(DictionaryDatabaseRepository(DatabaseHelper()));
 
     final String breakupText = await dictionaryProvider.getBreakup(word);
     if (breakupText.isEmpty) return '';
@@ -113,16 +112,14 @@ class DictionaryViewModel with ChangeNotifier {
     return formatedDefintion;
   }
 
-  Future<void> onTextChanged(String word) async {
-    print('searching: $word');
-    await loadDefinition(word);
-    // webViewController?.loadUrl(_getUri(_definition).toString());
-    // notifyListeners();
+  Future<void> onClickSuggestion(String word) async {
+    _word = word;
+    _lookupDefinition();
   }
 
-  Uri _getUri(String pageContent) {
-    return Uri.dataFromString('<!DOCTYPE html> $pageContent',
-        mimeType: 'text/html', encoding: Encoding.getByName('utf-8'));
+  Future<List<String>> getSuggestions(String word) {
+    return DictionarySerice(DictionaryDatabaseRepository(DatabaseHelper()))
+        .getSuggestions(word);
   }
 
   String _formatDefinitions(List<Definition> definitions) {
@@ -131,31 +128,11 @@ class DictionaryViewModel with ChangeNotifier {
       formattedDefinition += _addStyleToBook(definition.bookName);
       formattedDefinition += definition.definition;
     }
-    return _buildHtmlContent(formattedDefinition);
-  }
-
-  String _buildNotFoundInfo() {
-    final content = '<p style = "text-align:center">not found</p>';
-    return _buildHtmlContent(content);
+    return formattedDefinition;
   }
 
   String _addStyleToBook(String book) {
-    return '\n<p class="book">$book</p>\n';
-  }
-
-  String _buildHtmlContent(String formattedDefinition) {
-    return '''
-      <html>
-      <head><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
-      <style>
-      html {font-size: $_fontSize%}
-      $_cssData
-      </style>
-      <body>
-      $formattedDefinition
-      </body>
-      </html>
-      ''';
+    return '<h3>$book</h3>\n<br>\n';
   }
 
   List<String> getWordsFrom({required String breakup}) {
@@ -183,11 +160,10 @@ class DictionaryViewModel with ChangeNotifier {
     return breakupWords;
   }
 
-  void onAlgorithmModeChanged(DictAlgorithm? value) {
+  void onModeChanged(DictAlgorithm? value) {
     if (value != null) {
       _currentAlgorithmMode = value;
-      print(value);
-      _init();
+      _lookupDefinition();
     }
   }
 }

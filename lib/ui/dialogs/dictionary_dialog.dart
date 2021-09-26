@@ -1,116 +1,141 @@
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:provider/provider.dart';
-import 'package:tipitaka_pali/business_logic/view_models/dictionary_view_model.dart';
-import 'package:tipitaka_pali/utils/pali_tools.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+
+import '../../business_logic/view_models/dictionary_state.dart';
+import '../../business_logic/view_models/dictionary_view_model.dart';
+import '../../utils/pali_tools.dart';
 
 class DictionaryDialog extends StatelessWidget {
-  final String word;
-  DictionaryDialog(this.word);
+  final String? word;
+  DictionaryDialog({this.word});
 
   @override
   Widget build(BuildContext context) {
-    var textEditingController = new TextEditingController(text: word);
-
     return ChangeNotifierProvider<DictionaryViewModel>(
-      create: (content) => DictionaryViewModel(content, word),
-      builder: (context, child) {
-        return Consumer(builder: (context, DictionaryViewModel vm, __) {
-          final currentAlgorithmMode = vm.currentAlgorithmMode;
-          final pageContent = vm.definition;
-
-          vm.webViewController?.loadUrl(_getUri(pageContent).toString());
-
-          // fix for webview scroll in modal bottom sheet
-          // https://stackoverflow.com/a/62276169/
-          final Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers =
-              [Factory(() => EagerGestureRecognizer())].toSet();
-          UniqueKey _key = UniqueKey();
-
-          return Material(
-            child: Stack(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 56.0),
-                  child: pageContent.isEmpty
-                      ? Container(
-                          height: 100,
-                          child: Center(child: CircularProgressIndicator()))
-                      : WebView(
-                          key: _key,
-                          initialUrl: _getUri(pageContent).toString(),
-                          onWebViewCreated: (controller) {
-                            vm.webViewController = controller;
-                          },
-                          gestureRecognizers: gestureRecognizers,
-                        ),
-                ),
-                ListTile(
-                  leading: IconButton(
-                    icon: Icon(
-                      Icons.close,
-                      color: Colors.black,
-                    ),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                  title: TextField(
-                    controller: textEditingController,
-                    // style: TextStyle(
-                    //     color: Theme.of(context).colorScheme.onBackground),
-                    decoration: new InputDecoration(
-                        // filled: true,
-                        // fillColor: Theme.of(context).colorScheme.background,
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
-                        ),
-                        contentPadding: EdgeInsets.fromLTRB(24, 4, 24, 4)),
-                    cursorColor: Colors.redAccent,
-                    onChanged: (text) {
-                      final uniText =
-                          PaliTools.velthuisToUni(velthiusInput: text);
-                      textEditingController.text = uniText;
-                      textEditingController.selection =
-                          TextSelection.fromPosition(TextPosition(
-                              offset: textEditingController.text.length));
-                      context
-                          .read<DictionaryViewModel>()
-                          .onTextChanged(uniText);
-                    },
-                  ),
-                  trailing: DropdownButton<DictAlgorithm>(
-                    value: currentAlgorithmMode,
-                    items: DictAlgorithm.values
-                        .map((algo) => DropdownMenuItem<DictAlgorithm>(
-                            value: algo,
-                            child: Text(
-                              algo.toShortString(),
-                              // style: TextStyle(
-                              //   color: Theme.of(context).colorScheme.onSecondary,
-                              //   backgroundColor: Theme.of(context).colorScheme.secondary),
-                            )))
-                        .toList(),
-                    onChanged: context
-                        .read<DictionaryViewModel>()
-                        .onAlgorithmModeChanged,
-                  ),
-                ),
-              ],
+      create: (content) => DictionaryViewModel(word),
+      child: Material(
+        child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 56.0),
+              child: DictionaryContentView(),
             ),
-          );
-        });
-      },
+            ListTile(
+              // close button
+              leading: IconButton(
+                icon: Icon(Icons.close, color: Colors.black),
+                onPressed: () => Navigator.pop(context),
+              ),
+              title: DictionarySearchField(
+                initialValue: word,
+              ),
+              trailing: DictionaryAlgorithmModeView(),
+            ),
+          ],
+        ),
+      ),
     );
   }
+}
 
-  Uri _getUri(String pageContent) {
-    return Uri.dataFromString('<!DOCTYPE html> $pageContent',
-        mimeType: 'text/html', encoding: Encoding.getByName('utf-8'));
+class DictionarySearchField extends StatefulWidget {
+  const DictionarySearchField({Key? key, this.initialValue}) : super(key: key);
+  final String? initialValue;
+
+  @override
+  State<DictionarySearchField> createState() => _DictionarySearchFieldState();
+}
+
+class _DictionarySearchFieldState extends State<DictionarySearchField> {
+  late final textEditingController;
+  @override
+  void initState() {
+    textEditingController = TextEditingController(text: widget.initialValue);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    textEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 46,
+      child: TypeAheadField(
+          textFieldConfiguration: TextFieldConfiguration(
+              autocorrect: false,
+              controller: textEditingController,
+              decoration: InputDecoration(border: OutlineInputBorder()),
+              onChanged: (text) {
+                // convert velthuis input to uni
+                if (text.isNotEmpty) {
+                  final uniText = PaliTools.velthuisToUni(velthiusInput: text);
+                  textEditingController.text = uniText;
+                  textEditingController.selection = TextSelection.fromPosition(
+                      TextPosition(offset: textEditingController.text.length));
+                }
+              }),
+          suggestionsCallback: (text) async {
+            if (text.isEmpty) {
+              return <String>[];
+            } else {
+              return context.read<DictionaryViewModel>().getSuggestions(text);
+            }
+          },
+          itemBuilder: (context, String suggestion) {
+            return ListTile(title: Text(suggestion));
+          },
+          onSuggestionSelected: (String suggestion) {
+            textEditingController.text = suggestion;
+            context.read<DictionaryViewModel>().onClickSuggestion(suggestion);
+          }),
+    );
+  }
+}
+
+class DictionaryAlgorithmModeView extends StatelessWidget {
+  const DictionaryAlgorithmModeView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final algoMode = context.select<DictionaryViewModel, DictAlgorithm>(
+        (vm) => vm.currentAlgorithmMode);
+
+    return DropdownButton<DictAlgorithm>(
+      value: algoMode,
+      items: DictAlgorithm.values
+          .map((algo) => DropdownMenuItem<DictAlgorithm>(
+              value: algo, child: Text(algo.toStr())))
+          .toList(),
+      onChanged: context.read<DictionaryViewModel>().onModeChanged,
+    );
+  }
+}
+
+class DictionaryContentView extends StatelessWidget {
+  const DictionaryContentView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final state = context.select<DictionaryViewModel, DictionaryState>(
+        (DictionaryViewModel vm) => vm.dictionaryState);
+
+    return state.when(
+        initial: () => Container(),
+        loading: () => Container(
+            height: 100, child: Center(child: CircularProgressIndicator())),
+        data: (content) => SingleChildScrollView(
+            child: Padding(
+                padding: EdgeInsets.all(16.0), child: HtmlWidget(content))),
+        noData: () => Container(
+              height: 100,
+              child: Center(child: Text('Not found')),
+            ));
   }
 }

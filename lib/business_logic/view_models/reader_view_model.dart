@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:preload_page_view/preload_page_view.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
-//import 'package:theme_provider/theme_provider.dart';
 import 'package:tipitaka_pali/business_logic/models/book.dart';
 import 'package:tipitaka_pali/business_logic/models/bookmark.dart';
 import 'package:tipitaka_pali/business_logic/models/page_content.dart';
@@ -368,7 +367,7 @@ class ReaderViewModel with ChangeNotifier {
       final marginTop = 24.0;
       final slidingSheetDialogContent = Container(
         height: screenHeight - (statusBarHeight + marginTop),
-        child: DictionaryDialog(word),
+        child: DictionaryDialog(word: word),
       );
 
       return SlidingSheetDialog(
