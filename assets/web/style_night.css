@@ -1,7 +1,7 @@
 ﻿body {
 	font-family: "NotoSansMyanmar" !important;
     line-height: 2;
-    word-break: break-all;
+    word-break: normal;
 	color: #d0d0d0;
     background: black;
     padding-left: 10pt;

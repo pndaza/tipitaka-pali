@@ -15,7 +15,7 @@ class SettingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(AppLocalizations.of(context)!.settinngs),
+          title: Text(AppLocalizations.of(context)!.settings),
           actions: [],
         ),
         body: Padding(
@@ -109,5 +109,3 @@ class DictionarySettingView extends StatelessWidget {
     );
   }
 }
-
-

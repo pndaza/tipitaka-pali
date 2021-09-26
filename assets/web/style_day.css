@@ -3,7 +3,7 @@
     line-height: 2;
     padding-left: 10pt;
     padding-right: 10pt;
-    word-break: break-all;
+    word-break:normal
 }
 p { font-size: 1.3em; margin-bottom: 1.1em; text-align: left;}
 a {text-decoration: none; color: blue; font-size: 0.8em;}
