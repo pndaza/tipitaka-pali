@@ -87,7 +87,21 @@ class DictionaryViewModel with ChangeNotifier {
     final dictionaryProvider =
         DictionarySerice(DictionaryDatabaseRepository(DatabaseHelper()));
 
-    final String breakupText = await dictionaryProvider.getBreakup(word);
+    // frist dpr_stem will be used for stem
+    // stem is single word mostly
+    final String dprStem = await dictionaryProvider.getDprStem(word);
+    if (dprStem.isNotEmpty) {
+      final definitions =
+          await dictionaryProvider.getDefinition(word, isAlreadyStem: true);
+      if (definitions.isNotEmpty) {
+        return _formatDefinitions(definitions);
+      }
+    }
+
+  // not found in dpr_stem
+  // will be lookup in dpr_breakup
+  // breakup is multi-words 
+    final String breakupText = await dictionaryProvider.getDprBreakup(word);
     if (breakupText.isEmpty) return '';
 
     final List<String> words = getWordsFrom(breakup: breakupText);

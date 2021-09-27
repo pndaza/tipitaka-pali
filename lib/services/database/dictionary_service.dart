@@ -31,8 +31,13 @@ class DictionarySerice {
     return dictionaryRepository.getSuggestions(word);
   }
 
-  Future<String> getBreakup(String word) async {
-    return dictionaryRepository.getBreakup(word);
+  Future<String> getDprBreakup(String word) async {
+    return dictionaryRepository.getDprBreakup(word);
+    
+  }
+
+    Future<String> getDprStem(String word) async {
+    return dictionaryRepository.getDprStem(word);
     
   }
 }

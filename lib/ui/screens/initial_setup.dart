@@ -12,10 +12,9 @@ class InitialSetup extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       child: ChangeNotifierProvider<InitialSetupViewModel>(
-        create: (context) => InitialSetupViewModel(context),
+        create: (context) => InitialSetupViewModel(context)..setUp(isUpdateMode),
         builder: (context, child) {
           final vm = Provider.of<InitialSetupViewModel>(context);
-          vm.setUp(isUpdateMode);
           return Center(child: _buildHomeView(context, vm));
         },
       ),
