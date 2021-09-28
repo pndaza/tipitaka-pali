@@ -183,7 +183,7 @@ class ReaderViewModel with ChangeNotifier {
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
           </head>
           <style>
-            html {font-size: $_fontSize%}
+            html {font-size: ${_fontSize.toString()}px}
             $_cssFont
             $_cssData
           </style>

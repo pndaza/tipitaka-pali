@@ -92,7 +92,7 @@ class DictionaryViewModel with ChangeNotifier {
     final String dprStem = await dictionaryProvider.getDprStem(word);
     if (dprStem.isNotEmpty) {
       final definitions =
-          await dictionaryProvider.getDefinition(word, isAlreadyStem: true);
+          await dictionaryProvider.getDefinition(dprStem, isAlreadyStem: true);
       if (definitions.isNotEmpty) {
         return _formatDefinitions(definitions);
       }

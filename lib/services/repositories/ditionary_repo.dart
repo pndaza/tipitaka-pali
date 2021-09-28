@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:tipitaka_pali/business_logic/models/definition.dart';
 import 'package:tipitaka_pali/services/dao/dictionary_dao.dart';
 import 'package:tipitaka_pali/services/database/database_helper.dart';
@@ -53,13 +52,13 @@ class DictionaryDatabaseRepository implements DictionaryRepository {
   }
 
   @override
-  Future<String> getDprStem(String word) async{
+  Future<String> getDprStem(String word) async {
     final db = await databaseHelper.database;
     final List<Map<String, dynamic>> maps = await db.query('dpr_stem',
         columns: ['stem'], where: 'word = ?', whereArgs: [word]);
     // word column is unqiue
     // so list always one entry
     if (maps.isEmpty) return '';
-    return maps.first['breakup'] as String;
+    return maps.first['stem'] as String;
   }
 }
