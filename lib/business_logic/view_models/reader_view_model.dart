@@ -39,7 +39,7 @@ class ReaderViewModel with ChangeNotifier {
   late String _cssData;
   late String javascriptData;
   bool loadFinished = false;
-  final int preLoadPageCount = 3;
+  final int preLoadPageCount = 2;
   late PreloadPageController pageController;
   late final List<WebViewController?> webViewControllers;
 
@@ -294,7 +294,7 @@ class ReaderViewModel with ChangeNotifier {
   }
 
   void increaseFontSize() {
-    _fontSize += 5;
+    _fontSize++;
     var currentPageIndex = currentPage! - book.firstPage!;
 
     webViewControllers[currentPageIndex]!
@@ -319,7 +319,7 @@ class ReaderViewModel with ChangeNotifier {
   }
 
   void decreaseFontSize() {
-    _fontSize -= 5;
+    _fontSize--;
     var currentPageIndex = currentPage! - book.firstPage!;
     webViewControllers[currentPageIndex]!
         .loadUrl(getPageContent(currentPageIndex).toString());
