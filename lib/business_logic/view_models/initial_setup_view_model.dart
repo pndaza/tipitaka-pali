@@ -3,9 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_archive/flutter_archive.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:tipitaka_pali/app.dart';
 import 'package:tipitaka_pali/data/constants.dart';
@@ -13,87 +11,81 @@ import 'package:tipitaka_pali/services/prefs.dart';
 
 class InitialSetupViewModel extends ChangeNotifier {
   final BuildContext _context;
-  final String _assetsFolder = 'assets';
-  final String _databasePath = 'database';
-  final String archiveFile = 'books.zip';
   InitialSetupViewModel(this._context);
 
   Future<void> setUp(bool isUpdateMode) async {
     myLogger.i('isUpdateMode : $isUpdateMode');
-    final databasesPath = await getDatabasesPath();
-    final tempDir = await getTemporaryDirectory();
-    final tempDirPath = tempDir.path;
+    final databasesDirPath = await getDatabasesPath();
+    final dbFilePath = join(databasesDirPath, k_databaseName);
 
     if (isUpdateMode) {
-      await _deleteFile(join(databasesPath, k_databaseName));
+      // deleting old database file
+      await deleteDatabase(dbFilePath);
     }
-    var sourceDbArchive =
-        join(_assetsFolder, _databasePath, k_assetsDatabaseArchive);
-    var tempDbArchive = join(tempDirPath, k_assetsDatabaseArchive);
-    await _copyFromAssets(sourceDbArchive, tempDbArchive);
-    await _nativeExtract(tempDbArchive, databasesPath);
-    await _deleteFile(tempDbArchive);
+    // copying new database from assets
+    await _copyFromAssets(dbFilePath);
 
-    // save record to sharedpref
+    // save record to shared Preference
     Prefs.isDatabaseSaved = true;
     Prefs.databaseVersion = k_currentDatabaseVersion;
 
     _openHomePage();
   }
 
-  Future<void> _copyFromAssets(String source, String destionation) async {
-    myLogger.i('coping from assets');
-    ByteData data = await rootBundle.load(source);
-    List<int> bytes =
-        data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-    await File(destionation).writeAsBytes(bytes, flush: true);
-    if (await File(destionation).exists()) {
-      myLogger.i('dbArchive is copied to $destionation');
+  Future<void> _copyFromAssets(String dbFilePath) async {
+    final assetsPath = join('assets', 'database');
+    const parts = <String>[
+      'tipitaka_pali_part.aa',
+      'tipitaka_pali_part.ab',
+      'tipitaka_pali_part.ac',
+      'tipitaka_pali_part.ad',
+      'tipitaka_pali_part.ae',
+      'tipitaka_pali_part.af',
+      'tipitaka_pali_part.ag',
+      'tipitaka_pali_part.ah',
+      'tipitaka_pali_part.ai',
+      'tipitaka_pali_part.aj',
+      'tipitaka_pali_part.ak',
+    ];
+
+    final dbFile = File(dbFilePath);
+    final timeBeforeCopy = DateTime.now();
+    for (String part in parts) {
+      // reading from assets
+      final bytes = await rootBundle.load(join(assetsPath, part));
+      // appending to output dbfile
+      await dbFile.writeAsBytes(
+          bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes),
+          mode: FileMode.append);
     }
-  }
 
-  Future<void> _nativeExtract(
-      String zipFilePath, String destionationDir) async {
-    myLogger.i('extracting zip');
-    final zipFile = File(zipFilePath);
-    final destinationDir = Directory(destionationDir);
+    final timeAfterCopied = DateTime.now();
+    debugPrint(
+        'copying time from asset to db dir: ${timeAfterCopied.difference(timeBeforeCopy)}');
 
-    await ZipFile.extractToDirectory(
-        zipFile: zipFile,
-        destinationDir: destinationDir,
-        onExtracting: (zipEntry, progress) {
-          myLogger.i('progress: ${progress.toStringAsFixed(1)}%');
-          myLogger.i('name: ${zipEntry.name}');
-          return ZipFileOperation.includeItem;
-        });
-  }
+    final isDbExist = await databaseExists(dbFilePath);
+    debugPrint('is db exist: $isDbExist');
 
-  // Future<void> _extract(String zipFilePath, String destionationDir) async {
-  //   // Decode the Zip file
-  //   // Read the Zip file from disk.
-  // final bytes = File(zipFilePath).readAsBytesSync();
-  // final archive = ZipDecoder().decodeBytes(bytes);
 
-  // // Extract the contents of the Zip archive to disk.
-  // for (final file in archive) {
-  //   final filename = file.name;
-  //   if (file.isFile) {
-  //     final data = file.content as List<int>;
-  //     File(join(destionationDir, filename))
-  //       ..createSync(recursive: true)
-  //       ..writeAsBytesSync(data);
-  //   } else {
-  //     Directory(join(destionationDir, filename))
-  //       ..create(recursive: true);
-  //   }
-  // }
-  // }
+    final timeBeforeIndexing = DateTime.now();
 
-  Future<void> _deleteFile(String path) async {
-    var file = File(path);
-    if (await file.exists()) {
-      await file.delete();
-    }
+    final database = await openDatabase(dbFilePath);
+    // building Index
+    await database
+        .execute('CREATE INDEX "dictionary_index" ON "dictionary" ("word");');
+    await database
+        .execute('CREATE INDEX "dpr_breakup_index" ON "dpr_breakup" ("word");');
+    await database.execute('CREATE INDEX page_index ON pages ( bookid );');
+    await database
+        .execute('CREATE INDEX paragraph_index ON paragraphs ( book_id );');
+    await database.execute(
+        'CREATE INDEX paragraph_mapping_index ON paragraph_mapping ( base_page_number);');
+    await database.execute('CREATE INDEX toc_index ON tocs ( book_id );');
+    await database.execute('CREATE UNIQUE INDEX word_index ON words ( word );');
+
+    final timeAfterIndexing = DateTime.now();
+    debugPrint('indexing time: ${timeAfterIndexing.difference(timeBeforeIndexing)}');
+
   }
 
   void _openHomePage() {
