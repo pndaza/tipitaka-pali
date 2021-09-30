@@ -145,6 +145,11 @@ class ReaderViewModel with ChangeNotifier {
     }
   }
 
+  String getPageContentForDesktop(int index) {
+    return pages[index].content;
+    
+  }
+
   Uri getPageContent(int index) {
     String pageContent = pages[index].content;
     if (textToHighlight != null) {

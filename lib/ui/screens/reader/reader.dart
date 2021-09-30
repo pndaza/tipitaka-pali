@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tipitaka_pali/app.dart';
@@ -6,6 +8,8 @@ import 'package:tipitaka_pali/business_logic/view_models/reader_view_model.dart'
 import 'package:tipitaka_pali/ui/screens/reader/widgets/app_bar.dart';
 import 'package:tipitaka_pali/ui/screens/reader/widgets/control_bar.dart';
 import 'package:tipitaka_pali/ui/screens/reader/widgets/page_view.dart';
+
+import 'widgets/desktop_reader.dart';
 
 class Reader extends StatelessWidget {
   final Book book;
@@ -33,6 +37,11 @@ class Reader extends StatelessWidget {
               future: !vm.loadFinished ? vm.loadAllData() : vm.loadCached(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
+                  if (Platform.isMacOS ||
+                      Platform.isLinux ||
+                      Platform.isWindows) {
+                    return DesktopReader();
+                  }
                   return Scaffold(
                     appBar: const ReaderAppBar(),
                     body: const MyPageView(),

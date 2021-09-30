@@ -137,7 +137,9 @@ class DataView extends StatelessWidget {
             },
           );
         }
-        return LoadingView();
+        return SizedBox(
+          height: 300,
+          child: LoadingView());
       },
     );
   }
