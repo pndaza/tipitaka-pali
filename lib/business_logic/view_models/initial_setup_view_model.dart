@@ -4,8 +4,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:tipitaka_pali/app.dart';
 import 'package:tipitaka_pali/data/constants.dart';
 import 'package:tipitaka_pali/services/prefs.dart';
 
@@ -14,14 +14,30 @@ class InitialSetupViewModel extends ChangeNotifier {
   InitialSetupViewModel(this._context);
 
   Future<void> setUp(bool isUpdateMode) async {
-    myLogger.i('isUpdateMode : $isUpdateMode');
-    final databasesDirPath = await getDatabasesPath();
+    debugPrint('isUpdateMode : $isUpdateMode');
+
+    late String databasesDirPath;
+
+    if (Platform.isAndroid || Platform.isIOS || Platform.isMacOS) {
+      databasesDirPath = await getDatabasesPath();
+    }
+    if (Platform.isLinux || Platform.isWindows) {
+      final docDirPath = await getApplicationDocumentsDirectory();
+      databasesDirPath = docDirPath.path;
+    }
+    // final databasesDirPath = await getApplicationDocumentsDirectory();
     final dbFilePath = join(databasesDirPath, k_databaseName);
 
     if (isUpdateMode) {
       // deleting old database file
       await deleteDatabase(dbFilePath);
     }
+
+    //Check if parent directory exists
+    try {
+      await Directory(dirname(databasesDirPath)).create(recursive: true);
+    } catch (_) {}
+
     // copying new database from assets
     await _copyFromAssets(dbFilePath);
 
@@ -66,26 +82,28 @@ class InitialSetupViewModel extends ChangeNotifier {
     final isDbExist = await databaseExists(dbFilePath);
     debugPrint('is db exist: $isDbExist');
 
-
     final timeBeforeIndexing = DateTime.now();
 
     final database = await openDatabase(dbFilePath);
     // building Index
-    await database
-        .execute('CREATE INDEX "dictionary_index" ON "dictionary" ("word");');
-    await database
-        .execute('CREATE INDEX "dpr_breakup_index" ON "dpr_breakup" ("word");');
-    await database.execute('CREATE INDEX page_index ON pages ( bookid );');
-    await database
-        .execute('CREATE INDEX paragraph_index ON paragraphs ( book_id );');
     await database.execute(
-        'CREATE INDEX paragraph_mapping_index ON paragraph_mapping ( base_page_number);');
-    await database.execute('CREATE INDEX toc_index ON tocs ( book_id );');
-    await database.execute('CREATE UNIQUE INDEX word_index ON words ( word );');
+        'CREATE INDEX IF NOT EXISTS "dictionary_index" ON "dictionary" ("word");');
+    await database.execute(
+        'CREATE INDEX IF NOT EXISTS "dpr_breakup_index" ON "dpr_breakup" ("word");');
+    await database
+        .execute('CREATE INDEX IF NOT EXISTS page_index ON pages ( bookid );');
+    await database.execute(
+        'CREATE INDEX IF NOT EXISTS paragraph_index ON paragraphs ( book_id );');
+    await database.execute(
+        'CREATE INDEX IF NOT EXISTS paragraph_mapping_index ON paragraph_mapping ( base_page_number);');
+    await database
+        .execute('CREATE INDEX IF NOT EXISTS toc_index ON tocs ( book_id );');
+    await database.execute(
+        'CREATE UNIQUE INDEX IF NOT EXISTS word_index ON words ( word );');
 
     final timeAfterIndexing = DateTime.now();
-    debugPrint('indexing time: ${timeAfterIndexing.difference(timeBeforeIndexing)}');
-
+    debugPrint(
+        'indexing time: ${timeAfterIndexing.difference(timeBeforeIndexing)}');
   }
 
   void _openHomePage() {

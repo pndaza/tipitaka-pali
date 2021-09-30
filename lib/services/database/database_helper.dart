@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:tipitaka_pali/app.dart';
 import 'package:tipitaka_pali/data/constants.dart';
@@ -21,7 +23,15 @@ class DatabaseHelper {
 // Open Assets Database
   _initDatabase() async {
     myLogger.i('initializing Database');
-    var dbPath = await getDatabasesPath();
+    late String dbPath;
+
+    if (Platform.isAndroid || Platform.isIOS || Platform.isMacOS) {
+      dbPath = await getDatabasesPath();
+    }
+    if (Platform.isLinux || Platform.isWindows) {
+      final docDirPath = await getApplicationDocumentsDirectory();
+      dbPath = docDirPath.path;
+    }
     var path = join(dbPath, k_databaseName);
 
     myLogger.i('opening Database ...');
