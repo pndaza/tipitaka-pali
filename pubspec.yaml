@@ -39,13 +39,9 @@ dependencies:
   provider: ^6.0.0
   substring_highlight: ^1.0.33
   toggle_switch: ^1.2.0
-  keyboard_actions: ^3.4.3
   collection: ^1.15.0
   logger: ^1.0.0
   preload_page_view: ^0.1.6
-  flutter_archive: ^4.0.1
-  # uni_links: ^0.4.0
-
   cupertino_icons: ^1.0.3
   flex_color_scheme: ^3.0.1
   sqflite_common: ^2.0.1+1

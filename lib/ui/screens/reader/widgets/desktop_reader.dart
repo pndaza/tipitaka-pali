@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
-import 'package:tipitaka_pali/business_logic/models/dictionary.dart';
 import 'package:tipitaka_pali/ui/dialogs/dictionary_dialog.dart';
 
 import '../../../../business_logic/view_models/reader_view_model.dart';
