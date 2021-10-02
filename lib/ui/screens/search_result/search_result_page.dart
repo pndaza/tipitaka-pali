@@ -38,7 +38,7 @@ class SearchResultPage extends StatelessWidget {
           final state = context.watch<SearchResultController>().state;
 
           return state.when(
-            loading: () => LoadingView(),
+            loading: () => Material(child: LoadingView()),
             noData: () => NoDataView(searchWord: searchWord),
             loaded: (results, bookCount) => DataView(
               searchWord: searchWord,
