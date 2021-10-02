@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tipitaka_pali/ui/screens/fask_home.dart';
+import 'package:tipitaka_pali/ui/screens/dictionary_page.dart';
 import 'package:tipitaka_pali/ui/screens/home/home_container.dart';
 import 'package:tipitaka_pali/ui/screens/reader/reader.dart';
 import 'package:tipitaka_pali/ui/screens/search_result/search_result_page.dart';
@@ -11,7 +11,7 @@ const HomeRoute = '/home';
 const ReaderRoute = '/reader';
 const SearchResultRoute = '/search_result_view';
 const SettingRoute = '/setting';
-const FakeHomeRoute = '/fake_home';
+const DictionaryRoute = '/dictionary';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -25,8 +25,8 @@ class RouteGenerator {
       case HomeRoute:
         screen = Home();
         break;
-      case FakeHomeRoute:
-        screen = FakeHome();
+      case DictionaryRoute:
+        screen = DictionaryPage();
         break;
       case SearchResultRoute:
         if (arguments is Map) {

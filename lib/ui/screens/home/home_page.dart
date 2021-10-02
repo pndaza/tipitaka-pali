@@ -63,6 +63,14 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
                 ListTile(
+                  title: ColoredText('Dictionary',
+                      style: TextStyle()),
+                  onTap: () {
+                    _openDictionaryPage(context);
+                    ;
+                  },
+                ),
+                ListTile(
                   title: ColoredText(AppLocalizations.of(context)!.about,
                       style: TextStyle()),
                   onTap: () {
@@ -77,6 +85,7 @@ class HomePage extends StatelessWidget {
                     ;
                   },
                 ),
+                
               ],
             ),
           ),
@@ -118,6 +127,11 @@ class HomePage extends StatelessWidget {
     return await HomePageViewModel().fecthItems(category);
   }
 
+  _openSettingPage(BuildContext context) {
+    Navigator.pushNamed(context, SettingRoute);
+  }
+
+
   _openBook(BuildContext context, ListItem listItem) {
     if (listItem.runtimeType == BookItem) {
       BookItem bookItem = listItem as BookItem;
@@ -127,8 +141,8 @@ class HomePage extends StatelessWidget {
     }
   }
 
-  _openSettingPage(BuildContext context) {
-    Navigator.pushNamed(context, SettingRoute);
+  _openDictionaryPage(BuildContext context) {
+    Navigator.pushNamed(context, DictionaryRoute);
   }
 
   _showAboutDialog(BuildContext context) {
