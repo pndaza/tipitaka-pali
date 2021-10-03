@@ -10,19 +10,29 @@ class SearchFilterView extends StatelessWidget {
   Widget build(BuildContext context) {
     final notifier = context.watch<SearchFilterController>();
     final closeButton = Positioned(
-        top: -28,
-        child: FloatingActionButton(
-          child: Icon(Icons.close),
-          onPressed: () => Navigator.pop(context),
+        top: -18,
+        child: GestureDetector(
+          onTap: ()=> Navigator.pop(context),
+          child: ClipOval(
+            child: Container(
+              width: 56,
+              height: 56,
+              color: Theme.of(context).colorScheme.secondary,
+              child: Icon(
+                Icons.close,
+                color: Theme.of(context).colorScheme.onSecondary,
+              ),
+            ),
+          ),
         ));
 
     return Stack(
         clipBehavior: Clip.none,
         alignment: Alignment.topCenter,
         children: [
-          
           Container(
             // height: 200,
+            // color: Colors.brown,
             child: ListView(
               shrinkWrap: true,
               children: [

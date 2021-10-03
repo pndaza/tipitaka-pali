@@ -22,7 +22,6 @@ class SearchResultController extends ChangeNotifier {
 
   void _init() async {
     _allResults = await SearchService.getResults(searchWord.toLowerCase());
-    print('result: ${_allResults.length}');
     if (_allResults.isEmpty) {
       _state = SearchResultState.noData();
       notifyListeners();
@@ -38,10 +37,11 @@ class SearchResultController extends ChangeNotifier {
             filterController.selectedMainCategoryFilters.length &&
         this.filterController.selectedSubCategoryFilters.length ==
             filterController.selectedSubCategoryFilters.length) {
-              // initial case
-              // don't do any filter
+      // initial case
+      // don't do any filter
       return;
     }
+    print('not initial search');
     _state = SearchResultState.loading();
     print('calling on filter change');
     _filterdResults = _doFilter(filterController);

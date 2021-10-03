@@ -25,6 +25,7 @@ class SearchService {
     final IndexRepository repository =
         IndexDatabaseRepository(databaseProvider);
     List<String> queryWords = searchWord.trim().split(' ');
+    final beforeTime = DateTime.now();
     for (String word in queryWords) {
       print('searching for $word');
       var temp = await repository.getIndexes(word);
@@ -33,24 +34,45 @@ class SearchService {
       }
       results.add(temp);
     }
+    print('load time ${DateTime.now().difference(beforeTime)}');
 
-    return results.length == 1 ? results.first : _getMatch(results);
+    if (results.length == 1) {
+      // one word case
+      //
+      await _addBookIdtoIndex(results.first);
+      print(results.first.first.bookID);
+      return results.first;
+    }
+
+    // multiple words case
+
+    final matches = _getMatch(results);
+    await _addBookIdtoIndex(matches);
+
+    return matches;
   }
 
   static List<Index> _getMatch(List<List<Index>> results) {
     // Comparator<Index> indexComparator = (a, b) => a.page.compareTo(b.page);
-
-    for (int i = 1, length = 2; i < length; i++) {
+    List<Index> matches = <Index>[];
+    for (int i = 1, length = results.length; i < length; i++) {
       var current = results[i - 1];
       var next = results[i];
+      if (i != 1) {
+        current = matches;
+      }
       if (current.length < next.length) {
-        return _findAdjacents(smallList: current, largeList: next);
+        matches = _findAdjacents(smallList: current, largeList: next);
+        // if not found , doesn't need anymore to find for next word
+        if (matches.isEmpty) return matches;
       } else {
-        return _findAdjacents(
+        matches = _findAdjacents(
             smallList: next, largeList: current, reverseSearchMode: true);
+        // if not found , doesn't need anymore to find for next word
+        if (matches.isEmpty) return matches;
       }
     }
-    return <Index>[];
+    return matches;
   }
 
   static List<Index> _findAdjacents(
@@ -97,6 +119,15 @@ class SearchService {
       right++;
     }
     return right;
+  }
+
+  static Future<void> _addBookIdtoIndex(List<Index> indexes) async {
+    final DatabaseHelper databaseProvider = DatabaseHelper();
+    final IndexRepository repository =
+        IndexDatabaseRepository(databaseProvider);
+    for (Index index in indexes) {
+      index.bookID = await repository.getBookId(index.pageID);
+    }
   }
 
   static Future<SearchResult> getDetail(String query, Index index) async {

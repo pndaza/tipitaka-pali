@@ -4,6 +4,7 @@ import 'package:tipitaka_pali/services/database/database_helper.dart';
 
 abstract class IndexRepository {
   Future<List<Index>> getIndexes(String word);
+  Future<String> getBookId(int pageId);
 }
 
 class IndexDatabaseRepository implements IndexRepository {
@@ -23,20 +24,28 @@ class IndexDatabaseRepository implements IndexRepository {
 
     if (indexList.isEmpty) return <Index>[];
 
-    // adding bookname to index
-    final int length = indexList.length;
-    for (int i = 0; i < length; ++i) {
-      final pageId = indexList[i].pageID;
-      // final positon = indexList[i].position;
+    // // adding bookname to index
+    // final int length = indexList.length;
+    // for (int i = 0; i < length; ++i) {
+    //   final pageId = indexList[i].pageID;
+    //   // final positon = indexList[i].position;
 
-      // var map = await db.query('pages',
-      //     columns: ['bookid'], where: 'id = ?', whereArgs: [pageId]);
-      var map =
-          await db.rawQuery('SELECT bookid FROM pages WHERE id = $pageId');
-      final bookID = map[0]['bookid'] as String;
-      indexList[i].bookID = bookID;
-    }
+    //   // var map = await db.query('pages',
+    //   //     columns: ['bookid'], where: 'id = ?', whereArgs: [pageId]);
+    //   var map =
+    //       await db.rawQuery('SELECT bookid FROM pages WHERE id = $pageId');
+    //   final bookID = map[0]['bookid'] as String;
+    //   indexList[i].bookID = bookID;
+    // }
 
     return indexList;
+  }
+
+  Future<String> getBookId(int pageId) async {
+    final db = await databaseProvider.database;
+    final map =
+        await db.rawQuery('SELECT bookid FROM pages WHERE id = ?', [pageId]);
+    final bookID = map[0]['bookid'] as String;
+    return bookID;
   }
 }
