@@ -15,6 +15,7 @@ const String IS_SHOW_ALTERNATE_PALI = 'showAlternatePali';
 const String IS_SHOW_PTS_NUMBER = 'showPtsNumber';
 const String IS_SHOW_THAI_NUMBER = 'showThaiNumber';
 const String IS_SHOW_VRI_NUMBER = 'showVriNumber';
+const String CURRENT_SCRIPT_LANGUAGE = 'current_script_language';
 
 // default pref values
 const int DEFAULT_LOCALEVAL = 0;
@@ -27,6 +28,7 @@ const bool DEFAULT_SHOW_ALTERNATE_PALI = false;
 const bool DEFAULT_SHOW_PTS_NUMBER = false;
 const bool DEFAULT_SHOW_THAI_NUMBER = false;
 const bool DEFAULT_SHOW_VRI_NUMBER = false;
+const String DEFAULT_SCRIPT_LANGUAGE = 'Roman';
 
 class Prefs {
   // prevent object creation
@@ -80,4 +82,9 @@ class Prefs {
       instance.getBool(IS_SHOW_VRI_NUMBER) ?? DEFAULT_SHOW_VRI_NUMBER;
   static set isShowVriNumber(bool value) =>
       instance.setBool(IS_SHOW_VRI_NUMBER, value);
+
+  static String get currentScriptLanguage =>
+      instance.getString(CURRENT_SCRIPT_LANGUAGE) ?? DEFAULT_SCRIPT_LANGUAGE;
+  static set currentScriptLanguage(String value) =>
+      instance.setString(CURRENT_SCRIPT_LANGUAGE, value);
 }

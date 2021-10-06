@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:tipitaka_pali/business_logic/models/book.dart';
-import 'package:tipitaka_pali/business_logic/models/recent.dart';
-import 'package:tipitaka_pali/business_logic/view_models/recent_page_view_model.dart';
+import 'package:provider/provider.dart';
 
+import '../../../../business_logic/models/book.dart';
+import '../../../../business_logic/models/recent.dart';
+import '../../../../business_logic/view_models/recent_page_view_model.dart';
 import '../../../../routes.dart';
+import '../../../../services/provider/script_language_provider.dart';
+import '../../../../utils/pali_script.dart';
 
 class RecentListTile extends StatelessWidget {
   final RecentPageViewModel vm;
@@ -25,7 +28,10 @@ class RecentListTile extends StatelessWidget {
       ],
       child: GestureDetector(
         child: ListTile(
-          title: Text(recent.bookName!),
+          title: Text(PaliScript.getScriptOf(
+                language:
+                    context.read<ScriptLanguageProvider>().currentLanguage,
+                romanText: recent.bookName!)),
           trailing: Container(
             width: 80,
             child: Row(

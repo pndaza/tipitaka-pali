@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 
 import '../../business_logic/view_models/dictionary_state.dart';
 import '../../business_logic/view_models/dictionary_view_model.dart';
+import '../../services/provider/script_language_provider.dart';
+import '../../utils/pali_script.dart';
 import '../../utils/pali_tools.dart';
 
 class DictionaryDialog extends StatelessWidget {
@@ -53,7 +55,13 @@ class _DictionarySearchFieldState extends State<DictionarySearchField> {
   late final textEditingController;
   @override
   void initState() {
-    textEditingController = TextEditingController(text: widget.initialValue);
+    textEditingController = TextEditingController(
+        text: widget.initialValue == null
+            ? null
+            : PaliScript.getScriptOf(
+                language:
+                    context.read<ScriptLanguageProvider>().currentLanguage,
+                romanText: widget.initialValue!));
     super.initState();
   }
 

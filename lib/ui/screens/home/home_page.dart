@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-// #docregion AppLocalizationsImport
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:tipitaka_pali/business_logic/models/list_item.dart';
-import 'package:tipitaka_pali/business_logic/view_models/home_page_view_model.dart';
-import 'package:tipitaka_pali/ui/widgets/select_language_widget.dart';
-import 'package:tipitaka_pali/ui/widgets/select_theme_widget.dart';
-import 'package:tipitaka_pali/ui/widgets/colored_text.dart';
+import 'package:provider/provider.dart';
 
-// #enddocregion AppLocalizationsImport
-
+import '../../../business_logic/models/list_item.dart';
+import '../../../business_logic/view_models/home_page_view_model.dart';
 import '../../../routes.dart';
+import '../../../services/provider/script_language_provider.dart';
+import '../../../utils/pali_script.dart';
+import '../../widgets/colored_text.dart';
+import '../../widgets/select_language_widget.dart';
+import '../../widgets/select_theme_widget.dart';
+
+
 
 class HomePage extends StatelessWidget {
   // key will be use for load book list from database
@@ -32,7 +34,10 @@ class HomePage extends StatelessWidget {
             actions: [],
             bottom: TabBar(
               tabs: _mainCategories.entries
-                  .map((category) => Tab(text: category.value))
+                  .map((category) => Tab(text: PaliScript.getScriptOf(
+                language:
+                    context.read<ScriptLanguageProvider>().currentLanguage,
+                romanText: category.value)))
                   .toList(),
             ),
           ),

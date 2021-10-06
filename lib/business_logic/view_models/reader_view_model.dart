@@ -1,25 +1,27 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:preload_page_view/preload_page_view.dart';
+import 'package:provider/provider.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
-import 'package:tipitaka_pali/business_logic/models/book.dart';
-import 'package:tipitaka_pali/business_logic/models/bookmark.dart';
-import 'package:tipitaka_pali/business_logic/models/page_content.dart';
-import 'package:tipitaka_pali/business_logic/models/paragraph_mapping.dart';
-import 'package:tipitaka_pali/business_logic/models/recent.dart';
-import 'package:tipitaka_pali/services/database/database_helper.dart';
-import 'package:tipitaka_pali/services/prefs.dart';
-import 'package:tipitaka_pali/services/repositories/book_repo.dart';
-import 'package:tipitaka_pali/services/repositories/bookmark_repo.dart';
-import 'package:tipitaka_pali/services/repositories/page_content_repo.dart';
-import 'package:tipitaka_pali/services/repositories/paragraph_mapping_repo.dart';
-import 'package:tipitaka_pali/services/repositories/paragraph_repo.dart';
-import 'package:tipitaka_pali/services/repositories/recent_repo.dart';
-import 'package:tipitaka_pali/services/storage/asset_loader.dart';
-import 'package:tipitaka_pali/ui/dialogs/dictionary_dialog.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
+import '../../services/database/database_helper.dart';
+import '../../services/prefs.dart';
+import '../../services/provider/script_language_provider.dart';
+import '../../services/repositories/book_repo.dart';
+import '../../services/repositories/bookmark_repo.dart';
+import '../../services/repositories/page_content_repo.dart';
+import '../../services/repositories/paragraph_mapping_repo.dart';
+import '../../services/repositories/paragraph_repo.dart';
+import '../../services/repositories/recent_repo.dart';
+import '../../services/storage/asset_loader.dart';
+import '../../ui/dialogs/dictionary_dialog.dart';
+import '../../utils/pali_script.dart';
+import '../models/book.dart';
+import '../models/bookmark.dart';
+import '../models/page_content.dart';
+import '../models/paragraph_mapping.dart';
+import '../models/recent.dart';
 
 const kdartTheme = 'default_dark_theme';
 const kblackTheme = 'black';
@@ -184,7 +186,7 @@ class ReaderViewModel with ChangeNotifier {
     ''';
   }
 
-  Uri getPageContent(int index) {
+  String getPageContent(int index) {
     String pageContent = pages[index].content;
     if (textToHighlight != null) {
       pageContent = setHighlight(pageContent, textToHighlight!);
@@ -214,6 +216,31 @@ class ReaderViewModel with ChangeNotifier {
     }
 
     pageContent = _fixSafari(pageContent);
+    pageContent = PaliScript.getScriptOf(
+        language: context.read<ScriptLanguageProvider>().currentLanguage,
+        romanText: pageContent,
+        isHtmlText: true);
+    return '''
+    <!DOCTYPE html>
+          <html>
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          </head>
+          <style>
+            html {font-size: ${_fontSize.toString()}px}
+            $_cssFont
+            $_cssData
+          </style>
+          <body>
+            <p>${index + book.firstPage!}</p>
+            <div id="page_content">
+              $pageContent
+            </div>
+          </body>
+          </html>
+    ''';
+    /*
     return Uri.dataFromString('''
     <!DOCTYPE html>
           <html>
@@ -234,6 +261,7 @@ class ReaderViewModel with ChangeNotifier {
           </body>
           </html>
     ''', mimeType: 'text/html', encoding: Encoding.getByName('utf-8'));
+    */
   }
 
   String setHighlight(String content, String textToHighlight) {
@@ -396,6 +424,10 @@ class ReaderViewModel with ChangeNotifier {
 
   Future<void> showDictionary(String word) async {
     // removing puntuations etc.
+    // convert to roman if display script is not roman
+    word = PaliScript.getRomanScriptFrom(
+        language: context.read<ScriptLanguageProvider>().currentLanguage,
+        text: word);
     word = word.replaceAll(new RegExp(r'[^a-zA-ZāīūṅñṭḍṇḷṃĀĪŪṄÑṬḌHṆḶṂ]'), '');
     // convert ot lower case
     word = word.toLowerCase();

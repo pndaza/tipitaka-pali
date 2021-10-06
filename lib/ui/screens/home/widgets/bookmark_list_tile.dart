@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:tipitaka_pali/business_logic/models/book.dart';
-import 'package:tipitaka_pali/business_logic/models/bookmark.dart';
-import 'package:tipitaka_pali/business_logic/view_models/bookmark_page_view_model.dart';
+import 'package:provider/provider.dart';
+
+import '../../../../business_logic/models/book.dart';
+import '../../../../business_logic/models/bookmark.dart';
+import '../../../../business_logic/view_models/bookmark_page_view_model.dart';
 import '../../../../routes.dart';
+import '../../../../services/provider/script_language_provider.dart';
+import '../../../../utils/pali_script.dart';
 
 class BookmarkListTile extends StatelessWidget {
   final BookmarkPageViewModel bookmarkViewmodel;
@@ -29,7 +33,10 @@ class BookmarkListTile extends StatelessWidget {
       child: GestureDetector(
         child: ListTile(
           title: Text(bookmark.note),
-          subtitle: Text(bookmark.bookName!),
+          subtitle: Text(PaliScript.getScriptOf(
+                language:
+                    context.read<ScriptLanguageProvider>().currentLanguage,
+                romanText: bookmark.bookName!)),
           trailing: Container(
             width: 80,
             child: Row(

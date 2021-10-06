@@ -11,7 +11,7 @@ class DictionaryPage extends StatelessWidget {
         title: Text('Dictionary'),
       ),
       body: ChangeNotifierProvider<DictionaryViewModel>(
-        create: (content) => DictionaryViewModel(null),
+        create: (content) => DictionaryViewModel( null),
         child: Material(
           child: Stack(
             children: [

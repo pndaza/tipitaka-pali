@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../services/provider/script_language_provider.dart';
+import '../../utils/pali_script.dart';
 import 'book.dart';
 import 'category.dart';
 
@@ -15,11 +18,15 @@ class CategoryItem implements ListItem {
 
   Widget build(BuildContext context) {
     return Center(
-        child: Text(category.name,
+        child: Text(
+            PaliScript.getScriptOf(
+                language:
+                    context.read<ScriptLanguageProvider>().currentLanguage,
+                romanText: category.name),
             style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color:Theme.of(context).primaryColor) ));
+                color: Theme.of(context).primaryColor)));
   }
 }
 
@@ -30,7 +37,10 @@ class BookItem implements ListItem {
   BookItem(this.book);
 
   Widget build(BuildContext context) => Text(
-        book.name,
+        PaliScript.getScriptOf(
+                language:
+                    context.read<ScriptLanguageProvider>().currentLanguage,
+                romanText: book.name),
         style: TextStyle(fontSize: 20),
       );
 }

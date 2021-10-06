@@ -65,7 +65,7 @@ class DesktopReader extends StatelessWidget {
   String _makeClickable(String content) {
     // pali word not inside html tag
     final regexPaliWord =
-        RegExp(r'/[a-zA-ZāīūṅñṭḍṇḷṃĀĪŪṄÑṬḌHṆḶṂ]+(?![^<>]*>)/gm');
+        RegExp(r'[a-zA-ZāīūṅñṭḍṇḷṃĀĪŪṄÑṬḌHṆḶṂ]+(?![^<>]*>)');
     return content.replaceAllMapped(regexPaliWord,
         (match) => '<a href="${match.group(0)}">${match.group(0)}</a>');
     /*

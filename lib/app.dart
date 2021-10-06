@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
-// #enddocregion LocalizationDelegatesImport
-// #docregion AppLocalizationsImport
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-// #docregion LocalizationDelegatesImport
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:logger/logger.dart';
-// theme and localization provider includes
-// for multiProvider here
 import 'package:provider/provider.dart';
-import 'package:tipitaka_pali/routes.dart';
-import 'package:tipitaka_pali/services/provider/locale_change_notifier.dart';
-import 'package:tipitaka_pali/services/provider/theme_change_notifier.dart';
 
+import 'routes.dart';
+import 'services/provider/locale_change_notifier.dart';
+import 'services/provider/script_language_provider.dart';
+import 'services/provider/theme_change_notifier.dart';
 import 'ui/screens/splash_screen.dart';
 
 final Logger myLogger = Logger(
@@ -35,6 +31,9 @@ class App extends StatelessWidget {
             ),
             ChangeNotifierProvider<LocaleChangeNotifier>(
               create: (context) => LocaleChangeNotifier(),
+            ),
+            ChangeNotifierProvider<ScriptLanguageProvider>(
+              create: (context) => ScriptLanguageProvider(),
             ),
           ],
           builder: (context, _) {

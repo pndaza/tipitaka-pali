@@ -1,11 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:preload_page_view/preload_page_view.dart';
 import 'package:provider/provider.dart';
-import 'package:tipitaka_pali/app.dart';
-import 'package:tipitaka_pali/business_logic/view_models/reader_view_model.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
+import '../../../../app.dart';
+import '../../../../business_logic/view_models/reader_view_model.dart';
 
 class MyPageView extends StatelessWidget {
   const MyPageView();
@@ -25,7 +28,10 @@ class MyPageView extends StatelessWidget {
       itemCount: vm.pages.length,
       itemBuilder: (context, index) {
         return WebView(
-          initialUrl: vm.getPageContent(index).toString(),
+          // initialUrl: vm.getPageContent(index).toString(),
+          initialUrl: Uri.dataFromString(vm.getPageContent(index),
+                  mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
+              .toString(),
           javascriptMode: JavascriptMode.unrestricted,
           javascriptChannels: [
             JavascriptChannel(
@@ -38,7 +44,7 @@ class MyPageView extends StatelessWidget {
             ..add(Factory<VerticalDragGestureRecognizer>(
                 () => VerticalDragGestureRecognizer())),
           onWebViewCreated: (controller) =>
-            vm.webViewControllers[index] = controller,
+              vm.webViewControllers[index] = controller,
           onPageFinished: (_) {
             vm.webViewControllers[index]!.evaluateJavascript('''
                       var goto = document.getElementById("goto_001");

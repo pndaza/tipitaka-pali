@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tipitaka_pali/services/prefs.dart';
+
+import '../../services/prefs.dart';
 
 class ScriptSettingController extends ChangeNotifier {
   bool _isShowAlternatePali = Prefs.isShowAlternatePali;

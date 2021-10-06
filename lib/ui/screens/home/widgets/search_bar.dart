@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tipitaka_pali/utils/pali_tools.dart';
+
+import '../../../../utils/pali_tools.dart';
+import '../../../../utils/script_detector.dart';
 
 class SearchBar extends StatefulWidget {
   final void Function(String) onSubmitted;
@@ -61,7 +63,11 @@ class _SearchBarState extends State<SearchBar> {
               controller: controller,
               textInputAction: TextInputAction.search,
               onSubmitted: (text) => onSummited(text),
-              onChanged: (text) => onTextChanged(toUni(text)),
+              onChanged: (text) {
+                final scriptLanguage = ScriptDetector.getLanguage(text);
+                if (scriptLanguage == 'Roman') text = _toUni(text);
+                onTextChanged(text);
+              },
               decoration: InputDecoration(
                   border: InputBorder.none,
                   prefixIcon: Icon(
@@ -111,7 +117,7 @@ class _SearchBarState extends State<SearchBar> {
     );
   }
 
-  String toUni(String input) {
+  String _toUni(String input) {
     input = PaliTools.velthuisToUni(velthiusInput: input);
 
     controller.text = input;
