@@ -146,8 +146,42 @@ class ReaderViewModel with ChangeNotifier {
   }
 
   String getPageContentForDesktop(int index) {
-    return pages[index].content;
-    
+    // return pages[index].content;
+    String pageContent = pages[index].content;
+    if (textToHighlight != null) {
+      pageContent = setHighlight(pageContent, textToHighlight!);
+    }
+
+    if (tocHeader != null) {
+      pageContent = addIDforScroll(pageContent, tocHeader!);
+    }
+
+    // showing page number based on user settings
+    var publicationKeys = <String>['P', 'T', 'V'];
+    if (!_isShowPtsPageNumber) publicationKeys.remove('P');
+    if (!_isShowThaiPageNumber) publicationKeys.remove('T');
+    if (!_isShowVriPageNubmer) publicationKeys.remove('V');
+
+    if (publicationKeys.isNotEmpty) {
+      publicationKeys.forEach((publicationKey) {
+        final publicationFormat =
+            RegExp('(<a name="$publicationKey(\\d+)\\.(\\d+)">)');
+        pageContent = pageContent.replaceAllMapped(publicationFormat, (match) {
+          final volume = match.group(2)!;
+          // remove leading zero from page number
+          final pageNumber = int.parse(match.group(3)!).toString();
+          return '${match.group(1)}[$publicationKey $volume.$pageNumber]';
+        });
+      });
+    }
+
+    pageContent = _fixSafari(pageContent);
+    return '''
+            <p style="color:blue;text-align:right;">[page-${index + book.firstPage!}]</p>
+            <div id="page_content">
+              $pageContent
+            </div>
+    ''';
   }
 
   Uri getPageContent(int index) {

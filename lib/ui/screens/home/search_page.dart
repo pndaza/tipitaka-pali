@@ -18,10 +18,10 @@ class SearchPage extends StatelessWidget {
             title: Text(AppLocalizations.of(context)!.search),
             centerTitle: true,
             actions: [
-              TextButton.icon(
-                  onPressed: () => _showDictionaryDialog(context),
-                  icon: Icon(Icons.search, color: Colors.white),
-                  label: Text('Dict', style: TextStyle(color: Colors.white))),
+              // TextButton.icon(
+              //     onPressed: () => _showDictionaryDialog(context),
+              //     icon: Icon(Icons.search, color: Colors.white),
+              //     label: Text('Dict', style: TextStyle(color: Colors.white))),
             ],
           ),
           body: Consumer<SearchViewModel>(builder: (context, vm, child) {
