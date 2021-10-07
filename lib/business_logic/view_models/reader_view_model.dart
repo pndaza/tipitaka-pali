@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:preload_page_view/preload_page_view.dart';
@@ -266,6 +268,11 @@ class ReaderViewModel with ChangeNotifier {
     */
   }
 
+  Uri getUriFrom({required String data}) {
+    return Uri.dataFromString(data,
+        mimeType: 'text/html', encoding: Encoding.getByName('utf-8'));
+  }
+
   String setHighlight(String content, String textToHighlight) {
     // TODO optimize highlight for some query text
     String highlightedText =
@@ -367,7 +374,7 @@ class ReaderViewModel with ChangeNotifier {
     var currentPageIndex = currentPage! - book.firstPage!;
 
     webViewControllers[currentPageIndex]!
-        .loadUrl(getPageContent(currentPageIndex).toString());
+        .loadUrl(getUriFrom(data: getPageContent(currentPageIndex)).toString());
     // notifyListeners();
     Prefs.fontSize = _fontSize;
     // update preload pages
@@ -375,15 +382,15 @@ class ReaderViewModel with ChangeNotifier {
     var count = 0;
     var pageIndex = currentPageIndex;
     while (pageIndex++ < numberOfPage && count++ < preLoadPageCount) {
-      webViewControllers[pageIndex]!
-          .loadUrl(getPageContent(pageIndex).toString());
+      webViewControllers[pageIndex]!.loadUrl(
+          getUriFrom(data: getPageContent(currentPageIndex)).toString());
     }
     // for left pages
     count = 0;
     pageIndex = currentPageIndex;
     while (pageIndex-- > 0 && count++ < preLoadPageCount) {
-      webViewControllers[pageIndex]!
-          .loadUrl(getPageContent(pageIndex).toString());
+      webViewControllers[pageIndex]!.loadUrl(
+          getUriFrom(data: getPageContent(currentPageIndex)).toString());
     }
   }
 
@@ -391,7 +398,7 @@ class ReaderViewModel with ChangeNotifier {
     _fontSize--;
     var currentPageIndex = currentPage! - book.firstPage!;
     webViewControllers[currentPageIndex]!
-        .loadUrl(getPageContent(currentPageIndex).toString());
+        .loadUrl(getUriFrom(data: getPageContent(currentPageIndex)).toString());
     // notifyListeners();
     Prefs.fontSize = _fontSize;
     // update preload pages
@@ -399,15 +406,15 @@ class ReaderViewModel with ChangeNotifier {
     var count = 0;
     var pageIndex = currentPageIndex;
     while (pageIndex++ < numberOfPage && count++ < preLoadPageCount) {
-      webViewControllers[pageIndex]!
-          .loadUrl(getPageContent(pageIndex).toString());
+      webViewControllers[pageIndex]!.loadUrl(
+          getUriFrom(data: getPageContent(currentPageIndex)).toString());
     }
     // left pages
     count = 0;
     pageIndex = currentPageIndex;
     while (pageIndex-- > 0 && count++ < preLoadPageCount) {
-      webViewControllers[pageIndex]!
-          .loadUrl(getPageContent(pageIndex).toString());
+      webViewControllers[pageIndex]!.loadUrl(
+          getUriFrom(data: getPageContent(currentPageIndex)).toString());
     }
   }
 

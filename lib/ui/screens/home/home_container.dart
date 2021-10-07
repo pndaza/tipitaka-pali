@@ -31,11 +31,11 @@ class _HomeState extends State<Home> {
               icon: Icon(Icons.home),
             ),
             BottomNavigationBarItem(
-                label: AppLocalizations.of(context)!.bookmark,
-                icon: Icon(Icons.bookmark)),
-            BottomNavigationBarItem(
                 label: AppLocalizations.of(context)!.recent,
                 icon: Icon(Icons.history)),
+            BottomNavigationBarItem(
+                label: AppLocalizations.of(context)!.bookmark,
+                icon: Icon(Icons.bookmark)),
             BottomNavigationBarItem(
                 label: AppLocalizations.of(context)!.search,
                 icon: Icon(Icons.search)),
@@ -55,9 +55,9 @@ class _HomeState extends State<Home> {
       case 0:
         return HomePage();
       case 1:
-        return BookmarkPage();
-      case 2:
         return RecentPage();
+      case 2:
+        return BookmarkPage();
       case 3:
         return SearchPage();
     }

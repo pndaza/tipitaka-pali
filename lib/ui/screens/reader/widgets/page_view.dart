@@ -21,8 +21,9 @@ class MyPageView extends StatelessWidget {
         initialPage: vm.currentPage! - vm.book.firstPage!);
 
     return PreloadPageView.builder(
-      physics: RangeMaintainingScrollPhysics(),
-      // allowImplicitScrolling: true,
+      // physics: RangeMaintainingScrollPhysics(),
+      physics: ClampingScrollPhysics() ,
+      pageSnapping: true,
       preloadPagesCount: vm.preLoadPageCount,
       controller: vm.pageController,
       itemCount: vm.pages.length,
