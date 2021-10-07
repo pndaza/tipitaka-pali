@@ -1,51 +1,41 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:tipitaka_pali/business_logic/view_models/bookmark_page_view_model.dart';
-import 'package:tipitaka_pali/ui/dialogs/confirm_dialog.dart';
-import 'package:tipitaka_pali/ui/screens/home/widgets/bookmark_list_tile.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
-// enum OkCancelAction { OK, CANCEL }
+import '../../../business_logic/view_models/bookmark_page_view_model.dart';
+import '../../../services/dao/bookmark_dao.dart';
+import '../../../services/database/database_helper.dart';
+import '../../../services/repositories/bookmark_repo.dart';
+import '../../dialogs/confirm_dialog.dart';
+import 'widgets/bookmark_list_tile.dart';
 
-class BookmarkPage extends StatefulWidget {
-  @override
-  _BookmarkPageState createState() => _BookmarkPageState();
-}
-
-class _BookmarkPageState extends State<BookmarkPage> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class BookmarkPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<BookmarkPageViewModel>(
-      create: (context) {
-        BookmarkPageViewModel vm = BookmarkPageViewModel();
-        vm.fetchBookmarks();
-        return vm;
-      },
+      create: (_) =>
+          BookmarkPageViewModel(BookmarkDatabaseRepository(DatabaseHelper(), BookmarkDao()))
+            ..fetchBookmarks(),
       child: Scaffold(
-        appBar: BaseAppBar(),
+        appBar: BookmarkAppBar(),
         body: Consumer<BookmarkPageViewModel>(
           builder: (context, vm, child) {
-            return vm.bookmarks.isEmpty
+            final bookmarks = vm.bookmarks;
+            return bookmarks.isEmpty
                 ? Center(child: Text(AppLocalizations.of(context)!.bookmark))
                 : ListView.separated(
-                    itemCount: vm.bookmarks.length,
+                    itemCount: bookmarks.length,
                     itemBuilder: (context, index) {
-                      return GestureDetector(
-                        child: BookmarkListTile(
-                            bookmarkViewmodel: vm, index: index),
-                        onTap: () => vm.openBook(vm.bookmarks[index], context),
+                      final bookmark = bookmarks[index];
+                      return BookmarkListTile(
+                        bookmark: bookmark,
+                        onTap: (bookmark) => vm.openBook(bookmark, context),
+                        onDelete: (bookmark) => vm.delete(bookmark),
                       );
                     },
-                    separatorBuilder: (context, index) {
-                      return Divider(
-                        color: Colors.grey,
-                      );
+                    separatorBuilder: (_, __) {
+                      return Divider(color: Colors.grey);
                     });
           },
         ),
@@ -54,12 +44,11 @@ class _BookmarkPageState extends State<BookmarkPage> {
   }
 }
 
-class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const BaseAppBar({Key? key}) : super(key: key);
+class BookmarkAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const BookmarkAppBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final vm = Provider.of<BookmarkPageViewModel>(context, listen: false);
     return AppBar(
       title: Text(AppLocalizations.of(context)!.bookmark),
       actions: [
@@ -67,9 +56,8 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
             icon: Icon(Icons.delete),
             onPressed: () async {
               final result = await _getConfirmataion(context);
-              if (result == OkCancelAction.OK) {
-                vm.deleteAll();
-              }
+              if (result == OkCancelAction.OK)
+                context.read<BookmarkPageViewModel>().deleteAll();
             })
       ],
     );
@@ -82,14 +70,12 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
     return await showDialog<OkCancelAction>(
         context: context,
         builder: (context) {
-          return 
- ConfirmDialog(
-              title: 'Comfirmation',
-              message: 'မှတ်သားထားသမျှ အားလုံးကို ဖျက်ရန် သေချာပြီလား',
-              okLabel: 'ဖျက်မယ်',
-              cancelLabel: 'မဖျက်တော့ဘူး',
-            );
-          
+          return ConfirmDialog(
+            title: 'Comfirmation',
+            message: 'မှတ်သားထားသမျှ အားလုံးကို ဖျက်ရန် သေချာပြီလား',
+            okLabel: 'ဖျက်မယ်',
+            cancelLabel: 'မဖျက်တော့ဘူး',
+          );
         });
   }
 }

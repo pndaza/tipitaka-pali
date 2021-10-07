@@ -1,38 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:tipitaka_pali/business_logic/models/book.dart';
-import 'package:tipitaka_pali/business_logic/models/recent.dart';
-import 'package:tipitaka_pali/services/database/database_helper.dart';
-import 'package:tipitaka_pali/services/repositories/recent_repo.dart';
 
 import '../../routes.dart';
+import '../../services/repositories/recent_repo.dart';
+import '../models/book.dart';
+import '../models/recent.dart';
 
 class RecentPageViewModel extends ChangeNotifier {
-  List<Recent> recents = [];
-  RecentRepository _repository = RecentDatabaseRepository(DatabaseHelper());
+  final RecentRepository repository;
+  RecentPageViewModel(this.repository);
+  //
+  List<Recent> _recents = [];
+  List<Recent> get recents => _recents;
+  
 
   Future<void> fetchRecents() async {
-    recents = await _repository.getRecents();
+    _recents = await repository.getRecents();
     notifyListeners();
   }
 
-  Future<void> delete(int index) async {
-    final Recent recent = recents[index];
-    recents.removeAt(index);
+  Future<void> delete(Recent recent) async {
+    _recents.remove(recent);
     notifyListeners();
-    await _repository.delete(recent);
+    await repository.delete(recent);
   }
 
   Future<void> deleteAll() async {
-    recents.clear();
+    _recents.clear();
     notifyListeners();
-    await _repository.deleteAll();
+    await repository.deleteAll();
   }
 
-  void openBook(Recent recent, BuildContext context) {
+  void openBook(Recent recent, BuildContext context) async {
     final book = Book(id: recent.bookID, name: recent.bookName!);
-    Navigator.pushNamed(context, ReaderRoute, arguments: {
+    await Navigator.pushNamed(context, ReaderRoute, arguments: {
       'book': book,
       'currentPage': recent.pageNumber,
     });
+    // update recents
+    _recents = await repository.getRecents();
+    notifyListeners();
   }
 }

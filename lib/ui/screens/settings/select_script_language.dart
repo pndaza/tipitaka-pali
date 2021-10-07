@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../../services/provider/script_language_provider.dart';
 import '../../widgets/colored_text.dart';
 
 class SelectScriptLanguageWidget extends StatelessWidget {
-  SelectScriptLanguageWidget(
-      {Key? key, required this.languages, required this.current, this.onChanged})
-      : super(key: key);
-  final List<String> languages;
-  final String current;
-  final Function(String? value)? onChanged;
+  const SelectScriptLanguageWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final scriptLanguageProvider = context.watch<ScriptLanguageProvider>();
     return DropdownButton<String>(
-        value: current,
+        value: scriptLanguageProvider.currentLanguage,
         // style: TextStyle(color: Theme.of(context).primaryColor),
-        onChanged: onChanged,
-        items: languages.map<DropdownMenuItem<String>>(
+        onChanged: (value) {
+          scriptLanguageProvider.onLanguageChage(value);
+        },
+        items: scriptLanguageProvider.languages.map<DropdownMenuItem<String>>(
           (String value) {
             return DropdownMenuItem<String>(
               value: value,

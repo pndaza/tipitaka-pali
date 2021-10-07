@@ -3,8 +3,6 @@ import 'package:tipitaka_pali/services/dao/bookmark_dao.dart';
 import 'package:tipitaka_pali/services/database/database_helper.dart';
 
 abstract class BookmarkRepository {
-  late DatabaseHelper databaseProvider;
-
   Future<int> insert(Bookmark bookmark);
 
   Future<int> delete(Bookmark bookmark);
@@ -15,35 +13,32 @@ abstract class BookmarkRepository {
 }
 
 class BookmarkDatabaseRepository extends BookmarkRepository {
-  final dao = BookmarkDao();
-
-  @override
-  DatabaseHelper databaseProvider;
-
-  BookmarkDatabaseRepository(this.databaseProvider);
+  BookmarkDatabaseRepository(this._databaseHelper, this.dao);
+  final DatabaseHelper _databaseHelper;
+  final BookmarkDao dao;
 
   @override
   Future<int> insert(Bookmark bookmark) async {
-    final db = await databaseProvider.database;
+    final db = await _databaseHelper.database;
     return await db.insert(dao.tableBookmark, dao.toMap(bookmark));
   }
 
   @override
   Future<int> delete(Bookmark bookmark) async {
-    final db = await databaseProvider.database;
+    final db = await _databaseHelper.database;
     return await db.delete(dao.tableBookmark,
         where: '${dao.columnBookId} = ?', whereArgs: [bookmark.bookID]);
   }
 
   @override
   Future<int> deleteAll() async {
-    final db = await databaseProvider.database;
+    final db = await _databaseHelper.database;
     return await db.delete(dao.tableBookmark);
   }
 
   @override
   Future<List<Bookmark>> getBookmarks() async {
-    final db = await databaseProvider.database;
+    final db = await _databaseHelper.database;
     var maps = await db.rawQuery('''
       SELECT ${dao.columnBookId}, ${dao.columnPageNumber}, ${dao.columnNote}, ${dao.columnName}
       FROM ${dao.tableBookmark}

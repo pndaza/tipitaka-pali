@@ -31,6 +31,10 @@
   "@settinngs": {
     "description": "settings page title"
   },
+  "dictionary": "dictionary",
+  "@dictionary": {
+    "description": "dictionary page title"
+  },
   "theme": "Theme",
   "@theme": {
     "description": "for setting color"

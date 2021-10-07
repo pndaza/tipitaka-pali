@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:preload_page_view/preload_page_view.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
+import 'package:tipitaka_pali/services/dao/bookmark_dao.dart';
+import 'package:tipitaka_pali/services/dao/recent_dao.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../services/database/database_helper.dart';
@@ -411,14 +413,13 @@ class ReaderViewModel with ChangeNotifier {
 
   void saveToBookmark(String note) {
     BookmarkRepository repository =
-        BookmarkDatabaseRepository(DatabaseHelper());
+        BookmarkDatabaseRepository(DatabaseHelper(), BookmarkDao());
     repository.insert(Bookmark(book.id, currentPage!, note));
   }
 
   Future _saveToRecent() async {
-    final DatabaseHelper databaseProvider = DatabaseHelper();
     final RecentRepository recentRepository =
-        RecentDatabaseRepository(databaseProvider);
+        RecentDatabaseRepository(DatabaseHelper(), RecentDao());
     recentRepository.insertOrReplace(Recent(book.id, currentPage!));
   }
 

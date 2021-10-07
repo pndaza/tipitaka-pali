@@ -1,36 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:tipitaka_pali/business_logic/models/book.dart';
-import 'package:tipitaka_pali/business_logic/models/bookmark.dart';
-import 'package:tipitaka_pali/services/database/database_helper.dart';
-import 'package:tipitaka_pali/services/repositories/bookmark_repo.dart';
 
 import '../../routes.dart';
+import '../../services/repositories/bookmark_repo.dart';
+import '../models/book.dart';
+import '../models/bookmark.dart';
 
 class BookmarkPageViewModel extends ChangeNotifier {
-  List<Bookmark> bookmarks = [];
+  BookmarkPageViewModel(this.repository);
+  final BookmarkRepository repository;
+
+  List<Bookmark> _bookmarks = [];
+  List<Bookmark> get bookmarks => _bookmarks;
 
   Future<void> fetchBookmarks() async {
-    bookmarks =
-        await BookmarkDatabaseRepository(DatabaseHelper()).getBookmarks();
+    _bookmarks = await repository.getBookmarks();
     notifyListeners();
   }
 
-  Future<void> delete(int index) async {
-    final bookmark = bookmarks[index];
-    bookmarks.removeAt(index);
+  Future<void> delete(Bookmark bookmark) async {
+    _bookmarks.remove(bookmark);
     notifyListeners();
-    await BookmarkDatabaseRepository(DatabaseHelper()).delete(bookmark);
+    await repository.delete(bookmark);
   }
 
   Future<void> deleteAll() async {
-    bookmarks.clear();
+    _bookmarks.clear();
     notifyListeners();
-    await BookmarkDatabaseRepository(DatabaseHelper()).deleteAll();
+    await repository.deleteAll();
   }
 
-  void openBook(Bookmark bookmark, BuildContext context) {
+  void openBook(Bookmark bookmark, BuildContext context) async {
     final book = Book(id: bookmark.bookID, name: bookmark.bookName!);
-    Navigator.pushNamed(context, ReaderRoute,
+    await Navigator.pushNamed(context, ReaderRoute,
         arguments: {'book': book, 'currentPage': bookmark.pageNumber});
+    // update bookmarks
+    _bookmarks = await repository.getBookmarks();
+    notifyListeners();
   }
 }

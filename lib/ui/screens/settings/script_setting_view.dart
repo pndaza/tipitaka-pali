@@ -3,7 +3,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 import '../../../business_logic/view_models/script_settings_view_model.dart';
-import '../../../services/provider/script_language_provider.dart';
 import 'select_script_language.dart';
 
 class ScriptSettingView extends StatelessWidget {
@@ -27,13 +26,6 @@ class ScriptSettingView extends StatelessWidget {
                     child: ListTile(
                       title: Text('Script Language'),
                       trailing: SelectScriptLanguageWidget(
-                        languages:
-                            context.read<ScriptLanguageProvider>().langauges,
-                        current: context
-                            .read<ScriptLanguageProvider>()
-                            .currentLanguage,
-                        onChanged: context
-                            .read<ScriptLanguageProvider>().onLanguageChage,
                       ),
                     ),
                   ),

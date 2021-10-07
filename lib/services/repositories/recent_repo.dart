@@ -1,11 +1,10 @@
 import 'package:sqflite/sql.dart';
+
 import 'package:tipitaka_pali/business_logic/models/recent.dart';
 import 'package:tipitaka_pali/services/dao/recent_dao.dart';
 import 'package:tipitaka_pali/services/database/database_helper.dart';
 
 abstract class RecentRepository {
-  late DatabaseHelper databaseProvider;
-
   Future<int> insertOrReplace(Recent recent);
 
   Future<int> delete(Recent recent);
@@ -16,11 +15,9 @@ abstract class RecentRepository {
 }
 
 class RecentDatabaseRepository implements RecentRepository {
-  final dao = RecentDao();
-  @override
+  RecentDatabaseRepository(this.databaseProvider, this.dao);
   DatabaseHelper databaseProvider;
-
-  RecentDatabaseRepository(this.databaseProvider);
+  final RecentDao dao;
 
   @override
   Future<int> insertOrReplace(Recent recent) async {
