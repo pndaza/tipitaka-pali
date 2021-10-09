@@ -137,14 +137,14 @@ class DesktopReader extends StatelessWidget {
 
   Future<void> showDictionary(BuildContext context, String word) async {
     // removing puntuations etc.
-    word = word.replaceAll(new RegExp(r'[^a-zA-ZāīūṅñṭḍṇḷṃĀĪŪṄÑṬḌHṆḶṂ]'), '');
+    word = word.replaceAll(RegExp(r'[^a-zA-ZāīūṅñṭḍṇḷṃĀĪŪṄÑṬḌHṆḶṂ]'), '');
     // convert ot lower case
     word = word.toLowerCase();
     await showSlidingBottomSheet(context, builder: (context) {
       //Widget for SlidingSheetDialog's builder method
       final statusBarHeight = MediaQuery.of(context).padding.top;
       final screenHeight = MediaQuery.of(context).size.height;
-      final marginTop = 24.0;
+      const marginTop = 24.0;
       final slidingSheetDialogContent = Container(
         height: screenHeight - (statusBarHeight + marginTop),
         child: DictionaryDialog(word: word),

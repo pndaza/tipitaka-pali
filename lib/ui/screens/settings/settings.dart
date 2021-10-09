@@ -16,12 +16,12 @@ class SettingPage extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: Text(AppLocalizations.of(context)!.settings),
-          actions: [],
+          actions: const [],
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: ListView(
-            children: <Widget>[
+            children: const <Widget>[
               ThemeSettingView(),
               DarkModeSettingView(),
               LanguageSettingView(),
@@ -41,12 +41,12 @@ class ThemeSettingView extends StatelessWidget {
     return Card(
       elevation: 8,
       child: ListTile(
-          leading: Icon(Icons.palette_outlined),
+          leading: const Icon(Icons.palette_outlined),
           title: Text(
             AppLocalizations.of(context)!.theme,
             style: Theme.of(context).textTheme.headline6,
           ),
-          trailing: SelectThemeWidget()),
+          trailing: const SelectThemeWidget()),
     );
   }
 }
@@ -59,7 +59,7 @@ class DarkModeSettingView extends StatelessWidget {
     return Card(
       elevation: 8,
       child: ListTile(
-          leading: Icon(Icons.brightness_2_outlined),
+          leading: const Icon(Icons.brightness_2_outlined),
           title: Text(
             AppLocalizations.of(context)!.darkMode,
             style: Theme.of(context).textTheme.headline6,
@@ -82,7 +82,7 @@ class LanguageSettingView extends StatelessWidget {
     return Card(
       elevation: 8,
       child: ListTile(
-        leading: Icon(Icons.language_outlined),
+        leading: const Icon(Icons.language_outlined),
         title: Text(
           AppLocalizations.of(context)!.language,
           style: Theme.of(context).textTheme.headline6,
@@ -101,10 +101,10 @@ class DictionarySettingView extends StatelessWidget {
     return Card(
       elevation: 8,
       child: ExpansionTile(
-        leading: Icon(Icons.sort_by_alpha_outlined),
+        leading: const Icon(Icons.sort_by_alpha_outlined),
         title: Text(AppLocalizations.of(context)!.dictionaries,
             style: Theme.of(context).textTheme.headline6),
-        children: [SelectDictionaryWidget()],
+        children: const [SelectDictionaryWidget()],
       ),
     );
   }

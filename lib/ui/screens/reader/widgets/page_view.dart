@@ -22,7 +22,7 @@ class MyPageView extends StatelessWidget {
 
     return PreloadPageView.builder(
       // physics: RangeMaintainingScrollPhysics(),
-      physics: ClampingScrollPhysics() ,
+      physics: const ClampingScrollPhysics() ,
       pageSnapping: true,
       preloadPagesCount: vm.preLoadPageCount,
       controller: vm.pageController,

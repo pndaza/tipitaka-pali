@@ -8,6 +8,8 @@ import 'initial_setup.dart';
 enum DatabaseStatus { uptoDate, outOfDate, notExist }
 
 class SplashScreen extends StatelessWidget {
+  const SplashScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final databaseStatus = _getDatabaseStatus();
@@ -15,16 +17,16 @@ class SplashScreen extends StatelessWidget {
 
     switch (databaseStatus) {
       case DatabaseStatus.notExist:
-        child = InitialSetup();
+        child = const InitialSetup();
         break;
       case DatabaseStatus.outOfDate:
-        child = InitialSetup(isUpdateMode: true);
+        child = const InitialSetup(isUpdateMode: true);
         break;
       case DatabaseStatus.uptoDate:
-        child = Home();
+        child = const Home();
         break;
       default:
-        child = Home();
+        child = const Home();
         break;
     }
 
@@ -36,7 +38,7 @@ class SplashScreen extends StatelessWidget {
     if (!isExist) return DatabaseStatus.notExist;
 
     final dbVersion = Prefs.databaseVersion;
-    if (k_currentDatabaseVersion == dbVersion) return DatabaseStatus.uptoDate;
+    if (kCurrentDatabaseVersion == dbVersion) return DatabaseStatus.uptoDate;
 
     return DatabaseStatus.outOfDate;
   }

@@ -7,7 +7,7 @@ import '../../../../services/provider/script_language_provider.dart';
 import '../../../../utils/pali_script.dart';
 
 class RecentListTile extends StatelessWidget {
-  RecentListTile({Key? key, required this.recent, this.onTap, this.onDelete});
+  const RecentListTile({Key? key, required this.recent, this.onTap, this.onDelete});
   final Recent recent;
   final Function(Recent recent)? onDelete;
   final Function(Recent recent)? onTap;
@@ -16,7 +16,7 @@ class RecentListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     // final recent = vm.recents[index];
     return Slidable(
-      actionPane: SlidableDrawerActionPane(),
+      actionPane: const SlidableDrawerActionPane(),
       secondaryActions: [
         IconSlideAction(
           icon: Icons.delete,
@@ -37,7 +37,7 @@ class RecentListTile extends StatelessWidget {
           width: 100,
           child: Row(
             children: [
-              Text('page  - '),
+              const Text('page  - '),
               Expanded(
                   child:
                       Text('${recent.pageNumber}', textAlign: TextAlign.end)),

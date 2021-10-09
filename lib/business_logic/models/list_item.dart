@@ -16,6 +16,7 @@ class CategoryItem implements ListItem {
 
   CategoryItem(this.category);
 
+  @override
   Widget build(BuildContext context) {
     return Center(
         child: Text(
@@ -36,11 +37,12 @@ class BookItem implements ListItem {
 
   BookItem(this.book);
 
+  @override
   Widget build(BuildContext context) => Text(
         PaliScript.getScriptOf(
                 language:
                     context.read<ScriptLanguageProvider>().currentLanguage,
                 romanText: book.name),
-        style: TextStyle(fontSize: 20),
+        style: const TextStyle(fontSize: 20),
       );
 }

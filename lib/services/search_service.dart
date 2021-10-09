@@ -27,20 +27,20 @@ class SearchService {
     List<String> queryWords = searchWord.trim().split(' ');
     final beforeTime = DateTime.now();
     for (String word in queryWords) {
-      print('searching for $word');
+      //print('searching for $word');
       var temp = await repository.getIndexes(word);
       if (temp.isEmpty) {
         return <Index>[];
       }
       results.add(temp);
     }
-    print('load time ${DateTime.now().difference(beforeTime)}');
+    //print('load time ${DateTime.now().difference(beforeTime)}');
 
     if (results.length == 1) {
       // one word case
       //
       await _addBookIdtoIndex(results.first);
-      print(results.first.first.bookID);
+      //print(results.first.first.bookID);
       return results.first;
     }
 
@@ -163,10 +163,10 @@ class SearchService {
       String content, String query, int wordPosition) {
     // remmove HTML tag from source
     content = content.replaceAllMapped(
-        new RegExp(r'</span>(န္တိ|တိ)'), (match) => match.group(1)!);
+        RegExp(r'</span>(န္တိ|တိ)'), (match) => match.group(1)!);
     // content = content.replaceAll(new RegExp(r'<.*?>'), " ");
     content = _removeAllHtmlTags(content);
-    content = content.replaceAll(new RegExp(r' +'), ' ');
+    content = content.replaceAll(RegExp(r' +'), ' ');
     // split word
     List<String> wordList = content.trim().split(' ');
     int wordsCount = wordList.length;

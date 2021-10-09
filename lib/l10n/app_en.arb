@@ -78,6 +78,10 @@
   "about_info":"This app is still in Beta.  However, it should be useful for accessing the Tipitaka Texts, and getting most dictionary definitions.  You can create issues and request features on the github website https://github.com/bksubhuti/tipitaka-pali-reader/issues",
   "@about_info": {
     "description": "about content"
+  },
+  "unable_open_page":"Unable to open page for this page.",
+  "@unable_open_page": {
+    "description": "cannot open page"
   }
 
   

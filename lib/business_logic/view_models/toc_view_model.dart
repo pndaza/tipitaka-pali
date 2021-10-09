@@ -22,7 +22,7 @@ class TocViewModel {
 
   List<TocListItem> _fromList(List<Toc> tocs) {
     List<TocListItem> listItems = [];
-    tocs.forEach((toc) {
+    for (var toc in tocs) {
       switch (toc.type) {
         case "chapter":
           listItems.add(TocHeadingOne(toc));
@@ -40,7 +40,7 @@ class TocViewModel {
           listItems.add(TocHeadingOne(toc));
           break;
       }
-    });
+    }
     return listItems;
   }
 }

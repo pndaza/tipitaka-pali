@@ -12,7 +12,7 @@ import '../../utils/pali_tools.dart';
 
 class DictionaryDialog extends StatelessWidget {
   final String? word;
-  DictionaryDialog({this.word});
+  const DictionaryDialog({Key? key, this.word}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,20 +21,20 @@ class DictionaryDialog extends StatelessWidget {
       child: Material(
         child: Stack(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 56.0),
+            const Padding(
+              padding: EdgeInsets.only(top: 56.0),
               child: DictionaryContentView(),
             ),
             ListTile(
               // close button
               leading: IconButton(
-                icon: Icon(Icons.close, color: Colors.black),
+                icon: const Icon(Icons.close, color: Colors.black),
                 onPressed: () => Navigator.pop(context),
               ),
               title: DictionarySearchField(
                 initialValue: word,
               ),
-              trailing: DictionaryAlgorithmModeView(),
+              trailing: const DictionaryAlgorithmModeView(),
             ),
           ],
         ),
@@ -79,7 +79,7 @@ class _DictionarySearchFieldState extends State<DictionarySearchField> {
           textFieldConfiguration: TextFieldConfiguration(
               autocorrect: false,
               controller: textEditingController,
-              decoration: InputDecoration(border: OutlineInputBorder()),
+              decoration: const InputDecoration(border: OutlineInputBorder()),
               onChanged: (text) {
                 // convert velthuis input to uni
                 if (text.isNotEmpty) {
@@ -137,13 +137,13 @@ class DictionaryContentView extends StatelessWidget {
     return state.when(
         initial: () => Container(),
         loading: () => Container(
-            height: 100, child: Center(child: CircularProgressIndicator())),
+            height: 100, child: const Center(child: CircularProgressIndicator())),
         data: (content) => SingleChildScrollView(
             child: Padding(
-                padding: EdgeInsets.all(16.0), child: HtmlWidget(content))),
+                padding: const EdgeInsets.all(16.0), child: HtmlWidget(content))),
         noData: () => Container(
               height: 100,
-              child: Center(child: Text('Not found')),
+              child: const Center(child: Text('Not found')),
             ));
   }
 }

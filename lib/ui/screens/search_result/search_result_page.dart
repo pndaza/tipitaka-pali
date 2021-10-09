@@ -12,7 +12,7 @@ class SearchResultPage extends StatelessWidget {
   final String searchWord;
   //  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  SearchResultPage({
+  const SearchResultPage({
     Key? key,
     required this.searchWord,
   }) : super(key: key);
@@ -38,7 +38,7 @@ class SearchResultPage extends StatelessWidget {
           final state = context.watch<SearchResultController>().state;
 
           return state.when(
-            loading: () => Material(child: LoadingView()),
+            loading: () => const Material(child: LoadingView()),
             noData: () => NoDataView(searchWord: searchWord),
             loaded: (results, bookCount) => DataView(
               searchWord: searchWord,
@@ -82,7 +82,7 @@ class DataView extends StatelessWidget {
       // key: _scaffoldKey,
       appBar: AppBar(
         title: Text('Found ${results.length} in $bookCount books'),
-        actions: [
+        actions: const [
           // add builder to call method of Scaffold.of(context)
           // Builder(
           //     builder: (context) => IconButton(
@@ -96,7 +96,7 @@ class DataView extends StatelessWidget {
       body: Stack(
         children: [
           results.isEmpty ?
-          Center(child: Text('Not any more exist in other books'),) :
+          const Center(child: Text('Not any more exist in other books'),) :
           ListView.builder(
               itemCount: results.length,
               itemBuilder: (_, i) {
@@ -109,9 +109,9 @@ class DataView extends StatelessWidget {
               child: Builder(
                 builder: (context) {
                   return FloatingActionButton.extended(
-            onPressed: () => Scaffold.of(context).showBottomSheet((context) => SearchFilterView()),
-            label: Text('Filter'),
-            icon: Icon(Icons.filter_list),
+            onPressed: () => Scaffold.of(context).showBottomSheet((context) => const SearchFilterView()),
+            label: const Text('Filter'),
+            icon: const Icon(Icons.filter_list),
           );
                 }
               ))
@@ -137,7 +137,7 @@ class DataView extends StatelessWidget {
             },
           );
         }
-        return SizedBox(
+        return const SizedBox(
           height: 300,
           child: LoadingView());
       },

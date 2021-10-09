@@ -11,6 +11,8 @@ import '../../dialogs/confirm_dialog.dart';
 import 'widgets/recent_list_tile.dart';
 
 class RecentPage extends StatelessWidget {
+  const RecentPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<RecentPageViewModel>(
@@ -18,7 +20,7 @@ class RecentPage extends StatelessWidget {
           RecentPageViewModel(RecentDatabaseRepository(DatabaseHelper(), RecentDao()))
             ..fetchRecents(),
       child: Scaffold(
-        appBar: RecentAppBar(),
+        appBar: const RecentAppBar(),
         body: Consumer<RecentPageViewModel>(builder: (context, vm, child) {
           final recents = vm.recents;
           return recents.isEmpty
@@ -34,7 +36,7 @@ class RecentPage extends StatelessWidget {
                     );
                   },
                   separatorBuilder: (_, __) {
-                    return Divider(color: Colors.grey);
+                    return const Divider(color: Colors.grey);
                   });
         }),
       ),
@@ -51,7 +53,7 @@ class RecentAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Text(AppLocalizations.of(context)!.recent),
       actions: [
         IconButton(
-            icon: Icon(Icons.delete),
+            icon: const Icon(Icons.delete),
             onPressed: () async {
               final action = await _getConfirmataion(context);
               if (action == OkCancelAction.OK) {
@@ -63,13 +65,13 @@ class RecentAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => new Size.fromHeight(AppBar().preferredSize.height);
+  Size get preferredSize => Size.fromHeight(AppBar().preferredSize.height);
 
   Future<OkCancelAction?> _getConfirmataion(BuildContext context) async {
     return await showDialog<OkCancelAction>(
         context: context,
         builder: (context) {
-          return ConfirmDialog(
+          return const ConfirmDialog(
             title: 'Comfirmation',
             message: 'ဖတ်လက်စစာအုပ်စာရင်း အားလုံးကို ဖျက်ရန် သေချာပြီလား',
             cancelLabel: 'မဖျက်တော့ဘူး',

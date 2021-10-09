@@ -29,11 +29,11 @@ class SelectDictionaryWidget extends StatelessWidget {
                     value: dictionaries[index].userChoice,
                     onChanged: (value) => vm.onCheckedChange(index, value!),
                   ),
-                  title: Text('${dictionaries[index].name}'),
+                  title: Text(dictionaries[index].name),
                   // subtitle: Text('${vm.userDicts[index].userOrder}'),
-                  trailing: Icon(Icons.drag_handle),
+                  trailing: const Icon(Icons.drag_handle),
                 ),
-                Divider(
+                const Divider(
                   height: 1.0,
                 )
               ],

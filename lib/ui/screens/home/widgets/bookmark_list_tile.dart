@@ -20,7 +20,7 @@ class BookmarkListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Slidable(
-      actionPane: SlidableDrawerActionPane(),
+      actionPane: const SlidableDrawerActionPane(),
       secondaryActions: [
         IconSlideAction(
           icon: Icons.delete,
@@ -42,7 +42,7 @@ class BookmarkListTile extends StatelessWidget {
           width: 100,
           child: Row(
             children: [
-              Text('page - '),
+              const Text('page - '),
               Expanded(
                   child: Text(
                 '${bookmark.pageNumber}',

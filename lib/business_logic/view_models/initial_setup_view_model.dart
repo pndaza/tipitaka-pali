@@ -26,7 +26,7 @@ class InitialSetupViewModel extends ChangeNotifier {
       databasesDirPath = docDirPath.path;
     }
     // final databasesDirPath = await getApplicationDocumentsDirectory();
-    final dbFilePath = join(databasesDirPath, k_databaseName);
+    final dbFilePath = join(databasesDirPath, kDatabaseName);
 
     if (isUpdateMode) {
       // deleting old database file
@@ -43,7 +43,7 @@ class InitialSetupViewModel extends ChangeNotifier {
 
     // save record to shared Preference
     Prefs.isDatabaseSaved = true;
-    Prefs.databaseVersion = k_currentDatabaseVersion;
+    Prefs.databaseVersion = kCurrentDatabaseVersion;
 
     _openHomePage();
   }

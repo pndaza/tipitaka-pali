@@ -29,7 +29,7 @@ class SelectLanguageWidget extends StatelessWidget {
                 color: Theme.of(context).brightness == Brightness.dark
                     ? Colors.white
                     : Theme.of(context).primaryColor,
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
               ),
             );
           },

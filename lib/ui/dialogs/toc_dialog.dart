@@ -4,7 +4,7 @@ import 'package:tipitaka_pali/business_logic/view_models/toc_view_model.dart';
 
 class TocDialog extends StatelessWidget {
   final String bookID;
-  TocDialog(this.bookID);
+  const TocDialog(this.bookID);
   
   @override
   Widget build(BuildContext context) {
@@ -12,7 +12,7 @@ class TocDialog extends StatelessWidget {
       body: Column(
         children: [
           Stack(alignment: Alignment.center, children: [
-            Text(
+            const Text(
               'Table of Contents',
               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
             ),
@@ -21,12 +21,12 @@ class TocDialog extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(right: 16.0),
                   child: IconButton(
-                    icon: Icon(Icons.close),
+                    icon: const Icon(Icons.close),
                     onPressed: () => Navigator.pop(context, null),
                   ),
                 ))
           ]),
-          Divider(),
+          const Divider(),
           FutureBuilder<List<TocListItem>>(
               future: TocViewModel(bookID).fetchTocListItems(),
               builder: (context, snapshot) {
@@ -47,14 +47,14 @@ class TocDialog extends StatelessWidget {
                         );
                       },
                       separatorBuilder: (context, index) {
-                        return Divider(
+                        return const Divider(
                             height: 1, indent: 16.0, endIndent: 16.0);
                       },
                     ),
                   );
                 } else {
                   return Container(
-                    child: CircularProgressIndicator(),
+                    child: const CircularProgressIndicator(),
                   );
                 }
               }),

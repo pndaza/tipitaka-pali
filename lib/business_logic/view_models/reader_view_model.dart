@@ -68,7 +68,7 @@ class ReaderViewModel with ChangeNotifier {
     // disable embedding font
     // final fontName = 'NotoSansMyanmar-Regular.otf';
     // _cssFont = await loadCssFont(fontName: fontName);
-    print('loading all data');
+    //print('loading all data');
     _cssFont = '';
     _fontSize = Prefs.fontSize;
     _isDarkMode = Prefs.dartThemeOn;
@@ -85,7 +85,7 @@ class ReaderViewModel with ChangeNotifier {
     // book.firstPage = 1;
     // book.lastPage = pages.length;
     numberOfPage = pages.length;
-    print('inititalizing controllers for pages');
+    //print('inititalizing controllers for pages');
     webViewControllers = List.filled(pages.length, null);
     // List<WebViewController>(pages.length);
 
@@ -146,9 +146,7 @@ class ReaderViewModel with ChangeNotifier {
         BookDatabaseRepository(databaseProvider);
     book.firstPage = await bookRepository.getFirstPage(bookID);
     book.lastPage = await bookRepository.getLastPage(bookID);
-    if (currentPage == null) {
-      currentPage = book.firstPage!;
-    }
+    currentPage ??= book.firstPage!;
   }
 
   String getPageContentForDesktop(int index) {
@@ -169,7 +167,7 @@ class ReaderViewModel with ChangeNotifier {
     if (!_isShowVriPageNubmer) publicationKeys.remove('V');
 
     if (publicationKeys.isNotEmpty) {
-      publicationKeys.forEach((publicationKey) {
+      for (var publicationKey in publicationKeys) {
         final publicationFormat =
             RegExp('(<a name="$publicationKey(\\d+)\\.(\\d+)">)');
         pageContent = pageContent.replaceAllMapped(publicationFormat, (match) {
@@ -178,7 +176,7 @@ class ReaderViewModel with ChangeNotifier {
           final pageNumber = int.parse(match.group(3)!).toString();
           return '${match.group(1)}[$publicationKey $volume.$pageNumber]';
         });
-      });
+      }
     }
 
     pageContent = _fixSafari(pageContent);
@@ -207,7 +205,7 @@ class ReaderViewModel with ChangeNotifier {
     if (!_isShowVriPageNubmer) publicationKeys.remove('V');
 
     if (publicationKeys.isNotEmpty) {
-      publicationKeys.forEach((publicationKey) {
+      for (var publicationKey in publicationKeys) {
         final publicationFormat =
             RegExp('(<a name="$publicationKey(\\d+)\\.(\\d+)">)');
         pageContent = pageContent.replaceAllMapped(publicationFormat, (match) {
@@ -216,7 +214,7 @@ class ReaderViewModel with ChangeNotifier {
           final pageNumber = int.parse(match.group(3)!).toString();
           return '${match.group(1)}[$publicationKey $volume.$pageNumber]';
         });
-      });
+      }
     }
 
     pageContent = _fixSafari(pageContent);
@@ -436,14 +434,14 @@ class ReaderViewModel with ChangeNotifier {
     word = PaliScript.getRomanScriptFrom(
         language: context.read<ScriptLanguageProvider>().currentLanguage,
         text: word);
-    word = word.replaceAll(new RegExp(r'[^a-zA-ZāīūṅñṭḍṇḷṃĀĪŪṄÑṬḌHṆḶṂ]'), '');
+    word = word.replaceAll(RegExp(r'[^a-zA-ZāīūṅñṭḍṇḷṃĀĪŪṄÑṬḌHṆḶṂ]'), '');
     // convert ot lower case
     word = word.toLowerCase();
     await showSlidingBottomSheet(context, builder: (context) {
       //Widget for SlidingSheetDialog's builder method
       final statusBarHeight = MediaQuery.of(context).padding.top;
       final screenHeight = MediaQuery.of(context).size.height;
-      final marginTop = 24.0;
+      const marginTop = 24.0;
       final slidingSheetDialogContent = Container(
         height: screenHeight - (statusBarHeight + marginTop),
         child: DictionaryDialog(word: word),

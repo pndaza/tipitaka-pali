@@ -9,7 +9,7 @@ enum DictAlgorithm { Auto, TPR, DPR }
 
 extension ParseToString on DictAlgorithm {
   String toStr() {
-    return this.toString().split('.').last;
+    return toString().split('.').last;
   }
 }
 
@@ -27,8 +27,8 @@ class DictionaryViewModel with ChangeNotifier {
 
   Future<void> _init() async {
     if (_word == null) {
-      print('there is no initial lookup word');
-      _dictionaryState = DictionaryState.initial();
+      //print('there is no initial lookup word');
+      _dictionaryState = const DictionaryState.initial();
       notifyListeners();
       return;
     }
@@ -36,12 +36,12 @@ class DictionaryViewModel with ChangeNotifier {
   }
 
   Future<void> _lookupDefinition() async {
-    _dictionaryState = DictionaryState.loading();
+    _dictionaryState = const DictionaryState.loading();
     notifyListeners();
     // loading definitions
     final definition = await loadDefinition(_word!);
     if (definition.isEmpty) {
-      _dictionaryState = DictionaryState.noData();
+      _dictionaryState = const DictionaryState.noData();
       notifyListeners();
     } else {
       _dictionaryState = DictionaryState.data(definition);

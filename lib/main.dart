@@ -20,5 +20,5 @@ void main() async {
   // Initialize SharedPrefs instance.
   await Prefs.init();
 
-  runApp(App());
+  runApp(const App());
 }

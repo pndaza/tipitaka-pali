@@ -10,6 +10,8 @@ import '../../../utils/script_detector.dart';
 import 'widgets/search_bar.dart';
 
 class SearchPage extends StatelessWidget {
+  const SearchPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<SearchViewModel>(
@@ -64,21 +66,21 @@ class SearchPage extends StatelessWidget {
         return ListTile(
           dense: true,
           minVerticalPadding: 0,
-          contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
           title: Text(
             PaliScript.getScriptOf(
                 language:
                     context.read<ScriptLanguageProvider>().currentLanguage,
                 romanText: suggestedWord),
-            style: TextStyle(fontSize: 20),
+            style: const TextStyle(fontSize: 20),
           ),
-          leading: Icon(Icons.search),
+          leading: const Icon(Icons.search),
           onTap: () {
             vm.openSearchResult(context, vm.suggestions[index].word);
           },
         );
       },
-      separatorBuilder: (context, index) => Divider(
+      separatorBuilder: (context, index) => const Divider(
         height: 1,
       ),
     );

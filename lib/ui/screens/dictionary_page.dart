@@ -4,19 +4,21 @@ import 'package:tipitaka_pali/business_logic/view_models/dictionary_view_model.d
 import 'package:tipitaka_pali/ui/dialogs/dictionary_dialog.dart';
 
 class DictionaryPage extends StatelessWidget {
+  const DictionaryPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Dictionary'),
+        title: const Text('Dictionary'),
       ),
       body: ChangeNotifierProvider<DictionaryViewModel>(
         create: (content) => DictionaryViewModel( null),
         child: Material(
           child: Stack(
-            children: [
+            children: const [
               Padding(
-                padding: const EdgeInsets.only(top: 56.0),
+                padding: EdgeInsets.only(top: 56.0),
                 child: DictionaryContentView(),
               ),
               ListTile(

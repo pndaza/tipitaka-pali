@@ -17,12 +17,12 @@ class ScriptSettingView extends StatelessWidget {
             return Card(
               elevation: 8,
               child: ExpansionTile(
-                leading: Icon(Icons.font_download_outlined),
+                leading: const Icon(Icons.font_download_outlined),
                 title: Text(AppLocalizations.of(context)!.paliScript,
                     style: Theme.of(context).textTheme.headline6),
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 32.0),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 32.0),
                     child: ListTile(
                       title: Text('Script Language'),
                       trailing: SelectScriptLanguageWidget(

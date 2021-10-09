@@ -3,7 +3,7 @@ class PaliStemmer {
     String stemWord = word.trim();
     // remove punctuation
     stemWord = stemWord.replaceAll(
-        new RegExp(r'[\u104a\u104b\u2018\u2019",\.\?]'), '');
+        RegExp(r'[\u104a\u104b\u2018\u2019",\.\?]'), '');
 
     // various ending of pada
     List<RegExp> endings = [];
@@ -12,9 +12,9 @@ class PaliStemmer {
     // endings.add(new RegExp(r'\u1031[\u101f\u1018]\u102d$')); // ehi ebhi ေဟိ ေဘိ
     //endings.add(new RegExp(r'\u103f$')); // ssa ဿ
 
-    endings.add(new RegExp(r'ena$')); // ena ေန
-    endings.add(new RegExp(r'e(h|bh)i$')); // ehi ebhi ေဟိ ေဘိ
-    endings.add(new RegExp(r'ssa$')); // ssa ဿ
+    endings.add(RegExp(r'ena$')); // ena ေန
+    endings.add(RegExp(r'e(h|bh)i$')); // ehi ebhi ေဟိ ေဘိ
+    endings.add(RegExp(r'ssa$')); // ssa ဿ
     // naṃ (နံ) preceded by vowel ā or ī or ū
     // first, will find with dīgha vowel in dict
     // if not find , convert to rassa vowel and will find again
@@ -27,40 +27,40 @@ class PaliStemmer {
     endings.add(new RegExp(r'\u1031\u101e\u102f$')); // esu ေသု
     */
 
-    endings.add(new RegExp(r'(?<=[āīū])naṃ$'));
-    endings.add(new RegExp(r'smāc$')); // smā သ္မာ
-    endings.add(new RegExp(r'mhā$')); // mhā မှာ
-    endings.add(new RegExp(r'smiṃ$')); // smiṃ သ္မိံ
-    endings.add(new RegExp(r'mhi$')); // mhi မှိ
-    endings.add(new RegExp(r'esu$')); // esu ေသု
+    endings.add(RegExp(r'(?<=[āīū])naṃ$'));
+    endings.add(RegExp(r'smāc$')); // smā သ္မာ
+    endings.add(RegExp(r'mhā$')); // mhā မှာ
+    endings.add(RegExp(r'smiṃ$')); // smiṃ သ္မိံ
+    endings.add(RegExp(r'mhi$')); // mhi မှိ
+    endings.add(RegExp(r'esu$')); // esu ေသု
     // cittādigana
-    endings.add(new RegExp(r'[\u102b\u102c]\u1014\u102d$')); // āni ါနိ /  ာနိ
-    endings.add(new RegExp(r'āni$')); // āni ါနိ /  ာနိ
+    endings.add(RegExp(r'[\u102b\u102c]\u1014\u102d$')); // āni ါနိ /  ာနိ
+    endings.add(RegExp(r'āni$')); // āni ါနိ /  ာနိ
     // kannādigana etc
     // endings.add(new RegExp(
     //    r'(?<=[\u102b\u102c\u102d])\u101a\u1031\u102c$')); // āyo ါယော or ာယော
-    endings.add(new RegExp(r'(?<=ā)yo$')); // āyo ါယော or ာယော
+    endings.add(RegExp(r'(?<=ā)yo$')); // āyo ါယော or ာယော
     // endings.add(new RegExp(r'(?<=[\u102d])\u101a\u102c$')); // iyā ိယာ
-    endings.add(new RegExp(r'(?<=i)yā$')); // iyā ိယာ
+    endings.add(RegExp(r'(?<=i)yā$')); // iyā ိယာ
     // endings.add(new RegExp(
     //     r'(?<=[\u102b\u102c])\u101a\u1036?$')); //  āya or āyaṃ  ါယ or ါယံ or ာယ or ာယံ
     endings.add(
-        new RegExp(r'(?<=ā)yaṃ?$')); //  āya or āyaṃ  ါယ or ါယံ or ာယ or ာယံ
+        RegExp(r'(?<=ā)yaṃ?$')); //  āya or āyaṃ  ါယ or ါယံ or ာယ or ာယံ
     // su (သု) preceded by vowel ā or ī or ū
     // first, will find with dīgha vowel in dict
     // if not find , convert to rassa vowel and will find again
     // endings.add(new RegExp(
     //     r'(?<=[\u102b\u102c\u102d\u102e\u102f\u1030])\u101e\u102f?$'));
-    endings.add(new RegExp(r'(?<=[āiīuū])su$'));
+    endings.add(RegExp(r'(?<=[āiīuū])su$'));
 
     /*
     endings.add(new RegExp(r'\u1031[\u102b\u102c]$')); // dependent vowel O ော
     endings.add(new RegExp(r'\u1031$')); // dependent vowel E ေ
     endings.add(new RegExp(r'\u1036$')); // niggahita ṃ ံ
     */
-    endings.add(new RegExp(r'o$')); // dependent vowel o  ော
-    endings.add(new RegExp(r'e$')); // dependent vowel E ေ
-    endings.add(new RegExp(r'ṃ$')); // niggahita ṃ ံ
+    endings.add(RegExp(r'o$')); // dependent vowel o  ော
+    endings.add(RegExp(r'e$')); // dependent vowel E ေ
+    endings.add(RegExp(r'ṃ$')); // niggahita ṃ ံ
 
     for (RegExp ending in endings) {
       if (ending.hasMatch(stemWord)) {
@@ -74,12 +74,12 @@ class PaliStemmer {
 
   static bool isEndWithRassa(String word) {
     // return new RegExp(r'[\u1000-\u1020\u102d\u102f]').hasMatch(word);
-    return new RegExp(r'[aiu]').hasMatch(word);
+    return RegExp(r'[aiu]').hasMatch(word);
   }
 
   static bool isEndWithDigha(String word) {
     // return new RegExp(r'[\u102b\u102c\u102e\u1030]').hasMatch(word);
-    return new RegExp(r'[āīū]').hasMatch(word);
+    return RegExp(r'[āīū]').hasMatch(word);
   }
 
 /*

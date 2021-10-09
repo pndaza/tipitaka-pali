@@ -12,6 +12,7 @@ class TocHeadingOne implements TocListItem {
 
   @override
   final Toc toc;
+  @override
   set toc(Toc _toc) => toc = _toc;
 
   @override
@@ -22,7 +23,7 @@ class TocHeadingOne implements TocListItem {
   @override
   Widget build(BuildContext context) {
     return Text(toc.name,
-        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold));
+        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold));
   }
 }
 
@@ -30,6 +31,7 @@ class TocHeadingTwo implements TocListItem {
   TocHeadingTwo(this.toc);
   @override
   final Toc toc;
+  @override
   set toc(Toc _toc) => toc = _toc;
 
   @override
@@ -40,9 +42,9 @@ class TocHeadingTwo implements TocListItem {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.only(left: 16.0),
+        padding: const EdgeInsets.only(left: 16.0),
         child: Text(toc.name,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)));
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)));
   }
 }
 
@@ -50,6 +52,7 @@ class TocHeadingThree implements TocListItem {
   TocHeadingThree(this.toc);
   @override
   final Toc toc;
+  @override
   set toc(Toc _toc) => toc = _toc;
 
   @override
@@ -60,8 +63,8 @@ class TocHeadingThree implements TocListItem {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.only(left: 32.0),
-        child: Text(toc.name, style: TextStyle(fontSize: 18)));
+        padding: const EdgeInsets.only(left: 32.0),
+        child: Text(toc.name, style: const TextStyle(fontSize: 18)));
   }
 }
 
@@ -69,6 +72,7 @@ class TocHeadingFour implements TocListItem {
   TocHeadingFour(this.toc);
   @override
   final Toc toc;
+  @override
   set toc(Toc _toc) => toc = _toc;
 
   @override
@@ -79,8 +83,8 @@ class TocHeadingFour implements TocListItem {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.only(left: 48.0),
-        child: Text(toc.name, style: TextStyle(fontSize: 18)));
+        padding: const EdgeInsets.only(left: 48.0),
+        child: Text(toc.name, style: const TextStyle(fontSize: 18)));
   }
 }
 
@@ -88,6 +92,7 @@ class TocHeadingFive implements TocListItem {
   TocHeadingFive(this.toc);
   @override
   final Toc toc;
+  @override
   set toc(Toc _toc) => toc = _toc;
 
   @override
@@ -98,7 +103,7 @@ class TocHeadingFive implements TocListItem {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.only(left: 64.0),
-        child: Text(toc.name, style: TextStyle(fontSize: 18)));
+        padding: const EdgeInsets.only(left: 64.0),
+        child: Text(toc.name, style: const TextStyle(fontSize: 18)));
   }
 }

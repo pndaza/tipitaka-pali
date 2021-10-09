@@ -31,7 +31,7 @@ class BookmarkPageViewModel extends ChangeNotifier {
 
   void openBook(Bookmark bookmark, BuildContext context) async {
     final book = Book(id: bookmark.bookID, name: bookmark.bookName!);
-    await Navigator.pushNamed(context, ReaderRoute,
+    await Navigator.pushNamed(context, readerRoute,
         arguments: {'book': book, 'currentPage': bookmark.pageNumber});
     // update bookmarks
     _bookmarks = await repository.getBookmarks();

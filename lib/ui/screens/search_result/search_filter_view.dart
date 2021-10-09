@@ -3,10 +3,11 @@ import 'package:provider/provider.dart';
 import './search_filter_provider.dart';
 
 class SearchFilterView extends StatelessWidget {
-  SearchFilterView({
+  const SearchFilterView({
     Key? key,
   }) : super(key: key);
 
+  @override
   Widget build(BuildContext context) {
     final notifier = context.watch<SearchFilterController>();
     final closeButton = Positioned(
@@ -47,7 +48,7 @@ class SearchFilterView extends StatelessWidget {
   }
 
   Widget _buildMainCategoryFilter(SearchFilterController notifier) {
-    print('building main filter');
+    //print('building main filter');
     final _mainCategoryFilters = notifier.mainCategoryFilters;
     final _selectedMainCategoryFilters = notifier.selectedMainCategoryFilters;
     return Padding(

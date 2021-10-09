@@ -29,7 +29,7 @@ class GotoViewModel with ChangeNotifier {
   }
 
   void setSelected(Goto value) {
-    this.selected = value;
+    selected = value;
     notifyListeners();
   }
 

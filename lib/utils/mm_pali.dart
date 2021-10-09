@@ -1,6 +1,6 @@
 class MmPali {
   MmPali._();
-  static Map<String, String> _independentVowels = {
+  static final Map<String, String> _independentVowels = {
     'a': 'အ',
     'ā': 'အာ',
     'i': 'ဣ',
@@ -11,7 +11,7 @@ class MmPali {
     'o': 'ဩ'
   };
 
-  static Map<String, String> _dependentVowels = {
+  static final Map<String, String> _dependentVowels = {
     // 'a': '',
     'ā': 'ာ',
     'i': 'ိ',
@@ -22,7 +22,7 @@ class MmPali {
     'e': 'ေ'
   };
 
-  static Map<String, String> _consonants = {
+  static final Map<String, String> _consonants = {
     'kh': 'ခ',
     'k': 'က',
     'gh': 'ဃ',
@@ -58,9 +58,9 @@ class MmPali {
     //  'ṃ' : 'ံ'
   };
 
-  static String _virama = '္';
+  static const String _virama = '္';
 
-  static Map<String, String> _specialShapes = {
+  static final Map<String, String> _specialShapes = {
     'ဉ္ဉ': 'ည',
     'သ္သ': 'ဿ',
     '္ယ': 'ျ',
@@ -71,7 +71,7 @@ class MmPali {
     'သင်္ဃ': 'သံဃ',
   };
 
-  static Map<String, String> _digits = {
+  static final Map<String, String> _digits = {
     '1': '၁',
     '2': '၂',
     '3': '၃',
@@ -84,7 +84,7 @@ class MmPali {
     '0': '၀',
   };
 
-  static Map<String, String> _puntutations = {
+  static final Map<String, String> _puntutations = {
     ',': '၊',
     '.': '။',
   };

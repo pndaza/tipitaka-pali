@@ -16,7 +16,7 @@ class GotoDialog extends StatefulWidget {
   final int lastParagraph;
   final double radius;
 
-  GotoDialog(
+  const GotoDialog(
       { Key? key,
       required this.firstPage,
       required this.lastPage,
@@ -85,7 +85,7 @@ class _GotoDialogState extends State<GotoDialog> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           _buildTitle(),
-          Divider(),
+          const Divider(),
           _buildInputType(context),
           _buildInputField(),
           _buildActions(context)
@@ -95,8 +95,8 @@ class _GotoDialogState extends State<GotoDialog> {
   }
 
   Padding _buildTitle() {
-    return Padding(
-      padding: const EdgeInsets.all(4.0),
+    return const Padding(
+      padding: EdgeInsets.all(4.0),
       child: Text(
         'Goto',
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
@@ -107,7 +107,7 @@ class _GotoDialogState extends State<GotoDialog> {
   ToggleSwitch _buildInputType(BuildContext context) {
     return ToggleSwitch(
       totalSwitches: 2,
-      labels: ['page', 'paragraph'],
+      labels: const ['page', 'paragraph'],
       initialLabelIndex: selectedTypeIndex!,
       onToggle: (index) {
         setState(() {
@@ -146,13 +146,13 @@ class _GotoDialogState extends State<GotoDialog> {
       buttonMinWidth: 120.0,
       children: [
         TextButton(
-          child: Text(
+          child: const Text(
             'Cancel',
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
         TextButton(
-            child: Text(
+            child: const Text(
               'Go',
             ),
             onPressed: !isValid

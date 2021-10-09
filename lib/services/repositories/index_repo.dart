@@ -41,6 +41,7 @@ class IndexDatabaseRepository implements IndexRepository {
     return indexList;
   }
 
+  @override
   Future<String> getBookId(int pageId) async {
     final db = await databaseProvider.database;
     final map =

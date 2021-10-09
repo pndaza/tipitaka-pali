@@ -11,6 +11,8 @@ import '../../dialogs/confirm_dialog.dart';
 import 'widgets/bookmark_list_tile.dart';
 
 class BookmarkPage extends StatelessWidget {
+  const BookmarkPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<BookmarkPageViewModel>(
@@ -18,7 +20,7 @@ class BookmarkPage extends StatelessWidget {
           BookmarkPageViewModel(BookmarkDatabaseRepository(DatabaseHelper(), BookmarkDao()))
             ..fetchBookmarks(),
       child: Scaffold(
-        appBar: BookmarkAppBar(),
+        appBar: const BookmarkAppBar(),
         body: Consumer<BookmarkPageViewModel>(
           builder: (context, vm, child) {
             final bookmarks = vm.bookmarks;
@@ -35,7 +37,7 @@ class BookmarkPage extends StatelessWidget {
                       );
                     },
                     separatorBuilder: (_, __) {
-                      return Divider(color: Colors.grey);
+                      return const Divider(color: Colors.grey);
                     });
           },
         ),
@@ -53,24 +55,25 @@ class BookmarkAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Text(AppLocalizations.of(context)!.bookmark),
       actions: [
         IconButton(
-            icon: Icon(Icons.delete),
+            icon: const Icon(Icons.delete),
             onPressed: () async {
               final result = await _getConfirmataion(context);
-              if (result == OkCancelAction.OK)
+              if (result == OkCancelAction.OK) {
                 context.read<BookmarkPageViewModel>().deleteAll();
+              }
             })
       ],
     );
   }
 
   @override
-  Size get preferredSize => new Size.fromHeight(AppBar().preferredSize.height);
+  Size get preferredSize => Size.fromHeight(AppBar().preferredSize.height);
 
   Future<OkCancelAction?> _getConfirmataion(BuildContext context) async {
     return await showDialog<OkCancelAction>(
         context: context,
         builder: (context) {
-          return ConfirmDialog(
+          return const ConfirmDialog(
             title: 'Comfirmation',
             message: 'မှတ်သားထားသမျှ အားလုံးကို ဖျက်ရန် သေချာပြီလား',
             okLabel: 'ဖျက်မယ်',

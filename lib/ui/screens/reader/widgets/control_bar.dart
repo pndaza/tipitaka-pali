@@ -26,17 +26,17 @@ class ControlBar extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 16.0),
             child: IconButton(
-                icon: Icon(Icons.arrow_forward),
+                icon: const Icon(Icons.arrow_forward),
                 onPressed: () => _openGotoDialog(context, vm)),
           ),
           IconButton(
-              icon: Icon(Icons.repeat),
+              icon: const Icon(Icons.repeat),
               onPressed: () => _selectParagraphDialog(context, vm)),
           const Expanded(child: MySlider()),
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
             child: IconButton(
-                icon: Icon(Icons.toc),
+                icon: const Icon(Icons.toc),
                 onPressed: () {
                   _openTocDialog(context, vm);
                 }),
@@ -82,16 +82,17 @@ class ControlBar extends StatelessWidget {
           // title: Text('AlertDialog Title'),
           content: SingleChildScrollView(
             child: ListBody(
+              // ignore: prefer_const_literals_to_create_immutables
               children: <Widget>[
                 // if current book is mula pali , it opens corresponded atthakatha
                 // if attha, will open tika
-                Text('ယခု စာမျက်နှာအတွက် အဖွင့် ကြည့်ရှု မရနိုင်ပါ။'),
+                const Text('ယခု စာမျက်နှာအတွက် အဖွင့် ကြည့်ရှု မရနိုင်ပါ။'),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('ပိတ်'),
+              child: const Text('ပိတ်'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -111,13 +112,13 @@ class ControlBar extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Center(
+                const Center(
                   child: Text(
                     'အဖွင့်ကြည့်လိုသော စာပိုဒ်ရွေးပါ',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),
-                Divider(),
+                const Divider(),
                 Container(
                   height: 280,
                   child: ListView.separated(
@@ -134,7 +135,7 @@ class ControlBar extends StatelessWidget {
                                   paragraphs[i].expPageNumber);
                             },
                           ),
-                      separatorBuilder: (_, __) => Divider(),
+                      separatorBuilder: (_, __) => const Divider(),
                       itemCount: paragraphs.length),
                 ),
               ],
@@ -147,7 +148,7 @@ class ControlBar extends StatelessWidget {
       BuildContext context, String bookID, String bookName, int pageNumber) {
     Navigator.of(context).pop();
     final book = Book(id: bookID, name: bookName);
-    Navigator.pushNamed(context, ReaderRoute, arguments: {
+    Navigator.pushNamed(context, readerRoute, arguments: {
       'book': book,
       'currentPage': pageNumber,
     });
@@ -155,7 +156,7 @@ class ControlBar extends StatelessWidget {
 
   void _openTocDialog(BuildContext context, ReaderViewModel vm) async {
     final toc = await showBarModalBottomSheet<Toc>(
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
         ),
         expand: false,

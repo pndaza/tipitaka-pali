@@ -22,6 +22,11 @@ final Logger myLogger = Logger(
 
 class App extends StatelessWidget {
   //final List<AppTheme> themes = MyTheme.fetchAll();
+  final String _enLocale = 'en';
+  final String _myLocale = 'my';
+  final String _siLocale = 'si';
+
+  const App({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => MultiProvider(
@@ -48,18 +53,18 @@ class App extends StatelessWidget {
               darkTheme: themeChangeNotifier.darkTheme,
               locale: Locale(localChangeNotifier.localeString, ''),
               onGenerateRoute: RouteGenerator.generateRoute,
-              localizationsDelegates: [
+              localizationsDelegates: const [
                 AppLocalizations.delegate, // Add this line
                 GlobalMaterialLocalizations.delegate,
                 GlobalWidgetsLocalizations.delegate,
                 GlobalCupertinoLocalizations.delegate,
               ],
               supportedLocales: [
-                Locale('en', ''), // English, no country code
-                Locale('my', ''), // Myanmar, no country code
-                Locale('si', ''), // Myanmar, no country code
+                Locale(_enLocale, ''), // English, no country code
+                Locale(_myLocale, ''), // Myanmar, no country code
+                Locale(_siLocale, ''), // Myanmar, no country code
               ],
-              home:  SplashScreen(),
+              home: const SplashScreen(),
             );
           } // builder
           );

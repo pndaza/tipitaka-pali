@@ -40,12 +40,12 @@ class Reader extends StatelessWidget {
                   if (Platform.isMacOS ||
                       Platform.isLinux ||
                       Platform.isWindows) {
-                    return DesktopReader();
+                    return const DesktopReader();
                   }
-                  return Scaffold(
-                    appBar: const ReaderAppBar(),
-                    body: const MyPageView(),
-                    bottomNavigationBar: SafeArea(child: const ControlBar()),
+                  return const Scaffold(
+                    appBar: ReaderAppBar(),
+                    body: MyPageView(),
+                    bottomNavigationBar: SafeArea(child: ControlBar()),
                   );
                 }
                 return Container();

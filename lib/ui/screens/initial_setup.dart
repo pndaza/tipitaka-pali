@@ -25,8 +25,8 @@ class InitialSetup extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        CircularProgressIndicator(),
-        SizedBox(
+        const CircularProgressIndicator(),
+        const SizedBox(
           height: 10,
         ),
         isUpdateMode

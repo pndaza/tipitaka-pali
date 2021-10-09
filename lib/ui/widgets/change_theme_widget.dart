@@ -13,8 +13,8 @@ class ChangeThemeWidget extends StatelessWidget {
 
     return Switch(
       value: Prefs.dartThemeOn,
-      activeThumbImage: AssetImage("assets/sun.png"),
-      inactiveThumbImage: AssetImage("assets/moon.png"),
+      activeThumbImage: const AssetImage("assets/sun.png"),
+      inactiveThumbImage: const AssetImage("assets/moon.png"),
       onChanged: (value) {
         final provider =
             Provider.of<ThemeChangeNotifier>(context, listen: false);

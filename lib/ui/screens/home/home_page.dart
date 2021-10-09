@@ -20,6 +20,8 @@ class HomePage extends StatelessWidget {
     'annya': 'Añña'
   };
 
+   HomePage({Key? key}) : super(key: key);
+
 
 
   @override
@@ -30,7 +32,7 @@ class HomePage extends StatelessWidget {
           appBar: AppBar(
             title: Text(AppLocalizations.of(context)!.tipitaka_pali_reader),
             centerTitle: true,
-            actions: [],
+            actions: const [],
             bottom: TabBar(
               tabs: _mainCategories.entries
                   .map((category) => Tab(
@@ -60,14 +62,14 @@ class HomePage extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           DrawerHeader(
-            decoration: BoxDecoration(),
+            decoration: const BoxDecoration(),
             child: Column(
               children: [
                 ColoredText(AppLocalizations.of(context)!.tipitaka_pali_reader,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 17,
                     )),
-                SizedBox(height: 15.0),
+                const SizedBox(height: 15.0),
                 Image.asset(
                   "assets/icon/icon.png",
                   height: 60,
@@ -77,17 +79,17 @@ class HomePage extends StatelessWidget {
             ),
           ),
           ListTile(
-            title: ColoredText(AppLocalizations.of(context)!.dictionary, style: TextStyle()),
+            title: ColoredText(AppLocalizations.of(context)!.dictionary, style: const TextStyle()),
             onTap: () => _openDictionaryPage(context),
           ),
           ListTile(
             title: ColoredText(AppLocalizations.of(context)!.settings,
-                style: TextStyle()),
+                style: const TextStyle()),
             onTap: () => _openSettingPage(context),
           ),
           ListTile(
             title: ColoredText(AppLocalizations.of(context)!.about,
-                style: TextStyle()),
+                style: const TextStyle()),
             onTap: () => _showAboutDialog(context),
           ),
         ],
@@ -108,13 +110,13 @@ class HomePage extends StatelessWidget {
                       onTap: () => _openBook(context, listItems[index]),
                     ),
                 separatorBuilder: (context, index) {
-                  return Divider(
+                  return const Divider(
                     color: Colors.grey,
                   );
                 });
           }
           // will be dispaly blank while loading instead of circular progress indicator
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         });
   }
 
@@ -124,20 +126,20 @@ class HomePage extends StatelessWidget {
   }
 
   _openSettingPage(BuildContext context) async {
-    await Navigator.pushNamed(context, SettingRoute);
+    await Navigator.pushNamed(context, settingRoute);
   }
 
   _openBook(BuildContext context, ListItem listItem) {
     if (listItem.runtimeType == BookItem) {
       BookItem bookItem = listItem as BookItem;
       debugPrint('book name: ${bookItem.book.name}');
-      Navigator.pushNamed(context, ReaderRoute,
+      Navigator.pushNamed(context, readerRoute,
           arguments: {'book': bookItem.book});
     }
   }
 
   _openDictionaryPage(BuildContext context) {
-    Navigator.pushNamed(context, DictionaryRoute);
+    Navigator.pushNamed(context, dictionaryRoute);
   }
 
   _showAboutDialog(BuildContext context) {

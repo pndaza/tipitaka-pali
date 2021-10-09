@@ -17,13 +17,13 @@ class SearchResultController extends ChangeNotifier {
   // final SearchFilterNotifier searchFilterNotifier;
   List<Index> _allResults = [];
   List<Index> _filterdResults = [];
-  SearchResultState _state = SearchResultState.loading();
+  SearchResultState _state = const SearchResultState.loading();
   SearchResultState get state => _state;
 
   void _init() async {
     _allResults = await SearchService.getResults(searchWord.toLowerCase());
     if (_allResults.isEmpty) {
-      _state = SearchResultState.noData();
+      _state = const SearchResultState.noData();
       notifyListeners();
       return;
     }
@@ -41,9 +41,9 @@ class SearchResultController extends ChangeNotifier {
       // don't do any filter
       return;
     }
-    print('not initial search');
-    _state = SearchResultState.loading();
-    print('calling on filter change');
+    //print('not initial search');
+    _state = const SearchResultState.loading();
+    //print('calling on filter change');
     _filterdResults = _doFilter(filterController);
 
     _state = SearchResultState.loaded(_filterdResults, getBookCount());
@@ -61,18 +61,18 @@ class SearchResultController extends ChangeNotifier {
     final List<Index> secondFilterdList = [];
 
     // do filter with main category
-    selectedMainCategoryFilters.forEach((element) {
+    for (var element in selectedMainCategoryFilters) {
       firstFilterdList.addAll(_allResults
           .where((index) => index.bookID!.contains(element))
           .toList());
-    });
+    }
 
     // do filter with sub scategory
-    selectedSubCategoryFilters.forEach((element) {
+    for (var element in selectedSubCategoryFilters) {
       secondFilterdList.addAll(firstFilterdList
           .where((index) => index.bookID!.contains(element))
           .toList());
-    });
+    }
     // book order was changed while filtering
     // so need to reorder
     secondFilterdList.sort((a, b) => a.pageID.compareTo(b.pageID));
@@ -81,9 +81,9 @@ class SearchResultController extends ChangeNotifier {
 
   int getBookCount() {
     final books = <String>{};
-    _filterdResults.forEach((element) {
+    for (var element in _filterdResults) {
       books.add(element.bookID!);
-    });
+    }
     return books.length;
   }
 
@@ -92,7 +92,7 @@ class SearchResultController extends ChangeNotifier {
   }
 
   void openBook(SearchResult result, BuildContext context) {
-    Navigator.pushNamed(context, ReaderRoute, arguments: {
+    Navigator.pushNamed(context, readerRoute, arguments: {
       'book': result.book,
       'currentPage': result.pageNumber,
       'textToHighlight': searchWord

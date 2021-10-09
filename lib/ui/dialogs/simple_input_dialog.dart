@@ -43,7 +43,7 @@ class SimpleInputDialog extends StatelessWidget {
       controller: _controller,
       decoration: InputDecoration(
         hintText: hintText,
-        hintStyle: TextStyle(fontSize: 13),
+        hintStyle: const TextStyle(fontSize: 13),
         border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16.0), gapPadding: 0.0),
       ),

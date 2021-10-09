@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:tipitaka_pali/services/prefs.dart';
 
 class SelectThemeWidget extends StatelessWidget {
-  /*const*/ SelectThemeWidget({Key? key}) : super(key: key);
+  /*const*/ const SelectThemeWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

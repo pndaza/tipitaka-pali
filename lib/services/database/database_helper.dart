@@ -32,7 +32,7 @@ class DatabaseHelper {
       final docDirPath = await getApplicationDocumentsDirectory();
       dbPath = docDirPath.path;
     }
-    var path = join(dbPath, k_databaseName);
+    var path = join(dbPath, kDatabaseName);
 
     myLogger.i('opening Database ...');
     return await openDatabase(path);

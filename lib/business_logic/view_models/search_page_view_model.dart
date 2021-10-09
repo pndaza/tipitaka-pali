@@ -39,13 +39,13 @@ class SearchViewModel extends ChangeNotifier {
   }
 
   void openSearchResult(BuildContext context, String searchWord) {
-    Navigator.pushNamed(context, SearchResultRoute, arguments: {
+    Navigator.pushNamed(context, searchResultRoute, arguments: {
       'searchWord': searchWord,
     });
   }
 
   void openBook(SearchResult result, BuildContext context) {
-    Navigator.pushNamed(context, ReaderRoute, arguments: {
+    Navigator.pushNamed(context, readerRoute, arguments: {
       'book': result.book,
       'currentPage': result.pageNumber,
       'textToHighlight': _searchWord

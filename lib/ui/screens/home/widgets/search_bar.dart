@@ -7,10 +7,10 @@ class SearchBar extends StatefulWidget {
   final void Function(String) onSubmitted;
   final void Function(String) onTextChanged;
   final String hint;
-  SearchBar(
-      {required this.onSubmitted,
+  const SearchBar(
+      {Key? key, required this.onSubmitted,
       required this.onTextChanged,
-      this.hint = 'search'});
+      this.hint = 'search'}) : super(key: key);
 
   @override
   _SearchBarState createState() =>
@@ -35,7 +35,7 @@ class _SearchBarState extends State<SearchBar> {
     super.initState();
     controller.addListener(() {
       setState(() {
-        _showClearButton = controller.text.length > 0;
+        _showClearButton = controller.text.isNotEmpty;
       });
     });
   }
@@ -70,18 +70,18 @@ class _SearchBarState extends State<SearchBar> {
               },
               decoration: InputDecoration(
                   border: InputBorder.none,
-                  prefixIcon: Icon(
+                  prefixIcon: const Icon(
                     Icons.search,
                     color: Colors.grey,
                   ),
                   // suffix: keyBoardButton(),
                   suffixIcon: clearButton(),
-                  hintStyle: new TextStyle(color: Colors.grey),
+                  hintStyle: const TextStyle(color: Colors.grey),
                   hintText: hint,
                   fillColor: Colors.white70),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 4.0,
           )
         ],
@@ -97,7 +97,7 @@ class _SearchBarState extends State<SearchBar> {
       onPressed: () {
         controller.clear();
       },
-      icon: Icon(
+      icon: const Icon(
         Icons.clear,
         color: Colors.grey,
       ),
@@ -110,7 +110,7 @@ class _SearchBarState extends State<SearchBar> {
     }
     return IconButton(
       onPressed: () {},
-      icon: Icon(
+      icon: const Icon(
         Icons.keyboard,
         color: Colors.grey,
       ),

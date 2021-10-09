@@ -6,12 +6,12 @@ import 'package:tipitaka_pali/ui/screens/search_result/search_result_page.dart';
 import 'package:tipitaka_pali/ui/screens/settings/settings.dart';
 import 'package:tipitaka_pali/ui/screens/splash_screen.dart';
 
-const SplashRoute = '/';
-const HomeRoute = '/home';
-const ReaderRoute = '/reader';
-const SearchResultRoute = '/search_result_view';
-const SettingRoute = '/setting';
-const DictionaryRoute = '/dictionary';
+const splashRoute = '/';
+const homeRoute = '/home';
+const readerRoute = '/reader';
+const searchResultRoute = '/search_result_view';
+const settingRoute = '/setting';
+const dictionaryRoute = '/dictionary';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -19,23 +19,23 @@ class RouteGenerator {
 
     late Widget screen;
     switch (settings.name) {
-      case SplashRoute:
-        screen = SplashScreen();
+      case splashRoute:
+        screen = const SplashScreen();
         break;
-      case HomeRoute:
-        screen = Home();
+      case homeRoute:
+        screen = const Home();
         break;
-      case DictionaryRoute:
-        screen = DictionaryPage();
+      case dictionaryRoute:
+        screen = const DictionaryPage();
         break;
-      case SearchResultRoute:
+      case searchResultRoute:
         if (arguments is Map) {
           screen = SearchResultPage(
             searchWord: arguments['searchWord'],
           );
         }
         break;
-      case ReaderRoute:
+      case readerRoute:
         if (arguments is Map) {
           screen = Reader(
             book: arguments['book'],
@@ -44,8 +44,8 @@ class RouteGenerator {
           );
         }
         break;
-      case SettingRoute:
-        screen = SettingPage();
+      case settingRoute:
+        screen = const SettingPage();
         break;
     }
     return MaterialPageRoute(

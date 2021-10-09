@@ -9,7 +9,7 @@ import '../../routes.dart';
 
 class DictionarySettingController extends ChangeNotifier {
   List<Dictionary> userDicts = [];
-  UserDictRepository _repository =
+  final UserDictRepository _repository =
       UserDictDatabaseRepository(DatabaseHelper());
 
   Future<void> fetchUserDicts() async {
@@ -52,7 +52,7 @@ class DictionarySettingController extends ChangeNotifier {
 */
   void openBook(Recent recent, BuildContext context) {
     final book = Book(id: recent.bookID, name: recent.bookName!);
-    Navigator.pushNamed(context, ReaderRoute, arguments: {
+    Navigator.pushNamed(context, readerRoute, arguments: {
       'book': book,
       'currentPage': recent.pageNumber,
     });

@@ -33,12 +33,12 @@ class UserDictDatabaseRepository implements UserDictRepository {
     final db = await databaseProvider.database;
     // delect previous records
     int count = await db.delete(dao.tableUserDict);
-    print('delete items: $count');
+    //print('delete items: $count');
     // insert new records
     for (final userDict in userDicts) {
-      print(userDict.name);
+      //print(userDict.name);
       var id = await db.insert(dao.tableUserDict, dao.toMap(userDict));
-      print('insert id: $id');
+      //print('insert id: $id');
     }
   }
 

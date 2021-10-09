@@ -1,9 +1,9 @@
 String performRegex(Map<String, String> regexMap, String input) {
-  regexMap.entries.forEach((pair) {
+  for (var pair in regexMap.entries) {
     input = input.replaceAllMapped(RegExp(pair.key), (match) {
       return pair.value;
     });
-  });
+  }
   return input;
 }
 
@@ -57,7 +57,7 @@ String toVel(String input) {
     r'\u1E47': '.n',
     r'\u1E43': '.m',
     r'\u1E41': '.m',
-    r'\u00F1': '\~n',
+    r'\u00F1': '~n',
     r'\u1E37': '.l',
     r'\u0100': 'AA',
     r'\u012A': 'II',
@@ -67,7 +67,7 @@ String toVel(String input) {
     r'\u1E44': '"N',
     r'\u1E46': '.N',
     r'\u1E42': '.M',
-    r'\u00D1': '\~N',
+    r'\u00D1': '~N',
     r'\u1E36': '.L',
     r'ḹ': '.ll',
     r'ṛ': '.r',
