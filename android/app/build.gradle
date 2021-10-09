@@ -55,7 +55,7 @@ android {
     }
 /////////////////////////////////////////////////////////////
 ///////////THIS IS FOR KEY STUFF
-   signingConfigs {
+/*   signingConfigs {
        release {
            keyAlias keystoreProperties['keyAlias']
            keyPassword keystoreProperties['keyPassword']
@@ -70,10 +70,10 @@ android {
    }
 }
 
-
+*/
 //////////////////////////////////////////////////////
 //  THIS IS FOR **NOT*** KEY SIGNING
-/* buildTypes {
+ buildTypes {
        release {
            // TODO: Add your own signing config for the release build.
            // Signing with the debug keys for now,
@@ -82,7 +82,7 @@ android {
        }
    }
 }
-*////////////////////////////////////////////////////
+///////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////
 
 flutter {
