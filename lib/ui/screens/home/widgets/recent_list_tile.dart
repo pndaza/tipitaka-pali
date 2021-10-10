@@ -7,7 +7,9 @@ import '../../../../services/provider/script_language_provider.dart';
 import '../../../../utils/pali_script.dart';
 
 class RecentListTile extends StatelessWidget {
-  const RecentListTile({Key? key, required this.recent, this.onTap, this.onDelete});
+  const RecentListTile(
+      {Key? key, required this.recent, this.onTap, this.onDelete})
+      : super(key: key);
   final Recent recent;
   final Function(Recent recent)? onDelete;
   final Function(Recent recent)? onTap;

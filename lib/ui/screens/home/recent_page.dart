@@ -56,7 +56,7 @@ class RecentAppBar extends StatelessWidget implements PreferredSizeWidget {
             icon: const Icon(Icons.delete),
             onPressed: () async {
               final action = await _getConfirmataion(context);
-              if (action == OkCancelAction.OK) {
+              if (action == OkCancelAction.ok) {
                 context.read<RecentPageViewModel>().deleteAll();
               }
             })

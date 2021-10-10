@@ -6,7 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'home_page.dart';
 
-enum Screen { Home, Bookmark, Recent, Search }
+// enum Screen { Home, Bookmark, Recent, Search }
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);

@@ -1,20 +1,43 @@
+import 'package:tipitaka_pali/utils/roman_to_sinhala.dart';
+
 import './mm_pali.dart';
 
 class PaliScript {
+  // pali word not inside html tag
+  static final _regexPaliWord =
+      RegExp(r'[0-9a-zA-ZāīūṅñṭḍṇḷṃĀĪŪṄÑṬḌHṆḶṂ\.]+(?![^<>]*>)');
   PaliScript._();
   static String getScriptOf(
       {required String language,
       required String romanText,
       bool isHtmlText = false}) {
-    if (language == 'မြန်မာ') {
-      if (!isHtmlText) return MmPali.fromRoman(romanText);
+    if (romanText.isEmpty) return romanText;
 
-      // pali word not inside html tag
-      final regexPaliWord =
-          RegExp(r'[0-9a-zA-ZāīūṅñṭḍṇḷṃĀĪŪṄÑṬḌHṆḶṂ\.]+(?![^<>]*>)');
-      return romanText.replaceAllMapped(regexPaliWord, (match) {
-        return MmPali.fromRoman(match.group(0)!);
-      });
+    if (language == 'မြန်မာ') {
+      if (!isHtmlText) {
+        return MmPali.fromRoman(romanText);
+      } else {
+        return romanText.replaceAllMapped(
+            _regexPaliWord, (match) => MmPali.fromRoman(match.group(0)!));
+      }
+    }
+
+    if (language == 'සිංහල') {
+      if (!isHtmlText) {
+        return toSin(romanText);
+      } else {
+        return romanText.replaceAllMapped(
+            _regexPaliWord, (match) => toSin(match.group(0)!));
+      }
+    }
+
+        if (language == 'हिन्दी') {
+      if (!isHtmlText) {
+        return toDeva(romanText);
+      } else {
+        return romanText.replaceAllMapped(
+            _regexPaliWord, (match) => toDeva(match.group(0)!));
+      }
     }
 
     return romanText;
@@ -25,6 +48,10 @@ class PaliScript {
     if (language == 'မြန်မာ') {
       return MmPali.toRoman(text);
     }
+    if (language == 'සිංහල') {
+      return fromSin(text,'');
+    }
+
     return text;
   }
 }

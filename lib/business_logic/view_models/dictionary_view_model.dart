@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:tipitaka_pali/business_logic/models/definition.dart';
 import 'package:tipitaka_pali/business_logic/view_models/dictionary_state.dart';

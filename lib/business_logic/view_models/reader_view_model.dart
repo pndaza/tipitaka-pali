@@ -442,7 +442,7 @@ class ReaderViewModel with ChangeNotifier {
       final statusBarHeight = MediaQuery.of(context).padding.top;
       final screenHeight = MediaQuery.of(context).size.height;
       const marginTop = 24.0;
-      final slidingSheetDialogContent = Container(
+      final slidingSheetDialogContent = SizedBox(
         height: screenHeight - (statusBarHeight + marginTop),
         child: DictionaryDialog(word: word),
       );

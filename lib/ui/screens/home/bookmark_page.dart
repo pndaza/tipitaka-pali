@@ -58,7 +58,7 @@ class BookmarkAppBar extends StatelessWidget implements PreferredSizeWidget {
             icon: const Icon(Icons.delete),
             onPressed: () async {
               final result = await _getConfirmataion(context);
-              if (result == OkCancelAction.OK) {
+              if (result == OkCancelAction.ok) {
                 context.read<BookmarkPageViewModel>().deleteAll();
               }
             })

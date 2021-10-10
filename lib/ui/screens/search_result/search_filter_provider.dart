@@ -19,8 +19,8 @@ class SearchFilterController extends ChangeNotifier {
   Map<String, String> get mainCategoryFilters => _mainCategoryFilters;
   Map<String, String> get subCategoryFilters => _subCategoryFilters;
 
-  late final _selectedMainCategoryFilters;
-  late final _selectedSubCategoryFilters;
+  late final List<String> _selectedMainCategoryFilters;
+  late final List<String> _selectedSubCategoryFilters;
 
   List<String> get selectedMainCategoryFilters => _selectedMainCategoryFilters;
   List<String> get selectedSubCategoryFilters => _selectedSubCategoryFilters;

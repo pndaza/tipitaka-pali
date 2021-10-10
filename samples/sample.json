@@ -1,0 +1,146 @@
+{
+    "pagenum": 2,
+    "pali": {
+        "entries": [
+            {
+                "type": "centered",
+                "text": "suttantapiṭake",
+                "level": 3
+            },
+            {
+                "type": "centered",
+                "text": "majjhimanikāyo",
+                "level": 5
+            },
+            {
+                "type": "centered",
+                "text": "mūlapaṇṇāsako",
+                "level": 3
+            },
+            {
+                "type": "heading",
+                "text": "1. Mūlapariyāyavaggo",
+                "level": 3
+            },
+            {
+                "type": "centered",
+                "text": "namo tassa bhagavato arahato sammā sambuddhassa",
+                "level": 1
+            },
+            {
+                "type": "centered",
+                "text": "1.1.",
+                "level": 2
+            },
+            {
+                "type": "heading",
+                "text": "mūlapariyāyasuttaṃ",
+                "level": 2
+            },
+            {
+                "type": "paragraph",
+                "text": "1. Evaṃ me{1} sutaṃ: ekaṃ samayaṃ bhagavā ukkaṭṭhāyaṃ viharati subhagavane sālarājamūle. Tatra kho bhagavā bhikkhū āmantesi bhikkhavoti. Bhadanteti te bhikkhū bhagavato paccassosuṃ. Bhagavā etadavoca:"
+            },
+            {
+                "type": "paragraph",
+                "text": "2. Sabbadhammamūlapariyāyaṃ vo bhikkhave desessāmi{2}. Taṃ suṇātha. Sādhukaṃ manasi karotha. Bhāsissāmīti. Evaṃ bhanteti{3} kho te bhikkhū bhagavato paccassosuṃ. Bhagavā etadavoca:"
+            },
+            {
+                "type": "centered",
+                "text": "(1)",
+                "level": 1
+            },
+            {
+                "type": "paragraph",
+                "text": "3. Idha bhikkhave assutavā puthujjano ariyānaṃ adassāvī{4} ariyadhammassa akovido ariyadhamme avinīto, sappurisānaṃ adassāvī{4} sappurisadhammassa akovido sappurisadhamme avinīto paṭhaviṃ paṭhavito{6} sañjānāti. Paṭhaviṃ paṭhavito{6} saññatvā paṭhaviṃ maññati. Paṭhaviyā maññati. Paṭhavito maññati. Paṭhaviṃ meti{8} maññati. Paṭhaviṃ abhinandati. Taṃ kissa hetu? Apariññātaṃ{9} tassāti vadāmi. (1)"
+            }
+        ],
+        "footnotes": [
+            {
+                "type": "footnote",
+                "text": "1. Evamme - syā, pts, sī. I. Sī. Ii."
+            },
+            {
+                "type": "footnote",
+                "text": "2. Desissāmi - syā."
+            },
+            {
+                "type": "footnote",
+                "text": "3. Evambhanteti - syā, pts, sī. I. Sī. Ii."
+            },
+            {
+                "type": "footnote",
+                "text": "4. Adassāvi - sī. I."
+            },
+            {
+                "type": "footnote",
+                "text": "6. Pathaviṃ pathavito - machasaṃ."
+            },
+            {
+                "type": "footnote",
+                "text": "8. Paṭhavimmeti - syā, pts, sī. I. Sī. Ii."
+            },
+            {
+                "type": "footnote",
+                "text": "9. Apariññāṇaṃ - sī. I."
+            }
+        ]
+    },
+    "sinh": {
+        "entries": [
+            {
+                "text": "sūtrāntapiṭakayehi",
+                "type": "centered",
+                "level": 3
+            },
+            {
+                "text": "mැඳumsaඟiya",
+                "type": "centered",
+                "level": 5
+            },
+            {
+                "text": "mūlapaṇṇāsakaya",
+                "type": "centered",
+                "level": 3
+            },
+            {
+                "text": "1. Mūlapariyāya vargaya",
+                "type": "heading",
+                "level": 3
+            },
+            {
+                "type": "centered",
+                "text": "e bhāgyavat arhat sammāsambudurajāṇan vahanseṭa namaskāra vevā.",
+                "level": 1
+            },
+            {
+                "type": "centered",
+                "text": "1.1.",
+                "level": 2
+            },
+            {
+                "type": "heading",
+                "text": "mūlapariyāya sūtraya",
+                "level": 2
+            },
+            {
+                "text": "1. Mā visin mese asana ladī. Ek kaleka bhāgyavatun vahanse ukkaṭṭhānuvara samīpayehi vū subhaga vanayehi vanadeṭumaharukak mula vැḍa vasanaseka. Ekalhi bhāgyavatun vahanse “Mahaṇeni’yi” bhikşūn ඇmatūseka. E bhikşuhu “Svāmīni’yi” bhāgyavatun vahanseṭa piḷivadan ඇssūha. Bhāgyavatun vahanse me sūtraya vadāḷaseka.",
+                "type": "paragraph"
+            },
+            {
+                "text": "2. Mahaṇeni, topaṭa siyalu satkāyadharmayanaṭa mūlakāraṇaya deśanā karannemi. Eya asavu. Manā koṭa menehi karavū. Deśanā karannemi. “Eseya, svāmīni’yi” e bhikşuhu bhāgyavatun vahanseṭa piḷivadan dunha. Bhāgyavatun vahanse meya vadāḷaseka.",
+                "type": "paragraph"
+            },
+            {
+                "type": "centered",
+                "text": "(1)",
+                "level": 1
+            },
+            {
+                "text": "3. Mahaṇeni, me lokayehi (buddhādī) āryyayan no daknāsulu āryyadharmayehi adakşa vū āryyadharmayehi no hikmuṇāvū (buddhādī) satpuruşayan no daknāsulu satpuruşadharmayehi adakşa vū satpuruşadharmayehi no hikmuṇāvū aśrැtavat (āgamādhigamarahita vū) pṛthagjana teme pṛthiviya pṛthiviya vaśayen (taṇhā māna diṭṭhi maññanāven saṃඥāviparyyāsavaśayen) haඳunayi. Pṛthiviya pṛthiviya vaśayen hැඳina pṛthiviya (taṇhā maññanādivaśayen) haඟiyi. “Mama pṛthiviyehi pihiṭiyemi” yi haඟiyi. “Mama pṛthiviyen bැhැra vemi” yi haඟiyi. “Pṛthiviya mage” yi haඟiyi. Pṛthiviya abhinandanaya kereyi. E kavara heyina? Yat: ohuge pṛthiviya (piḷibaඳa) pirisiඳa no dැnīma (heyinැ) yi kiyami.",
+                "type": "paragraph"
+            }
+        ],
+        "footnotes": []
+    }
+}

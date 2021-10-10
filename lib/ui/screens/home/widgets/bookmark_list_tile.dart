@@ -38,7 +38,7 @@ class BookmarkListTile extends StatelessWidget {
         subtitle: Text(PaliScript.getScriptOf(
             language: context.read<ScriptLanguageProvider>().currentLanguage,
             romanText: bookmark.bookName!)),
-        trailing: Container(
+        trailing: SizedBox(
           width: 100,
           child: Row(
             children: [

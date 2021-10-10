@@ -31,17 +31,13 @@ class SearchFilterView extends StatelessWidget {
         clipBehavior: Clip.none,
         alignment: Alignment.topCenter,
         children: [
-          Container(
-            // height: 200,
-            // color: Colors.brown,
-            child: ListView(
-              shrinkWrap: true,
-              children: [
-                Container(height: 22),
-                _buildMainCategoryFilter(notifier),
-                _buildSubCategoryFilters(notifier),
-              ],
-            ),
+          ListView(
+            shrinkWrap: true,
+            children: [
+              Container(height: 22),
+              _buildMainCategoryFilter(notifier),
+              _buildSubCategoryFilters(notifier),
+            ],
           ),
           closeButton,
         ]);

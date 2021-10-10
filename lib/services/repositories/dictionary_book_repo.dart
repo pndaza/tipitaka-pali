@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:tipitaka_pali/business_logic/models/dictionary.dart';
 import 'package:tipitaka_pali/services/dao/dictionary_book_dao.dart';
 import 'package:tipitaka_pali/services/database/database_helper.dart';
@@ -33,12 +34,12 @@ class UserDictDatabaseRepository implements UserDictRepository {
     final db = await databaseProvider.database;
     // delect previous records
     int count = await db.delete(dao.tableUserDict);
-    //print('delete items: $count');
+    debugPrint('delete items: $count');
     // insert new records
     for (final userDict in userDicts) {
       //print(userDict.name);
       var id = await db.insert(dao.tableUserDict, dao.toMap(userDict));
-      //print('insert id: $id');
+      debugPrint('insert id: $id');
     }
   }
 

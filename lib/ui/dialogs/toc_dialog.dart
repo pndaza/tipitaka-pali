@@ -4,8 +4,9 @@ import 'package:tipitaka_pali/business_logic/view_models/toc_view_model.dart';
 
 class TocDialog extends StatelessWidget {
   final String bookID;
-  const TocDialog(this.bookID);
-  
+
+  const TocDialog({Key? key, required this.bookID}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,8 +54,8 @@ class TocDialog extends StatelessWidget {
                     ),
                   );
                 } else {
-                  return Container(
-                    child: const CircularProgressIndicator(),
+                  return const SizedBox(
+                    child: CircularProgressIndicator(),
                   );
                 }
               }),

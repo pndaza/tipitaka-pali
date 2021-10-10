@@ -19,7 +19,7 @@ class ControlBar extends StatelessWidget {
   Widget build(BuildContext context) {
     myLogger.i('building control bar');
     final vm = Provider.of<ReaderViewModel>(context, listen: false);
-    return Container(
+    return SizedBox(
       height: 56.0,
       child: Row(
         children: [
@@ -108,38 +108,36 @@ class ControlBar extends StatelessWidget {
     return showModalBottomSheet<void>(
         context: context,
         builder: (BuildContext bc) {
-          return Container(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Center(
-                  child: Text(
-                    'အဖွင့်ကြည့်လိုသော စာပိုဒ်ရွေးပါ',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Center(
+                child: Text(
+                  'အဖွင့်ကြည့်လိုသော စာပိုဒ်ရွေးပါ',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                const Divider(),
-                Container(
-                  height: 280,
-                  child: ListView.separated(
-                      itemBuilder: (_, i) => ListTile(
-                            subtitle: Text(
-                                '${paragraphs[i].bookName} - ${MmNumber.get(paragraphs[i].expPageNumber)}'),
-                            title: Text(
-                                'စာပိုဒ်အမှတ်: ${MmNumber.get(paragraphs[i].paragraph)}'),
-                            onTap: () {
-                              _openBook(
-                                  context,
-                                  paragraphs[i].expBookID,
-                                  paragraphs[i].bookName,
-                                  paragraphs[i].expPageNumber);
-                            },
-                          ),
-                      separatorBuilder: (_, __) => const Divider(),
-                      itemCount: paragraphs.length),
-                ),
-              ],
-            ),
+              ),
+              const Divider(),
+              SizedBox(
+                height: 280,
+                child: ListView.separated(
+                    itemBuilder: (_, i) => ListTile(
+                          subtitle: Text(
+                              '${paragraphs[i].bookName} - ${MmNumber.get(paragraphs[i].expPageNumber)}'),
+                          title: Text(
+                              'စာပိုဒ်အမှတ်: ${MmNumber.get(paragraphs[i].paragraph)}'),
+                          onTap: () {
+                            _openBook(
+                                context,
+                                paragraphs[i].expBookID,
+                                paragraphs[i].bookName,
+                                paragraphs[i].expPageNumber);
+                          },
+                        ),
+                    separatorBuilder: (_, __) => const Divider(),
+                    itemCount: paragraphs.length),
+              ),
+            ],
           );
         });
   }
@@ -162,7 +160,7 @@ class ControlBar extends StatelessWidget {
         expand: false,
         context: context,
         builder: (context) {
-          return  TocDialog(vm.book.id);
+          return  TocDialog(bookID: vm.book.id);
         });
     if (toc != null) {
       vm.gotoPageAndScroll(toc.pageNumber.toDouble(), toc.name);

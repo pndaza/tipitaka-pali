@@ -11,7 +11,7 @@ import '../../../../app.dart';
 import '../../../../business_logic/view_models/reader_view_model.dart';
 
 class MyPageView extends StatelessWidget {
-  const MyPageView();
+  const MyPageView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     myLogger.i('building pageview');
@@ -34,14 +34,12 @@ class MyPageView extends StatelessWidget {
                   mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
               .toString(),
           javascriptMode: JavascriptMode.unrestricted,
-          javascriptChannels: [
-            JavascriptChannel(
+          javascriptChannels: {JavascriptChannel(
                 name: 'Define',
                 onMessageReceived: (JavascriptMessage message) {
                   vm.showDictionary(message.message);
-                })
-          ].toSet(),
-          gestureRecognizers: Set()
+                })},
+          gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{}
             ..add(Factory<VerticalDragGestureRecognizer>(
                 () => VerticalDragGestureRecognizer())),
           onWebViewCreated: (controller) =>

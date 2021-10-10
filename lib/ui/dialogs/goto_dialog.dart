@@ -17,7 +17,7 @@ class GotoDialog extends StatefulWidget {
   final double radius;
 
   const GotoDialog(
-      { Key? key,
+      {Key? key,
       required this.firstPage,
       required this.lastPage,
       required this.firstParagraph,
@@ -26,37 +26,22 @@ class GotoDialog extends StatefulWidget {
       : super(key: key);
 
   @override
-  _GotoDialogState createState() => _GotoDialogState(
-      firstPage: firstPage,
-      lastPage: lastPage,
-      firstParagraph: firstParagraph,
-      lastParagraph: lastParagraph,
-      radius: radius);
+  _GotoDialogState createState() => _GotoDialogState();
 }
 
 class _GotoDialogState extends State<GotoDialog> {
-  final int firstPage;
-  final int lastPage;
-  final int firstParagraph;
-  final int lastParagraph;
-  final double radius;
   TextEditingController controller = TextEditingController();
   GotoType selectedType = GotoType.page;
   int? selectedTypeIndex;
   String? hintText;
   bool isValid = false;
 
-  _GotoDialogState(
-      {required this.firstPage,
-      required this.lastPage,
-      required this.firstParagraph,
-      required this.lastParagraph,
-      required this.radius});
+  _GotoDialogState();
 
   @override
   void initState() {
     super.initState();
-    hintText = 'page ($firstPage-$lastPage)';
+    hintText = 'page (${widget.firstPage}-${widget.lastPage})';
     selectedTypeIndex = 0;
   }
 
@@ -77,7 +62,7 @@ class _GotoDialogState extends State<GotoDialog> {
   }
 
   Widget dialogContent() {
-    return Container(
+    return SizedBox(
       width: 300,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -114,10 +99,11 @@ class _GotoDialogState extends State<GotoDialog> {
           selectedTypeIndex = index;
           if (index == 0) {
             selectedType = GotoType.page;
-            hintText = 'page ($firstPage-$lastPage)';
+            hintText = 'page (${widget.firstPage}-${widget.lastPage})';
           } else {
             selectedType = GotoType.paragraph;
-            hintText = 'paragraph ($firstParagraph-$lastParagraph)';
+            hintText =
+                'paragraph (${widget.firstParagraph}-${widget.lastParagraph})';
           }
         });
       },
@@ -185,11 +171,11 @@ class _GotoDialogState extends State<GotoDialog> {
   }
 
   bool _isPageNumberValid(int pageNumber) {
-    return firstPage <= pageNumber && pageNumber <= lastPage;
+    return widget.firstPage <= pageNumber && pageNumber <= widget.lastPage;
   }
 
   bool _isParagraphNumberValid(int paragraphNumber) {
-    return firstParagraph <= paragraphNumber &&
-        paragraphNumber <= lastParagraph;
+    return widget.firstParagraph <= paragraphNumber &&
+        paragraphNumber <= widget.lastParagraph;
   }
 }

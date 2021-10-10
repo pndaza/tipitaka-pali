@@ -52,7 +52,7 @@ class DictionarySearchField extends StatefulWidget {
 }
 
 class _DictionarySearchFieldState extends State<DictionarySearchField> {
-  late final textEditingController;
+  late final TextEditingController textEditingController;
   @override
   void initState() {
     textEditingController = TextEditingController(
@@ -136,14 +136,14 @@ class DictionaryContentView extends StatelessWidget {
 
     return state.when(
         initial: () => Container(),
-        loading: () => Container(
-            height: 100, child: const Center(child: CircularProgressIndicator())),
+        loading: () => const SizedBox(
+            height: 100, child: Center(child: CircularProgressIndicator())),
         data: (content) => SingleChildScrollView(
             child: Padding(
                 padding: const EdgeInsets.all(16.0), child: HtmlWidget(content))),
-        noData: () => Container(
+        noData: () => const SizedBox(
               height: 100,
-              child: const Center(child: Text('Not found')),
+              child: Center(child: Text('Not found')),
             ));
   }
 }

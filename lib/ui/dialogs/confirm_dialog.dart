@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum OkCancelAction { OK, CANCEL }
+enum OkCancelAction { ok, cancel }
 
 class ConfirmDialog extends StatelessWidget {
   final String title;
@@ -74,13 +74,13 @@ class ConfirmDialog extends StatelessWidget {
           child: Text(cancelLabel),
           style: buttonStyle,
           // textTheme: ButtonTextTheme.accent,
-          onPressed: () => Navigator.of(context).pop(OkCancelAction.CANCEL),
+          onPressed: () => Navigator.of(context).pop(OkCancelAction.cancel),
         )),
         Expanded(
             child: TextButton(
           child: Text(okLabel),
           style: buttonStyle,
-          onPressed: () => Navigator.of(context).pop(OkCancelAction.OK),
+          onPressed: () => Navigator.of(context).pop(OkCancelAction.ok),
         )),
       ],
     );

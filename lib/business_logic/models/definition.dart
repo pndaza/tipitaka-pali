@@ -7,7 +7,6 @@ class Definition {
 
   @override
   String toString() {
-    // TODO: implement toString
-    return definition;
+    return '$bookName: $definition';
   }
 }

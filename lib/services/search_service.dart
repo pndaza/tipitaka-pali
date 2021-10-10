@@ -25,7 +25,7 @@ class SearchService {
     final IndexRepository repository =
         IndexDatabaseRepository(databaseProvider);
     List<String> queryWords = searchWord.trim().split(' ');
-    final beforeTime = DateTime.now();
+    // final beforeTime = DateTime.now();
     for (String word in queryWords) {
       //print('searching for $word');
       var temp = await repository.getIndexes(word);
@@ -79,12 +79,12 @@ class SearchService {
       {required List<Index> smallList,
       required List<Index> largeList,
       bool reverseSearchMode = false}) {
-    Comparator<Index> indexComparator = (a, b) => a.pageID.compareTo(b.pageID);
+    // Comparator<Index> indexComparator = (a, b) => a.pageID.compareTo(b.pageID);
     List<Index> adjacentItems = [];
 
     for (Index item in smallList) {
       int index =
-          binarySearch<Index>(largeList, item, compare: indexComparator);
+          binarySearch<Index>(largeList, item, compare: (a, b) => a.pageID.compareTo(b.pageID));
       if (index != -1) {
         int leftMostMatch = _findLeftMostMatch(largeList, index, item.pageID);
         int rightMostMatch = _findRightMostMatch(largeList, index, item.pageID);

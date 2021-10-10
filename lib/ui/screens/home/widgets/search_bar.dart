@@ -14,15 +14,12 @@ class SearchBar extends StatefulWidget {
 
   @override
   _SearchBarState createState() =>
-      _SearchBarState(onSubmitted, onTextChanged, hint);
+      _SearchBarState();
 }
 
 class _SearchBarState extends State<SearchBar> {
-  _SearchBarState(this.onSummited, this.onTextChanged, this.hint);
+  _SearchBarState();
 
-  final void Function(String) onSummited;
-  final void Function(String) onTextChanged;
-  final String hint;
   bool _showClearButton = false;
 
   Color borderColor = Colors.grey;
@@ -62,11 +59,11 @@ class _SearchBarState extends State<SearchBar> {
             child: TextField(
               controller: controller,
               textInputAction: TextInputAction.search,
-              onSubmitted: (text) => onSummited(text),
+              onSubmitted: (text) => widget.onSubmitted(text),
               onChanged: (text) {
                 final scriptLanguage = ScriptDetector.getLanguage(text);
                 if (scriptLanguage == 'Roman') text = _toUni(text);
-                onTextChanged(text);
+                widget.onTextChanged(text);
               },
               decoration: InputDecoration(
                   border: InputBorder.none,
@@ -77,7 +74,7 @@ class _SearchBarState extends State<SearchBar> {
                   // suffix: keyBoardButton(),
                   suffixIcon: clearButton(),
                   hintStyle: const TextStyle(color: Colors.grey),
-                  hintText: hint,
+                  hintText: widget.hint,
                   fillColor: Colors.white70),
             ),
           ),
