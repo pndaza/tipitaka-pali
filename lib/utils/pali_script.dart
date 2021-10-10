@@ -49,7 +49,7 @@ class PaliScript {
       return MmPali.toRoman(text);
     }
     if (language == 'සිංහල') {
-      return fromSin(text,'');
+      return fromSin(text);
     }
 
     return text;

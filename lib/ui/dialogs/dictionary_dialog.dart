@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:provider/provider.dart';
+import 'package:tipitaka_pali/utils/script_detector.dart';
 
 import '../../business_logic/view_models/dictionary_state.dart';
 import '../../business_logic/view_models/dictionary_view_model.dart';
@@ -93,14 +94,26 @@ class _DictionarySearchFieldState extends State<DictionarySearchField> {
             if (text.isEmpty) {
               return <String>[];
             } else {
-              return context.read<DictionaryViewModel>().getSuggestions(text);
+              final inputLanguage = ScriptDetector.getLanguage(text);
+              final romanText = PaliScript.getRomanScriptFrom(
+                  language: inputLanguage, text: text);
+              return context
+                  .read<DictionaryViewModel>()
+                  .getSuggestions(romanText);
             }
           },
           itemBuilder: (context, String suggestion) {
-            return ListTile(title: Text(suggestion));
+            return ListTile(
+                title: Text(PaliScript.getScriptOf(
+                    language:
+                        context.read<ScriptLanguageProvider>().currentLanguage,
+                    romanText: suggestion)));
           },
           onSuggestionSelected: (String suggestion) {
-            textEditingController.text = suggestion;
+            final inputLanguage =
+                ScriptDetector.getLanguage(textEditingController.text);
+            textEditingController.text = PaliScript.getScriptOf(
+                language: inputLanguage, romanText: suggestion);
             context.read<DictionaryViewModel>().onClickSuggestion(suggestion);
           }),
     );
@@ -140,7 +153,8 @@ class DictionaryContentView extends StatelessWidget {
             height: 100, child: Center(child: CircularProgressIndicator())),
         data: (content) => SingleChildScrollView(
             child: Padding(
-                padding: const EdgeInsets.all(16.0), child: HtmlWidget(content))),
+                padding: const EdgeInsets.all(16.0),
+                child: HtmlWidget(content))),
         noData: () => const SizedBox(
               height: 100,
               child: Center(child: Text('Not found')),

@@ -350,7 +350,7 @@ String toSin(String input) {
       .replaceAll(r'\`+', '"');
 }
 
-String fromSin(String input, type) {
+String fromSin(String input) {
   var vowel = {};
 
   vowel['අ'] = 'a';
@@ -441,15 +441,15 @@ String fromSin(String input, type) {
   input = input.replaceAll(r'\&quot;', '`');
 
   while (i < input.length) {
-    i1 = input[i];
-    debugPrint('i1: $i1');
+    i1 = charAt(input, i);
 
-    if (vowel[i1]) {
-      if (output[output.length - 1] == 'a') {
-        output = output.substring(0, output.length - 1);
-      }
+      if (vowel[i1] != null) {
+        if (output[output.length - 1] == 'a') {
+          output = output.substring(0, output.length - 1);
+        }
+      
       output += vowel[i1];
-    } else if (sinhala[i1]) {
+    } else if (sinhala[i1] != null) {
       output += sinhala[i1] + 'a';
     } else {
       output += i1;
@@ -529,13 +529,13 @@ String toDeva(String input) {
   var i5 = '';
   var output = '';
   var cons = 0;
-  var i =1;
+  var i = 1;
 
   // input = input.replace(r'\&quot;', '`');
 
   while (i < input.length) {
     i0 = charAt(input, i - 1);
-    i1 = charAt(input, i );
+    i1 = charAt(input, i);
     i2 = charAt(input, i + 1);
     i3 = charAt(input, i + 2);
     i4 = charAt(input, i + 3);
