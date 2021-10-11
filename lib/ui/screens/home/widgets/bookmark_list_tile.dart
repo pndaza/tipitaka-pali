@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../../../business_logic/models/bookmark.dart';
 import '../../../../services/provider/script_language_provider.dart';
 import '../../../../utils/pali_script.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BookmarkListTile extends StatelessWidget {
   // final BookmarkPageViewModel bookmarkViewmodel;
@@ -42,7 +43,7 @@ class BookmarkListTile extends StatelessWidget {
           width: 100,
           child: Row(
             children: [
-              const Text('page - '),
+              Text('${AppLocalizations.of(context)!.page} -'),
               Expanded(
                   child: Text(
                 '${bookmark.pageNumber}',
@@ -54,5 +55,4 @@ class BookmarkListTile extends StatelessWidget {
       ),
     );
   }
-
 }

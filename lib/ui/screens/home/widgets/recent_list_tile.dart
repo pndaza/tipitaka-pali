@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../../../business_logic/models/recent.dart';
 import '../../../../services/provider/script_language_provider.dart';
 import '../../../../utils/pali_script.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RecentListTile extends StatelessWidget {
   const RecentListTile(
@@ -36,10 +37,10 @@ class RecentListTile extends StatelessWidget {
             language: context.read<ScriptLanguageProvider>().currentLanguage,
             romanText: recent.bookName!)),
         trailing: SizedBox(
-          width: 100,
+          width: 105,
           child: Row(
             children: [
-              const Text('page  - '),
+              Text('${AppLocalizations.of(context)!.page} -'),
               Expanded(
                   child:
                       Text('${recent.pageNumber}', textAlign: TextAlign.end)),

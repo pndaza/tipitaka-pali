@@ -85,7 +85,8 @@
   },
   "enter_note":"Enter note here",
   "save": "Save",
-  "cancel": "Cancel"  
+  "cancel": "Cancel",
+  "page": "page"  
 
 
   
