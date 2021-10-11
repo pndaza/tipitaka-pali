@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:tipitaka_pali/app.dart';
 import 'package:tipitaka_pali/business_logic/view_models/reader_view_model.dart';
 import 'package:tipitaka_pali/ui/dialogs/simple_input_dialog.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class ReaderAppBar extends StatelessWidget implements PreferredSizeWidget {
   const ReaderAppBar({Key? key}) : super(key: key);
@@ -37,9 +39,9 @@ class ReaderAppBar extends StatelessWidget implements PreferredSizeWidget {
       context: context,
       builder: (context) {
         return  SimpleInputDialog(
-            hintText: 'မှတ်လိုသောစာသား ထည့်ပါ',
-            cancelLabel: 'မမှတ်တော့ဘူး',
-            okLabel: 'မှတ်မယ်',
+            hintText: AppLocalizations.of(context)!.enter_note,
+            cancelLabel: AppLocalizations.of(context)!.cancel,
+            okLabel: AppLocalizations.of(context)!.save,
         );
         
       },

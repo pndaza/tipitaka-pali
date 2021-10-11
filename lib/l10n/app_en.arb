@@ -82,7 +82,11 @@
   "unable_open_page":"Unable to open page for this page.",
   "@unable_open_page": {
     "description": "cannot open page"
-  }
+  },
+  "enter_note":"Enter note here",
+  "save": "Save",
+  "cancel": "Cancel"  
+
 
   
 
