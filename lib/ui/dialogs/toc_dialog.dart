@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tipitaka_pali/business_logic/models/toc_list_item.dart';
 import 'package:tipitaka_pali/business_logic/view_models/toc_view_model.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TocDialog extends StatelessWidget {
   final String bookID;
@@ -13,8 +14,8 @@ class TocDialog extends StatelessWidget {
       body: Column(
         children: [
           Stack(alignment: Alignment.center, children: [
-            const Text(
-              'Table of Contents',
+            Text(
+              AppLocalizations.of(context)!.table_of_contents,
               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
             ),
             Align(

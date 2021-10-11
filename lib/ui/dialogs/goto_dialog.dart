@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 enum GotoType { page, paragraph }
 
@@ -80,10 +81,10 @@ class _GotoDialogState extends State<GotoDialog> {
   }
 
   Padding _buildTitle() {
-    return const Padding(
+    return Padding(
       padding: EdgeInsets.all(4.0),
       child: Text(
-        'Goto',
+        AppLocalizations.of(context)!.goto,
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
       ),
     );
@@ -92,7 +93,10 @@ class _GotoDialogState extends State<GotoDialog> {
   ToggleSwitch _buildInputType(BuildContext context) {
     return ToggleSwitch(
       totalSwitches: 2,
-      labels: const ['page', 'paragraph'],
+      labels: [
+        AppLocalizations.of(context)!.page,
+        AppLocalizations.of(context)!.paragraph
+      ],
       initialLabelIndex: selectedTypeIndex!,
       onToggle: (index) {
         setState(() {
@@ -132,14 +136,14 @@ class _GotoDialogState extends State<GotoDialog> {
       buttonMinWidth: 120.0,
       children: [
         TextButton(
-          child: const Text(
-            'Cancel',
+          child: Text(
+            AppLocalizations.of(context)!.cancel,
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
         TextButton(
-            child: const Text(
-              'Go',
+            child: Text(
+              AppLocalizations.of(context)!.go,
             ),
             onPressed: !isValid
                 ? null

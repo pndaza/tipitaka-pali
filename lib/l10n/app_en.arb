@@ -1,95 +1,37 @@
 {
-    "tipitaka_pali_reader": "Tipitaka Pali Reader",
-    "@tipitaka_pali_reader": {
-      "description": "Title for app"
-    },
+  "tipitaka_pali_reader": "Tipitaka Pali Reader",
   "home": "Home",
-  "@home": {
-    "description": "Home label for bottom nav bar"
-    },
   "bookmark": "Bookmark",
-  "@bookmark": {
-    "description": "Bookmark label for bottom nav bar"
-  },
   "recent": "Recent",
-  "@recent": {
-    "description": "Recent label for bottom nav bar"
-  },
   "search": "Search",
-  "@searcht": {
-    "description": "Search label for bottom nav bar"
-  },
   "updatingStatus": "Please wait While updating Database",
-  "@nupdatingStatus": {
-    "description": "update status in initial setup screen"
-  },
   "copyingStatus": "Please wait While copying Database",
-  "@copyingStatus": {
-    "description": "Copyint status in initial setup screen"
-  },
   "settings": "Settings",
-  "@settinngs": {
-    "description": "settings page title"
-  },
   "dictionary": "dictionary",
-  "@dictionary": {
-    "description": "dictionary page title"
-  },
   "theme": "Theme",
-  "@theme": {
-    "description": "for setting color"
-  },
   "darkMode": "Dark Mode",
-  "@darkMode": {
-    "description": "for Dark Mode"
-  },
   "language": "Language",
-  "@language": {
-    "description": "setting the language"
-  },
   "dictionaries": "Dictionaries",
-  "@dictionaries": {
-    "description": "setting the dictionaries"
-  },
   "paliScript": "Pāḷi Script",
-  "@paliScript": {
-    "description": "setting for Pāḷi Script"
-  },
   "showAlternatePali": "Show Alternate Pāḷi",
-  "@showAlternatePali": {
-    "description": "for Show Alternate Pāḷi Option"
-  },
   "showPTSPageNumber": "Show PTS PageNumber",
-  "@showPTSPageNumber": {
-    "description": "for PTS PageNumber Show Hide Option"
-  },
   "showThaiPageNumber": "Show Thai PageNumber",
-  "@showThaiPageNumber": {
-    "description": "for Thai PageNumber Show Hide Option"
-  },
   "showVRIPageNumber": "Show VRI PageNumber",
-  "@showVRIPageNumber": {
-    "description": "for VRI PageNumber Show Hide Option"
-  },
   "about": "About",
-  "@about": {
-    "description": "menu item for about"
-  },
   "about_info":"This app is still in Beta.  However, it should be useful for accessing the Tipitaka Texts, and getting most dictionary definitions.  You can create issues and request features on the github website https://github.com/bksubhuti/tipitaka-pali-reader/issues",
-  "@about_info": {
-    "description": "about content"
-  },
   "unable_open_page":"Unable to open page for this page.",
-  "@unable_open_page": {
-    "description": "cannot open page"
-  },
   "enter_note":"Enter note here",
   "save": "Save",
   "cancel": "Cancel",
-  "page": "page"  
-
-
-  
+  "page": "page",
+  "select_paragraph":  "Select Paragraph",
+  "close": "Close",
+  "paragraph_number": "Paragraph Number",
+  "table_of_contents": "Table Of Contents",
+  "goto":"Goto",
+  "paragraph": "Paragraph",
+  "go": "go"
+   
 
 }
 

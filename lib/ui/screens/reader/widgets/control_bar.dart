@@ -10,6 +10,7 @@ import 'package:tipitaka_pali/ui/dialogs/goto_dialog.dart';
 import 'package:tipitaka_pali/ui/dialogs/toc_dialog.dart';
 import 'package:tipitaka_pali/ui/screens/reader/widgets/slider.dart';
 import 'package:tipitaka_pali/utils/mm_number.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../routes.dart';
 
@@ -23,25 +24,47 @@ class ControlBar extends StatelessWidget {
       height: 56.0,
       child: Row(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 16.0),
-            child: IconButton(
-                icon: const Icon(Icons.arrow_forward),
-                onPressed: () => _openGotoDialog(context, vm)),
-          ),
-          IconButton(
-              icon: const Icon(Icons.repeat),
-              onPressed: () => _selectParagraphDialog(context, vm)),
           const Expanded(child: MySlider()),
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
-            child: IconButton(
-                icon: const Icon(Icons.toc),
+            child: ElevatedButton(
+                child: Text("Nav"),
                 onPressed: () {
-                  _openTocDialog(context, vm);
+                  _openNavDialog(context, vm);
                 }),
           )
         ],
+      ),
+    );
+  }
+
+  _openNavDialog(BuildContext context, ReaderViewModel vm) async {
+    showMaterialModalBottomSheet(
+      context: context,
+      builder: (context) => SingleChildScrollView(
+        controller: ModalScrollController.of(context),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 16.0),
+              child: ElevatedButton(
+                  child: Text("Goto"),
+                  onPressed: () => _openGotoDialog(context, vm)),
+            ),
+            ElevatedButton(
+                child: Text("MAT"),
+                onPressed: () => _selectParagraphDialog(context, vm)),
+            Padding(
+              padding: const EdgeInsets.only(right: 16.0),
+              child: ElevatedButton(
+                  child: Text("TOC"),
+                  onPressed: () {
+                    _openTocDialog(context, vm);
+                  }),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -86,13 +109,13 @@ class ControlBar extends StatelessWidget {
               children: <Widget>[
                 // if current book is mula pali , it opens corresponded atthakatha
                 // if attha, will open tika
-                const Text('ယခု စာမျက်နှာအတွက် အဖွင့် ကြည့်ရှု မရနိုင်ပါ။'),
+                Text(AppLocalizations.of(context)!.unable_open_page),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('ပိတ်'),
+              child: Text(AppLocalizations.of(context)!.close),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -111,10 +134,11 @@ class ControlBar extends StatelessWidget {
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Center(
+              Center(
                 child: Text(
-                  'အဖွင့်ကြည့်လိုသော စာပိုဒ်ရွေးပါ',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  AppLocalizations.of(context)!.select_paragraph,
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
               const Divider(),
@@ -125,7 +149,7 @@ class ControlBar extends StatelessWidget {
                           subtitle: Text(
                               '${paragraphs[i].bookName} - ${MmNumber.get(paragraphs[i].expPageNumber)}'),
                           title: Text(
-                              'စာပိုဒ်အမှတ်: ${MmNumber.get(paragraphs[i].paragraph)}'),
+                              '${AppLocalizations.of(context)!.paragraph_number}: ${MmNumber.get(paragraphs[i].paragraph)}'),
                           onTap: () {
                             _openBook(
                                 context,
@@ -160,7 +184,7 @@ class ControlBar extends StatelessWidget {
         expand: false,
         context: context,
         builder: (context) {
-          return  TocDialog(bookID: vm.book.id);
+          return TocDialog(bookID: vm.book.id);
         });
     if (toc != null) {
       vm.gotoPageAndScroll(toc.pageNumber.toDouble(), toc.name);
