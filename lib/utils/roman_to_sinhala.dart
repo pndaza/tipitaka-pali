@@ -466,6 +466,7 @@ String fromSin(String input) {
 }
 
 String toDeva(String input) {
+
   input = input.toLowerCase().replaceAll(r'ṁ', 'ṃ');
 
   var vowel = {};
@@ -529,9 +530,9 @@ String toDeva(String input) {
   var i5 = '';
   var output = '';
   var cons = 0;
-  var i = 1;
+  var i = 0;
 
-  // input = input.replace(r'\&quot;', '`');
+  input = input.replaceAll(r'\&quot;', '`');
 
   while (i < input.length) {
     i0 = charAt(input, i - 1);
@@ -541,39 +542,40 @@ String toDeva(String input) {
     i4 = charAt(input, i + 3);
     i5 = charAt(input, i + 4);
 
-    if (i == 0 && vowel[i1]) {
-      // first letter vowel
-      output += vowel[i1];
+    if (i == 0 && vowel[i1] != null) { // first letter vowel
+      output += vowel[i1]!;
       i += 1;
-    } else if (i2 == 'h' && devar[i1 + i2]) {
-      // two character match
-      output += devar[i1 + i2];
-      if (i3 != null && !vowel[i3] && i2 != 'ṃ') {
+
+    } else if (i2 == 'h' && devar[i1+i2] !=null ) {		// two character match
+      output += devar[i1+i2];
+      if (i3.isNotEmpty && vowel[i3] != null && i2 != 'ṃ') {
         output += '्';
       }
       i += 2;
-    } else if (devar[i1]) {
-      // one character match except a
+
+    } else if (devar[i1] != null) {	// one character match except a
       output += devar[i1];
-      if (i2 != null && !vowel[i2] && !vowel[i1] && i1 != 'ṃ') {
+      if (i2.isNotEmpty && vowel[i2] != null && vowel[i1] != null && i1 != 'ṃ') {
         output += '्';
       }
       i++;
+
     } else if (i1 != 'a') {
       if (devar[i0] != null || (i0 == 'h' && devar[i1] != null)) {
         output += '्'; // end word consonant
       }
       output += i1;
       i++;
-      if (vowel[i2]) {
-        output += vowel[i2];
+      if(vowel[i2] != null) {
+        output+=vowel[i2];
         i++;
       }
+
     } else {
       i++;
     } // a
   }
-  if (devar[i1]) {
+  if (devar[i1] != null) {
     output += '्';
   }
   output = output.replaceAll(r'\`+', '"');

@@ -24,15 +24,16 @@ class ControlBar extends StatelessWidget {
       height: 56.0,
       child: Row(
         children: [
+          // used for padding
+          const SizedBox(width: 16,),
           const Expanded(child: MySlider()),
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: ElevatedButton(
-                child: Text("Nav"),
-                onPressed: () {
-                  _openNavDialog(context, vm);
-                }),
-          )
+          IconButton(
+              icon: const Icon(Icons.more_vert_outlined),
+              onPressed: () {
+                _openNavDialog(context, vm);
+              }),
+              //used for padding
+          const SizedBox(width: 16,),
         ],
       ),
     );
