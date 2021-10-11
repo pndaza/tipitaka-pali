@@ -15,7 +15,7 @@ class SearchService {
     final databaseProvider = DatabaseHelper();
     final SearchSuggestionRepository repository =
         SearchSuggestionDatabaseRepository(databaseProvider);
-    final suggestions = await repository.getWords(filterWord);
+    final suggestions = await repository.getSuggestions(filterWord);
     return suggestions;
   }
 

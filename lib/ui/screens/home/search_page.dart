@@ -60,7 +60,7 @@ class SearchPage extends StatelessWidget {
     return ListView.separated(
       itemCount: vm.suggestions.length,
       itemBuilder: (context, index) {
-        final suggestedWord = vm.suggestions[index].word;
+        final suggestion = vm.suggestions[index];
 
 
         return ListTile(
@@ -71,10 +71,16 @@ class SearchPage extends StatelessWidget {
             PaliScript.getScriptOf(
                 language:
                     context.read<ScriptLanguageProvider>().currentLanguage,
-                romanText: suggestedWord),
+                romanText: suggestion.word),
             style: const TextStyle(fontSize: 20),
           ),
           leading: const Icon(Icons.search),
+          trailing: Text(
+            PaliScript.getScriptOf(
+                language:
+                    context.read<ScriptLanguageProvider>().currentLanguage,
+                romanText: suggestion.count.toString()),
+            style: const TextStyle(fontSize: 18)),
           onTap: () {
             vm.openSearchResult(context, vm.suggestions[index].word);
           },

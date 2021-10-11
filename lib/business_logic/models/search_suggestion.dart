@@ -1,4 +1,5 @@
 class SearchSuggestion {
   String word;
-  SearchSuggestion(this.word);
+  int count;
+  SearchSuggestion(this.word, this.count);
 }
