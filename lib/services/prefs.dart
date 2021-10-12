@@ -18,7 +18,7 @@ const String isShowVriNumberPref = 'showVriNumber';
 const String currentScriptLanguagePref = 'current_script_language';
 
 // default pref values
-const int defaultLocaleVal= 0;
+const int defaultLocaleVal = 0;
 const int defaultThemeIndex = 24;
 const bool defaultDarkThemeOn = false;
 const int defaultFontSize = 12;
@@ -39,16 +39,18 @@ class Prefs {
       instance = await SharedPreferences.getInstance();
 
   // get and set the default member values if null
-  static int get localeVal => instance.getInt(localeValPref) ?? defaultLocaleVal;
+  static int get localeVal =>
+      instance.getInt(localeValPref) ?? defaultLocaleVal;
   static set localeVal(int value) => instance.setInt(localeValPref, value);
 
   static int get themeIndex =>
       instance.getInt(themeIndexPref) ?? defaultThemeIndex;
   static set themeIndex(int value) => instance.setInt(themeIndexPref, value);
 
-  static bool get dartThemeOn =>
+  static bool get darkThemeOn =>
       instance.getBool(darkThemeOnPref) ?? defaultDarkThemeOn;
-  static set dartThemeOn(bool value) => instance.setBool(darkThemeOnPref, value);
+  static set dartThemeOn(bool value) =>
+      instance.setBool(darkThemeOnPref, value);
 
   static int get fontSize => instance.getInt(fontSizePref) ?? defaultFontSize;
   static set fontSize(int value) => instance.setInt(fontSizePref, value);

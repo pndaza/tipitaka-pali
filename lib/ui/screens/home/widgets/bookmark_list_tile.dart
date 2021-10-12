@@ -21,38 +21,57 @@ class BookmarkListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Slidable(
-      actionPane: const SlidableDrawerActionPane(),
-      secondaryActions: [
-        IconSlideAction(
-          icon: Icons.delete,
-          color: Colors.red,
-          onTap: () {
-            if (onDelete != null) onDelete!(bookmark);
-          },
-        )
-      ],
-      child: ListTile(
-        onTap: () {
-          if (onTap != null) onTap!(bookmark);
-        },
-        title: Text(bookmark.note),
-        subtitle: Text(PaliScript.getScriptOf(
-            language: context.read<ScriptLanguageProvider>().currentLanguage,
-            romanText: bookmark.bookName!)),
-        trailing: SizedBox(
-          width: 100,
-          child: Row(
-            children: [
-              Text('${AppLocalizations.of(context)!.page} -'),
-              Expanded(
-                  child: Text(
-                '${bookmark.pageNumber}',
-                textAlign: TextAlign.end,
-              )),
-            ],
-          ),
-        ),
-      ),
-    );
+        actionPane: const SlidableDrawerActionPane(),
+        secondaryActions: [
+          IconSlideAction(
+            icon: Icons.delete,
+            color: Colors.red,
+            onTap: () {
+              if (onDelete != null) onDelete!(bookmark);
+            },
+          )
+        ],
+        child: Builder(
+            builder: (context) => GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onLongPress: () {
+                  openSlidable(context);
+                },
+                child: ListTile(
+                  onTap: () {
+                    if (onTap != null) onTap!(bookmark);
+                  },
+                  title: Text(bookmark.note),
+                  subtitle: Text(PaliScript.getScriptOf(
+                      language: context
+                          .read<ScriptLanguageProvider>()
+                          .currentLanguage,
+                      romanText: bookmark.bookName!)),
+                  trailing: SizedBox(
+                    width: 100,
+                    child: Row(
+                      children: [
+                        Text('${AppLocalizations.of(context)!.page} -'),
+                        Expanded(
+                            child: Text(
+                          '${bookmark.pageNumber}',
+                          textAlign: TextAlign.end,
+                        )),
+                      ],
+                    ),
+                  ),
+                ))));
+  }
+
+  void openSlidable(BuildContext context) {
+    final slidable = Slidable.of(context);
+    final isClosed = slidable!.renderingMode == SlidableRenderingMode.none;
+    if (isClosed) {
+      Future.delayed(Duration.zero, () {
+        if (slidable.mounted) {
+          slidable.open(actionType: SlideActionType.secondary);
+        }
+      });
+    }
   }
 }

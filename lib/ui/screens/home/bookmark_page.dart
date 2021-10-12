@@ -16,9 +16,9 @@ class BookmarkPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<BookmarkPageViewModel>(
-      create: (_) =>
-          BookmarkPageViewModel(BookmarkDatabaseRepository(DatabaseHelper(), BookmarkDao()))
-            ..fetchBookmarks(),
+      create: (_) => BookmarkPageViewModel(
+          BookmarkDatabaseRepository(DatabaseHelper(), BookmarkDao()))
+        ..fetchBookmarks(),
       child: Scaffold(
         appBar: const BookmarkAppBar(),
         body: Consumer<BookmarkPageViewModel>(
