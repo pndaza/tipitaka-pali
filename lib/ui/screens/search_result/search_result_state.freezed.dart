@@ -21,7 +21,7 @@ class _$SearchResultStateTearOff {
     return const _Loading();
   }
 
-  _Loaded loaded(List<Index> results, int bookCount) {
+  _Loaded loaded(List<SearchResult> results, int bookCount) {
     return _Loaded(
       results,
       bookCount,
@@ -41,21 +41,21 @@ mixin _$SearchResultState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<Index> results, int bookCount) loaded,
+    required TResult Function(List<SearchResult> results, int bookCount) loaded,
     required TResult Function() noData,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<Index> results, int bookCount)? loaded,
+    TResult Function(List<SearchResult> results, int bookCount)? loaded,
     TResult Function()? noData,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<Index> results, int bookCount)? loaded,
+    TResult Function(List<SearchResult> results, int bookCount)? loaded,
     TResult Function()? noData,
     required TResult orElse(),
   }) =>
@@ -139,7 +139,7 @@ class _$_Loading implements _Loading {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<Index> results, int bookCount) loaded,
+    required TResult Function(List<SearchResult> results, int bookCount) loaded,
     required TResult Function() noData,
   }) {
     return loading();
@@ -149,7 +149,7 @@ class _$_Loading implements _Loading {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<Index> results, int bookCount)? loaded,
+    TResult Function(List<SearchResult> results, int bookCount)? loaded,
     TResult Function()? noData,
   }) {
     return loading?.call();
@@ -159,7 +159,7 @@ class _$_Loading implements _Loading {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<Index> results, int bookCount)? loaded,
+    TResult Function(List<SearchResult> results, int bookCount)? loaded,
     TResult Function()? noData,
     required TResult orElse(),
   }) {
@@ -212,7 +212,7 @@ abstract class _Loading implements SearchResultState {
 abstract class _$LoadedCopyWith<$Res> {
   factory _$LoadedCopyWith(_Loaded value, $Res Function(_Loaded) then) =
       __$LoadedCopyWithImpl<$Res>;
-  $Res call({List<Index> results, int bookCount});
+  $Res call({List<SearchResult> results, int bookCount});
 }
 
 /// @nodoc
@@ -233,7 +233,7 @@ class __$LoadedCopyWithImpl<$Res> extends _$SearchResultStateCopyWithImpl<$Res>
       results == freezed
           ? _value.results
           : results // ignore: cast_nullable_to_non_nullable
-              as List<Index>,
+              as List<SearchResult>,
       bookCount == freezed
           ? _value.bookCount
           : bookCount // ignore: cast_nullable_to_non_nullable
@@ -248,7 +248,7 @@ class _$_Loaded implements _Loaded {
   const _$_Loaded(this.results, this.bookCount);
 
   @override
-  final List<Index> results;
+  final List<SearchResult> results;
   @override
   final int bookCount;
 
@@ -284,7 +284,7 @@ class _$_Loaded implements _Loaded {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<Index> results, int bookCount) loaded,
+    required TResult Function(List<SearchResult> results, int bookCount) loaded,
     required TResult Function() noData,
   }) {
     return loaded(results, bookCount);
@@ -294,7 +294,7 @@ class _$_Loaded implements _Loaded {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<Index> results, int bookCount)? loaded,
+    TResult Function(List<SearchResult> results, int bookCount)? loaded,
     TResult Function()? noData,
   }) {
     return loaded?.call(results, bookCount);
@@ -304,7 +304,7 @@ class _$_Loaded implements _Loaded {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<Index> results, int bookCount)? loaded,
+    TResult Function(List<SearchResult> results, int bookCount)? loaded,
     TResult Function()? noData,
     required TResult orElse(),
   }) {
@@ -350,9 +350,9 @@ class _$_Loaded implements _Loaded {
 }
 
 abstract class _Loaded implements SearchResultState {
-  const factory _Loaded(List<Index> results, int bookCount) = _$_Loaded;
+  const factory _Loaded(List<SearchResult> results, int bookCount) = _$_Loaded;
 
-  List<Index> get results => throw _privateConstructorUsedError;
+  List<SearchResult> get results => throw _privateConstructorUsedError;
   int get bookCount => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   _$LoadedCopyWith<_Loaded> get copyWith => throw _privateConstructorUsedError;
@@ -396,7 +396,7 @@ class _$_NoData implements _NoData {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<Index> results, int bookCount) loaded,
+    required TResult Function(List<SearchResult> results, int bookCount) loaded,
     required TResult Function() noData,
   }) {
     return noData();
@@ -406,7 +406,7 @@ class _$_NoData implements _NoData {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<Index> results, int bookCount)? loaded,
+    TResult Function(List<SearchResult> results, int bookCount)? loaded,
     TResult Function()? noData,
   }) {
     return noData?.call();
@@ -416,7 +416,7 @@ class _$_NoData implements _NoData {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<Index> results, int bookCount)? loaded,
+    TResult Function(List<SearchResult> results, int bookCount)? loaded,
     TResult Function()? noData,
     required TResult orElse(),
   }) {

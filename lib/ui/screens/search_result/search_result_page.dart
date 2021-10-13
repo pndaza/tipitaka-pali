@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tipitaka_pali/business_logic/models/index.dart';
 import 'package:tipitaka_pali/business_logic/models/search_result.dart';
 import 'package:tipitaka_pali/ui/screens/home/widgets/search_result_list_tile.dart';
 import 'package:tipitaka_pali/ui/screens/search_result/search_result_provider.dart';
 import 'package:tipitaka_pali/ui/widgets/loading_view.dart';
+
 import 'search_filter_provider.dart';
 import 'search_filter_view.dart';
 
@@ -27,7 +27,7 @@ class SearchResultPage extends StatelessWidget {
                   SearchResultController>(
               create: (_) => SearchResultController(
                   searchWord: searchWord,
-                  filterController: SearchFilterController()),
+                  filterController: SearchFilterController())..init(),
               update: (_, filterController, resultConroller) {
                 resultConroller!.onChangeFilter(filterController);
                 return resultConroller;
@@ -71,7 +71,7 @@ class DataView extends StatelessWidget {
       required this.bookCount})
       : super(key: key);
   final String searchWord;
-  final List<Index> results;
+  final List<SearchResult> results;
   final int bookCount;
 
   @override
@@ -95,52 +95,60 @@ class DataView extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          results.isEmpty ?
-          const Center(child: Text('Not any more exist in other books'),) :
-          ListView.builder(
-              itemCount: results.length,
-              itemBuilder: (_, i) {
-                final Index index = results[i];
-                return _buildResultListItem(index: index, notifier: notifier);
-              }),
+          results.isEmpty
+              ? const Center(
+                  child: Text('Not any more exist in other books'),
+                )
+              : ListView.builder(
+                  // itemExtent: 300,
+                  
+                  itemCount: results.length,
+                  itemBuilder: (_, i) {
+                    final result = results[i];
+                    return SearchResultListTile(
+                      result: result,
+                      onTap: () {
+                        notifier.openBook(result, context);
+                      },
+                    );
+                  }),
           Positioned(
-            bottom: 16,
-            right: 16,
-              child: Builder(
-                builder: (context) {
-                  return FloatingActionButton.extended(
-            onPressed: () => Scaffold.of(context).showBottomSheet((context) => const SearchFilterView()),
-            label: const Text('Filter'),
-            icon: const Icon(Icons.filter_list),
-          );
-                }
-              ))
+              bottom: 16,
+              right: 16,
+              child: Builder(builder: (context) {
+                return FloatingActionButton.extended(
+                  onPressed: () => Scaffold.of(context)
+                      .showBottomSheet((context) => const SearchFilterView()),
+                  label: const Text('Filter'),
+                  icon: const Icon(Icons.filter_list),
+                );
+              }))
         ],
       ),
     );
   }
 
-  Widget _buildResultListItem(
-      {required Index index, required SearchResultController notifier}) {
-    return FutureBuilder(
-      future: notifier.getDetailResult(index),
-      builder: (BuildContext context, AsyncSnapshot<SearchResult> snapshot) {
-        if (snapshot.hasData) {
-          final result = snapshot.data!;
-          return GestureDetector(
-            child: SearchResultListTile(
-              result: result,
-              textToHighlight: searchWord,
-            ),
-            onTap: () {
-              notifier.openBook(result, context);
-            },
-          );
-        }
-        return const SizedBox(
-          height: 300,
-          child: LoadingView());
-      },
-    );
-  }
+  // Widget _buildResultListItem(
+  //     {required SearchResultPage index, required SearchResultController notifier}) {
+  //   return FutureBuilder(
+  //     future: notifier.getDetailResult(index),
+  //     builder: (BuildContext context, AsyncSnapshot<SearchResult> snapshot) {
+  //       if (snapshot.hasData) {
+  //         final result = snapshot.data!;
+  //         return GestureDetector(
+  //           child: SearchResultListTile(
+  //             result: result,
+  //             textToHighlight: searchWord,
+  //           ),
+  //           onTap: () {
+  //             notifier.openBook(result, context);
+  //           },
+  //         );
+  //       }
+  //       return const SizedBox(
+  //         height: 300,
+  //         child: LoadingView());
+  //     },
+  //   );
+  // }
 }

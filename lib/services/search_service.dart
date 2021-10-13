@@ -1,13 +1,8 @@
-import 'package:tipitaka_pali/business_logic/models/book.dart';
-import 'package:tipitaka_pali/business_logic/models/index.dart';
-import 'package:tipitaka_pali/business_logic/models/search_result.dart';
-import 'package:tipitaka_pali/business_logic/models/search_suggestion.dart';
-import 'package:tipitaka_pali/services/database/database_helper.dart';
-import 'package:tipitaka_pali/services/repositories/book_repo.dart';
-import 'package:tipitaka_pali/services/repositories/index_repo.dart';
-import 'package:tipitaka_pali/services/repositories/search_result_repo.dart';
-import 'package:tipitaka_pali/services/repositories/search_suggetion_repo.dart';
-import 'package:collection/collection.dart';
+import '../business_logic/models/search_result.dart';
+import '../business_logic/models/search_suggestion.dart';
+import 'database/database_helper.dart';
+import 'repositories/fts_repo.dart';
+import 'repositories/search_suggetion_repo.dart';
 
 class SearchService {
   static Future<List<SearchSuggestion>> getSuggestions(
@@ -19,6 +14,17 @@ class SearchService {
     return suggestions;
   }
 
+  static Future<List<SearchResult>> getResultsByFTS(String searchWord) async {
+    final DatabaseHelper databaseHelper = DatabaseHelper();
+    final FtsRespository respository = FtsDatabaseRepository(databaseHelper);
+    return await respository.getResults(searchWord);
+  }
+
+  /// 
+  ///
+  /// 
+
+/*
   static Future<List<Index>> getResults(String searchWord) async {
     List<List<Index>> results = [];
     final DatabaseHelper databaseProvider = DatabaseHelper();
@@ -83,8 +89,8 @@ class SearchService {
     List<Index> adjacentItems = [];
 
     for (Index item in smallList) {
-      int index =
-          binarySearch<Index>(largeList, item, compare: (a, b) => a.pageID.compareTo(b.pageID));
+      int index = binarySearch<Index>(largeList, item,
+          compare: (a, b) => a.pageID.compareTo(b.pageID));
       if (index != -1) {
         int leftMostMatch = _findLeftMostMatch(largeList, index, item.pageID);
         int rightMostMatch = _findRightMostMatch(largeList, index, item.pageID);
@@ -217,4 +223,6 @@ class SearchService {
 
     return description;
   }
+
+  */
 }

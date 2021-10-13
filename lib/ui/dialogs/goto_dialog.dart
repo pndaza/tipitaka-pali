@@ -82,10 +82,10 @@ class _GotoDialogState extends State<GotoDialog> {
 
   Padding _buildTitle() {
     return Padding(
-      padding: EdgeInsets.all(4.0),
+      padding: const EdgeInsets.all(4.0),
       child: Text(
         AppLocalizations.of(context)!.goto,
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
+        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
       ),
     );
   }

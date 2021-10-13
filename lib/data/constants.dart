@@ -1,4 +1,4 @@
-const kCurrentDatabaseVersion = 4;
+const kCurrentDatabaseVersion = 5;
 const kDatabaseName = 'tipitaka_pali.db';
 
 // const k_key_isDatabaseSaved = 'is_database_saved';

@@ -1,94 +1,85 @@
 import 'package:flutter/material.dart';
-import 'package:tipitaka_pali/business_logic/models/index.dart';
-import 'package:tipitaka_pali/business_logic/models/search_result.dart';
-import 'package:tipitaka_pali/services/search_service.dart';
-import 'package:tipitaka_pali/ui/screens/search_result/search_filter_provider.dart';
-import 'package:tipitaka_pali/ui/screens/search_result/search_result_state.dart';
 
+import '../../../business_logic/models/search_result.dart';
 import '../../../routes.dart';
+import '../../../services/search_service.dart';
+import 'search_filter_provider.dart';
+import 'search_result_state.dart';
 
 class SearchResultController extends ChangeNotifier {
   SearchResultController(
-      {required this.searchWord, required this.filterController}) {
-    _init();
-  }
+      {required this.searchWord, required this.filterController});
   final String searchWord;
   final SearchFilterController filterController;
   // final SearchFilterNotifier searchFilterNotifier;
-  List<Index> _allResults = [];
-  List<Index> _filterdResults = [];
+  List<SearchResult> _allResults = [];
+  List<SearchResult> _filterdResults = [];
   SearchResultState _state = const SearchResultState.loading();
   SearchResultState get state => _state;
 
-  void _init() async {
-    _allResults = await SearchService.getResults(searchWord.toLowerCase());
+  void init() async {
+    _allResults = await SearchService.getResultsByFTS(searchWord.toLowerCase());
     if (_allResults.isEmpty) {
       _state = const SearchResultState.noData();
       notifyListeners();
       return;
     }
+    // filtering results
     _filterdResults = _doFilter(filterController);
+  // updating state
     _state = SearchResultState.loaded(_filterdResults, getBookCount());
     notifyListeners();
   }
 
   void onChangeFilter(SearchFilterController filterController) {
-    if (this.filterController.selectedMainCategoryFilters.length ==
-            filterController.selectedMainCategoryFilters.length &&
-        this.filterController.selectedSubCategoryFilters.length ==
-            filterController.selectedSubCategoryFilters.length) {
-      // initial case
-      // don't do any filter
-      return;
-    }
-    //print('not initial search');
+    // change state to loading while filtering
     _state = const SearchResultState.loading();
-    //print('calling on filter change');
+    notifyListeners();
+    // filtering
     _filterdResults = _doFilter(filterController);
-
+    // update state
     _state = SearchResultState.loaded(_filterdResults, getBookCount());
-
     notifyListeners();
   }
 
-  List<Index> _doFilter(SearchFilterController filterController) {
+  List<SearchResult> _doFilter(SearchFilterController filterController) {
     final selectedMainCategoryFilters =
         filterController.selectedMainCategoryFilters;
     final selectedSubCategoryFilters =
         filterController.selectedSubCategoryFilters;
 
-    final List<Index> firstFilterdList = [];
-    final List<Index> secondFilterdList = [];
+    final List<SearchResult> firstFilterdList = [];
+    final List<SearchResult> secondFilterdList = [];
+
+    // book id strcture : mula_vi_01 , attha_di_01 etc
+    // first part of id is main category [mual, athha, tika, annya]
+    // middle part is sub catergory [vi, di, ma etc]
 
     // do filter with main category
     for (var element in selectedMainCategoryFilters) {
-      firstFilterdList.addAll(_allResults
-          .where((index) => index.bookID!.contains(element))
-          .toList());
+      firstFilterdList.addAll(_allResults.where((searchResult) {
+        return searchResult.book.id.contains(element);
+      }).toList());
     }
 
     // do filter with sub scategory
     for (var element in selectedSubCategoryFilters) {
       secondFilterdList.addAll(firstFilterdList
-          .where((index) => index.bookID!.contains(element))
+          .where((searchResult) => searchResult.book.id.contains(element))
           .toList());
     }
     // book order was changed while filtering
     // so need to reorder
-    secondFilterdList.sort((a, b) => a.pageID.compareTo(b.pageID));
+    secondFilterdList.sort((a, b) => a.id.compareTo(b.id));
     return secondFilterdList;
   }
 
   int getBookCount() {
     final books = <String>{};
     for (var element in _filterdResults) {
-      books.add(element.bookID!);
+      books.add(element.book.id);
     }
     return books.length;
-  }
-
-  Future<SearchResult> getDetailResult(Index index) async {
-    return await SearchService.getDetail(searchWord, index);
   }
 
   void openBook(SearchResult result, BuildContext context) {

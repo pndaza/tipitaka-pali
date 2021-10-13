@@ -101,9 +101,33 @@ class InitialSetupViewModel extends ChangeNotifier {
     await database.execute(
         'CREATE UNIQUE INDEX IF NOT EXISTS word_index ON words ( word );');
 
+    await _buildFTS(database);
+
     final timeAfterIndexing = DateTime.now();
     debugPrint(
         'indexing time: ${timeAfterIndexing.difference(timeBeforeIndexing)}');
+  }
+
+  Future<void> _buildFTS(Database database) async {
+    await database.execute(
+        'CREATE VIRTUAL TABLE IF NOT EXISTS fts_pages USING FTS5(id, bookid, page, content, paranum)');
+    final maps = await database
+        .rawQuery('SELECT id, bookid, page, content, paranum FROM pages');
+    for (var element in maps) {
+      final values = <String, Object?>{
+        'id': element['id'] as int,
+        'bookid': element['bookid'] as String,
+        'page': element['page'] as int,
+        'content': _cleanText(element['content'] as String),
+        'paranum': element['paranum'] as String,
+      };
+      await database.insert('fts_pages', values);
+    }
+  }
+
+  String _cleanText(String text) {
+    final regexHtmlTags = RegExp(r'<[^>]*>');
+    return text.replaceAll(regexHtmlTags, '');
   }
 
   void _openHomePage() {
