@@ -19,35 +19,54 @@ class RecentListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     // final recent = vm.recents[index];
     return Slidable(
-      actionPane: const SlidableDrawerActionPane(),
-      secondaryActions: [
-        IconSlideAction(
-          icon: Icons.delete,
-          color: Colors.red,
-          onTap: () {
-            if (onDelete != null) onDelete!(recent);
-          },
-        )
-      ],
-      child: ListTile(
-        onTap: () {
-          if (onTap != null) onTap!(recent);
-        },
-        title: Text(PaliScript.getScriptOf(
-            language: context.read<ScriptLanguageProvider>().currentLanguage,
-            romanText: recent.bookName!)),
-        trailing: SizedBox(
-          width: 105,
-          child: Row(
-            children: [
-              Text('${AppLocalizations.of(context)!.page} -'),
-              Expanded(
-                  child:
-                      Text('${recent.pageNumber}', textAlign: TextAlign.end)),
-            ],
-          ),
-        ),
-      ),
-    );
+        actionPane: const SlidableDrawerActionPane(),
+        secondaryActions: [
+          IconSlideAction(
+            icon: Icons.delete,
+            color: Colors.red,
+            onTap: () {
+              if (onDelete != null) onDelete!(recent);
+            },
+          )
+        ],
+        child: Builder(
+            builder: (context) => GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onLongPress: () {
+                  openSlidable(context);
+                },
+                child: ListTile(
+                  onTap: () {
+                    if (onTap != null) onTap!(recent);
+                  },
+                  title: Text(PaliScript.getScriptOf(
+                      language: context
+                          .read<ScriptLanguageProvider>()
+                          .currentLanguage,
+                      romanText: recent.bookName!)),
+                  trailing: SizedBox(
+                    width: 105,
+                    child: Row(
+                      children: [
+                        Text('${AppLocalizations.of(context)!.page} -'),
+                        Expanded(
+                            child: Text('${recent.pageNumber}',
+                                textAlign: TextAlign.end)),
+                      ],
+                    ),
+                  ),
+                ))));
+  }
+
+  void openSlidable(BuildContext context) {
+    final slidable = Slidable.of(context);
+    final isClosed = slidable!.renderingMode == SlidableRenderingMode.none;
+    if (isClosed) {
+      Future.delayed(Duration.zero, () {
+        if (slidable.mounted) {
+          slidable.open(actionType: SlideActionType.secondary);
+        }
+      });
+    }
   }
 }

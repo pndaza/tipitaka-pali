@@ -71,7 +71,7 @@ class ReaderViewModel with ChangeNotifier {
     //print('loading all data');
     _cssFont = '';
     _fontSize = Prefs.fontSize;
-    _isDarkMode = Prefs.dartThemeOn;
+    _isDarkMode = Prefs.darkThemeOn;
     // load script feature and will modify css value
     _isShowAlternatePali = Prefs.isShowAlternatePali;
     _isShowPtsPageNumber = Prefs.isShowPtsNumber;

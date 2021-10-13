@@ -124,7 +124,7 @@ class _GotoDialogState extends State<GotoDialog> {
         decoration: InputDecoration(hintText: hintText),
         onChanged: _validate,
         keyboardType: TextInputType.number,
-        autofocus: true,
+        autofocus: false,
       ),
     );
   }

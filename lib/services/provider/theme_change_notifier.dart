@@ -4,7 +4,7 @@ import 'package:tipitaka_pali/services/prefs.dart';
 import 'package:tipitaka_pali/data/flex_theme_data.dart';
 
 class ThemeChangeNotifier extends ChangeNotifier {
-  ThemeMode themeMode = (Prefs.dartThemeOn) ? ThemeMode.dark : ThemeMode.light;
+  ThemeMode themeMode = (Prefs.darkThemeOn) ? ThemeMode.dark : ThemeMode.light;
   int _themeIndex = 1;
 
   set themeIndex(int val) {

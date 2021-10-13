@@ -10,6 +10,9 @@ import 'package:tipitaka_pali/ui/dialogs/goto_dialog.dart';
 import 'package:tipitaka_pali/ui/dialogs/toc_dialog.dart';
 import 'package:tipitaka_pali/ui/screens/reader/widgets/slider.dart';
 import 'package:tipitaka_pali/utils/mm_number.dart';
+import 'package:tipitaka_pali/ui/widgets/colored_text.dart';
+import 'package:tipitaka_pali/data/flex_theme_data.dart';
+
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../routes.dart';
@@ -25,15 +28,19 @@ class ControlBar extends StatelessWidget {
       child: Row(
         children: [
           // used for padding
-          const SizedBox(width: 16,),
+          const SizedBox(
+            width: 16,
+          ),
           const Expanded(child: MySlider()),
           IconButton(
               icon: const Icon(Icons.more_vert_outlined),
               onPressed: () {
                 _openNavDialog(context, vm);
               }),
-              //used for padding
-          const SizedBox(width: 16,),
+          //used for padding
+          const SizedBox(
+            width: 16,
+          ),
         ],
       ),
     );
@@ -47,23 +54,33 @@ class ControlBar extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 16.0),
-              child: ElevatedButton(
-                  child: Text("Goto"),
-                  onPressed: () => _openGotoDialog(context, vm)),
+            Column(
+              children: [
+                IconButton(
+                    icon: Icon(Icons.directions_walk,
+                        color: Theme.of(context).colorScheme.primary),
+                    onPressed: () => _openGotoDialog(context, vm)),
+                const ColoredText("Goto"),
+              ],
             ),
-            ElevatedButton(
-                child: Text("MAT"),
-                onPressed: () => _selectParagraphDialog(context, vm)),
-            Padding(
-              padding: const EdgeInsets.only(right: 16.0),
-              child: ElevatedButton(
-                  child: Text("TOC"),
-                  onPressed: () {
-                    _openTocDialog(context, vm);
-                  }),
-            )
+            Column(
+              children: [
+                IconButton(
+                    icon: Icon(Icons.local_library,
+                        color: Theme.of(context).colorScheme.primary),
+                    onPressed: () => _selectParagraphDialog(context, vm)),
+                const ColoredText("MAT"),
+              ],
+            ),
+            Column(
+              children: [
+                IconButton(
+                    icon: Icon(Icons.toc,
+                        color: Theme.of(context).colorScheme.primary),
+                    onPressed: () => _openTocDialog(context, vm)),
+                const ColoredText("TOC"),
+              ],
+            ),
           ],
         ),
       ),
