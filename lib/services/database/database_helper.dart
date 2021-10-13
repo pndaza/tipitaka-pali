@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:tipitaka_pali/app.dart';
 import 'package:tipitaka_pali/data/constants.dart';
 
 class DatabaseHelper {
@@ -22,7 +21,7 @@ class DatabaseHelper {
 
 // Open Assets Database
   _initDatabase() async {
-    myLogger.i('initializing Database');
+    // myLogger.i('initializing Database');
     late String dbPath;
 
     if (Platform.isAndroid || Platform.isIOS || Platform.isMacOS) {
@@ -32,14 +31,96 @@ class DatabaseHelper {
       final docDirPath = await getApplicationDocumentsDirectory();
       dbPath = docDirPath.path;
     }
-    var path = join(dbPath, kDatabaseName);
+    var path = join(dbPath, DatabaseInfo.fileName);
 
-    myLogger.i('opening Database ...');
+    // myLogger.i('opening Database ...');
     return await openDatabase(path);
   }
 
   Future close() async {
-    return _database?.close();
+    await _database?.close();
+    _database = null;
+  }
+
+  Future<List<Map<String, Object?>>> backup({required String tableName}) async {
+    final dbInstance = await database;
+    final maps = await dbInstance.query(tableName);
+    print('maps: ${maps.length}');
+    return maps;
+  }
+
+  // Future<List<Map<String, Object?>>> backupBookmarks() async {
+  //   final dbInstance = await database;
+  //   final maps = await dbInstance
+  //       .query('bookmark', columns: <String>['book_id', 'page_number']);
+  //   return maps;
+  // }
+
+  // Future<List<Map<String, Object?>>> backupDictionary() async {
+  //   final dbInstance = await database;
+  //   final maps = await dbInstance.query('dictionary_books',
+  //       columns: <String>['id', 'name', 'user_order', 'user_choice']);
+  //   return maps;
+  // }
+
+  Future<void> deleteDictionaryData() async {
+    final dbInstance = await database;
+    await dbInstance.delete('dictionary_books');
+  }
+
+  Future<void> restore(
+      {required String tableName,
+      required List<Map<String, Object?>> values}) async {
+    final dbInstance = await database;
+    for (final value in values) {
+      await dbInstance.insert(tableName, value);
+    }
+  }
+
+  Future<bool> buildIndex() async {
+    final dbInstance = await database;
+    // building Index
+    await dbInstance.execute(
+        'CREATE INDEX IF NOT EXISTS "dictionary_index" ON "dictionary" ("word");');
+    await dbInstance.execute(
+        'CREATE INDEX IF NOT EXISTS "dpr_breakup_index" ON "dpr_breakup" ("word");');
+    await dbInstance
+        .execute('CREATE INDEX IF NOT EXISTS page_index ON pages ( bookid );');
+    await dbInstance.execute(
+        'CREATE INDEX IF NOT EXISTS paragraph_index ON paragraphs ( book_id );');
+    await dbInstance.execute(
+        'CREATE INDEX IF NOT EXISTS paragraph_mapping_index ON paragraph_mapping ( base_page_number);');
+    await dbInstance
+        .execute('CREATE INDEX IF NOT EXISTS toc_index ON tocs ( book_id );');
+    await dbInstance.execute(
+        'CREATE UNIQUE INDEX IF NOT EXISTS word_index ON words ( word );');
+
+    return true;
+  }
+
+  Future<bool> buildFts() async {
+    final dbInstance = await database;
+    await dbInstance.execute(
+        'CREATE VIRTUAL TABLE IF NOT EXISTS fts_pages USING FTS5(id, bookid, page, content, paranum)');
+    final maps = await dbInstance
+        .rawQuery('SELECT id, bookid, page, content, paranum FROM pages');
+    for (var element in maps) {
+      final values = <String, Object?>{
+        'id': element['id'] as int,
+        'bookid': element['bookid'] as String,
+        'page': element['page'] as int,
+        'content': _cleanText(element['content'] as String),
+        'paranum': element['paranum'] as String,
+      };
+      await dbInstance.insert('fts_pages', values);
+    }
+
+    return true;
+  }
+
+  String _cleanText(String text) {
+    final regexHtmlTags = RegExp(r'<[^>]*>');
+    return text.replaceAll(regexHtmlTags, '');
   }
 
   // Future<void> _buildIndex(Database database) async {

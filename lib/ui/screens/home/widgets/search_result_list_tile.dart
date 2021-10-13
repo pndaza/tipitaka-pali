@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:styled_text/styled_text.dart';
+import 'package:tipitaka_pali/services/provider/theme_change_notifier.dart';
 
 import '../../../../business_logic/models/search_result.dart';
 import '../../../../services/provider/script_language_provider.dart';
@@ -17,12 +18,15 @@ class SearchResultListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // print('text: ${result.description}');
+    final bool isDarkMode = context.read<ThemeChangeNotifier>().isDarkMode;
     const style = TextStyle(fontSize: 18);
     final styles = {
       'hl': StyledTextTag(
           style: TextStyle(
-              color: Colors.white,
-              backgroundColor: Theme.of(context).primaryColor)),
+              fontWeight: isDarkMode? null : FontWeight.bold,
+              fontStyle: isDarkMode? null : FontStyle.italic,
+              color: isDarkMode? Colors.white : Theme.of(context).primaryColor,
+              backgroundColor: isDarkMode? Theme.of(context).primaryColor : null)),
     };
 
     final bookName = PaliScript.getScriptOf(

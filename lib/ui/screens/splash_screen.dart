@@ -38,7 +38,7 @@ class SplashScreen extends StatelessWidget {
     if (!isExist) return DatabaseStatus.notExist;
 
     final dbVersion = Prefs.databaseVersion;
-    if (kCurrentDatabaseVersion == dbVersion) return DatabaseStatus.uptoDate;
+    if (DatabaseInfo.version == dbVersion) return DatabaseStatus.uptoDate;
 
     return DatabaseStatus.outOfDate;
   }

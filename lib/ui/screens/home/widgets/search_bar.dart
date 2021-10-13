@@ -76,7 +76,7 @@ class _SearchBarState extends State<SearchBar> {
                         ),
                   hintStyle: const TextStyle(color: Colors.grey),
                   hintText: widget.hint,
-                  fillColor: Colors.white70),
+                  ),
             ),
           ),
           const SizedBox(width: 4.0)

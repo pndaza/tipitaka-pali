@@ -7,6 +7,7 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:tipitaka_pali/data/constants.dart';
+import 'package:tipitaka_pali/services/database/database_helper.dart';
 import 'package:tipitaka_pali/services/prefs.dart';
 
 class InitialSetupViewModel extends ChangeNotifier {
@@ -26,9 +27,22 @@ class InitialSetupViewModel extends ChangeNotifier {
       databasesDirPath = docDirPath.path;
     }
     // final databasesDirPath = await getApplicationDocumentsDirectory();
-    final dbFilePath = join(databasesDirPath, kDatabaseName);
+    final dbFilePath = join(databasesDirPath, DatabaseInfo.fileName);
+
+    final recents = <Map<String, Object?>>[];
+    final bookmarks = <Map<String, Object?>>[];
+    final dictionaries = <Map<String, Object?>>[];
 
     if (isUpdateMode) {
+      // backuping user data to memory
+      final DatabaseHelper databaseHelper = DatabaseHelper();
+      recents.addAll(await databaseHelper.backup(tableName: 'recent'));
+      bookmarks.addAll(await databaseHelper.backup(tableName: 'bookmark'));
+      dictionaries
+          .addAll(await databaseHelper.backup(tableName: 'dictionary_books'));
+      
+    print('dictionary books: ${dictionaries.length}');
+      await databaseHelper.close();
       // deleting old database file
       await deleteDatabase(dbFilePath);
     }
@@ -41,34 +55,44 @@ class InitialSetupViewModel extends ChangeNotifier {
     // copying new database from assets
     await _copyFromAssets(dbFilePath);
 
+    final DatabaseHelper databaseHelper = DatabaseHelper();
+    // restoring user data
+    if (recents.isNotEmpty) {
+      await databaseHelper.restore(tableName: 'recent', values: recents);
+    }
+
+    if (bookmarks.isNotEmpty) {
+      await databaseHelper.restore(tableName: 'bookmark', values: bookmarks);
+    }
+
+    // dictionary_books table is semi-user data
+    // need to delete before restoring
+    if(dictionaries.isNotEmpty){
+
+    await databaseHelper.deleteDictionaryData();
+    print('dictionary books: ${dictionaries.length}');
+    await databaseHelper.restore(
+        tableName: 'dictionary_books', values: dictionaries);
+    }
+
     // save record to shared Preference
     Prefs.isDatabaseSaved = true;
-    Prefs.databaseVersion = kCurrentDatabaseVersion;
+    Prefs.databaseVersion = DatabaseInfo.version;
 
     _openHomePage();
   }
 
   Future<void> _copyFromAssets(String dbFilePath) async {
-    final assetsPath = join('assets', 'database');
-    const parts = <String>[
-      'tipitaka_pali_part.aa',
-      'tipitaka_pali_part.ab',
-      'tipitaka_pali_part.ac',
-      'tipitaka_pali_part.ad',
-      'tipitaka_pali_part.ae',
-      'tipitaka_pali_part.af',
-      'tipitaka_pali_part.ag',
-      'tipitaka_pali_part.ah',
-      'tipitaka_pali_part.ai',
-      'tipitaka_pali_part.aj',
-      'tipitaka_pali_part.ak',
-    ];
+    final assetsDatabasePath = join(
+      AssetsFile.baseAssetsFolderPath,
+      AssetsFile.databaseFolderPath,
+    );
 
     final dbFile = File(dbFilePath);
     final timeBeforeCopy = DateTime.now();
-    for (String part in parts) {
+    for (String part in AssetsFile.partsOfDatabase) {
       // reading from assets
-      final bytes = await rootBundle.load(join(assetsPath, part));
+      final bytes = await rootBundle.load(join(assetsDatabasePath, part));
       // appending to output dbfile
       await dbFile.writeAsBytes(
           bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes),
@@ -77,57 +101,31 @@ class InitialSetupViewModel extends ChangeNotifier {
 
     final timeAfterCopied = DateTime.now();
     debugPrint(
-        'copying time from asset to db dir: ${timeAfterCopied.difference(timeBeforeCopy)}');
+        'database copying time: ${timeAfterCopied.difference(timeBeforeCopy)}');
 
-    final isDbExist = await databaseExists(dbFilePath);
-    debugPrint('is db exist: $isDbExist');
+    // final isDbExist = await databaseExists(dbFilePath);
+    // debugPrint('is db exist: $isDbExist');
 
     final timeBeforeIndexing = DateTime.now();
 
-    final database = await openDatabase(dbFilePath);
-    // building Index
-    await database.execute(
-        'CREATE INDEX IF NOT EXISTS "dictionary_index" ON "dictionary" ("word");');
-    await database.execute(
-        'CREATE INDEX IF NOT EXISTS "dpr_breakup_index" ON "dpr_breakup" ("word");');
-    await database
-        .execute('CREATE INDEX IF NOT EXISTS page_index ON pages ( bookid );');
-    await database.execute(
-        'CREATE INDEX IF NOT EXISTS paragraph_index ON paragraphs ( book_id );');
-    await database.execute(
-        'CREATE INDEX IF NOT EXISTS paragraph_mapping_index ON paragraph_mapping ( base_page_number);');
-    await database
-        .execute('CREATE INDEX IF NOT EXISTS toc_index ON tocs ( book_id );');
-    await database.execute(
-        'CREATE UNIQUE INDEX IF NOT EXISTS word_index ON words ( word );');
+    // creating index tables
 
-    await _buildFTS(database);
+    final DatabaseHelper databaseHelper = DatabaseHelper();
+
+    final indexResult = await databaseHelper.buildIndex();
+    if (indexResult == false) {
+      // handle error
+    }
+
+    // creating fts table
+    final ftsResult = await DatabaseHelper().buildFts();
+    if (ftsResult == false) {
+      // handle error
+    }
 
     final timeAfterIndexing = DateTime.now();
     debugPrint(
         'indexing time: ${timeAfterIndexing.difference(timeBeforeIndexing)}');
-  }
-
-  Future<void> _buildFTS(Database database) async {
-    await database.execute(
-        'CREATE VIRTUAL TABLE IF NOT EXISTS fts_pages USING FTS5(id, bookid, page, content, paranum)');
-    final maps = await database
-        .rawQuery('SELECT id, bookid, page, content, paranum FROM pages');
-    for (var element in maps) {
-      final values = <String, Object?>{
-        'id': element['id'] as int,
-        'bookid': element['bookid'] as String,
-        'page': element['page'] as int,
-        'content': _cleanText(element['content'] as String),
-        'paranum': element['paranum'] as String,
-      };
-      await database.insert('fts_pages', values);
-    }
-  }
-
-  String _cleanText(String text) {
-    final regexHtmlTags = RegExp(r'<[^>]*>');
-    return text.replaceAll(regexHtmlTags, '');
   }
 
   void _openHomePage() {
