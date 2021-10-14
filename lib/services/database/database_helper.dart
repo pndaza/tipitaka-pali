@@ -100,23 +100,31 @@ class DatabaseHelper {
 
   Future<bool> buildFts() async {
     final dbInstance = await database;
-    await dbInstance.execute(
-        'CREATE VIRTUAL TABLE IF NOT EXISTS fts_pages USING FTS5(id, bookid, page, content, paranum)');
-    final maps = await dbInstance
-        .rawQuery('SELECT id, bookid, page, content, paranum FROM pages');
-    for (var element in maps) {
-      final values = <String, Object?>{
-        'id': element['id'] as int,
-        'bookid': element['bookid'] as String,
-        'page': element['page'] as int,
-        'content': _cleanText(element['content'] as String),
-        'paranum': element['paranum'] as String,
-      };
-      await dbInstance.insert('fts_pages', values);
+    await dbInstance
+        .execute('''CREATE VIRTUAL TABLE IF NOT EXISTS fts_pages USING FTS4
+         (id, bookid, page, content, paranum)''');
+
+    final mapsOfCount =
+        await dbInstance.rawQuery('SELECT count(*) cnt FROM pages');
+    final int count = mapsOfCount.first['cnt'] as int;
+    int start = 1;
+    while (start < count) {
+      final maps = await dbInstance.rawQuery('''
+          SELECT id, bookid, page, content, paranum FROM pages
+          WHERE id BETWEEN $start AND ${start + 1000}
+          ''');
+      for (var element in maps) {
+        await dbInstance.insert('fts_pages', element);
+        start += 1000;
+      }
     }
 
     return true;
   }
+
+  // Future<void> insertToFts({required String tableName,required List<Map<String, Object?>> values }){
+
+  // }
 
   String _cleanText(String text) {
     final regexHtmlTags = RegExp(r'<[^>]*>');

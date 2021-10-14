@@ -119,4 +119,4 @@ app.*.symbols
 
 
 # database file is bigger than 100MB
-assets/database
+# assets/database
