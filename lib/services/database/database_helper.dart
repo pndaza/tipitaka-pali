@@ -45,7 +45,7 @@ class DatabaseHelper {
   Future<List<Map<String, Object?>>> backup({required String tableName}) async {
     final dbInstance = await database;
     final maps = await dbInstance.query(tableName);
-    print('maps: ${maps.length}');
+    // print('maps: ${maps.length}');
     return maps;
   }
 
@@ -108,47 +108,36 @@ class DatabaseHelper {
         await dbInstance.rawQuery('SELECT count(*) cnt FROM pages');
     final int count = mapsOfCount.first['cnt'] as int;
     int start = 1;
+
     while (start < count) {
       final maps = await dbInstance.rawQuery('''
           SELECT id, bookid, page, content, paranum FROM pages
           WHERE id BETWEEN $start AND ${start + 1000}
           ''');
       for (var element in maps) {
-        await dbInstance.insert('fts_pages', element);
-        start += 1000;
+        // before populating to fts, need to remove html tag
+        final value = <String, Object?>{
+          'id': element['id'] as int,
+          'bookid': element['bookid'] as String,
+          'page': element['page'] as int,
+          'content': _cleanText(element['content'] as String),
+          'paranum': element['paranum'] as String,
+        };
+        await dbInstance.insert('fts_pages', value);
       }
+        start += 1000;
     }
+
+    final mapsForC =
+        await dbInstance.rawQuery('SELECT count(*) cnt FROM fts_pages');
+    final int c = mapsForC.first['cnt'] as int;
+    print('fts row count: $c');
 
     return true;
   }
-
-  // Future<void> insertToFts({required String tableName,required List<Map<String, Object?>> values }){
-
-  // }
 
   String _cleanText(String text) {
     final regexHtmlTags = RegExp(r'<[^>]*>');
     return text.replaceAll(regexHtmlTags, '');
   }
-
-  // Future<void> _buildIndex(Database database) async {
-  //   print('building index');
-  //   await database.execute(
-  //       "CREATE UNIQUE INDEX IF NOT EXISTS word_index ON words ( word )");
-  //   await database
-  //       .execute("CREATE INDEX IF NOT EXISTS page_index ON pages ( bookid )");
-  //   await database.execute(
-  //       "CREATE INDEX IF NOT EXISTS dict_index ON dictionary ( word )");
-  //   database
-  //       .execute("CREATE INDEX IF NOT EXISTS toc_index ON tocs ( book_id )");
-  //   await database.execute(
-  //       "CREATE INDEX IF NOT EXISTS paragraph_index ON paragraphs ( book_id )");
-
-  //   // save db version
-  // Prefs.databaseVerson = _currentDatabaseVersion;
-  // }
-
-  // Future<bool> isDatabaseCopied() async {
-  //   return true;
-  // }
 }

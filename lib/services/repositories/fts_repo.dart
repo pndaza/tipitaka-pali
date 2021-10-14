@@ -14,19 +14,21 @@ class FtsDatabaseRepository implements FtsRespository {
   FtsDatabaseRepository(this.databaseHelper);
 
   @override
-  Future<List<SearchResult>> getResults(String words) async {
+  Future<List<SearchResult>> getResults(String phrase) async {
     final results = <SearchResult>[];
-    final pharse = words.trim().replaceAll(' ', '+');
-    final regexMatchWords = RegExp('<hl>$words</hl>');
     final db = await databaseHelper.database;
-    // will be use fts's hightlight function to higlight words
+
+    // will be use fts's snippet function to higlight words
     var maps = await db.rawQuery('''
-      SELECT fts_pages.id, bookid, name, page, highlight(fts_pages, 3, "<hl>", "</hl>") content, paranum 
+      SELECT fts_pages.id, bookid, name, page,
+      SNIPPET(fts_pages, '<hl>', '</hl>', '',-20, 60) AS content
       FROM fts_pages INNER JOIN books ON fts_pages.bookid = books.id
-      WHERE content MATCH "$pharse"
+      WHERE fts_pages MATCH '"$phrase"'
       ''');
 
-    // debugPrint('fts maps:${maps.length}');
+    debugPrint('query count:${maps.length}');
+
+    final regexMatchWords = RegExp(_createRegexPattern(phrase));
 
     for (var element in maps) {
       final id = element['id'] as int;
@@ -35,18 +37,17 @@ class FtsDatabaseRepository implements FtsRespository {
       final pageNumber = element['page'] as int;
       var content = element['content'] as String;
       final allMatches = regexMatchWords.allMatches(content);
-
       // debugPrint('finding match in page:${allMatches.length}');
       // only one match in a page
       if (allMatches.length == 1) {
         final String description = _extractDescription(
             content, allMatches.first.start, allMatches.first.end);
         final SearchResult searchResult = SearchResult(
-            id: id,
-            book: Book(id: bookId, name: bookName),
-            pageNumber: pageNumber,
-            description: description,
-            );
+          id: id,
+          book: Book(id: bookId, name: bookName),
+          pageNumber: pageNumber,
+          description: description,
+        );
         results.add(searchResult);
       } else {
         // multiple matches in single page
@@ -59,7 +60,7 @@ class FtsDatabaseRepository implements FtsRespository {
             book: Book(id: bookId, name: bookName),
             pageNumber: pageNumber,
             description: description,
-              );
+          );
           results.add(searchResult);
         }
       }
@@ -82,7 +83,7 @@ class FtsDatabaseRepository implements FtsRespository {
 
   String _geLeftHandSideWords(String text, int count) {
     if (text.isEmpty) return text;
-    // remove alternate pali 
+    // remove alternate pali
     final regexAlternateText = RegExp(r'\[.+?\]');
     text = text.replaceAll(regexAlternateText, '');
     final words = <String>[];
@@ -99,7 +100,7 @@ class FtsDatabaseRepository implements FtsRespository {
 
   String _getRightHandSideWords(String text, int count) {
     if (text.isEmpty) return text;
-    // remove alternate pali 
+    // remove alternate pali
     final regexAlternateText = RegExp(r'\[.+?\]');
     text = text.replaceAll(regexAlternateText, '');
 
@@ -112,5 +113,14 @@ class FtsDatabaseRepository implements FtsRespository {
       }
     }
     return words.join(' ');
+  }
+
+  String _createRegexPattern(String phrase) {
+    final patterns = <String>[];
+    final words = phrase.split(' ');
+    for (var word in words) {
+      patterns.add('<hl>$word</hl>');
+    }
+    return patterns.join(' ');
   }
 }
