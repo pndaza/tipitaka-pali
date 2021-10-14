@@ -114,6 +114,8 @@ class DatabaseHelper {
           SELECT id, bookid, page, content, paranum FROM pages
           WHERE id BETWEEN $start AND ${start + 1000}
           ''');
+
+      Batch batch = dbInstance.batch();
       for (var element in maps) {
         // before populating to fts, need to remove html tag
         final value = <String, Object?>{
@@ -123,8 +125,21 @@ class DatabaseHelper {
           'content': _cleanText(element['content'] as String),
           'paranum': element['paranum'] as String,
         };
-        await dbInstance.insert('fts_pages', value);
+        batch.insert('fts_pages', value);
       }
+      await batch.commit();
+
+      // for (var element in maps) {
+      //   // before populating to fts, need to remove html tag
+      //   final value = <String, Object?>{
+      //     'id': element['id'] as int,
+      //     'bookid': element['bookid'] as String,
+      //     'page': element['page'] as int,
+      //     'content': _cleanText(element['content'] as String),
+      //     'paranum': element['paranum'] as String,
+      //   };
+      //   await dbInstance.insert('fts_pages', value);
+      // }
       start += 1000;
       print('finished: $start rows populating');
     }

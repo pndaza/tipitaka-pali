@@ -1,6 +1,6 @@
 class DatabaseInfo {
   DatabaseInfo._();
-  static const int version = 8;
+  static const int version = 9;
   static const String fileName = 'tipitaka_pali.db';
 }
 
