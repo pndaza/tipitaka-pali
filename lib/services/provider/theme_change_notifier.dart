@@ -24,7 +24,7 @@ class ThemeChangeNotifier extends ChangeNotifier {
   get darkTheme => FlexColorScheme.dark(
         // As scheme colors we use the one from our list
         // pointed to by the current themeIndex.
-        colors: myFlexSchemes[Prefs.themeIndex].light,
+        colors: myFlexSchemes[Prefs.themeIndex].dark,
         // Medium strength surface branding used in this example.
         surfaceStyle: FlexSurface.medium,
         visualDensity: FlexColorScheme.comfortablePlatformDensity,
