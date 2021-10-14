@@ -125,7 +125,8 @@ class DatabaseHelper {
         };
         await dbInstance.insert('fts_pages', value);
       }
-        start += 1000;
+      start += 1000;
+      print('finished: $start rows populating');
     }
 
     final mapsForC =
