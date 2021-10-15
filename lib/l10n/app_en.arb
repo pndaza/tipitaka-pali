@@ -30,7 +30,12 @@
   "table_of_contents": "Table Of Contents",
   "goto":"Goto",
   "paragraph": "Paragraph",
-  "go": "go"
+  "go": "go",
+  "toc": "TOC",
+  "mat": "MAT",
+  "font": "Font"
+
+
    
 
 }

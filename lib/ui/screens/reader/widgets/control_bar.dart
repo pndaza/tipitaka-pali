@@ -13,6 +13,8 @@ import 'package:tipitaka_pali/utils/mm_number.dart';
 import 'package:tipitaka_pali/ui/widgets/colored_text.dart';
 import 'package:tipitaka_pali/data/flex_theme_data.dart';
 import 'package:tipitaka_pali/routes.dart';
+import 'package:tipitaka_pali/ui/dialogs/simple_input_dialog.dart';
+import 'package:tipitaka_pali/ui/widgets/icon_text_button.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -54,40 +56,49 @@ class ControlBar extends StatelessWidget {
         controller: ModalScrollController.of(context),
         child: Padding(
           padding: const EdgeInsets.all(12.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.end,
+          child: Column(
             children: [
-              Column(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  IconButton(
-                      icon: Icon(Icons.directions_walk,
-                          color: Theme.of(context).colorScheme.primary),
+                  IconTextButton(
+                      icon: Icons.directions_walk,
+                      text: AppLocalizations.of(context)!.goto,
                       onPressed: () => _openGotoDialog(context, vm)),
-                  const ColoredText("Goto"),
-                ],
-              ),
-              Column(
-                children: [
-                  IconButton(
-                      icon: Icon(Icons.local_library,
-                          color: Theme.of(context).colorScheme.primary),
+                  IconTextButton(
+                      icon: Icons.local_library,
+                      text: AppLocalizations.of(context)!.mat,
                       onPressed: () => _selectParagraphDialog(context, vm)),
-                  const ColoredText("MAT"),
+                  IconTextButton(
+                      icon: Icons.toc,
+                      text: AppLocalizations.of(context)!.toc,
+                      onPressed: () => _openTocDialog(context, vm)),
                 ],
               ),
-              Column(
+              const SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  IconButton(
-                      icon: Icon(Icons.settings,
-                          color: Theme.of(context).colorScheme.primary),
+                  IconTextButton(
+                      icon: Icons.book_outlined,
+                      text: AppLocalizations.of(context)!.bookmark,
+                      onPressed: () {
+                        _addBookmark(vm, context);
+                      }),
+                  IconTextButton(
+                      icon: Icons.remove_circle_outline,
+                      text: AppLocalizations.of(context)!.font,
+                      onPressed: vm.decreaseFontSize),
+                  IconTextButton(
+                      icon: Icons.add_circle_outline,
+                      text: AppLocalizations.of(context)!.font,
+                      onPressed: vm.increaseFontSize),
+                  IconTextButton(
+                      icon: Icons.settings,
+                      text: AppLocalizations.of(context)!.settings,
                       onPressed: () => _openSettingPage(context)),
-                  ColoredText(AppLocalizations.of(context)!.settings),
-                  IconButton(
-                      icon: Icon(Icons.toc,
-                          color: Theme.of(context).colorScheme.primary),
-                      onPressed: () => _openTocDialog(context, vm)),
-                  const ColoredText("TOC"),
                 ],
               ),
             ],
@@ -221,5 +232,22 @@ class ControlBar extends StatelessWidget {
 
   void _openSettingPage(BuildContext context) async {
     await Navigator.pushNamed(context, settingRoute);
+  }
+
+  void _addBookmark(ReaderViewModel vm, BuildContext context) async {
+    final note = await showDialog<String>(
+      context: context,
+      builder: (context) {
+        return SimpleInputDialog(
+          hintText: AppLocalizations.of(context)!.enter_note,
+          cancelLabel: AppLocalizations.of(context)!.cancel,
+          okLabel: AppLocalizations.of(context)!.save,
+        );
+      },
+    );
+    //print(note);
+    if (note != null) {
+      vm.saveToBookmark(note);
+    }
   }
 }
