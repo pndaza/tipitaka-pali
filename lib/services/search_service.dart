@@ -1,3 +1,5 @@
+import 'package:tipitaka_pali/ui/screens/home/search_page.dart';
+
 import '../business_logic/models/search_result.dart';
 import '../business_logic/models/search_suggestion.dart';
 import 'database/database_helper.dart';
@@ -14,10 +16,10 @@ class SearchService {
     return suggestions;
   }
 
-  static Future<List<SearchResult>> getResultsByFTS(String searchWord) async {
+  static Future<List<SearchResult>> getResultsByFTS(String searchWord, QueryMode queryMode) async {
     final DatabaseHelper databaseHelper = DatabaseHelper();
     final FtsRespository respository = FtsDatabaseRepository(databaseHelper);
-    return await respository.getResults(searchWord);
+    return await respository.getResults(searchWord, queryMode);
   }
 
   /// 

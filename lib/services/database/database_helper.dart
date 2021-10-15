@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -128,26 +129,9 @@ class DatabaseHelper {
         batch.insert('fts_pages', value);
       }
       await batch.commit();
-
-      // for (var element in maps) {
-      //   // before populating to fts, need to remove html tag
-      //   final value = <String, Object?>{
-      //     'id': element['id'] as int,
-      //     'bookid': element['bookid'] as String,
-      //     'page': element['page'] as int,
-      //     'content': _cleanText(element['content'] as String),
-      //     'paranum': element['paranum'] as String,
-      //   };
-      //   await dbInstance.insert('fts_pages', value);
-      // }
       start += 1000;
-      print('finished: $start rows populating');
+      debugPrint('finished: $start rows populating');
     }
-
-    final mapsForC =
-        await dbInstance.rawQuery('SELECT count(*) cnt FROM fts_pages');
-    final int c = mapsForC.first['cnt'] as int;
-    print('fts row count: $c');
 
     return true;
   }

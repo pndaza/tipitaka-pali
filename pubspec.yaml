@@ -53,6 +53,7 @@ dependencies:
   flutter_widget_from_html_core: ^0.7.0
   styled_text: ^3.0.4
   from_css_color: ^2.0.0
+  backdrop: ^0.6.2
 
 dev_dependencies:
   flutter_test:

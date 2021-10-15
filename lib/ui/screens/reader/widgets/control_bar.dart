@@ -1,24 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
-import 'package:tipitaka_pali/app.dart';
-import 'package:tipitaka_pali/business_logic/models/book.dart';
-import 'package:tipitaka_pali/business_logic/models/paragraph_mapping.dart';
-import 'package:tipitaka_pali/business_logic/models/toc.dart';
-import 'package:tipitaka_pali/business_logic/view_models/reader_view_model.dart';
-import 'package:tipitaka_pali/ui/dialogs/goto_dialog.dart';
-import 'package:tipitaka_pali/ui/dialogs/toc_dialog.dart';
-import 'package:tipitaka_pali/ui/screens/reader/widgets/slider.dart';
-import 'package:tipitaka_pali/utils/mm_number.dart';
-import 'package:tipitaka_pali/ui/widgets/colored_text.dart';
-import 'package:tipitaka_pali/data/flex_theme_data.dart';
-import 'package:tipitaka_pali/routes.dart';
-import 'package:tipitaka_pali/ui/dialogs/simple_input_dialog.dart';
-import 'package:tipitaka_pali/ui/widgets/icon_text_button.dart';
-
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
+import '../../../../app.dart';
+import '../../../../business_logic/models/book.dart';
+import '../../../../business_logic/models/paragraph_mapping.dart';
+import '../../../../business_logic/models/toc.dart';
+import '../../../../business_logic/view_models/reader_view_model.dart';
 import '../../../../routes.dart';
+import '../../../dialogs/goto_dialog.dart';
+import '../../../dialogs/simple_input_dialog.dart';
+import '../../../dialogs/toc_dialog.dart';
+import 'slider.dart';
+import '../../../widgets/icon_text_button.dart';
+import '../../../../utils/mm_number.dart';
 
 class ControlBar extends StatelessWidget {
   const ControlBar({Key? key}) : super(key: key);

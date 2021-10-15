@@ -1,3 +1,6 @@
+import 'package:backdrop/app_bar.dart';
+import 'package:backdrop/button.dart';
+import 'package:backdrop/scaffold.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -7,6 +10,8 @@ import '../../../business_logic/view_models/search_page_view_model.dart';
 import '../../../services/provider/script_language_provider.dart';
 import '../../../utils/pali_script.dart';
 import 'widgets/search_bar.dart';
+
+enum QueryMode { exact, distance }
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -33,48 +38,58 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<SearchPageViewModel>(
-      create: (_) => SearchPageViewModel(),
-      child: Scaffold(
-          appBar: AppBar(
-            title: Text(AppLocalizations.of(context)!.search),
-            centerTitle: true,
-          ),
-          body: Consumer<SearchPageViewModel>(builder: (context, vm, child) {
-            return Column(
-              children: [
-                // suggestion view
-                Expanded(
-                    child: vm.suggestions.isEmpty
-                        ? _buildEmptyView(context)
-                        : ListView.separated(
-                            itemCount: vm.suggestions.length,
-                            itemBuilder: (_, index) => SuggestionListTile(
-                              suggestedWord: vm.suggestions[index].word,
-                              frequency: vm.suggestions[index].count,
-                              onTap: () {
-                                //
-                                final inputText = controller.text;
-                                final selectedWord = vm.suggestions[index].word;
+        create: (_) => SearchPageViewModel(),
+        child: Consumer<SearchPageViewModel>(builder: (context, vm, child) {
+          return BackdropScaffold(
+              appBar: BackdropAppBar(
+                title: Text(AppLocalizations.of(context)!.search),
+                centerTitle: true,
+                // backgroundColor: Theme.of(context).colorScheme.primary,
+                actions: const [
+                  BackdropToggleButton(
+                    icon: AnimatedIcons.close_menu,
+                  ),
+                ],
+                automaticallyImplyLeading: false,
+              ),
+              stickyFrontLayer: true,
+              backLayer: SearchModeView(mode: vm.queryMode),
+              backLayerBackgroundColor: Colors.transparent,
+              frontLayer: Column(
+                children: [
+                  // suggestion view
+                  Expanded(
+                      child: vm.suggestions.isEmpty
+                          ? _buildEmptyView(context)
+                          : ListView.separated(
+                              itemCount: vm.suggestions.length,
+                              itemBuilder: (_, index) => SuggestionListTile(
+                                suggestedWord: vm.suggestions[index].word,
+                                frequency: vm.suggestions[index].count,
+                                onTap: () {
+                                  //
+                                  final inputText = controller.text;
+                                  final selectedWord =
+                                      vm.suggestions[index].word;
 
-                                final words = inputText.split(' ');
-                                words.last = selectedWord;
-                                vm.onSubmmited(context, words.join(' '));
-                              },
-                            ),
-                            separatorBuilder: (_, __) => const Divider(
-                              height: 1,
-                            ),
-                          )),
-                SearchBar(
-                  controller: controller,
-                  onSubmitted: (searchWord) =>
-                      vm.onSubmmited(context, searchWord),
-                  onTextChanged: vm.onTextChanged,
-                ),
-              ],
-            );
-          })),
-    );
+                                  final words = inputText.split(' ');
+                                  words.last = selectedWord;
+                                  vm.onSubmmited(context, words.join(' '));
+                                },
+                              ),
+                              separatorBuilder: (_, __) => const Divider(
+                                height: 1,
+                              ),
+                            )),
+                  SearchBar(
+                    controller: controller,
+                    onSubmitted: (searchWord) =>
+                        vm.onSubmmited(context, searchWord),
+                    onTextChanged: vm.onTextChanged,
+                  ),
+                ],
+              ));
+        }));
   }
 
   Widget _buildEmptyView(BuildContext context) {
@@ -120,6 +135,37 @@ class SuggestionListTile extends StatelessWidget {
               romanText: frequency.toString()),
           style: const TextStyle(fontSize: 18)),
       onTap: onTap,
+    );
+  }
+}
+
+class SearchModeView extends StatelessWidget {
+  const SearchModeView({Key? key, required this.mode}) : super(key: key);
+  final QueryMode mode;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 150,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          RadioListTile<QueryMode>(
+              title: const Text('Exact'),
+              value: QueryMode.exact,
+              groupValue: mode,
+              onChanged: (value) {
+                context.read<SearchPageViewModel>().onQueryModeChange(value);
+              }),
+          RadioListTile<QueryMode>(
+              title: const Text('Distance'),
+              value: QueryMode.distance,
+              groupValue: mode,
+              onChanged: (value) {
+                context.read<SearchPageViewModel>().onQueryModeChange(value);
+              }),
+        ],
+      ),
     );
   }
 }

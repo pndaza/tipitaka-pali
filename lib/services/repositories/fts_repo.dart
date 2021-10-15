@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:tipitaka_pali/business_logic/models/book.dart';
 import 'package:tipitaka_pali/business_logic/models/search_result.dart';
 import 'package:tipitaka_pali/services/database/database_helper.dart';
+import 'package:tipitaka_pali/ui/screens/home/search_page.dart';
 
 abstract class FtsRespository {
-  Future<List<SearchResult>> getResults(String word);
+  Future<List<SearchResult>> getResults(String phrase, QueryMode queryMode);
 }
 
 class FtsDatabaseRepository implements FtsRespository {
@@ -14,17 +15,33 @@ class FtsDatabaseRepository implements FtsRespository {
   FtsDatabaseRepository(this.databaseHelper);
 
   @override
-  Future<List<SearchResult>> getResults(String phrase) async {
+  Future<List<SearchResult>> getResults(
+      String phrase, QueryMode queryMode) async {
     final results = <SearchResult>[];
     final db = await databaseHelper.database;
 
-    // will be use fts's snippet function to higlight words
-    var maps = await db.rawQuery('''
+    late String sql;
+    if (queryMode == QueryMode.exact) {
+      sql = '''
       SELECT fts_pages.id, bookid, name, page,
       SNIPPET(fts_pages, '<hl>', '</hl>', '',-20, 60) AS content
       FROM fts_pages INNER JOIN books ON fts_pages.bookid = books.id
       WHERE fts_pages MATCH '"$phrase"'
-      ''');
+      ''';
+    }
+
+    if (queryMode == QueryMode.distance) {
+      final value = phrase.replaceAll(' ', ' NEAR ');
+      sql = '''
+      SELECT fts_pages.id, bookid, name, page,
+      SNIPPET(fts_pages, '<hl>', '</hl>', '',-15, 40) AS content
+      FROM fts_pages INNER JOIN books ON fts_pages.bookid = books.id
+      WHERE fts_pages MATCH "$value"
+      ''';
+    }
+
+    // will be use fts's snippet function to higlight words
+    var maps = await db.rawQuery(sql);
 
     debugPrint('query count:${maps.length}');
 
@@ -37,24 +54,21 @@ class FtsDatabaseRepository implements FtsRespository {
       final pageNumber = element['page'] as int;
       var content = element['content'] as String;
       final allMatches = regexMatchWords.allMatches(content);
-      // debugPrint('finding match in page:${allMatches.length}');
-      // only one match in a page
-      if (allMatches.length == 1) {
-        final String description = _extractDescription(
-            content, allMatches.first.start, allMatches.first.end);
+
+      if (queryMode == QueryMode.distance) {
         final SearchResult searchResult = SearchResult(
           id: id,
           book: Book(id: bookId, name: bookName),
           pageNumber: pageNumber,
-          description: description,
+          description: content,
         );
         results.add(searchResult);
       } else {
-        // multiple matches in single page
-        for (var i = 0, length = allMatches.length; i < length; i++) {
-          final current = allMatches.elementAt(i);
-          final String description =
-              _extractDescription(content, current.start, current.end);
+        // debugPrint('finding match in page:${allMatches.length}');
+        // only one match in a page
+        if (allMatches.length == 1) {
+          final String description = _extractDescription(
+              content, allMatches.first.start, allMatches.first.end);
           final SearchResult searchResult = SearchResult(
             id: id,
             book: Book(id: bookId, name: bookName),
@@ -62,6 +76,20 @@ class FtsDatabaseRepository implements FtsRespository {
             description: description,
           );
           results.add(searchResult);
+        } else {
+          // multiple matches in single page
+          for (var i = 0, length = allMatches.length; i < length; i++) {
+            final current = allMatches.elementAt(i);
+            final String description =
+                _extractDescription(content, current.start, current.end);
+            final SearchResult searchResult = SearchResult(
+              id: id,
+              book: Book(id: bookId, name: bookName),
+              pageNumber: pageNumber,
+              description: description,
+            );
+            results.add(searchResult);
+          }
         }
       }
     }

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 
 import 'unicode_pali_letters.dart';
 

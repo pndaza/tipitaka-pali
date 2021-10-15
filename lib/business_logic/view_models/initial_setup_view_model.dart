@@ -41,7 +41,7 @@ class InitialSetupViewModel extends ChangeNotifier {
       dictionaries
           .addAll(await databaseHelper.backup(tableName: 'dictionary_books'));
       
-    print('dictionary books: ${dictionaries.length}');
+    debugPrint('dictionary books: ${dictionaries.length}');
       await databaseHelper.close();
       // deleting old database file
       await deleteDatabase(dbFilePath);
@@ -70,7 +70,7 @@ class InitialSetupViewModel extends ChangeNotifier {
     if(dictionaries.isNotEmpty){
 
     await databaseHelper.deleteDictionaryData();
-    print('dictionary books: ${dictionaries.length}');
+    debugPrint('dictionary books: ${dictionaries.length}');
     await databaseHelper.restore(
         tableName: 'dictionary_books', values: dictionaries);
     }

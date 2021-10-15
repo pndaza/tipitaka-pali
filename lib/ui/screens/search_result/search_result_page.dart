@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tipitaka_pali/business_logic/models/search_result.dart';
+import 'package:tipitaka_pali/ui/screens/home/search_page.dart';
 import 'package:tipitaka_pali/ui/screens/home/widgets/search_result_list_tile.dart';
 import 'package:tipitaka_pali/ui/screens/search_result/search_result_provider.dart';
 import 'package:tipitaka_pali/ui/widgets/loading_view.dart';
@@ -10,12 +11,12 @@ import 'search_filter_view.dart';
 
 class SearchResultPage extends StatelessWidget {
   final String searchWord;
+  final QueryMode queryMode;
   //  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  const SearchResultPage({
-    Key? key,
-    required this.searchWord,
-  }) : super(key: key);
+  const SearchResultPage(
+      {Key? key, required this.searchWord, required this.queryMode})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,9 @@ class SearchResultPage extends StatelessWidget {
                   SearchResultController>(
               create: (_) => SearchResultController(
                   searchWord: searchWord,
-                  filterController: SearchFilterController())..init(),
+                  queryMode: queryMode,
+                  filterController: SearchFilterController())
+                ..init(),
               update: (_, filterController, resultConroller) {
                 resultConroller!.onChangeFilter(filterController);
                 return resultConroller;
@@ -101,7 +104,7 @@ class DataView extends StatelessWidget {
                 )
               : ListView.builder(
                   // itemExtent: 300,
-                  
+
                   itemCount: results.length,
                   itemBuilder: (_, i) {
                     final result = results[i];

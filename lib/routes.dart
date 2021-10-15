@@ -32,6 +32,7 @@ class RouteGenerator {
         if (arguments is Map) {
           screen = SearchResultPage(
             searchWord: arguments['searchWord'],
+            queryMode: arguments['queryMode']
           );
         }
         break;

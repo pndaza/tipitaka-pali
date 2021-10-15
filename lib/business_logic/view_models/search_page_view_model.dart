@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tipitaka_pali/ui/screens/home/search_page.dart';
 import 'package:tipitaka_pali/utils/pali_script.dart';
 import 'package:tipitaka_pali/utils/script_detector.dart';
 
@@ -9,6 +10,9 @@ import '../models/search_suggestion.dart';
 class SearchPageViewModel extends ChangeNotifier {
   final List<SearchSuggestion> _suggestions = [];
   List<SearchSuggestion> get suggestions => _suggestions;
+
+  QueryMode _queryMode = QueryMode.exact;
+  QueryMode get queryMode => _queryMode;
 
   bool isSearching = false;
   // String _searchWord = '';
@@ -49,14 +53,15 @@ class SearchPageViewModel extends ChangeNotifier {
 
     Navigator.pushNamed(context, searchResultRoute, arguments: {
       'searchWord': searchWord,
+      'queryMode' : _queryMode
     });
   }
 
-  // void openBook(SearchResult result, BuildContext context) {
-  //   Navigator.pushNamed(context, readerRoute, arguments: {
-  //     'book': result.book,
-  //     'currentPage': result.pageNumber,
-  //     'textToHighlight': _searchWord
-  //   });
-  // }
+  void onQueryModeChange(QueryMode? queryMode) {
+    if (queryMode != null) {
+      _queryMode = queryMode;
+      notifyListeners();
+    }
+  }
+
 }
