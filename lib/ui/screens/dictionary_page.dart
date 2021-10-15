@@ -13,7 +13,7 @@ class DictionaryPage extends StatelessWidget {
         title: const Text('Dictionary'),
       ),
       body: ChangeNotifierProvider<DictionaryViewModel>(
-        create: (content) => DictionaryViewModel( null),
+        create: (context) => DictionaryViewModel(context, null),
         child: Material(
           child: Stack(
             children: const [

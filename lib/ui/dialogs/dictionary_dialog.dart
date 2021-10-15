@@ -18,7 +18,7 @@ class DictionaryDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<DictionaryViewModel>(
-      create: (content) => DictionaryViewModel(word),
+      create: (context) => DictionaryViewModel(context, word),
       child: Material(
         child: Stack(
           children: [

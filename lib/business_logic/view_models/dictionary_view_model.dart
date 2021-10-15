@@ -6,6 +6,7 @@ import 'package:tipitaka_pali/business_logic/view_models/dictionary_state.dart';
 import 'package:tipitaka_pali/services/database/database_helper.dart';
 import 'package:tipitaka_pali/services/database/dictionary_service.dart';
 import 'package:tipitaka_pali/services/repositories/ditionary_repo.dart';
+import 'package:from_css_color/from_css_color.dart';
 
 enum DictAlgorithm { Auto, TPR, DPR }
 
@@ -16,6 +17,7 @@ extension ParseToString on DictAlgorithm {
 }
 
 class DictionaryViewModel with ChangeNotifier {
+  final BuildContext context;
   String? _word;
 
   late DictionaryState _dictionaryState;
@@ -23,7 +25,7 @@ class DictionaryViewModel with ChangeNotifier {
   DictAlgorithm _currentAlgorithmMode = DictAlgorithm.Auto;
   DictAlgorithm get currentAlgorithmMode => _currentAlgorithmMode;
 
-  DictionaryViewModel(this._word) {
+  DictionaryViewModel(this.context, this._word) {
     _init();
   }
 
@@ -100,9 +102,9 @@ class DictionaryViewModel with ChangeNotifier {
       }
     }
 
-  // not found in dpr_stem
-  // will be lookup in dpr_breakup
-  // breakup is multi-words 
+    // not found in dpr_stem
+    // will be lookup in dpr_breakup
+    // breakup is multi-words
     final String breakupText = await dictionaryProvider.getDprBreakup(word);
     if (breakupText.isEmpty) return '';
 
@@ -111,8 +113,9 @@ class DictionaryViewModel with ChangeNotifier {
     String formatedDefintion = '<b>$word</b> - ';
     final firstPartOfBreakupText =
         breakupText.substring(0, breakupText.indexOf(' '));
+    final cssColor = Theme.of(context).primaryColor.toCssString();
     String lastPartOfBreakupText =
-        words.map((word) => '<b style="color:#440000">$word</b>').join(' + ');
+        words.map((word) => '<b style="color:$cssColor">$word</b>').join(' + ');
     formatedDefintion += '$firstPartOfBreakupText [ $lastPartOfBreakupText ]';
 
     // getting definition per word

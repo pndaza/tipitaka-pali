@@ -315,6 +315,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.14.3"
+  from_css_color:
+    dependency: "direct main"
+    description:
+      name: from_css_color
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   frontend_server_client:
     dependency: transitive
     description:
