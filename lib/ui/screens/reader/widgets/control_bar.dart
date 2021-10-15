@@ -12,6 +12,7 @@ import 'package:tipitaka_pali/ui/screens/reader/widgets/slider.dart';
 import 'package:tipitaka_pali/utils/mm_number.dart';
 import 'package:tipitaka_pali/ui/widgets/colored_text.dart';
 import 'package:tipitaka_pali/data/flex_theme_data.dart';
+import 'package:tipitaka_pali/routes.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -51,37 +52,46 @@ class ControlBar extends StatelessWidget {
       context: context,
       builder: (context) => SingleChildScrollView(
         controller: ModalScrollController.of(context),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Column(
-              children: [
-                IconButton(
-                    icon: Icon(Icons.directions_walk,
-                        color: Theme.of(context).colorScheme.primary),
-                    onPressed: () => _openGotoDialog(context, vm)),
-                const ColoredText("Goto"),
-              ],
-            ),
-            Column(
-              children: [
-                IconButton(
-                    icon: Icon(Icons.local_library,
-                        color: Theme.of(context).colorScheme.primary),
-                    onPressed: () => _selectParagraphDialog(context, vm)),
-                const ColoredText("MAT"),
-              ],
-            ),
-            Column(
-              children: [
-                IconButton(
-                    icon: Icon(Icons.toc,
-                        color: Theme.of(context).colorScheme.primary),
-                    onPressed: () => _openTocDialog(context, vm)),
-                const ColoredText("TOC"),
-              ],
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Column(
+                children: [
+                  IconButton(
+                      icon: Icon(Icons.directions_walk,
+                          color: Theme.of(context).colorScheme.primary),
+                      onPressed: () => _openGotoDialog(context, vm)),
+                  const ColoredText("Goto"),
+                ],
+              ),
+              Column(
+                children: [
+                  IconButton(
+                      icon: Icon(Icons.local_library,
+                          color: Theme.of(context).colorScheme.primary),
+                      onPressed: () => _selectParagraphDialog(context, vm)),
+                  const ColoredText("MAT"),
+                ],
+              ),
+              Column(
+                children: [
+                  IconButton(
+                      icon: Icon(Icons.settings,
+                          color: Theme.of(context).colorScheme.primary),
+                      onPressed: () => _openSettingPage(context)),
+                  ColoredText(AppLocalizations.of(context)!.settings),
+                  IconButton(
+                      icon: Icon(Icons.toc,
+                          color: Theme.of(context).colorScheme.primary),
+                      onPressed: () => _openTocDialog(context, vm)),
+                  const ColoredText("TOC"),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -207,5 +217,9 @@ class ControlBar extends StatelessWidget {
     if (toc != null) {
       vm.gotoPageAndScroll(toc.pageNumber.toDouble(), toc.name);
     }
+  }
+
+  void _openSettingPage(BuildContext context) async {
+    await Navigator.pushNamed(context, settingRoute);
   }
 }
