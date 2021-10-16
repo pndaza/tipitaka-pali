@@ -29,6 +29,15 @@ class FtsDatabaseRepository implements FtsRespository {
       WHERE fts_pages MATCH '"$phrase"'
       ''';
     }
+    if (queryMode == QueryMode.prefix) {
+      final value = '$phrase '.replaceAll(' ', '* ').trim();
+      sql = '''
+      SELECT fts_pages.id, bookid, name, page,
+      SNIPPET(fts_pages, '<hl>', '</hl>', '',-15, 40) AS content
+      FROM fts_pages INNER JOIN books ON fts_pages.bookid = books.id
+      WHERE fts_pages MATCH '"$value"'
+      ''';
+    }
 
     if (queryMode == QueryMode.distance) {
       final value = phrase.replaceAll(' ', ' NEAR ');
@@ -55,7 +64,8 @@ class FtsDatabaseRepository implements FtsRespository {
       var content = element['content'] as String;
       final allMatches = regexMatchWords.allMatches(content);
 
-      if (queryMode == QueryMode.distance) {
+      if (queryMode == QueryMode.distance ||
+          queryMode == QueryMode.prefix) {
         final SearchResult searchResult = SearchResult(
           id: id,
           book: Book(id: bookId, name: bookName),
@@ -63,7 +73,7 @@ class FtsDatabaseRepository implements FtsRespository {
           description: content,
         );
         results.add(searchResult);
-      } else {
+      } else if (queryMode == QueryMode.exact) {
         // debugPrint('finding match in page:${allMatches.length}');
         // only one match in a page
         if (allMatches.length == 1) {

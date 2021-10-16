@@ -11,7 +11,7 @@ import '../../../services/provider/script_language_provider.dart';
 import '../../../utils/pali_script.dart';
 import 'widgets/search_bar.dart';
 
-enum QueryMode { exact, distance }
+enum QueryMode { exact, distance, prefix }
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -145,14 +145,21 @@ class SearchModeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 150,
+    return Container(
+      color: Theme.of(context).colorScheme.primary.withAlpha(220),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           RadioListTile<QueryMode>(
               title: const Text('Exact'),
               value: QueryMode.exact,
+              groupValue: mode,
+              onChanged: (value) {
+                context.read<SearchPageViewModel>().onQueryModeChange(value);
+              }),
+          RadioListTile<QueryMode>(
+              title: const Text('Prefix'),
+              value: QueryMode.prefix,
               groupValue: mode,
               onChanged: (value) {
                 context.read<SearchPageViewModel>().onQueryModeChange(value);
