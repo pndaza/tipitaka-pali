@@ -272,25 +272,43 @@ class ReaderViewModel with ChangeNotifier {
   }
 
   String setHighlight(String content, String textToHighlight) {
-    // TODO optimize highlight for some query text
-    String highlightedText =
-        '<span class = "highlighted">' + textToHighlight + "</span>";
-    if (!content.contains(textToHighlight)) {
-      // Log.d("if not found highlight", "yes");
-      // removing ti (တိ) at end
-      String trimHighlight = textToHighlight.replaceAll(r'(nti|ti)$', '');
-      highlightedText =
-          '<span class = "highlighted">' + trimHighlight + "</span>";
+    // TODO - optimize highlight for some query text
 
-      content = content.replaceAll(trimHighlight, highlightedText);
+    //
+    if (content.contains(textToHighlight)) {
+      final replace =
+          '<span class = "highlighted">' + textToHighlight + "</span>";
+      content = content.replaceAll(textToHighlight, replace);
+      // adding id to scroll
       content = content.replaceFirst('<span class = "highlighted">',
           '<span id="goto_001" class="highlighted">');
 
       return content;
     }
-    content = content.replaceAll(textToHighlight, highlightedText);
+
+    final words = textToHighlight.trim().split(' ');
+    for (final word in words) {
+      if (content.contains(word)) {
+        final String replace =
+            '<span class = "highlighted">' + word + "</span>";
+        content = content.replaceAll(word, replace);
+      } else {
+        // bolded word case
+        // Log.d("if not found highlight", "yes");
+        // removing ti (တိ) at end
+        String trimmedWord = word.replaceAll(RegExp(r'(nti|ti)$'), '');
+        // print('trimmedWord: $trimmedWord');
+        final replace =
+            '<span class = "highlighted">' + trimmedWord + "</span>";
+
+        content = content.replaceAll(trimmedWord, replace);
+      }
+      //
+    }
+    // adding id to scroll
     content = content.replaceFirst('<span class = "highlighted">',
         '<span id="goto_001" class="highlighted">');
+
     return content;
   }
 
