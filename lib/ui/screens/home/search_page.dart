@@ -40,56 +40,52 @@ class _SearchPageState extends State<SearchPage> {
     return ChangeNotifierProvider<SearchPageViewModel>(
         create: (_) => SearchPageViewModel(),
         child: Consumer<SearchPageViewModel>(builder: (context, vm, child) {
-          return BackdropScaffold(
-              appBar: BackdropAppBar(
-                title: Text(AppLocalizations.of(context)!.search),
-                centerTitle: true,
-                // backgroundColor: Theme.of(context).colorScheme.primary,
-                actions: const [
-                  BackdropToggleButton(
-                    icon: AnimatedIcons.close_menu,
-                  ),
-                ],
-                automaticallyImplyLeading: false,
-              ),
-              stickyFrontLayer: true,
-              backLayer: SearchModeView(mode: vm.queryMode),
-              backLayerBackgroundColor: Colors.transparent,
-              frontLayer: Column(
-                children: [
-                  // suggestion view
-                  Expanded(
-                      child: vm.suggestions.isEmpty
-                          ? _buildEmptyView(context)
-                          : ListView.separated(
-                              itemCount: vm.suggestions.length,
-                              itemBuilder: (_, index) => SuggestionListTile(
-                                suggestedWord: vm.suggestions[index].word,
-                                frequency: vm.suggestions[index].count,
-                                isFirstWord: vm.isFirstWord,
-                                onTap: () {
-                                  //
-                                  final inputText = controller.text;
-                                  final selectedWord =
-                                      vm.suggestions[index].word;
+          return Scaffold(
+              body: Column(
+            children: [
+              // suggestion view
+              Expanded(
+                  child: vm.suggestions.isEmpty
+                      ? _buildEmptyView(context)
+                      : ListView.separated(
+                          itemCount: vm.suggestions.length,
+                          itemBuilder: (_, index) => SuggestionListTile(
+                            suggestedWord: vm.suggestions[index].word,
+                            frequency: vm.suggestions[index].count,
+                            isFirstWord: vm.isFirstWord,
+                            onTap: () {
+                              //
+                              final inputText = controller.text;
+                              final selectedWord = vm.suggestions[index].word;
 
-                                  final words = inputText.split(' ');
-                                  words.last = selectedWord;
-                                  vm.onSubmmited(context, words.join(' '));
-                                },
-                              ),
-                              separatorBuilder: (_, __) => const Divider(
-                                height: 1,
-                              ),
-                            )),
-                  SearchBar(
-                    controller: controller,
-                    onSubmitted: (searchWord) =>
-                        vm.onSubmmited(context, searchWord),
-                    onTextChanged: vm.onTextChanged,
+                              final words = inputText.split(' ');
+                              words.last = selectedWord;
+                              vm.onSubmmited(context, words.join(' '));
+                            },
+                          ),
+                          separatorBuilder: (_, __) => const Divider(
+                            height: 1,
+                          ),
+                        )),
+              Row(
+                children: [
+                  Expanded(
+                    child: SearchBar(
+                      controller: controller,
+                      onSubmitted: (searchWord) =>
+                          vm.onSubmmited(context, searchWord),
+                      onTextChanged: vm.onTextChanged,
+                    ),
                   ),
+                  IconButton(
+                      onPressed: () {
+                        _showSearchTypeSelectDialog(context);
+                      },
+                      icon: const Icon(Icons.more_vert)),
                 ],
-              ));
+              ),
+            ],
+          ));
         }));
   }
 
@@ -101,6 +97,15 @@ class _SearchPageState extends State<SearchPage> {
       // so to hide keyboard, provide this
       onTap: () => FocusScope.of(context).unfocus(),
     );
+  }
+
+  _showSearchTypeSelectDialog(BuildContext context) {
+    final vm = context.watch<SearchPageViewModel>();
+    return showBottomSheet<void>(
+        context: context,
+        builder: (BuildContext bc) {
+          return SearchModeView(mode: vm.queryMode);
+        });
   }
 }
 
