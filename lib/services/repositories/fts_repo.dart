@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../business_logic/models/book.dart';
 import '../../business_logic/models/search_result.dart';
 import '../../data/constants.dart';
-import '../../ui/screens/home/search_page.dart';
+import '../../ui/screens/home/search_page/search_page.dart';
 import '../database/database_helper.dart';
 
 abstract class FtsRespository {
@@ -51,7 +51,7 @@ class FtsDatabaseRepository implements FtsRespository {
 
     var maps = await db.rawQuery(sql);
 
-    debugPrint('query count:${maps.length}');
+    // debugPrint('query count:${maps.length}');
 
     var regexMatchWords = _createExactMatch(phrase);
     if (queryMode == QueryMode.prefix) {
@@ -167,7 +167,6 @@ class FtsDatabaseRepository implements FtsRespository {
     for (var word in words) {
       patterns.add('<$highlightTagName>$word</$highlightTagName>');
     }
-    print(patterns.join(' '));
     return RegExp(patterns.join(' '));
   }
 
@@ -177,7 +176,6 @@ class FtsDatabaseRepository implements FtsRespository {
     for (var word in words) {
       patterns.add('<$highlightTagName>$word.*?</$highlightTagName>');
     }
-    print(patterns.join(' '));
     return RegExp(patterns.join(' '));
   }
 

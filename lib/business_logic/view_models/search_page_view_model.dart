@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tipitaka_pali/ui/screens/home/search_page.dart';
+import 'package:tipitaka_pali/ui/screens/home/search_page/search_page.dart';
 import 'package:tipitaka_pali/utils/pali_script.dart';
 import 'package:tipitaka_pali/utils/script_detector.dart';
 
@@ -10,9 +10,6 @@ import '../models/search_suggestion.dart';
 class SearchPageViewModel extends ChangeNotifier {
   final List<SearchSuggestion> _suggestions = [];
   List<SearchSuggestion> get suggestions => _suggestions;
-
-  QueryMode _queryMode = QueryMode.exact;
-  QueryMode get queryMode => _queryMode;
 
   bool isSearching = false;
   bool _isFirstWord = true;
@@ -50,7 +47,7 @@ class SearchPageViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onSubmmited(BuildContext context, String searchWord) {
+  void onSubmmited(BuildContext context, String searchWord, QueryMode queryMode) {
     final inputScriptLanguage = ScriptDetector.getLanguage(searchWord);
     if (inputScriptLanguage != 'Roman') {
       searchWord = PaliScript.getRomanScriptFrom(
@@ -58,13 +55,7 @@ class SearchPageViewModel extends ChangeNotifier {
     }
 
     Navigator.pushNamed(context, searchResultRoute,
-        arguments: {'searchWord': searchWord, 'queryMode': _queryMode});
+        arguments: {'searchWord': searchWord, 'queryMode': queryMode});
   }
 
-  void onQueryModeChange(QueryMode? queryMode) {
-    if (queryMode != null) {
-      _queryMode = queryMode;
-      notifyListeners();
-    }
-  }
 }

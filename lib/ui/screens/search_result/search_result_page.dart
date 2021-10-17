@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tipitaka_pali/business_logic/models/search_result.dart';
-import 'package:tipitaka_pali/ui/screens/home/search_page.dart';
+import 'package:tipitaka_pali/ui/screens/home/search_page/search_page.dart';
 import 'package:tipitaka_pali/ui/screens/home/widgets/search_result_list_tile.dart';
 import 'package:tipitaka_pali/ui/screens/search_result/search_result_provider.dart';
 import 'package:tipitaka_pali/ui/widgets/loading_view.dart';

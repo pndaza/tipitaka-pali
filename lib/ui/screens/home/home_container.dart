@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import './bookmark_page.dart';
 import './recent_page.dart';
-import './search_page.dart';
+import 'search_page/search_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'home_page.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tipitaka_pali/ui/screens/home/search_page.dart';
+import 'package:tipitaka_pali/ui/screens/home/search_page/search_page.dart';
 
 import '../../../business_logic/models/search_result.dart';
 import '../../../routes.dart';
