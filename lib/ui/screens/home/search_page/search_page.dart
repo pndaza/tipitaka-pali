@@ -66,7 +66,8 @@ class _SearchPageState extends State<SearchPage> {
 
                                   final words = inputText.split(' ');
                                   words.last = selectedWord;
-                                  vm.onSubmmited(context, words.join(' '), queryMode);
+                                  vm.onSubmmited(
+                                      context, words.join(' '), queryMode);
                                 },
                               ),
                               separatorBuilder: (_, __) => const Divider(
@@ -93,9 +94,8 @@ class _SearchPageState extends State<SearchPage> {
                       ),
                     ],
                   ),
-                  AnimatedContainer(
-                    duration: const Duration(microseconds: 500),
-                    height: isShowingSearchModeView ? 200 : 0,
+                  AnimatedSize(
+                    duration: const Duration(milliseconds: 300),
                     child: isShowingSearchModeView
                         ? SearchModeView(
                             mode: queryMode,
@@ -103,9 +103,7 @@ class _SearchPageState extends State<SearchPage> {
                               queryMode = value;
                             },
                           )
-                        : const SizedBox(
-                            height: 0,
-                          ),
+                        : const SizedBox(height: 0),
                   ),
                 ],
               ));
