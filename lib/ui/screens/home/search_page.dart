@@ -66,6 +66,7 @@ class _SearchPageState extends State<SearchPage> {
                               itemBuilder: (_, index) => SuggestionListTile(
                                 suggestedWord: vm.suggestions[index].word,
                                 frequency: vm.suggestions[index].count,
+                                isFirstWord: vm.isFirstWord,
                                 onTap: () {
                                   //
                                   final inputText = controller.text;
@@ -108,25 +109,28 @@ class SuggestionListTile extends StatelessWidget {
     Key? key,
     required this.suggestedWord,
     required this.frequency,
+    this.isFirstWord = true,
     this.onTap,
   }) : super(key: key);
   final String suggestedWord;
   final int frequency;
+  final bool isFirstWord;
   final GestureTapCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
+    String scriptWord = PaliScript.getScriptOf(
+        language: context.read<ScriptLanguageProvider>().currentLanguage,
+        romanText: suggestedWord);
+    if (!isFirstWord) {
+      scriptWord = '... $scriptWord';
+    }
     return ListTile(
       dense: true,
       minVerticalPadding: 0,
       contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
       // suggested word
-      title: Text(
-        PaliScript.getScriptOf(
-            language: context.read<ScriptLanguageProvider>().currentLanguage,
-            romanText: suggestedWord),
-        style: const TextStyle(fontSize: 20),
-      ),
+      title: Text(scriptWord, style: const TextStyle(fontSize: 20)),
       leading: const Icon(Icons.search),
       // word frequency
       trailing: Text(

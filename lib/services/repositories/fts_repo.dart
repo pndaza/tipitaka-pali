@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:tipitaka_pali/business_logic/models/book.dart';
-import 'package:tipitaka_pali/business_logic/models/search_result.dart';
-import 'package:tipitaka_pali/services/database/database_helper.dart';
-import 'package:tipitaka_pali/ui/screens/home/search_page.dart';
+
+import '../../business_logic/models/book.dart';
+import '../../business_logic/models/search_result.dart';
+import '../../data/constants.dart';
+import '../../ui/screens/home/search_page.dart';
+import '../database/database_helper.dart';
 
 abstract class FtsRespository {
   Future<List<SearchResult>> getResults(String phrase, QueryMode queryMode);
@@ -23,8 +25,7 @@ class FtsDatabaseRepository implements FtsRespository {
     late String sql;
     if (queryMode == QueryMode.exact) {
       sql = '''
-      SELECT fts_pages.id, bookid, name, page,
-      SNIPPET(fts_pages, '<hl>', '</hl>', '',-20, 60) AS content
+      SELECT fts_pages.id, bookid, name, page, content
       FROM fts_pages INNER JOIN books ON fts_pages.bookid = books.id
       WHERE fts_pages MATCH '"$phrase"'
       ''';
@@ -32,8 +33,7 @@ class FtsDatabaseRepository implements FtsRespository {
     if (queryMode == QueryMode.prefix) {
       final value = '$phrase '.replaceAll(' ', '* ').trim();
       sql = '''
-      SELECT fts_pages.id, bookid, name, page,
-      SNIPPET(fts_pages, '<hl>', '</hl>', '',-15, 40) AS content
+      SELECT fts_pages.id, bookid, name, page, content
       FROM fts_pages INNER JOIN books ON fts_pages.bookid = books.id
       WHERE fts_pages MATCH '"$value"'
       ''';
@@ -43,18 +43,20 @@ class FtsDatabaseRepository implements FtsRespository {
       final value = phrase.replaceAll(' ', ' NEAR ');
       sql = '''
       SELECT fts_pages.id, bookid, name, page,
-      SNIPPET(fts_pages, '<hl>', '</hl>', '',-15, 40) AS content
+      SNIPPET(fts_pages, '<$highlightTagName>', '</$highlightTagName>', '',-15, 25) AS content
       FROM fts_pages INNER JOIN books ON fts_pages.bookid = books.id
       WHERE fts_pages MATCH "$value"
       ''';
     }
 
-    // will be use fts's snippet function to higlight words
     var maps = await db.rawQuery(sql);
 
     debugPrint('query count:${maps.length}');
 
-    final regexMatchWords = RegExp(_createRegexPattern(phrase));
+    var regexMatchWords = _createExactMatch(phrase);
+    if (queryMode == QueryMode.prefix) {
+      regexMatchWords = _createPrefixMatch(phrase);
+    }
 
     for (var element in maps) {
       final id = element['id'] as int;
@@ -62,10 +64,12 @@ class FtsDatabaseRepository implements FtsRespository {
       final bookName = element['name'] as String;
       final pageNumber = element['page'] as int;
       var content = element['content'] as String;
-      final allMatches = regexMatchWords.allMatches(content);
+      // adding hightlight tag to query words
+      if (queryMode == QueryMode.exact || queryMode == QueryMode.prefix) {
+        content = _buildHighlight(content, phrase);
+      }
 
-      if (queryMode == QueryMode.distance ||
-          queryMode == QueryMode.prefix) {
+      if (queryMode == QueryMode.distance) {
         final SearchResult searchResult = SearchResult(
           id: id,
           book: Book(id: bookId, name: bookName),
@@ -73,12 +77,16 @@ class FtsDatabaseRepository implements FtsRespository {
           description: content,
         );
         results.add(searchResult);
-      } else if (queryMode == QueryMode.exact) {
+      } else if (queryMode == QueryMode.exact ||
+          queryMode == QueryMode.prefix) {
         // debugPrint('finding match in page:${allMatches.length}');
+
+        final matches = regexMatchWords.allMatches(content);
+        debugPrint('${matches.length} in $pageNumber of $bookId');
         // only one match in a page
-        if (allMatches.length == 1) {
+        if (matches.length == 1) {
           final String description = _extractDescription(
-              content, allMatches.first.start, allMatches.first.end);
+              content, matches.first.start, matches.first.end);
           final SearchResult searchResult = SearchResult(
             id: id,
             book: Book(id: bookId, name: bookName),
@@ -88,8 +96,8 @@ class FtsDatabaseRepository implements FtsRespository {
           results.add(searchResult);
         } else {
           // multiple matches in single page
-          for (var i = 0, length = allMatches.length; i < length; i++) {
-            final current = allMatches.elementAt(i);
+          for (var i = 0, length = matches.length; i < length; i++) {
+            final current = matches.elementAt(i);
             final String description =
                 _extractDescription(content, current.start, current.end);
             final SearchResult searchResult = SearchResult(
@@ -153,12 +161,36 @@ class FtsDatabaseRepository implements FtsRespository {
     return words.join(' ');
   }
 
-  String _createRegexPattern(String phrase) {
+  RegExp _createExactMatch(String phrase) {
     final patterns = <String>[];
     final words = phrase.split(' ');
     for (var word in words) {
-      patterns.add('<hl>$word</hl>');
+      patterns.add('<$highlightTagName>$word</$highlightTagName>');
     }
-    return patterns.join(' ');
+    print(patterns.join(' '));
+    return RegExp(patterns.join(' '));
+  }
+
+  RegExp _createPrefixMatch(String phrase) {
+    final patterns = <String>[];
+    final words = phrase.split(' ');
+    for (var word in words) {
+      patterns.add('<$highlightTagName>$word.*?</$highlightTagName>');
+    }
+    print(patterns.join(' '));
+    return RegExp(patterns.join(' '));
+  }
+
+  String _buildHighlight(String content, String phrase) {
+    final words = phrase.split(' ');
+    for (var word in words) {
+      content = content.replaceAllMapped(
+          RegExp('($word\S*)'),
+          (match) =>
+              '<$highlightTagName>${match.group(1)}</$highlightTagName>');
+
+      // content.replaceAll(word, '<$_highlightTag>$word</_highlightTag>');
+    }
+    return content;
   }
 }

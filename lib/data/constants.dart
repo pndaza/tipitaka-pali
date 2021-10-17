@@ -1,3 +1,5 @@
+const String highlightTagName = 'highlight';
+
 class DatabaseInfo {
   DatabaseInfo._();
   static const int version = 9;

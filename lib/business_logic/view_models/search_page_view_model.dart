@@ -15,9 +15,8 @@ class SearchPageViewModel extends ChangeNotifier {
   QueryMode get queryMode => _queryMode;
 
   bool isSearching = false;
-  // String _searchWord = '';
-
-  // String get searchWord => _searchWord;
+  bool _isFirstWord = true;
+  bool get isFirstWord => _isFirstWord;
 
   Future<void> onTextChanged(String filterWord) async {
     filterWord = filterWord.trim();
@@ -28,12 +27,19 @@ class SearchPageViewModel extends ChangeNotifier {
     }
     // loading suggested words
     final inputScriptLanguage = ScriptDetector.getLanguage(filterWord);
+
     if (inputScriptLanguage != 'Roman') {
       filterWord = PaliScript.getRomanScriptFrom(
           language: inputScriptLanguage, text: filterWord);
     }
 
     final words = filterWord.split(' ');
+    if (words.length == 1) {
+      _isFirstWord = true;
+    } else {
+      _isFirstWord = false;
+    }
+    // print('is first word: $_isFirstWord');
     _suggestions.clear();
     _suggestions.addAll(await SearchService.getSuggestions(words.last));
     notifyListeners();
@@ -51,10 +57,8 @@ class SearchPageViewModel extends ChangeNotifier {
           language: inputScriptLanguage, text: searchWord);
     }
 
-    Navigator.pushNamed(context, searchResultRoute, arguments: {
-      'searchWord': searchWord,
-      'queryMode' : _queryMode
-    });
+    Navigator.pushNamed(context, searchResultRoute,
+        arguments: {'searchWord': searchWord, 'queryMode': _queryMode});
   }
 
   void onQueryModeChange(QueryMode? queryMode) {
@@ -63,5 +67,4 @@ class SearchPageViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
-
 }
