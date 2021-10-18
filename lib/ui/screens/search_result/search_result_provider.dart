@@ -22,10 +22,14 @@ class SearchResultController extends ChangeNotifier {
   List<SearchResult> _filterdResults = [];
   SearchResultState _state = const SearchResultState.loading();
   SearchResultState get state => _state;
+  bool _isInitialized = false;
 
   void init() async {
+    var startTime = DateTime.now();
     _allResults = await SearchService.getResultsByFTS(
         searchWord.toLowerCase(), queryMode, wordDistance);
+    _isInitialized = true;
+    debugPrint('total load time: ${DateTime.now().difference(startTime)}');
     if (_allResults.isEmpty) {
       _state = const SearchResultState.noData();
       notifyListeners();
@@ -39,14 +43,16 @@ class SearchResultController extends ChangeNotifier {
   }
 
   void onChangeFilter(SearchFilterController filterController) {
-    // change state to loading while filtering
-    _state = const SearchResultState.loading();
-    notifyListeners();
-    // filtering
-    _filterdResults = _doFilter(filterController);
-    // update state
-    _state = SearchResultState.loaded(_filterdResults, getBookCount());
-    notifyListeners();
+    if (_isInitialized) {
+      // change state to loading while filtering
+      _state = const SearchResultState.loading();
+      notifyListeners();
+      // filtering
+      _filterdResults = _doFilter(filterController);
+      // update state
+      _state = SearchResultState.loaded(_filterdResults, getBookCount());
+      notifyListeners();
+    }
   }
 
   List<SearchResult> _doFilter(SearchFilterController filterController) {
