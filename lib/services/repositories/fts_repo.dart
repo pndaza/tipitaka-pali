@@ -7,7 +7,8 @@ import '../../ui/screens/home/search_page/search_page.dart';
 import '../database/database_helper.dart';
 
 abstract class FtsRespository {
-  Future<List<SearchResult>> getResults(String phrase, QueryMode queryMode);
+  Future<List<SearchResult>> getResults(
+      String phrase, QueryMode queryMode, int wordDistance);
 }
 
 class FtsDatabaseRepository implements FtsRespository {
@@ -18,7 +19,7 @@ class FtsDatabaseRepository implements FtsRespository {
 
   @override
   Future<List<SearchResult>> getResults(
-      String phrase, QueryMode queryMode) async {
+      String phrase, QueryMode queryMode, int wordDistance) async {
     final results = <SearchResult>[];
     final db = await databaseHelper.database;
 
@@ -40,7 +41,7 @@ class FtsDatabaseRepository implements FtsRespository {
     }
 
     if (queryMode == QueryMode.distance) {
-      final value = phrase.replaceAll(' ', ' NEAR ');
+      final value = phrase.replaceAll(' ', ' NEAR/$wordDistance ');
       sql = '''
       SELECT fts_pages.id, bookid, name, page,
       SNIPPET(fts_pages, '<$highlightTagName>', '</$highlightTagName>', '',-15, 25) AS content
@@ -82,7 +83,7 @@ class FtsDatabaseRepository implements FtsRespository {
         // debugPrint('finding match in page:${allMatches.length}');
 
         final matches = regexMatchWords.allMatches(content);
-        debugPrint('${matches.length} in $pageNumber of $bookId');
+        // debugPrint('${matches.length} in $pageNumber of $bookId');
         // only one match in a page
         if (matches.length == 1) {
           final String description = _extractDescription(
@@ -183,6 +184,7 @@ class FtsDatabaseRepository implements FtsRespository {
     final words = phrase.split(' ');
     for (var word in words) {
       content = content.replaceAllMapped(
+          // ignore: unnecessary_string_escapes
           RegExp('($word\S*)'),
           (match) =>
               '<$highlightTagName>${match.group(1)}</$highlightTagName>');

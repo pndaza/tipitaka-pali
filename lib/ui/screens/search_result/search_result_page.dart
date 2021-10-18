@@ -12,10 +12,12 @@ import 'search_filter_view.dart';
 class SearchResultPage extends StatelessWidget {
   final String searchWord;
   final QueryMode queryMode;
+  final int wordDistance;
   //  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   const SearchResultPage(
-      {Key? key, required this.searchWord, required this.queryMode})
+      {Key? key, required this.searchWord, required this.queryMode, 
+      required this.wordDistance})
       : super(key: key);
 
   @override
@@ -29,6 +31,7 @@ class SearchResultPage extends StatelessWidget {
               create: (_) => SearchResultController(
                   searchWord: searchWord,
                   queryMode: queryMode,
+                  wordDistance: wordDistance,
                   filterController: SearchFilterController())
                 ..init(),
               update: (_, filterController, resultConroller) {

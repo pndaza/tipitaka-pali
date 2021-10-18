@@ -9,9 +9,13 @@ import 'search_result_state.dart';
 
 class SearchResultController extends ChangeNotifier {
   SearchResultController(
-      {required this.searchWord,required this.queryMode ,required this.filterController});
+      {required this.searchWord,
+      required this.queryMode,
+      required this.wordDistance,
+      required this.filterController});
   final String searchWord;
   final QueryMode queryMode;
+  final int wordDistance;
   final SearchFilterController filterController;
   // final SearchFilterNotifier searchFilterNotifier;
   List<SearchResult> _allResults = [];
@@ -20,7 +24,8 @@ class SearchResultController extends ChangeNotifier {
   SearchResultState get state => _state;
 
   void init() async {
-    _allResults = await SearchService.getResultsByFTS(searchWord.toLowerCase(), queryMode);
+    _allResults = await SearchService.getResultsByFTS(
+        searchWord.toLowerCase(), queryMode, wordDistance);
     if (_allResults.isEmpty) {
       _state = const SearchResultState.noData();
       notifyListeners();

@@ -20,12 +20,14 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   late final TextEditingController controller;
   late QueryMode queryMode;
+  late int wordDistance;
   late bool isShowingSearchModeView;
 
   @override
   void initState() {
     controller = TextEditingController();
     queryMode = QueryMode.exact;
+    wordDistance = 10;
     isShowingSearchModeView = false;
     super.initState();
   }
@@ -67,7 +69,7 @@ class _SearchPageState extends State<SearchPage> {
                                   final words = inputText.split(' ');
                                   words.last = selectedWord;
                                   vm.onSubmmited(
-                                      context, words.join(' '), queryMode);
+                                      context, words.join(' '), queryMode, wordDistance);
                                 },
                               ),
                               separatorBuilder: (_, __) => const Divider(
@@ -80,7 +82,7 @@ class _SearchPageState extends State<SearchPage> {
                         child: SearchBar(
                           controller: controller,
                           onSubmitted: (searchWord) =>
-                              vm.onSubmmited(context, searchWord, queryMode),
+                              vm.onSubmmited(context, searchWord, queryMode, wordDistance),
                           onTextChanged: vm.onTextChanged,
                         ),
                       ),
@@ -99,8 +101,11 @@ class _SearchPageState extends State<SearchPage> {
                     child: isShowingSearchModeView
                         ? SearchModeView(
                             mode: queryMode,
-                            onChanged: (value) {
+                            onModeChanged: (value) {
                               queryMode = value;
+                            },
+                            onDistanceChanged: (value) {
+                              wordDistance = value;
                             },
                           )
                         : const SizedBox(height: 0),

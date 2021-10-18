@@ -16,10 +16,10 @@ class SearchService {
     return suggestions;
   }
 
-  static Future<List<SearchResult>> getResultsByFTS(String searchWord, QueryMode queryMode) async {
+  static Future<List<SearchResult>> getResultsByFTS(String searchWord, QueryMode queryMode, int wordDistance) async {
     final DatabaseHelper databaseHelper = DatabaseHelper();
     final FtsRespository respository = FtsDatabaseRepository(databaseHelper);
-    return await respository.getResults(searchWord, queryMode);
+    return await respository.getResults(searchWord, queryMode, wordDistance);
   }
 
   /// 

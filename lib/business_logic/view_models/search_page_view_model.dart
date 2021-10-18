@@ -47,7 +47,8 @@ class SearchPageViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onSubmmited(BuildContext context, String searchWord, QueryMode queryMode) {
+  void onSubmmited(BuildContext context, String searchWord, QueryMode queryMode,
+  int wordDistance) {
     final inputScriptLanguage = ScriptDetector.getLanguage(searchWord);
     if (inputScriptLanguage != 'Roman') {
       searchWord = PaliScript.getRomanScriptFrom(
@@ -55,7 +56,7 @@ class SearchPageViewModel extends ChangeNotifier {
     }
 
     Navigator.pushNamed(context, searchResultRoute,
-        arguments: {'searchWord': searchWord, 'queryMode': queryMode});
+        arguments: {'searchWord': searchWord, 'queryMode': queryMode, 'wordDistance': wordDistance});
   }
 
 }
