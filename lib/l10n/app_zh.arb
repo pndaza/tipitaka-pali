@@ -1,0 +1,48 @@
+{
+  "tipitaka_pali_reader": "巴利文大藏经",
+  "home":                 "家",
+  "bookmark":             "书签",
+  "recent":               "最近的",
+  "search":               "搜索",
+  "updatingStatus":       "请稍候,正在更新数据库\n这可能需要几分钟时间",
+  "copyingStatus":        "复制数据库时请稍候。\n这可能需要几分钟",
+  "settings":             "设置",
+  "dictionary":           "字典",
+  "theme":                "主题",
+  "darkMode":             "黑暗模式",
+  "language":             "语",
+  "dictionaries":         "字典",
+  "paliScript":           "《巴伊文》",
+  "showAlternatePali":    "显示替代 Pāḷi",
+  "showPTSPageNumber":    "显示 PTS 页码",
+  "showThaiPageNumber":   "显示泰文页码",
+  "showVRIPageNumber":    "显示 VRI 页码",
+  "about":                "关于",
+  "about_info":           "这个应用程序仍处于测试阶段。但是,它对于访问 Tipitaka Texts 和获取大多数词典定义应该很有用。您可以在 github 网站上创建问题和请求功能 https://github.com/bksubhuti/tipitaka-pali -读者/问题",
+  "unable_open_page":     "无法打开此页面的页面。",
+  "enter_note":           "在此输入备注",
+  "save":                 "节省",
+  "cancel":               "取消",
+  "page":                 "页",
+  "select_paragraph":     "选择段落",
+  "close":                "关闭",
+  "paragraph_number":     "段号",
+  "table_of_contents":    "目录",
+  "goto":                 "去",
+  "paragraph":            "段落",
+  "go":                   "走",
+  "toc":                  "目录",
+  "mat":                  "垫",
+  "font":                 "字体",
+  "exact":                "精确的",
+  "prefix":               "字首",
+  "distance":             "距离"
+
+
+
+   
+
+}
+
+
+
