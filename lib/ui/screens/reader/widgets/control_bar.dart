@@ -181,9 +181,9 @@ class ControlBar extends StatelessWidget {
                 child: ListView.separated(
                     itemBuilder: (_, i) => ListTile(
                           subtitle: Text(
-                              '${paragraphs[i].bookName} - ${MmNumber.get(paragraphs[i].expPageNumber)}'),
+                              '${paragraphs[i].bookName} - ${paragraphs[i].expPageNumber}'),
                           title: Text(
-                              '${AppLocalizations.of(context)!.paragraph_number}: ${MmNumber.get(paragraphs[i].paragraph)}'),
+                              '${AppLocalizations.of(context)!.paragraph_number}: ${paragraphs[i].paragraph}'),
                           onTap: () {
                             _openBook(
                                 context,
