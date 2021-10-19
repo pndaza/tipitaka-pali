@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tipitaka_pali/services/prefs.dart';
 import 'package:tipitaka_pali/ui/screens/home/search_page/search_page.dart';
 import 'package:tipitaka_pali/utils/pali_script.dart';
 import 'package:tipitaka_pali/utils/script_detector.dart';
@@ -11,9 +12,21 @@ class SearchPageViewModel extends ChangeNotifier {
   final List<SearchSuggestion> _suggestions = [];
   List<SearchSuggestion> get suggestions => _suggestions;
 
+  late QueryMode _queryMode;
+  QueryMode get queryMode => _queryMode;
+
+  late int _wordDistance;
+  int get wordDistance => _wordDistance;
+
   bool isSearching = false;
   bool _isFirstWord = true;
   bool get isFirstWord => _isFirstWord;
+
+  void init() {
+    int index = Prefs.queryModeIndex;
+    _queryMode = QueryMode.values[index];
+    _wordDistance = Prefs.wordDistance;
+  }
 
   Future<void> onTextChanged(String filterWord) async {
     filterWord = filterWord.trim();
@@ -48,15 +61,44 @@ class SearchPageViewModel extends ChangeNotifier {
   }
 
   void onSubmmited(BuildContext context, String searchWord, QueryMode queryMode,
-  int wordDistance) {
+      int wordDistance) {
     final inputScriptLanguage = ScriptDetector.getLanguage(searchWord);
     if (inputScriptLanguage != 'Roman') {
       searchWord = PaliScript.getRomanScriptFrom(
           language: inputScriptLanguage, text: searchWord);
     }
 
-    Navigator.pushNamed(context, searchResultRoute,
-        arguments: {'searchWord': searchWord, 'queryMode': queryMode, 'wordDistance': wordDistance});
+    Navigator.pushNamed(context, searchResultRoute, arguments: {
+      'searchWord': searchWord,
+      'queryMode': queryMode,
+      'wordDistance': wordDistance
+    });
   }
 
+  void onQueryModeChanged(QueryMode queryMode) {
+    _queryMode = queryMode;
+    // saving to shared preference
+    int index = _getQueryModeIndex(queryMode);
+    Prefs.queryModeIndex = index;
+    notifyListeners();
+  }
+
+  int _getQueryModeIndex(QueryMode queryMode) {
+    switch (queryMode) {
+      case QueryMode.exact:
+        return 0;
+      case QueryMode.prefix:
+        return 1;
+      case QueryMode.distance:
+        return 2;
+      default:
+        return 0;
+    }
+  }
+
+  void onWordDistanceChanged(int wordDistance) {
+    _wordDistance = wordDistance;
+    Prefs.wordDistance = wordDistance;
+    notifyListeners();
+  }
 }

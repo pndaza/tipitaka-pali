@@ -16,6 +16,8 @@ const String isShowPtsNumberPref = 'showPtsNumber';
 const String isShowThaiNumberPref = 'showThaiNumber';
 const String isShowVriNumberPref = 'showVriNumber';
 const String currentScriptLanguagePref = 'current_script_language';
+const String queryModePref = 'queryMode';
+const String wordDistancePref = 'wordDistance';
 
 // default pref values
 const int defaultLocaleVal = 0;
@@ -29,6 +31,8 @@ const bool defaultShowPTSNumber = false;
 const bool defaultShowThaiNumber = false;
 const bool defaultShowVRINumber = false;
 const String defaultScriptLanguage = 'Roman';
+const int defaultQueryModeIndex = 0;
+const int defaultWordDistance = 10;
 
 class Prefs {
   // prevent object creation
@@ -89,4 +93,13 @@ class Prefs {
       instance.getString(currentScriptLanguagePref) ?? defaultScriptLanguage;
   static set currentScriptLanguage(String value) =>
       instance.setString(currentScriptLanguagePref, value);
+
+  static int get queryModeIndex =>
+      instance.getInt(queryModePref) ?? defaultQueryModeIndex;
+  static set queryModeIndex(int value) => instance.setInt(queryModePref, value);
+
+  static int get wordDistance =>
+      instance.getInt(wordDistancePref) ?? defaultWordDistance;
+  static set wordDistance(int value) =>
+      instance.setInt(wordDistancePref, value);
 }

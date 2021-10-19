@@ -8,7 +8,7 @@ import '../widgets/search_bar.dart';
 import 'search_mode_view.dart';
 import 'suggestion_list_tile.dart';
 
-enum QueryMode { exact, distance, prefix }
+enum QueryMode { exact, prefix, distance }
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -19,15 +19,11 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   late final TextEditingController controller;
-  late QueryMode queryMode;
-  late int wordDistance;
   late bool isShowingSearchModeView;
 
   @override
   void initState() {
     controller = TextEditingController();
-    queryMode = QueryMode.exact;
-    wordDistance = 10;
     isShowingSearchModeView = false;
     super.initState();
   }
@@ -41,7 +37,7 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<SearchPageViewModel>(
-        create: (_) => SearchPageViewModel(),
+        create: (_) => SearchPageViewModel()..init(),
         child: Consumer<SearchPageViewModel>(builder: (context, vm, child) {
           return Scaffold(
               appBar: AppBar(
@@ -68,8 +64,8 @@ class _SearchPageState extends State<SearchPage> {
 
                                   final words = inputText.split(' ');
                                   words.last = selectedWord;
-                                  vm.onSubmmited(
-                                      context, words.join(' '), queryMode, wordDistance);
+                                  vm.onSubmmited(context, words.join(' '),
+                                      vm.queryMode, vm.wordDistance);
                                 },
                               ),
                               separatorBuilder: (_, __) => const Divider(
@@ -81,8 +77,8 @@ class _SearchPageState extends State<SearchPage> {
                       Expanded(
                         child: SearchBar(
                           controller: controller,
-                          onSubmitted: (searchWord) =>
-                              vm.onSubmmited(context, searchWord, queryMode, wordDistance),
+                          onSubmitted: (searchWord) => vm.onSubmmited(context,
+                              searchWord, vm.queryMode, vm.wordDistance),
                           onTextChanged: vm.onTextChanged,
                         ),
                       ),
@@ -100,12 +96,13 @@ class _SearchPageState extends State<SearchPage> {
                     duration: const Duration(milliseconds: 300),
                     child: isShowingSearchModeView
                         ? SearchModeView(
-                            mode: queryMode,
+                            mode: vm.queryMode,
+                            wordDistance: vm.wordDistance,
                             onModeChanged: (value) {
-                              queryMode = value;
+                              vm.onQueryModeChanged(value);
                             },
                             onDistanceChanged: (value) {
-                              wordDistance = value;
+                              vm.onWordDistanceChanged(value);
                             },
                           )
                         : const SizedBox(height: 0),

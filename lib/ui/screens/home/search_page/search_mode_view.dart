@@ -7,7 +7,7 @@ class SearchModeView extends StatefulWidget {
   const SearchModeView(
       {Key? key,
       required this.mode,
-      this.wordDistance = 10,
+      required this.wordDistance,
       required this.onModeChanged,
       required this.onDistanceChanged})
       : super(key: key);
@@ -65,7 +65,7 @@ class _SearchModeViewState extends State<SearchModeView> {
                 ),
               ),
               EasyNumberInput(
-                  initial: 10,
+                  initial: widget.wordDistance,
                   onChanged: (value) {
                     widget.onDistanceChanged(value);
                   }),
