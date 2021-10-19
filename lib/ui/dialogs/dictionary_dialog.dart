@@ -26,16 +26,19 @@ class DictionaryDialog extends StatelessWidget {
               padding: EdgeInsets.only(top: 56.0),
               child: DictionaryContentView(),
             ),
-            ListTile(
-              // close button
-              leading: IconButton(
-                icon: const Icon(Icons.close, color: Colors.black),
-                onPressed: () => Navigator.pop(context),
-              ),
-              title: DictionarySearchField(
-                initialValue: word,
-              ),
-              trailing: const DictionaryAlgorithmModeView(),
+            Row(
+              children: [
+                IconButton(
+                  padding: EdgeInsets.zero,
+                  icon: const Icon(Icons.close, color: Colors.black),
+                  onPressed: () => Navigator.pop(context),
+                ),
+                Expanded(child: DictionarySearchField(initialValue: word)),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: DictionaryAlgorithmModeView(),
+                ),
+              ],
             ),
           ],
         ),
@@ -74,49 +77,49 @@ class _DictionarySearchFieldState extends State<DictionarySearchField> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 46,
-      child: TypeAheadField(
-          textFieldConfiguration: TextFieldConfiguration(
-              autocorrect: false,
-              controller: textEditingController,
-              decoration: const InputDecoration(border: OutlineInputBorder()),
-              onChanged: (text) {
-                // convert velthuis input to uni
-                if (text.isNotEmpty) {
-                  final uniText = PaliTools.velthuisToUni(velthiusInput: text);
-                  textEditingController.text = uniText;
-                  textEditingController.selection = TextSelection.fromPosition(
-                      TextPosition(offset: textEditingController.text.length));
-                }
-              }),
-          suggestionsCallback: (text) async {
-            if (text.isEmpty) {
-              return <String>[];
-            } else {
-              final inputLanguage = ScriptDetector.getLanguage(text);
-              final romanText = PaliScript.getRomanScriptFrom(
-                  language: inputLanguage, text: text);
-              return context
-                  .read<DictionaryViewModel>()
-                  .getSuggestions(romanText);
-            }
-          },
-          itemBuilder: (context, String suggestion) {
-            return ListTile(
-                title: Text(PaliScript.getScriptOf(
-                    language:
-                        context.read<ScriptLanguageProvider>().currentLanguage,
-                    romanText: suggestion)));
-          },
-          onSuggestionSelected: (String suggestion) {
-            final inputLanguage =
-                ScriptDetector.getLanguage(textEditingController.text);
-            textEditingController.text = PaliScript.getScriptOf(
-                language: inputLanguage, romanText: suggestion);
-            context.read<DictionaryViewModel>().onClickSuggestion(suggestion);
-          }),
-    );
+    return TypeAheadField(
+        textFieldConfiguration: TextFieldConfiguration(
+            autocorrect: false,
+            controller: textEditingController,
+            decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 0, horizontal: 4)),
+            onChanged: (text) {
+              // convert velthuis input to uni
+              if (text.isNotEmpty) {
+                final uniText = PaliTools.velthuisToUni(velthiusInput: text);
+                textEditingController.text = uniText;
+                textEditingController.selection = TextSelection.fromPosition(
+                    TextPosition(offset: textEditingController.text.length));
+              }
+            }),
+        suggestionsCallback: (text) async {
+          if (text.isEmpty) {
+            return <String>[];
+          } else {
+            final inputLanguage = ScriptDetector.getLanguage(text);
+            final romanText = PaliScript.getRomanScriptFrom(
+                language: inputLanguage, text: text);
+            return context
+                .read<DictionaryViewModel>()
+                .getSuggestions(romanText);
+          }
+        },
+        itemBuilder: (context, String suggestion) {
+          return ListTile(
+              title: Text(PaliScript.getScriptOf(
+                  language:
+                      context.read<ScriptLanguageProvider>().currentLanguage,
+                  romanText: suggestion)));
+        },
+        onSuggestionSelected: (String suggestion) {
+          final inputLanguage =
+              ScriptDetector.getLanguage(textEditingController.text);
+          textEditingController.text = PaliScript.getScriptOf(
+              language: inputLanguage, romanText: suggestion);
+          context.read<DictionaryViewModel>().onClickSuggestion(suggestion);
+        });
   }
 }
 

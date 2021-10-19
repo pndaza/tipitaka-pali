@@ -54,6 +54,7 @@ class _SearchBarState extends State<SearchBar> {
         children: [
           Expanded(
             child: TextField(
+              autocorrect: false,
               controller: widget.controller,
               textInputAction: TextInputAction.search,
               onSubmitted: (text) => widget.onSubmitted(text),
