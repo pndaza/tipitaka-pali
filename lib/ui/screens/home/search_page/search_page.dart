@@ -68,17 +68,38 @@ class _SearchPageState extends State<SearchPage> {
                                       vm.queryMode, vm.wordDistance);
                                 },
                               ),
-                              separatorBuilder: (_, __) => const Divider(
-                                height: 1,
-                              ),
+                              separatorBuilder: (_, __) =>
+                                  const Divider(height: 1),
                             )),
                   Row(
                     children: [
                       Expanded(
                         child: SearchBar(
                           controller: controller,
-                          onSubmitted: (searchWord) => vm.onSubmmited(context,
-                              searchWord, vm.queryMode, vm.wordDistance),
+                          onSubmitted: (searchWord) {
+                            // checking input
+                            int wordCount = searchWord.split(' ').length;
+                            if (wordCount == 1 &&
+                                vm.queryMode == QueryMode.distance) {
+                              // showing alert dialog
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                        title: Text('Oh No'),
+                                        content: Text(
+                                            'Not aviable for a single word.\nPhrase Only'),
+                                        actions: [
+                                          TextButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context),
+                                              child: Text('OK'))
+                                        ],
+                                      ));
+                            } else {
+                              vm.onSubmmited(context, searchWord, vm.queryMode,
+                                  vm.wordDistance);
+                            }
+                          },
                           onTextChanged: vm.onTextChanged,
                         ),
                       ),
