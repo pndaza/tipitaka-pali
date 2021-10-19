@@ -30,7 +30,7 @@ class SearchPageViewModel extends ChangeNotifier {
 
   Future<void> onTextChanged(String filterWord) async {
     filterWord = filterWord.trim();
-    if (filterWord.isEmpty) {
+    if (filterWord.isEmpty || filterWord.length < 2) {
       suggestions.clear();
       notifyListeners();
       return;
