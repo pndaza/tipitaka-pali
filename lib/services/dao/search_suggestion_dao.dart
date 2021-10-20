@@ -4,7 +4,7 @@ import 'package:tipitaka_pali/services/dao/dao.dart';
 class SearchSuggestionDao implements Dao<SearchSuggestion> {
   final String tableWords = 'words';
   final String columnWord = 'word';
-  final String columnCount = 'count';
+  final String columnFrequecny = 'frequency';
   @override
   List<SearchSuggestion> fromList(List<Map<String, dynamic>> query) {
     return query.map((e) => fromMap(e)).toList();
@@ -12,7 +12,7 @@ class SearchSuggestionDao implements Dao<SearchSuggestion> {
 
   @override
   SearchSuggestion fromMap(Map<String, dynamic> query) {
-    return SearchSuggestion(query[columnWord], query[columnCount]);
+    return SearchSuggestion(query[columnWord], query[columnFrequecny]);
   }
 
   @override

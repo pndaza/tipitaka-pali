@@ -67,11 +67,15 @@ class SearchResultListTile extends StatelessWidget {
                 // description text
                 StyledText(
                   text: PaliScript.getScriptOf(
-                      language: context
-                          .read<ScriptLanguageProvider>()
-                          .currentLanguage,
-                      romanText: result.description,
-                      isHtmlText: true),
+                    language:
+                        context.read<ScriptLanguageProvider>().currentLanguage,
+                    romanText: result.description,
+                    // <highlight> are used for highlight
+                    // text is somehow html
+                    isHtmlText: true
+                  ),
+                  // overflow: TextOverflow.ellipsis,
+                  // maxLines: 4,
                   style: style,
                   tags: styles,
                 )

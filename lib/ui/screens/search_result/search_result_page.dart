@@ -106,8 +106,8 @@ class DataView extends StatelessWidget {
                   child: Text('Not any more exist in other books'),
                 )
               : ListView.builder(
-                  // itemExtent: 300,
-
+                  // itemExtent: 160,
+                  cacheExtent: 50,
                   itemCount: results.length,
                   itemBuilder: (_, i) {
                     final result = results[i];

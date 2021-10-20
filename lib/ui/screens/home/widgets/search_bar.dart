@@ -23,7 +23,6 @@ class SearchBar extends StatefulWidget {
 class _SearchBarState extends State<SearchBar> {
   _SearchBarState();
 
-
   Color borderColor = Colors.grey;
   Color textColor = Colors.grey[350] as Color;
   TextDecoration textDecoration = TextDecoration.lineThrough;
@@ -64,20 +63,20 @@ class _SearchBarState extends State<SearchBar> {
                 widget.onTextChanged(text);
               },
               decoration: InputDecoration(
-                  border: InputBorder.none,
-                  prefixIcon: const Icon(Icons.search, color: Colors.grey),
-                  // clear button
-                  suffixIcon: widget.controller.text.isEmpty
-                      ? const SizedBox(width: 0, height: 0)
-                      : ClearButton(
-                          onTap: () {
-                            widget.controller.clear();
-                            widget.onTextChanged('');
-                          },
-                        ),
-                  hintStyle: const TextStyle(color: Colors.grey),
-                  hintText: widget.hint,
-                  ),
+                border: InputBorder.none,
+                prefixIcon: const Icon(Icons.search, color: Colors.grey),
+                // clear button
+                suffixIcon: widget.controller.text.isEmpty
+                    ? const SizedBox(width: 0, height: 0)
+                    : ClearButton(
+                        onTap: () {
+                          widget.controller.clear();
+                          widget.onTextChanged('');
+                        },
+                      ),
+                hintStyle: const TextStyle(color: Colors.grey),
+                hintText: widget.hint,
+              ),
             ),
           ),
           const SizedBox(width: 4.0)

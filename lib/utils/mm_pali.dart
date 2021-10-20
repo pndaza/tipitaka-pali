@@ -68,7 +68,7 @@ class MmPali {
     '္ဝ': 'ွ',
     '္ဟ': 'ှ',
     'င္': 'င်္',
-    'သင်္ဃ': 'သံဃ',
+    // 'သင်္ဃ': 'သံဃ',
   };
 
   static final Map<String, String> _digits = {
@@ -90,11 +90,11 @@ class MmPali {
   };
 
   static toRoman(String text) {
-    _independentVowels.forEach((key, value) {
+    _specialShapes.forEach((key, value) {
       text = text.replaceAll(value, key);
     });
 
-    _specialShapes.forEach((key, value) {
+    _independentVowels.forEach((key, value) {
       text = text.replaceAll(value, key);
     });
 
@@ -122,6 +122,9 @@ class MmPali {
     _puntutations.forEach((key, value) {
       text = text.replaceAll(value, key);
     });
+
+    // special word
+    text = text.replaceAll('saṃgh', 'saṅgh');
     return text;
   }
 
@@ -146,6 +149,7 @@ class MmPali {
     _specialShapes.forEach((key, value) {
       text = text.replaceAll(key, value);
     });
+    text = text.replaceAll('သင်္ဃ', 'သံဃ');
 
     text = text.replaceAllMapped(
         RegExp(r"([ခဂငဒပဝ]ေ?)\u102c"), (match) => "${match.group(1)}\u102b");
@@ -163,6 +167,9 @@ class MmPali {
     _puntutations.forEach((key, value) {
       text = text.replaceAll(key, value);
     });
+
+    // special word
+    text = text.replaceAll('သင်္ဃ', 'သံဃ');
     return text;
   }
 }
