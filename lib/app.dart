@@ -25,6 +25,9 @@ class App extends StatelessWidget {
   final String _enLocale = 'en';
   final String _myLocale = 'my';
   final String _siLocale = 'si';
+  final String _zhLocale = 'zh';
+  final String _viLocale = 'vi';
+  final String _hiLocale = 'hi';
 
   const App({Key? key}) : super(key: key);
 
@@ -63,6 +66,9 @@ class App extends StatelessWidget {
                 Locale(_enLocale, ''), // English, no country code
                 Locale(_myLocale, ''), // Myanmar, no country code
                 Locale(_siLocale, ''), // Myanmar, no country code
+                Locale(_zhLocale, ''), // Myanmar, no country code
+                Locale(_viLocale, ''), // Myanmar, no country code
+                Locale(_hiLocale, ''), // Myanmar, no country code
               ],
               home: const SplashScreen(),
             );

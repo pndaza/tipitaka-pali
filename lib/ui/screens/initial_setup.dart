@@ -29,7 +29,7 @@ class InitialSetup extends StatelessWidget {
       children: [
         // first load, select language "hard-coded in all supported languages"
         const Text(
-            "Set Language \nသင်၏ဘာသာစကားကိုရွေးပါ\nඔබේ භාෂාව තෝරන්න\n选择你的语言\nChọn ngôn ngữ\n"),
+            "Set Language \nသင်၏ဘာသာစကားကိုရွေးပါ\nඔබේ භාෂාව තෝරන්න\n选择你的语言\nChọn ngôn ngữ\nभाषा चयन करें\n"),
         const SizedBox(
           height: 20,
         ),
