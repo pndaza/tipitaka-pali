@@ -362,6 +362,8 @@ class ReaderViewModel with ChangeNotifier {
   }
 
   Future onPageChanged(int index) async {
+    print("onpagechanged");
+
     currentPage = book.firstPage! + index;
     notifyListeners();
     await _saveToRecent();
@@ -375,14 +377,14 @@ class ReaderViewModel with ChangeNotifier {
   Future gotoPage(double value) async {
     currentPage = value.toInt();
     pageController.jumpToPage(currentPage! - book.firstPage!);
-    await _saveToRecent();
+    //await _saveToRecent();
   }
 
   Future gotoPageAndScroll(double value, String tocText) async {
     currentPage = value.toInt();
     tocHeader = tocText;
     pageController.jumpToPage(currentPage! - book.firstPage!);
-    await _saveToRecent();
+    //await _saveToRecent();
   }
 
   void increaseFontSize() {

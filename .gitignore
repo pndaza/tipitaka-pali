@@ -11,6 +11,8 @@
 .svn/
 *.db
 *.7z
+tipitaka_pali_part*
+
 
 # IntelliJ related
 *.iml
