@@ -31,7 +31,7 @@ class PaliScript {
       }
     }
 
-        if (language == 'हिन्दी') {
+        if (language == 'देवनागरी') {
       if (!isHtmlText) {
         return toDeva(romanText);
       } else {
