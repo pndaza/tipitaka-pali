@@ -547,22 +547,19 @@ String toDeva(String input) {
 
     } else if (i2 == 'h' && devar[i1+i2] !=null ) {		// two character match
       output += devar[i1+i2];
-      if (i3.isNotEmpty && vowel[i3] != null && i2 != 'ṃ') {
+      if (i3.isNotEmpty && vowel[i3] == null && i2 != 'ṃ') {
         output += '्';
       }
       i += 2;
 
     } else if (devar[i1] != null) {	// one character match except a
       output += devar[i1];
-      if (i2.isNotEmpty && vowel[i2] != null && vowel[i1] != null && i1 != 'ṃ') {
+      if (i2.isNotEmpty && vowel[i2] == null && vowel[i1] == null && i1 != 'ṃ') {
         output += '्';
       }
       i++;
 
     } else if (i1 != 'a') {
-      if (devar[i0] != null || (i0 == 'h' && devar[i1] != null)) {
-        output += '्'; // end word consonant
-      }
       output += i1;
       i++;
       if(vowel[i2] != null) {
@@ -573,9 +570,6 @@ String toDeva(String input) {
     } else {
       i++;
     } // a
-  }
-  if (devar[i1] != null) {
-    output += '्';
   }
   output = output.replaceAll(r'\`+', '"');
   return output;
