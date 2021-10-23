@@ -90,6 +90,9 @@ class ReaderViewModel with ChangeNotifier {
     // List<WebViewController>(pages.length);
 
     loadFinished = true;
+    // save to recent table on load of the book.
+    // from general book opening and also tapping a search result tile..
+    await _saveToRecent();
 
     return true;
     // print('number of pages: ${pages.length}');
