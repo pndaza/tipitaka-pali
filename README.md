@@ -1,5 +1,11 @@
 # Tipitaka Pali Reader
 
+To get this working, you need to download the database from https://drive.google.com/drive/u/1/folders/1UI5kI4RdDnGNouPEwEVqu-xOPkrmFuRh
+https://drive.google.com/file/d/1MYy3Kv66f_sx2M-vzROVYBJsup4rAR7v/view?usp=sharing
+
+Extract into the assets database folder, and then run the script to break it up.  The database will be deleted.  Make sure the zip file or complete unzipped db are not in the assets folder when making for release.. (it is big).
+
+
 A new Flutter project forked from Tipitaka Pali
 
 Functional requirements.
@@ -46,7 +52,3 @@ Single Click / Tap word lookup.
 I believe this is important, but I am willing to sacrifice long press or double click for word selections.  There is a global gesture widget that can get any input.  This might be the prefered method.  There are widgets that exist with callbacks, some without .  This needs to be researched for Desktop Phase.
 
 
-
-
-
-[Download Database](https://drive.google.com/file/d/1M9wiw8z4az3Fqbhxkq52cHRx3U2N-hPw/view?usp=sharing) 
