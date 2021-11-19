@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tipitaka_pali/business_logic/models/toc.dart';
+import 'package:provider/provider.dart';
+import 'toc.dart';
+import '../../services/provider/script_language_provider.dart';
+import '../../utils/pali_script.dart';
 
 abstract class TocListItem {
   late Toc toc;
@@ -22,7 +25,10 @@ class TocHeadingOne implements TocListItem {
 
   @override
   Widget build(BuildContext context) {
-    return Text(toc.name,
+    final tocName = PaliScript.getScriptOf(
+        language: context.read<ScriptLanguageProvider>().currentLanguage,
+        romanText: toc.name);
+    return Text(tocName,
         style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold));
   }
 }
@@ -41,9 +47,12 @@ class TocHeadingTwo implements TocListItem {
 
   @override
   Widget build(BuildContext context) {
+    final tocName = PaliScript.getScriptOf(
+        language: context.read<ScriptLanguageProvider>().currentLanguage,
+        romanText: toc.name);
     return Padding(
         padding: const EdgeInsets.only(left: 16.0),
-        child: Text(toc.name,
+        child: Text(tocName,
             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)));
   }
 }
@@ -62,9 +71,12 @@ class TocHeadingThree implements TocListItem {
 
   @override
   Widget build(BuildContext context) {
+    final tocName = PaliScript.getScriptOf(
+        language: context.read<ScriptLanguageProvider>().currentLanguage,
+        romanText: toc.name);
     return Padding(
         padding: const EdgeInsets.only(left: 32.0),
-        child: Text(toc.name, style: const TextStyle(fontSize: 18)));
+        child: Text(tocName, style: const TextStyle(fontSize: 18)));
   }
 }
 
@@ -82,9 +94,12 @@ class TocHeadingFour implements TocListItem {
 
   @override
   Widget build(BuildContext context) {
+    final tocName = PaliScript.getScriptOf(
+        language: context.read<ScriptLanguageProvider>().currentLanguage,
+        romanText: toc.name);
     return Padding(
         padding: const EdgeInsets.only(left: 48.0),
-        child: Text(toc.name, style: const TextStyle(fontSize: 18)));
+        child: Text(tocName, style: const TextStyle(fontSize: 18)));
   }
 }
 
@@ -102,8 +117,11 @@ class TocHeadingFive implements TocListItem {
 
   @override
   Widget build(BuildContext context) {
+    final tocName = PaliScript.getScriptOf(
+        language: context.read<ScriptLanguageProvider>().currentLanguage,
+        romanText: toc.name);
     return Padding(
         padding: const EdgeInsets.only(left: 64.0),
-        child: Text(toc.name, style: const TextStyle(fontSize: 18)));
+        child: Text(tocName, style: const TextStyle(fontSize: 18)));
   }
 }
