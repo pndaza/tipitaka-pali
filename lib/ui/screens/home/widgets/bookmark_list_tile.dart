@@ -21,23 +21,25 @@ class BookmarkListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Slidable(
-        actionPane: const SlidableDrawerActionPane(),
-        secondaryActions: [
-          IconSlideAction(
-            icon: Icons.delete,
-            color: Colors.red,
-            onTap: () {
-              if (onDelete != null) onDelete!(bookmark);
-            },
-          )
-        ],
+        startActionPane: ActionPane(
+          motion: const DrawerMotion(),
+          extentRatio: 0.25,
+          children: [
+            SlidableAction(
+              //label: 'Archive',
+              backgroundColor: Colors.red,
+              icon: Icons.delete,
+              onPressed: (context) {
+                if (onDelete != null) onDelete!(bookmark);
+              },
+            ),
+          ],
+        ),
         child: Builder(
-            builder: (context) => GestureDetector(
-                behavior: HitTestBehavior.translucent,
-                onLongPress: () {
-                  openSlidable(context);
-                },
-                child: ListTile(
+            builder: (context) => ListTile(
+                  onLongPress: () {
+                    openSlidable(context);
+                  },
                   onTap: () {
                     if (onTap != null) onTap!(bookmark);
                   },
@@ -60,18 +62,15 @@ class BookmarkListTile extends StatelessWidget {
                       ],
                     ),
                   ),
-                ))));
+                )));
   }
 
   void openSlidable(BuildContext context) {
-    final slidable = Slidable.of(context);
-    final isClosed = slidable!.renderingMode == SlidableRenderingMode.none;
+    final controller = Slidable.of(context)!;
+    controller.openStartActionPane();
+    final isClosed = controller.actionPaneType.value == ActionPaneType.none;
     if (isClosed) {
-      Future.delayed(Duration.zero, () {
-        if (slidable.mounted) {
-          slidable.open(actionType: SlideActionType.secondary);
-        }
-      });
+      controller.openEndActionPane();
     }
   }
 }

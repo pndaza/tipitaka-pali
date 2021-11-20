@@ -42,7 +42,7 @@ class Reader extends StatelessWidget {
                       Platform.isWindows) {
                     return const DesktopReader();
                   }
-                  return const Scaffold(
+                  return Scaffold(
                     appBar: ReaderAppBar(),
                     body: MyPageView(),
                     bottomNavigationBar: SafeArea(child: ControlBar()),

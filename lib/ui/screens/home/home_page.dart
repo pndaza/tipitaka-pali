@@ -20,9 +20,7 @@ class HomePage extends StatelessWidget {
     'annya': 'Añña'
   };
 
-   HomePage({Key? key}) : super(key: key);
-
-
+  HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -69,17 +67,18 @@ class HomePage extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 17,
                     )),
-                const SizedBox(height: 15.0),
+                const SizedBox(height: 25.0),
                 Image.asset(
                   "assets/icon/icon.png",
-                  height: 60,
-                  width: 60,
+                  height: 90,
+                  width: 90,
                 ),
               ],
             ),
           ),
           ListTile(
-            title: ColoredText(AppLocalizations.of(context)!.dictionary, style: const TextStyle()),
+            title: ColoredText(AppLocalizations.of(context)!.dictionary,
+                style: const TextStyle()),
             onTap: () => _openDictionaryPage(context),
           ),
           ListTile(
