@@ -99,7 +99,7 @@ class DatabaseHelper {
     return true;
   }
 
-  Future<bool> buildFts() async {
+  Future<bool> buildFts(updateMessageCallback) async {
     final dbInstance = await database;
     await dbInstance
         .execute('''CREATE VIRTUAL TABLE IF NOT EXISTS fts_pages USING FTS4
@@ -131,6 +131,7 @@ class DatabaseHelper {
       await batch.commit();
       start += 1000;
       debugPrint('finished: $start rows populating');
+      updateMessageCallback('Finished populating: $start rows ');
     }
 
     return true;

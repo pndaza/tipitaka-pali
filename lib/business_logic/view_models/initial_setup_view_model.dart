@@ -12,7 +12,14 @@ import 'package:tipitaka_pali/services/prefs.dart';
 
 class InitialSetupViewModel extends ChangeNotifier {
   final BuildContext _context;
+  String _indexStatus = '';
+  void updateMessageCallback(String msg) {
+    _indexStatus = msg;
+    notifyListeners();
+  }
+
   InitialSetupViewModel(this._context);
+  String get indexStatus => _indexStatus;
 
   Future<void> setUp(bool isUpdateMode) async {
     debugPrint('isUpdateMode : $isUpdateMode');
@@ -40,8 +47,8 @@ class InitialSetupViewModel extends ChangeNotifier {
       bookmarks.addAll(await databaseHelper.backup(tableName: 'bookmark'));
       dictionaries
           .addAll(await databaseHelper.backup(tableName: 'dictionary_books'));
-      
-    debugPrint('dictionary books: ${dictionaries.length}');
+
+      debugPrint('dictionary books: ${dictionaries.length}');
       await databaseHelper.close();
       // deleting old database file
       await deleteDatabase(dbFilePath);
@@ -67,12 +74,11 @@ class InitialSetupViewModel extends ChangeNotifier {
 
     // dictionary_books table is semi-user data
     // need to delete before restoring
-    if(dictionaries.isNotEmpty){
-
-    await databaseHelper.deleteDictionaryData();
-    debugPrint('dictionary books: ${dictionaries.length}');
-    await databaseHelper.restore(
-        tableName: 'dictionary_books', values: dictionaries);
+    if (dictionaries.isNotEmpty) {
+      await databaseHelper.deleteDictionaryData();
+      debugPrint('dictionary books: ${dictionaries.length}');
+      await databaseHelper.restore(
+          tableName: 'dictionary_books', values: dictionaries);
     }
 
     // save record to shared Preference
@@ -118,12 +124,15 @@ class InitialSetupViewModel extends ChangeNotifier {
     }
 
     // creating fts table
-    final ftsResult = await DatabaseHelper().buildFts();
+    final ftsResult = await DatabaseHelper().buildFts(updateMessageCallback);
     if (ftsResult == false) {
       // handle error
     }
 
     final timeAfterIndexing = DateTime.now();
+    //_indexStatus =help
+    notifyListeners();
+
     debugPrint(
         'indexing time: ${timeAfterIndexing.difference(timeBeforeIndexing)}');
   }

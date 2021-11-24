@@ -17,10 +17,10 @@ class SplashScreen extends StatelessWidget {
 
     switch (databaseStatus) {
       case DatabaseStatus.notExist:
-        child = const InitialSetup();
+        child =  InitialSetup();
         break;
       case DatabaseStatus.outOfDate:
-        child = const InitialSetup(isUpdateMode: true);
+        child =  InitialSetup(isUpdateMode: true);
         break;
       case DatabaseStatus.uptoDate:
         child = const Home();

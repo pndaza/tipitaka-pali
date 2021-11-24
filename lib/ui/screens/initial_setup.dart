@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tipitaka_pali/business_logic/view_models/initial_setup_view_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:tipitaka_pali/ui/widgets/colored_text.dart';
 import 'package:tipitaka_pali/ui/widgets/select_language_widget.dart';
 
 class InitialSetup extends StatelessWidget {
   final bool isUpdateMode;
-  const InitialSetup({Key? key, this.isUpdateMode = false}) : super(key: key);
-
+  InitialSetup({Key? key, this.isUpdateMode = false}) : super(key: key);
+  
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -47,7 +48,11 @@ class InitialSetup extends StatelessWidget {
                 textAlign: TextAlign.center,
               )
             : Text(AppLocalizations.of(context)!.copyingStatus,
-                textAlign: TextAlign.center)
+                textAlign: TextAlign.center),
+        const SizedBox(
+          height: 10,
+        ),
+        ColoredText(vm.indexStatus)
       ],
     );
   }
