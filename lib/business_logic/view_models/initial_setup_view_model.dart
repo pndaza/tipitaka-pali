@@ -12,14 +12,14 @@ import 'package:tipitaka_pali/services/prefs.dart';
 
 class InitialSetupViewModel extends ChangeNotifier {
   final BuildContext _context;
-  String _indexStatus = '';
+  String _status = '';
   void updateMessageCallback(String msg) {
-    _indexStatus = msg;
+    _status = msg;
     notifyListeners();
   }
 
   InitialSetupViewModel(this._context);
-  String get indexStatus => _indexStatus;
+  String get status => _status;
 
   Future<void> setUp(bool isUpdateMode) async {
     debugPrint('isUpdateMode : $isUpdateMode');
@@ -103,6 +103,8 @@ class InitialSetupViewModel extends ChangeNotifier {
       await dbFile.writeAsBytes(
           bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes),
           mode: FileMode.append);
+      _status = "copying $part";
+      notifyListeners();
     }
 
     final timeAfterCopied = DateTime.now();

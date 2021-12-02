@@ -52,7 +52,7 @@ class InitialSetup extends StatelessWidget {
         const SizedBox(
           height: 10,
         ),
-        ColoredText(vm.indexStatus)
+        ColoredText(vm.status)
       ],
     );
   }
