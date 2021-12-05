@@ -131,7 +131,9 @@ class DatabaseHelper {
       await batch.commit();
       start += 1000;
       debugPrint('finished: $start rows populating');
-      updateMessageCallback('Finished populating: $start rows ');
+      int percent = ((start / count) * 100).round();
+
+      updateMessageCallback('Finished populating: $percent% of data');
     }
 
     return true;

@@ -96,6 +96,8 @@ class InitialSetupViewModel extends ChangeNotifier {
 
     final dbFile = File(dbFilePath);
     final timeBeforeCopy = DateTime.now();
+    final int count = AssetsFile.partsOfDatabase.length;
+    int partNo = 0;
     for (String part in AssetsFile.partsOfDatabase) {
       // reading from assets
       final bytes = await rootBundle.load(join(assetsDatabasePath, part));
@@ -103,7 +105,9 @@ class InitialSetupViewModel extends ChangeNotifier {
       await dbFile.writeAsBytes(
           bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes),
           mode: FileMode.append);
-      _status = "copying $part";
+          int percent = ((++partNo / count) * 100).round();
+      _status = "Finished copying $percent% of database.";
+
       notifyListeners();
     }
 
