@@ -53,19 +53,19 @@ class ScriptInfo {
 
 const List<ScriptInfo> listOfScripts = [
   ScriptInfo(
-script: Script.sinhala,      
+      script: Script.sinhala,
       nameInLocale: 'සිංහල',
       localeCode: 'si',
       codePointRanges: [_CodePointRange(start: 0x0D80, end: 0x0DFF)],
       index: 0),
   ScriptInfo(
-script: Script.devanagari,      
+      script: Script.devanagari,
       nameInLocale: 'हिन्दी',
       localeCode: 'hi',
       codePointRanges: [_CodePointRange(start: 0x0900, end: 0x097F)],
       index: 1),
   ScriptInfo(
-script: Script.roman,      
+      script: Script.roman,
       nameInLocale: 'Roman',
       localeCode: 'ro',
       codePointRanges: [
@@ -74,7 +74,7 @@ script: Script.roman,
       ],
       index: 3), // latin extended and latin extended additional blocks
   ScriptInfo(
-script: Script.thai,      
+      script: Script.thai,
       nameInLocale: 'ไทย',
       localeCode: 'th',
       codePointRanges: [
@@ -83,67 +83,67 @@ script: Script.thai,
       ],
       index: 4),
   ScriptInfo(
-script: Script.laos,      
+      script: Script.laos,
       nameInLocale: 'ລາວ',
       localeCode: 'lo',
       codePointRanges: [_CodePointRange(start: 0x0E80, end: 0x0EFF)],
       index: 5),
   ScriptInfo(
-script: Script.myanmar,      
+      script: Script.myanmar,
       nameInLocale: 'ဗမာစာ',
       localeCode: 'my',
       codePointRanges: [_CodePointRange(start: 0x1000, end: 0x107F)],
       index: 6),
   ScriptInfo(
-script: Script.khmer,      
+      script: Script.khmer,
       nameInLocale: 'ភាសាខ្មែរ',
       localeCode: 'km',
       codePointRanges: [_CodePointRange(start: 0x1780, end: 0x17FF)],
       index: 7),
   ScriptInfo(
-script: Script.bengali,      
+      script: Script.bengali,
       nameInLocale: 'বাংলা',
       localeCode: 'be',
       codePointRanges: [_CodePointRange(start: 0x0980, end: 0x09FF)],
       index: 8),
   ScriptInfo(
-script: Script.gurmukhi,      
+      script: Script.gurmukhi,
       nameInLocale: 'ਗੁਰਮੁਖੀ',
       localeCode: 'gm',
       codePointRanges: [_CodePointRange(start: 0x0A00, end: 0x0A7F)],
       index: 9),
   ScriptInfo(
-script: Script.taitham,      
+      script: Script.taitham,
       nameInLocale: 'Tai Tham LN',
       localeCode: 'tt',
       codePointRanges: [_CodePointRange(start: 0x1A20, end: 0x1AAF)],
       index: 10),
   ScriptInfo(
-script: Script.gujarati,      
+      script: Script.gujarati,
       nameInLocale: 'ગુજરાતી',
       localeCode: 'gj',
       codePointRanges: [_CodePointRange(start: 0x0A80, end: 0x0AFF)],
       index: 11),
   ScriptInfo(
-script: Script.telugu,      
+      script: Script.telugu,
       nameInLocale: 'తెలుగు',
       localeCode: 'te',
       codePointRanges: [_CodePointRange(start: 0x0C00, end: 0x0C7F)],
       index: 12),
   ScriptInfo(
-script: Script.kannada,      
+      script: Script.kannada,
       nameInLocale: 'ಕನ್ನಡ',
       localeCode: 'ka',
       codePointRanges: [_CodePointRange(start: 0x0C80, end: 0x0CFF)],
       index: 13),
   ScriptInfo(
-script: Script.malayalam,      
+      script: Script.malayalam,
       nameInLocale: 'മലയാളം',
       localeCode: 'mm',
       codePointRanges: [_CodePointRange(start: 0x0D00, end: 0x0D7F)],
       index: 14),
   ScriptInfo(
-script: Script.brahmi,      
+      script: Script.brahmi,
       nameInLocale: 'Brāhmī',
       localeCode: 'br',
       //charCodeAt returns two codes for each letter [[0x11000, 0x1107F]]
@@ -153,13 +153,13 @@ script: Script.brahmi,
       ],
       index: 15),
   ScriptInfo(
-script: Script.tibetan,      
+      script: Script.tibetan,
       nameInLocale: 'བོད་སྐད།',
       localeCode: 'tb',
       codePointRanges: [_CodePointRange(start: 0x0F00, end: 0x0FFF)],
       index: 16),
   ScriptInfo(
-script: Script.cyrillic,      
+      script: Script.cyrillic,
       nameInLocale: 'кириллица',
       localeCode: 'cy',
       codePointRanges: [
@@ -1484,8 +1484,10 @@ String un_swap_e_o(String text, {Script? script}) {
 String beautifyThai(String text, {Script? script}) {
   // 'iṃ' has a single unicode in thai
   text = text.replaceAll('\u0E34\u0E4D', '\u0E36');
-  text = text.replaceAll('ญ', '\uF70F');
-  return text.replaceAll('ฐ', '\uF700');
+  // disabel by pndaza to make sure encoding is same as tipitaka.org
+  // text = text.replaceAll('ญ', '\uF70F');
+  // text = text.replaceAll('ฐ', '\uF700');
+  return text;
 }
 
 String unbeautifyThai(String text, {Script? script}) {
@@ -1493,8 +1495,10 @@ String unbeautifyThai(String text, {Script? script}) {
   text = text.replaceAll('ฎ', 'ฏ');
   // 'iṃ' has a single unicode in thai which is split into two here
   text = text.replaceAll('\u0E36', '\u0E34\u0E4D');
-  text = text.replaceAll('\uF70F', 'ญ');
-  return text.replaceAll('\uF700', 'ฐ');
+  // disabel by pndaza to make sure encoding is same as tipitaka.org
+  // text = text.replaceAll('\uF70F', 'ญ');
+  // text = text.replaceAll('\uF700', 'ฐ');
+  return text;
 }
 
 String unbeautifykhmer(String text, {Script? script}) {
