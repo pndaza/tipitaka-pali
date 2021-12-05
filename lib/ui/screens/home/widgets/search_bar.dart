@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tipitaka_pali/utils/pali_script_converter.dart';
 
 import '../../../../utils/pali_tools.dart';
 import '../../../../utils/script_detector.dart';
@@ -59,7 +60,7 @@ class _SearchBarState extends State<SearchBar> {
               onSubmitted: (text) => widget.onSubmitted(text),
               onChanged: (text) {
                 final scriptLanguage = ScriptDetector.getLanguage(text);
-                if (scriptLanguage == 'Roman') text = _toUni(text);
+                if (scriptLanguage == Script.roman) text = _toUni(text);
                 widget.onTextChanged(text);
               },
               decoration: InputDecoration(

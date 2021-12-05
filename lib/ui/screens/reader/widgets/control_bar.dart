@@ -13,7 +13,6 @@ import '../../../dialogs/simple_input_dialog.dart';
 import '../../../dialogs/toc_dialog.dart';
 import 'slider.dart';
 import '../../../widgets/icon_text_button.dart';
-import '../../../../utils/mm_number.dart';
 
 class ControlBar extends StatelessWidget {
   const ControlBar({Key? key}) : super(key: key);

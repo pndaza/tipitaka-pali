@@ -21,8 +21,8 @@ class CategoryItem implements ListItem {
     return Center(
         child: Text(
             PaliScript.getScriptOf(
-                language:
-                    context.read<ScriptLanguageProvider>().currentLanguage,
+                script:
+                    context.read<ScriptLanguageProvider>().currentScript,
                 romanText: category.name),
             style: TextStyle(
                 fontSize: 20,
@@ -40,8 +40,8 @@ class BookItem implements ListItem {
   @override
   Widget build(BuildContext context) => Text(
         PaliScript.getScriptOf(
-                language:
-                    context.read<ScriptLanguageProvider>().currentLanguage,
+                script:
+                    context.read<ScriptLanguageProvider>().currentScript,
                 romanText: book.name),
         style: const TextStyle(fontSize: 20),
       );

@@ -222,7 +222,7 @@ class ReaderViewModel with ChangeNotifier {
 
     pageContent = _fixSafari(pageContent);
     pageContent = PaliScript.getScriptOf(
-        language: context.read<ScriptLanguageProvider>().currentLanguage,
+        script: context.read<ScriptLanguageProvider>().currentScript,
         romanText: pageContent,
         isHtmlText: true);
     return '''
@@ -455,7 +455,7 @@ class ReaderViewModel with ChangeNotifier {
     // removing puntuations etc.
     // convert to roman if display script is not roman
     word = PaliScript.getRomanScriptFrom(
-        language: context.read<ScriptLanguageProvider>().currentLanguage,
+        script: context.read<ScriptLanguageProvider>().currentScript,
         text: word);
     word = word.replaceAll(RegExp(r'[^a-zA-ZāīūṅñṭḍṇḷṃĀĪŪṄÑṬḌHṆḶṂ]'), '');
     // convert ot lower case

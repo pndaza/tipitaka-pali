@@ -85,14 +85,14 @@ class _SearchPageState extends State<SearchPage> {
                               showDialog(
                                   context: context,
                                   builder: (context) => AlertDialog(
-                                        title: Text('Oh No'),
-                                        content: Text(
+                                        title: const Text('Oh No'),
+                                        content: const Text(
                                             'Not aviable for a single word.\nPhrase Only'),
                                         actions: [
                                           TextButton(
                                               onPressed: () =>
                                                   Navigator.pop(context),
-                                              child: Text('OK'))
+                                              child: const Text('OK'))
                                         ],
                                       ));
                             } else {

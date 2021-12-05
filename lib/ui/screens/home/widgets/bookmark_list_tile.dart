@@ -45,9 +45,9 @@ class BookmarkListTile extends StatelessWidget {
                   },
                   title: Text(bookmark.note),
                   subtitle: Text(PaliScript.getScriptOf(
-                      language: context
+                      script: context
                           .read<ScriptLanguageProvider>()
-                          .currentLanguage,
+                          .currentScript,
                       romanText: bookmark.bookName!)),
                   trailing: SizedBox(
                     width: 100,

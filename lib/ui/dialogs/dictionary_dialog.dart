@@ -63,8 +63,8 @@ class _DictionarySearchFieldState extends State<DictionarySearchField> {
         text: widget.initialValue == null
             ? null
             : PaliScript.getScriptOf(
-                language:
-                    context.read<ScriptLanguageProvider>().currentLanguage,
+                script:
+                    context.read<ScriptLanguageProvider>().currentScript,
                 romanText: widget.initialValue!));
     super.initState();
   }
@@ -100,7 +100,7 @@ class _DictionarySearchFieldState extends State<DictionarySearchField> {
           } else {
             final inputLanguage = ScriptDetector.getLanguage(text);
             final romanText = PaliScript.getRomanScriptFrom(
-                language: inputLanguage, text: text);
+                script: inputLanguage, text: text);
             return context
                 .read<DictionaryViewModel>()
                 .getSuggestions(romanText);
@@ -109,15 +109,15 @@ class _DictionarySearchFieldState extends State<DictionarySearchField> {
         itemBuilder: (context, String suggestion) {
           return ListTile(
               title: Text(PaliScript.getScriptOf(
-                  language:
-                      context.read<ScriptLanguageProvider>().currentLanguage,
+                  script:
+                      context.read<ScriptLanguageProvider>().currentScript,
                   romanText: suggestion)));
         },
         onSuggestionSelected: (String suggestion) {
           final inputLanguage =
               ScriptDetector.getLanguage(textEditingController.text);
           textEditingController.text = PaliScript.getScriptOf(
-              language: inputLanguage, romanText: suggestion);
+              script: inputLanguage, romanText: suggestion);
           context.read<DictionaryViewModel>().onClickSuggestion(suggestion);
         });
   }

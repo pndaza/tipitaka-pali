@@ -15,7 +15,7 @@ class ReaderAppBar extends StatelessWidget implements PreferredSizeWidget {
     myLogger.i('Building Appbar');
     return AppBar(
       title: Text(PaliScript.getScriptOf(
-          language: context.read<ScriptLanguageProvider>().currentLanguage,
+          script: context.read<ScriptLanguageProvider>().currentScript,
           romanText: vm.book.name)),
     );
   }

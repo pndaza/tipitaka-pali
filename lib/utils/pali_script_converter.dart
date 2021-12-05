@@ -36,124 +36,146 @@ class _CodePointRange {
   });
 }
 
-class _ScriptInfo {
-  final String name;
+class ScriptInfo {
+  final Script script;
   final String nameInLocale;
   final String localeCode;
   final List<_CodePointRange> codePointRanges;
-  const _ScriptInfo({
-    required this.name,
+  final int index;
+  const ScriptInfo({
+    required this.script,
     required this.nameInLocale,
     required this.localeCode,
     required this.codePointRanges,
+    required this.index,
   });
 }
 
-const Map<Script, _ScriptInfo> paliScriptInfos = {
-  Script.sinhala: _ScriptInfo(
-      name: 'Sinhala',
+const List<ScriptInfo> listOfScripts = [
+  ScriptInfo(
+script: Script.sinhala,      
       nameInLocale: 'සිංහල',
       localeCode: 'si',
-      codePointRanges: [_CodePointRange(start: 0x0D80, end: 0x0DFF)]),
-  Script.devanagari: _ScriptInfo(
-      name: 'Devanagari',
+      codePointRanges: [_CodePointRange(start: 0x0D80, end: 0x0DFF)],
+      index: 0),
+  ScriptInfo(
+script: Script.devanagari,      
       nameInLocale: 'हिन्दी',
       localeCode: 'hi',
-      codePointRanges: [_CodePointRange(start: 0x0900, end: 0x097F)]),
-  Script.roman: _ScriptInfo(
-      name: 'Roman',
+      codePointRanges: [_CodePointRange(start: 0x0900, end: 0x097F)],
+      index: 1),
+  ScriptInfo(
+script: Script.roman,      
       nameInLocale: 'Roman',
       localeCode: 'ro',
       codePointRanges: [
         _CodePointRange(start: 0x0000, end: 0x017F),
         _CodePointRange(start: 0x1E00, end: 0x1EFF),
-      ]), // latin extended and latin extended additional blocks
-  Script.thai: _ScriptInfo(
-      name: 'Thai',
+      ],
+      index: 3), // latin extended and latin extended additional blocks
+  ScriptInfo(
+script: Script.thai,      
       nameInLocale: 'ไทย',
       localeCode: 'th',
       codePointRanges: [
         _CodePointRange(start: 0x0E00, end: 0x0E7F),
-        _CodePointRange(start: 0xF70F, end: 0xF70F),
-      ]),
-  Script.laos: _ScriptInfo(
-      name: 'Laos',
+        _CodePointRange(start: 0xF700, end: 0xF70F),
+      ],
+      index: 4),
+  ScriptInfo(
+script: Script.laos,      
       nameInLocale: 'ລາວ',
       localeCode: 'lo',
-      codePointRanges: [_CodePointRange(start: 0x0E80, end: 0x0EFF)]),
-  Script.myanmar: _ScriptInfo(
-      name: 'Myanmar',
+      codePointRanges: [_CodePointRange(start: 0x0E80, end: 0x0EFF)],
+      index: 5),
+  ScriptInfo(
+script: Script.myanmar,      
       nameInLocale: 'ဗမာစာ',
       localeCode: 'my',
-      codePointRanges: [_CodePointRange(start: 0x1000, end: 0x107F)]),
-  Script.khmer: _ScriptInfo(
-      name: 'Khmer',
+      codePointRanges: [_CodePointRange(start: 0x1000, end: 0x107F)],
+      index: 6),
+  ScriptInfo(
+script: Script.khmer,      
       nameInLocale: 'ភាសាខ្មែរ',
       localeCode: 'km',
-      codePointRanges: [_CodePointRange(start: 0x1780, end: 0x17FF)]),
-  Script.bengali: _ScriptInfo(
-      name: 'Bengali',
+      codePointRanges: [_CodePointRange(start: 0x1780, end: 0x17FF)],
+      index: 7),
+  ScriptInfo(
+script: Script.bengali,      
       nameInLocale: 'বাংলা',
       localeCode: 'be',
-      codePointRanges: [_CodePointRange(start: 0x0980, end: 0x09FF)]),
-  Script.gurmukhi: _ScriptInfo(
-      name: 'Gurmukhi',
+      codePointRanges: [_CodePointRange(start: 0x0980, end: 0x09FF)],
+      index: 8),
+  ScriptInfo(
+script: Script.gurmukhi,      
       nameInLocale: 'ਗੁਰਮੁਖੀ',
       localeCode: 'gm',
-      codePointRanges: [_CodePointRange(start: 0x0A00, end: 0x0A7F)]),
-  Script.taitham: _ScriptInfo(
-      name: 'Tai Tham',
+      codePointRanges: [_CodePointRange(start: 0x0A00, end: 0x0A7F)],
+      index: 9),
+  ScriptInfo(
+script: Script.taitham,      
       nameInLocale: 'Tai Tham LN',
       localeCode: 'tt',
-      codePointRanges: [_CodePointRange(start: 0x1A20, end: 0x1AAF)]),
-  Script.gujarati: _ScriptInfo(
-      name: 'Gujarati',
+      codePointRanges: [_CodePointRange(start: 0x1A20, end: 0x1AAF)],
+      index: 10),
+  ScriptInfo(
+script: Script.gujarati,      
       nameInLocale: 'ગુજરાતી',
       localeCode: 'gj',
-      codePointRanges: [_CodePointRange(start: 0x0A80, end: 0x0AFF)]),
-  Script.telugu: _ScriptInfo(
-      name: 'Telugu',
+      codePointRanges: [_CodePointRange(start: 0x0A80, end: 0x0AFF)],
+      index: 11),
+  ScriptInfo(
+script: Script.telugu,      
       nameInLocale: 'తెలుగు',
       localeCode: 'te',
-      codePointRanges: [_CodePointRange(start: 0x0C00, end: 0x0C7F)]),
-  Script.kannada: _ScriptInfo(
-      name: 'Kannada',
+      codePointRanges: [_CodePointRange(start: 0x0C00, end: 0x0C7F)],
+      index: 12),
+  ScriptInfo(
+script: Script.kannada,      
       nameInLocale: 'ಕನ್ನಡ',
       localeCode: 'ka',
-      codePointRanges: [_CodePointRange(start: 0x0C80, end: 0x0CFF)]),
-  Script.malayalam: _ScriptInfo(
-      name: 'Malayalam',
+      codePointRanges: [_CodePointRange(start: 0x0C80, end: 0x0CFF)],
+      index: 13),
+  ScriptInfo(
+script: Script.malayalam,      
       nameInLocale: 'മലയാളം',
       localeCode: 'mm',
-      codePointRanges: [_CodePointRange(start: 0x0D00, end: 0x0D7F)]),
-  Script.brahmi:
-      _ScriptInfo(name: 'Brahmi', nameInLocale: 'Brāhmī', localeCode: 'br',
-          //charCodeAt returns two codes for each letter [[0x11000, 0x1107F]]
-          codePointRanges: [
+      codePointRanges: [_CodePointRange(start: 0x0D00, end: 0x0D7F)],
+      index: 14),
+  ScriptInfo(
+script: Script.brahmi,      
+      nameInLocale: 'Brāhmī',
+      localeCode: 'br',
+      //charCodeAt returns two codes for each letter [[0x11000, 0x1107F]]
+      codePointRanges: [
         _CodePointRange(start: 0xD804, end: 0xD804),
         _CodePointRange(start: 0xDC00, end: 0xDC7F),
-      ]),
-  Script.tibetan: _ScriptInfo(
-      name: 'Tibetan',
+      ],
+      index: 15),
+  ScriptInfo(
+script: Script.tibetan,      
       nameInLocale: 'བོད་སྐད།',
       localeCode: 'tb',
-      codePointRanges: [_CodePointRange(start: 0x0F00, end: 0x0FFF)]),
-  Script.cyrillic: _ScriptInfo(
-      name: 'Cyrillic',
+      codePointRanges: [_CodePointRange(start: 0x0F00, end: 0x0FFF)],
+      index: 16),
+  ScriptInfo(
+script: Script.cyrillic,      
       nameInLocale: 'кириллица',
       localeCode: 'cy',
       codePointRanges: [
         _CodePointRange(start: 0x0400, end: 0x04FF),
         _CodePointRange(start: 0x0300, end: 0x036F),
-      ]), //charCodeAt returns two codes for each letter [[0x11000, 0x1107F]]
-};
+      ],
+      index:
+          17), //charCodeAt returns two codes for each letter [[0x11000, 0x1107F]]
+];
 
 Script? _getScriptForCode(int charCode) {
-  for (final entry in paliScriptInfos.entries) {
-    final ranges = entry.value.codePointRanges;
+  for (final script in listOfScripts) {
+    final ranges = script.codePointRanges;
     for (final range in ranges) {
       if (charCode >= range.start && charCode <= range.end) {
-        return entry.key;
+        return script.script;
       }
     }
   }

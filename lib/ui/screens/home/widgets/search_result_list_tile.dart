@@ -32,10 +32,10 @@ class SearchResultListTile extends StatelessWidget {
     };
 
     final bookName = PaliScript.getScriptOf(
-        language: context.read<ScriptLanguageProvider>().currentLanguage,
+        script: context.read<ScriptLanguageProvider>().currentScript,
         romanText: result.book.name);
     final pageNumber = PaliScript.getScriptOf(
-        language: context.read<ScriptLanguageProvider>().currentLanguage,
+        script: context.read<ScriptLanguageProvider>().currentScript,
         romanText: result.pageNumber.toString());
 
     // TODO - page translation must be based on script
@@ -67,8 +67,8 @@ class SearchResultListTile extends StatelessWidget {
                 // description text
                 StyledText(
                   text: PaliScript.getScriptOf(
-                    language:
-                        context.read<ScriptLanguageProvider>().currentLanguage,
+                    script:
+                        context.read<ScriptLanguageProvider>().currentScript,
                     romanText: result.description,
                     // <highlight> are used for highlight
                     // text is somehow html

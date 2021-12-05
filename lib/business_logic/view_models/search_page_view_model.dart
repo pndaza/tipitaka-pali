@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:tipitaka_pali/app.dart';
 import 'package:tipitaka_pali/services/prefs.dart';
 import 'package:tipitaka_pali/ui/screens/home/search_page/search_page.dart';
 import 'package:tipitaka_pali/utils/pali_script.dart';
+import 'package:tipitaka_pali/utils/pali_script_converter.dart';
 import 'package:tipitaka_pali/utils/script_detector.dart';
 
 import '../../routes.dart';
@@ -30,19 +32,21 @@ class SearchPageViewModel extends ChangeNotifier {
 
   Future<void> onTextChanged(String filterWord) async {
     filterWord = filterWord.trim();
-    if (filterWord.isEmpty || filterWord.length < 2) {
+    if (filterWord.isEmpty) {
       suggestions.clear();
       notifyListeners();
       return;
     }
     // loading suggested words
     final inputScriptLanguage = ScriptDetector.getLanguage(filterWord);
+    myLogger.i('input language is $inputScriptLanguage');
 
-    if (inputScriptLanguage != 'Roman') {
+    myLogger.i('original searchword: $filterWord');
+    if (inputScriptLanguage != Script.roman) {
       filterWord = PaliScript.getRomanScriptFrom(
-          language: inputScriptLanguage, text: filterWord);
+          script: inputScriptLanguage, text: filterWord);
     }
-
+    myLogger.i('searchword in roman: $filterWord');
     final words = filterWord.split(' ');
     if (words.length == 1) {
       _isFirstWord = true;
@@ -63,9 +67,9 @@ class SearchPageViewModel extends ChangeNotifier {
   void onSubmmited(BuildContext context, String searchWord, QueryMode queryMode,
       int wordDistance) {
     final inputScriptLanguage = ScriptDetector.getLanguage(searchWord);
-    if (inputScriptLanguage != 'Roman') {
+    if (inputScriptLanguage != Script.roman) {
       searchWord = PaliScript.getRomanScriptFrom(
-          language: inputScriptLanguage, text: searchWord);
+          script: inputScriptLanguage, text: searchWord);
     }
 
     Navigator.pushNamed(context, searchResultRoute, arguments: {

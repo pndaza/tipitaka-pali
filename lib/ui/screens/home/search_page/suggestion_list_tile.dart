@@ -20,7 +20,7 @@ class SuggestionListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String scriptWord = PaliScript.getScriptOf(
-        language: context.read<ScriptLanguageProvider>().currentLanguage,
+        script: context.read<ScriptLanguageProvider>().currentScript,
         romanText: suggestedWord);
     if (!isFirstWord) {
       scriptWord = '... $scriptWord';
@@ -35,7 +35,7 @@ class SuggestionListTile extends StatelessWidget {
       // word frequency
       trailing: Text(
           PaliScript.getScriptOf(
-              language: context.read<ScriptLanguageProvider>().currentLanguage,
+              script: context.read<ScriptLanguageProvider>().currentScript,
               romanText: frequency.toString()),
           style: const TextStyle(fontSize: 18)),
       onTap: onTap,

@@ -35,9 +35,9 @@ class HomePage extends StatelessWidget {
               tabs: _mainCategories.entries
                   .map((category) => Tab(
                       text: PaliScript.getScriptOf(
-                          language: context
+                          script: context
                               .watch<ScriptLanguageProvider>()
-                              .currentLanguage,
+                              .currentScript,
                           romanText: category.value)))
                   .toList(),
             ),

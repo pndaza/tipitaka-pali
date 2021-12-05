@@ -26,7 +26,7 @@ class TocHeadingOne implements TocListItem {
   @override
   Widget build(BuildContext context) {
     final tocName = PaliScript.getScriptOf(
-        language: context.read<ScriptLanguageProvider>().currentLanguage,
+        script: context.read<ScriptLanguageProvider>().currentScript,
         romanText: toc.name);
     return Text(tocName,
         style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold));
@@ -48,7 +48,7 @@ class TocHeadingTwo implements TocListItem {
   @override
   Widget build(BuildContext context) {
     final tocName = PaliScript.getScriptOf(
-        language: context.read<ScriptLanguageProvider>().currentLanguage,
+        script: context.read<ScriptLanguageProvider>().currentScript,
         romanText: toc.name);
     return Padding(
         padding: const EdgeInsets.only(left: 16.0),
@@ -72,7 +72,7 @@ class TocHeadingThree implements TocListItem {
   @override
   Widget build(BuildContext context) {
     final tocName = PaliScript.getScriptOf(
-        language: context.read<ScriptLanguageProvider>().currentLanguage,
+        script: context.read<ScriptLanguageProvider>().currentScript,
         romanText: toc.name);
     return Padding(
         padding: const EdgeInsets.only(left: 32.0),
@@ -95,7 +95,7 @@ class TocHeadingFour implements TocListItem {
   @override
   Widget build(BuildContext context) {
     final tocName = PaliScript.getScriptOf(
-        language: context.read<ScriptLanguageProvider>().currentLanguage,
+        script: context.read<ScriptLanguageProvider>().currentScript,
         romanText: toc.name);
     return Padding(
         padding: const EdgeInsets.only(left: 48.0),
@@ -118,7 +118,7 @@ class TocHeadingFive implements TocListItem {
   @override
   Widget build(BuildContext context) {
     final tocName = PaliScript.getScriptOf(
-        language: context.read<ScriptLanguageProvider>().currentLanguage,
+        script: context.read<ScriptLanguageProvider>().currentScript,
         romanText: toc.name);
     return Padding(
         padding: const EdgeInsets.only(left: 64.0),

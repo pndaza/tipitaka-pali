@@ -15,7 +15,7 @@ const String isShowAlternatePaliPref = 'showAlternatePali';
 const String isShowPtsNumberPref = 'showPtsNumber';
 const String isShowThaiNumberPref = 'showThaiNumber';
 const String isShowVriNumberPref = 'showVriNumber';
-const String currentScriptLanguagePref = 'current_script_language';
+const String currentScriptLocaleCodePref = 'currentScriptLocaleCode';
 const String queryModePref = 'queryMode';
 const String wordDistancePref = 'wordDistance';
 
@@ -30,7 +30,7 @@ const bool defaultShowAlternatePali = false;
 const bool defaultShowPTSNumber = false;
 const bool defaultShowThaiNumber = false;
 const bool defaultShowVRINumber = false;
-const String defaultScriptLanguage = 'Roman';
+const String defaultScriptLanguage = 'ro';
 const int defaultQueryModeIndex = 0;
 const int defaultWordDistance = 10;
 
@@ -90,9 +90,9 @@ class Prefs {
       instance.setBool(isShowVriNumberPref, value);
 
   static String get currentScriptLanguage =>
-      instance.getString(currentScriptLanguagePref) ?? defaultScriptLanguage;
+      instance.getString(currentScriptLocaleCodePref) ?? defaultScriptLanguage;
   static set currentScriptLanguage(String value) =>
-      instance.setString(currentScriptLanguagePref, value);
+      instance.setString(currentScriptLocaleCodePref, value);
 
   static int get queryModeIndex =>
       instance.getInt(queryModePref) ?? defaultQueryModeIndex;
