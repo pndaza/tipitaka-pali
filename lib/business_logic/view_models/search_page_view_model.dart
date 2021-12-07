@@ -82,11 +82,11 @@ class SearchPageViewModel extends ChangeNotifier {
   void onQueryModeChanged(QueryMode queryMode) {
     _queryMode = queryMode;
     // saving to shared preference
-    int index = _getQueryModeIndex(queryMode);
-    Prefs.queryModeIndex = index;
+    // int index = _getQueryModeIndex(queryMode);
+    Prefs.queryModeIndex = _queryMode.index;
     notifyListeners();
   }
-
+/*
   int _getQueryModeIndex(QueryMode queryMode) {
     switch (queryMode) {
       case QueryMode.exact:
@@ -95,11 +95,13 @@ class SearchPageViewModel extends ChangeNotifier {
         return 1;
       case QueryMode.distance:
         return 2;
+      case QueryMode.anywhere:
+        return 3;
       default:
         return 0;
     }
   }
-
+*/
   void onWordDistanceChanged(int wordDistance) {
     _wordDistance = wordDistance;
     Prefs.wordDistance = wordDistance;

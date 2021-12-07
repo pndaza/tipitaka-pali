@@ -50,6 +50,13 @@ class FtsDatabaseRepository implements FtsRespository {
       ''';
     }
 
+    if (queryMode == QueryMode.anywhere) {
+      sql = '''
+      SELECT fts_pages.id, bookid, name, page, content
+      FROM fts_pages INNER JOIN books ON fts_pages.bookid = books.id
+      WHERE content LIKE '%$phrase%'
+      ''';
+    }
     var maps = await db.rawQuery(sql);
 
     // debugPrint('query count:${maps.length}');
@@ -66,7 +73,9 @@ class FtsDatabaseRepository implements FtsRespository {
       final pageNumber = element['page'] as int;
       var content = element['content'] as String;
       // adding hightlight tag to query words
-      if (queryMode == QueryMode.exact || queryMode == QueryMode.prefix) {
+      if (queryMode == QueryMode.exact ||
+          queryMode == QueryMode.prefix ||
+          queryMode == QueryMode.anywhere) {
         content = _buildHighlight(content, phrase);
       }
 
@@ -79,7 +88,7 @@ class FtsDatabaseRepository implements FtsRespository {
         );
         results.add(searchResult);
       } else if (queryMode == QueryMode.exact ||
-          queryMode == QueryMode.prefix) {
+          queryMode == QueryMode.prefix || queryMode == QueryMode.anywhere) {
         // debugPrint('finding match in page:${allMatches.length}');
 
         final matches = regexMatchWords.allMatches(content);

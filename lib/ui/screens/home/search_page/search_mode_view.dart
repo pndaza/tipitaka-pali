@@ -73,6 +73,13 @@ class _SearchModeViewState extends State<SearchModeView> {
               const SizedBox(width: 16)
             ],
           ),
+         RadioListTile<QueryMode>(
+              title: const Text('Anywhere'),
+              value: QueryMode.anywhere,
+              groupValue: currentQueryMode,
+              onChanged: (value) {
+                _onChanged(value);
+              }),
         ],
       ),
     );

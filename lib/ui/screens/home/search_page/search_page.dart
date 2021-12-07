@@ -8,7 +8,7 @@ import '../widgets/search_bar.dart';
 import 'search_mode_view.dart';
 import 'suggestion_list_tile.dart';
 
-enum QueryMode { exact, prefix, distance }
+enum QueryMode { exact, prefix, distance, anywhere }
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
