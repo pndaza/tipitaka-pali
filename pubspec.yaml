@@ -50,7 +50,7 @@ dependencies:
   sliding_sheet: ^0.5.0
   bottom_sheet: ^1.0.1
   flutter_typeahead: ^3.2.1
-  flutter_widget_from_html_core: ^0.8.2
+  flutter_widget_from_html_core: ^0.8.3-beta.1
   styled_text:
     git:
       url: https://github.com/toeydevelopment/styled_text_package

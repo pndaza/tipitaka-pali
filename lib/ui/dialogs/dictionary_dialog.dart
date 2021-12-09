@@ -63,8 +63,7 @@ class _DictionarySearchFieldState extends State<DictionarySearchField> {
         text: widget.initialValue == null
             ? null
             : PaliScript.getScriptOf(
-                script:
-                    context.read<ScriptLanguageProvider>().currentScript,
+                script: context.read<ScriptLanguageProvider>().currentScript,
                 romanText: widget.initialValue!));
     super.initState();
   }
@@ -109,8 +108,7 @@ class _DictionarySearchFieldState extends State<DictionarySearchField> {
         itemBuilder: (context, String suggestion) {
           return ListTile(
               title: Text(PaliScript.getScriptOf(
-                  script:
-                      context.read<ScriptLanguageProvider>().currentScript,
+                  script: context.read<ScriptLanguageProvider>().currentScript,
                   romanText: suggestion)));
         },
         onSuggestionSelected: (String suggestion) {
@@ -157,7 +155,10 @@ class DictionaryContentView extends StatelessWidget {
         data: (content) => SingleChildScrollView(
             child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: HtmlWidget(content))),
+                child: HtmlWidget(
+                  content,
+                  isSelectable: true,
+                ))),
         noData: () => const SizedBox(
               height: 100,
               child: Center(child: Text('Not found')),
