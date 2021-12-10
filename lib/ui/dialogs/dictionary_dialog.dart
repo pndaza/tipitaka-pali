@@ -157,7 +157,7 @@ class DictionaryContentView extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: HtmlWidget(
                   content,
-                  isSelectable: true,
+                  // isSelectable: true,
                 ))),
         noData: () => const SizedBox(
               height: 100,

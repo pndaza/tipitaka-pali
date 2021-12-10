@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:provider/provider.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
 
 import '../../../../business_logic/view_models/reader_view_model.dart';
@@ -12,11 +13,24 @@ class DesktopReader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final vm = Provider.of<ReaderViewModel>(context, listen: false);
+    final ItemScrollController itemScrollController = ItemScrollController();
+    final ItemPositionsListener itemPositionsListener =
+        ItemPositionsListener.create();
+    itemPositionsListener.itemPositions.addListener(() {
+      final current = itemPositionsListener.itemPositions.value.first.index;
+      // vm.currentPage = current + 1;
+      vm.onPageChanged(current);
+      print('current index: $current');
+    });
+
     return Scaffold(
       appBar: AppBar(
         title: Text(vm.book.name),
       ),
-      body: ListView.builder(
+      body: ScrollablePositionedList.builder(
+          initialScrollIndex: vm.currentPage == null ? 0 : vm.currentPage! - 1,
+          itemScrollController: itemScrollController,
+          itemPositionsListener: itemPositionsListener,
           itemCount: vm.pages.length,
           itemBuilder: (_, index) {
             var content = vm.getPageContentForDesktop(index);
@@ -64,8 +78,7 @@ class DesktopReader extends StatelessWidget {
 
   String _makeClickable(String content) {
     // pali word not inside html tag
-    final regexPaliWord =
-        RegExp(r'[a-zA-ZāīūṅñṭḍṇḷṃĀĪŪṄÑṬḌHṆḶṂ]+(?![^<>]*>)');
+    final regexPaliWord = RegExp(r'[a-zA-ZāīūṅñṭḍṇḷṃĀĪŪṄÑṬḌHṆḶṂ]+(?![^<>]*>)');
     return content.replaceAllMapped(regexPaliWord,
         (match) => '<a href="${match.group(0)}">${match.group(0)}</a>');
     /*
@@ -103,8 +116,7 @@ class DesktopReader extends StatelessWidget {
       r'class="centered"': r'style="text-align:center;"',
       r'class="paranum"': r'style="font-weight: bold;"',
       r'class="indent"': r'style="text-indent:1.3em;margin-left:2em;"',
-      r'class="bodytext"':
-          r'style="text-indent:1.3em;"',
+      r'class="bodytext"': r'style="text-indent:1.3em;"',
       r'class="unindented"': r'style=""',
       r'class="noindentbodytext"': r'style=""',
       r'class="book"':
