@@ -22,11 +22,11 @@ class SettingPage extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: ListView(
             children: const <Widget>[
+              DictionarySettingView(),
               ThemeSettingView(),
               DarkModeSettingView(),
               LanguageSettingView(),
               ScriptSettingView(),
-              DictionarySettingView(),
             ],
           ),
         ));
