@@ -19,6 +19,7 @@ class SelectDictionaryWidget extends StatelessWidget {
         // print(userDicts);
         return ReorderableListView.builder(
           shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: dictionaries.length,
           itemBuilder: (context, index) {
             return Column(
