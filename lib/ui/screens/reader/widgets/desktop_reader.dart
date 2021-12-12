@@ -3,6 +3,9 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
+import 'package:tipitaka_pali/services/provider/script_language_provider.dart';
+import 'package:tipitaka_pali/utils/pali_script.dart';
+import 'package:tipitaka_pali/utils/pali_script_converter.dart';
 
 import '../../../../business_logic/view_models/reader_view_model.dart';
 import '../../../dialogs/dictionary_dialog.dart';
@@ -34,7 +37,14 @@ class DesktopReader extends StatelessWidget {
           itemCount: vm.pages.length,
           itemBuilder: (_, index) {
             var content = vm.getPageContentForDesktop(index);
-            content = _formatContent(content);
+            final script = context.read<ScriptLanguageProvider>().currentScript;
+            // transciption
+            content = PaliScript.getScriptOf(
+              script: script,
+              romanText: content,
+              isHtmlText: true,
+            );
+            content = _formatContent(content, script);
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: HtmlWidget(
@@ -70,15 +80,16 @@ class DesktopReader extends StatelessWidget {
     );
   }
 
-  String _formatContent(String content) {
-    content = _makeClickable(content);
+  String _formatContent(String content, Script script) {
+    content = _makeClickable(content, script);
     content = _changeToInlineStyle(content);
     return content;
   }
 
-  String _makeClickable(String content) {
+  String _makeClickable(String content, Script script) {
     // pali word not inside html tag
-    final regexPaliWord = RegExp(r'[a-zA-ZāīūṅñṭḍṇḷṃĀĪŪṄÑṬḌHṆḶṂ]+(?![^<>]*>)');
+    // final regexPaliWord = RegExp(r'[a-zA-ZāīūṅñṭḍṇḷṃĀĪŪṄÑṬḌHṆḶṂ]+(?![^<>]*>)');
+    final regexPaliWord = _getPaliWordRegexp(script);
     return content.replaceAllMapped(regexPaliWord,
         (match) => '<a href="${match.group(0)}">${match.group(0)}</a>');
     /*
@@ -147,11 +158,67 @@ class DesktopReader extends StatelessWidget {
     return content;
   }
 
-  Future<void> showDictionary(BuildContext context, String word) async {
+  RegExp _getPaliWordRegexp(Script script) {
+    // only alphabets used for pali
+    // no digit , no puntutation
+    switch (script) {
+      case Script.myanmar:
+        return RegExp('[\u1000-\u103F]+(?![^<>]*>)');
+      case Script.roman:
+        return RegExp(r'[a-zA-ZāīūṅñṭḍṇḷṃĀĪŪṄÑṬḌHṆḶṂ]+(?![^<>]*>)');
+      case Script.sinhala:
+        return RegExp('[\u0D80-\u0DDF\u0DF2\u0DF3]+(?![^<>]*>)');
+      case Script.devanagari:
+        return RegExp('[\u0900-\u097F]+(?![^<>]*>)');
+      case Script.thai:
+        return RegExp('[\u0E00-\u0E7F\uF700-\uF70F]+(?![^<>]*>)');
+      case Script.laos:
+        return RegExp('[\u0E80-\u0EFF]+(?![^<>]*>)');
+      case Script.khmer:
+        return RegExp('\u1780-\u17FF]+(?![^<>]*>)');
+      case Script.bengali:
+        return RegExp('[\u0980-\u09FF]+(?![^<>]*>)');
+      case Script.gurmukhi:
+        return RegExp('[\u0A00-\u0A7F]+(?![^<>]*>)');
+      case Script.taitham:
+        return RegExp('[\u1A20-\u1AAF]+(?![^<>]*>)');
+      case Script.gujarati:
+        return RegExp('[\u0A80-\u0AFF]+(?![^<>]*>)');
+      case Script.telugu:
+        return RegExp('[\u0C00-\u0C7F]+(?![^<>]*>)');
+      case Script.kannada:
+        return RegExp('[\u0C80-\u0CFF]+(?![^<>]*>)');
+      case Script.malayalam:
+        return RegExp('[\u0D00-\u0D7F]+(?![^<>]*>)');
+// actual code block [0x11000, 0x1107F]
+// need check
+      case Script.brahmi:
+        return RegExp('[\uD804\uDC00-\uDC7F]+(?![^<>]*>)');
+      case Script.tibetan:
+        return RegExp('[\u0F00-\u0FFF]+(?![^<>]*>)');
+// actual code block [0x11000, 0x1107F]
+//need check
+      case Script.cyrillic:
+        return RegExp('[\u0400-\u04FF\u0300-\u036F]+(?![^<>]*>)');
+
+      default:
+        return RegExp(r'[a-zA-ZāīūṅñṭḍṇḷṃĀĪŪṄÑṬḌHṆḶṂ]+(?![^<>]*>)');
+    }
+  }
+
+  Future<void> showDictionary(
+    BuildContext context,
+    String word,
+  ) async {
     // removing puntuations etc.
-    word = word.replaceAll(RegExp(r'[^a-zA-ZāīūṅñṭḍṇḷṃĀĪŪṄÑṬḌHṆḶṂ]'), '');
+    // word = word.replaceAll(RegExp(r'[^a-zA-ZāīūṅñṭḍṇḷṃĀĪŪṄÑṬḌHṆḶṂ]'), '');
     // convert ot lower case
-    word = word.toLowerCase();
+    final script = context.read<ScriptLanguageProvider>().currentScript;
+    if (script == Script.roman) {
+      word = word.toLowerCase();
+    } else {
+      word = PaliScript.getRomanScriptFrom(script: script, text: word);
+    }
     await showSlidingBottomSheet(context, builder: (context) {
       //Widget for SlidingSheetDialog's builder method
       final statusBarHeight = MediaQuery.of(context).padding.top;
