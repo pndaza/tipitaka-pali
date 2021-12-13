@@ -7,7 +7,7 @@ import 'package:tipitaka_pali/business_logic/models/book.dart';
 import 'package:tipitaka_pali/business_logic/view_models/reader_view_model.dart';
 import 'package:tipitaka_pali/ui/screens/reader/widgets/app_bar.dart';
 import 'package:tipitaka_pali/ui/screens/reader/widgets/control_bar.dart';
-import 'package:tipitaka_pali/ui/screens/reader/widgets/mobile_page_view.dart';
+import 'package:tipitaka_pali/ui/screens/reader/widgets/mobile_page_view_temp.dart';
 
 import 'widgets/desktop_page_view.dart';
 
@@ -47,7 +47,7 @@ class Reader extends StatelessWidget {
                   }
                   return Scaffold(
                     appBar: ReaderAppBar(),
-                    body: MobilePageView(),
+                    body: MobilePageViewTemp(),
                     bottomNavigationBar: SafeArea(child: ControlBar()),
                   );
                 }

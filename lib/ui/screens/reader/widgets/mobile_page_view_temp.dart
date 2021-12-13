@@ -1,39 +1,41 @@
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:fwfh_selectable_text/fwfh_selectable_text.dart';
+import 'package:preload_page_view/preload_page_view.dart';
 import 'package:provider/provider.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
 import 'package:tipitaka_pali/services/provider/script_language_provider.dart';
+import 'package:tipitaka_pali/ui/dialogs/dictionary_dialog.dart';
 import 'package:tipitaka_pali/utils/pali_script.dart';
 import 'package:tipitaka_pali/utils/pali_script_converter.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
+import '../../../../app.dart';
 import '../../../../business_logic/view_models/reader_view_model.dart';
-import '../../../dialogs/dictionary_dialog.dart';
 
-class DesktopPageView extends StatelessWidget {
-  const DesktopPageView({Key? key}) : super(key: key);
-
+class MobilePageViewTemp extends StatelessWidget {
+  const MobilePageViewTemp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final vm = Provider.of<ReaderViewModel>(context, listen: true);
-    vm.itemScrollController = ItemScrollController();
-    final ItemPositionsListener itemPositionsListener =
-        ItemPositionsListener.create();
-    itemPositionsListener.itemPositions.addListener(() {
-      final current = itemPositionsListener.itemPositions.value.first.index;
-      // vm.currentPage = current + 1;
-      vm.onPageChanged(current);
-      print('current index: $current');
-    });
+    myLogger.i('building pageview');
+    final vm = Provider.of<ReaderViewModel>(context, listen: false);
 
-    return ScrollablePositionedList.builder(
-      initialScrollIndex: vm.currentPage == null ? 0 : vm.currentPage! - 1,
-      itemScrollController: vm.itemScrollController,
-      itemPositionsListener: itemPositionsListener,
+    vm.pageController = PreloadPageController(
+        initialPage: vm.currentPage! - vm.book.firstPage!);
+
+    return PreloadPageView.builder(
+      // physics: RangeMaintainingScrollPhysics(),
+      physics: const ClampingScrollPhysics() ,
+      pageSnapping: true,
+      preloadPagesCount: vm.preLoadPageCount,
+      controller: vm.pageController,
       itemCount: vm.pages.length,
-      itemBuilder: (_, index) {
-        var content = vm.getPageContentForDesktop(index);
+      itemBuilder: (context, index) {
+          var content = vm.getPageContentForDesktop(index);
         final script = context.read<ScriptLanguageProvider>().currentScript;
         // transciption
         content = PaliScript.getScriptOf(
@@ -42,42 +44,44 @@ class DesktopPageView extends StatelessWidget {
           isHtmlText: true,
         );
         content = _formatContent(content, script, vm.fontSize);
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: HtmlWidget(
-            content,
-            factoryBuilder: () => _MyFactory(),
-            customStylesBuilder: (element) {
-              // if (element.className == 'title' ||
-              //     element.className == 'book' ||
-              //     element.className == 'chapter' ||
-              //     element.className == 'subhead' ||
-              //     element.className == 'nikaya') {
-              //   return {
-              //     'text-align': 'center',
-              //     // 'text-decoration': 'none',
-              //   };
-              // }
-              if (element.localName == 'a') {
-                // print('found a tag: ${element.outerHtml}');
-                return {
-                  'color': 'black',
-                  'text-decoration': 'none',
-                };
-              }
-              // no style
-              return {'text-decoration': 'none'};
-            },
-            onTapUrl: (word) async {
-              showDictionary(context, word);
-              return true;
-            },
+        return SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: HtmlWidget(
+              content,
+              factoryBuilder: () => _MyFactory(),
+              customStylesBuilder: (element) {
+                // if (element.className == 'title' ||
+                //     element.className == 'book' ||
+                //     element.className == 'chapter' ||
+                //     element.className == 'subhead' ||
+                //     element.className == 'nikaya') {
+                //   return {
+                //     'text-align': 'center',
+                //     // 'text-decoration': 'none',
+                //   };
+                // }
+                if (element.localName == 'a') {
+                  // print('found a tag: ${element.outerHtml}');
+                  return {
+                    'color': 'black',
+                    'text-decoration': 'none',
+                  };
+                }
+                // no style
+                return {'text-decoration': 'none'};
+              },
+              onTapUrl: (word) async {
+                showDictionary(context, word);
+                return true;
+              },
+            ),
           ),
         );
       },
+      onPageChanged: vm.onPageChanged,
     );
   }
-
   String _formatContent(String content, Script script, int fontSize) {
     content = _makeClickable(content, script);
     content = _changeToInlineStyle(content,fontSize);
@@ -264,3 +268,4 @@ class DesktopPageView extends StatelessWidget {
 }
 
 class _MyFactory extends WidgetFactory with SelectableTextFactory {}
+

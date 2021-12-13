@@ -307,7 +307,7 @@ packages:
       name: flutter_widget_from_html_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.8.3"
+    version: "0.8.3+1"
   freezed:
     dependency: "direct main"
     description:
@@ -336,6 +336,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.2"
+  fwfh_selectable_text:
+    dependency: "direct main"
+    description:
+      name: fwfh_selectable_text
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.8.3"
   fwfh_text_style:
     dependency: transitive
     description:
@@ -846,7 +853,7 @@ packages:
       name: webview_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.8.0"
+    version: "3.0.0"
   webview_flutter_android:
     dependency: transitive
     description:
@@ -905,4 +912,4 @@ packages:
     version: "3.1.0"
 sdks:
   dart: ">=2.15.0 <3.0.0"
-  flutter: ">=2.6.0-0"
+  flutter: ">=2.8.0"
