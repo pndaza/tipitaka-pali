@@ -10,8 +10,8 @@ import 'package:webview_flutter/webview_flutter.dart';
 import '../../../../app.dart';
 import '../../../../business_logic/view_models/reader_view_model.dart';
 
-class MyPageView extends StatelessWidget {
-  const MyPageView({Key? key}) : super(key: key);
+class MobilePageView extends StatelessWidget {
+  const MobilePageView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     myLogger.i('building pageview');

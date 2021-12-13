@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:preload_page_view/preload_page_view.dart';
 import 'package:provider/provider.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
 import 'package:tipitaka_pali/services/dao/bookmark_dao.dart';
 import 'package:tipitaka_pali/services/dao/recent_dao.dart';
@@ -40,13 +41,14 @@ class ReaderViewModel with ChangeNotifier {
   String? tocHeader;
   late List<PageContent> pages;
   late int numberOfPage;
-  late int _fontSize;
+  late int fontSize;
   late String _cssFont;
   late String _cssData;
   late String javascriptData;
   bool loadFinished = false;
   final int preLoadPageCount = 2;
-  late PreloadPageController pageController;
+  PreloadPageController? pageController;
+  ItemScrollController? itemScrollController;
   late final List<WebViewController?> webViewControllers;
 
   late final bool _isDarkMode;
@@ -70,7 +72,7 @@ class ReaderViewModel with ChangeNotifier {
     // _cssFont = await loadCssFont(fontName: fontName);
     //print('loading all data');
     _cssFont = '';
-    _fontSize = Prefs.fontSize;
+    fontSize = Prefs.fontSize;
     _isDarkMode = Prefs.darkThemeOn;
     // load script feature and will modify css value
     _isShowAlternatePali = Prefs.isShowAlternatePali;
@@ -233,7 +235,7 @@ class ReaderViewModel with ChangeNotifier {
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
           </head>
           <style>
-            html {font-size: ${_fontSize.toString()}px}
+            html {font-size: ${fontSize.toString()}px}
             $_cssFont
             $_cssData
           </style>
@@ -366,7 +368,6 @@ class ReaderViewModel with ChangeNotifier {
 
   Future onPageChanged(int index) async {
     print("onpagechanged");
-
     currentPage = book.firstPage! + index;
     notifyListeners();
     await _saveToRecent();
@@ -379,25 +380,29 @@ class ReaderViewModel with ChangeNotifier {
 
   Future gotoPage(double value) async {
     currentPage = value.toInt();
-    pageController.jumpToPage(currentPage! - book.firstPage!);
+    pageController?.jumpToPage(currentPage! - book.firstPage!);
+    final index = currentPage! - book.firstPage!;
+    itemScrollController?.jumpTo(index: index);
+
     //await _saveToRecent();
   }
 
   Future gotoPageAndScroll(double value, String tocText) async {
     currentPage = value.toInt();
     tocHeader = tocText;
-    pageController.jumpToPage(currentPage! - book.firstPage!);
+    pageController?.jumpToPage(currentPage! - book.firstPage!);
+    itemScrollController?.jumpTo(index: currentPage! - book.firstPage!);
     //await _saveToRecent();
   }
 
   void increaseFontSize() {
-    _fontSize++;
+    fontSize++;
     var currentPageIndex = currentPage! - book.firstPage!;
 
     webViewControllers[currentPageIndex]!
         .loadUrl(getUriFrom(data: getPageContent(currentPageIndex)).toString());
     // notifyListeners();
-    Prefs.fontSize = _fontSize;
+    Prefs.fontSize = fontSize;
     // update preload pages
     // for right pages
     var count = 0;
@@ -416,12 +421,12 @@ class ReaderViewModel with ChangeNotifier {
   }
 
   void decreaseFontSize() {
-    _fontSize--;
+    fontSize--;
     var currentPageIndex = currentPage! - book.firstPage!;
     webViewControllers[currentPageIndex]!
         .loadUrl(getUriFrom(data: getPageContent(currentPageIndex)).toString());
     // notifyListeners();
-    Prefs.fontSize = _fontSize;
+    Prefs.fontSize = fontSize;
     // update preload pages
     // for right pages
     var count = 0;

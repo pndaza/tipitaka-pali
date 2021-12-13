@@ -10,13 +10,13 @@ import 'package:tipitaka_pali/utils/pali_script_converter.dart';
 import '../../../../business_logic/view_models/reader_view_model.dart';
 import '../../../dialogs/dictionary_dialog.dart';
 
-class DesktopReader extends StatelessWidget {
-  const DesktopReader({Key? key}) : super(key: key);
+class DesktopPageView extends StatelessWidget {
+  const DesktopPageView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final vm = Provider.of<ReaderViewModel>(context, listen: false);
-    final ItemScrollController itemScrollController = ItemScrollController();
+    final vm = Provider.of<ReaderViewModel>(context, listen: true);
+    vm.itemScrollController = ItemScrollController();
     final ItemPositionsListener itemPositionsListener =
         ItemPositionsListener.create();
     itemPositionsListener.itemPositions.addListener(() {
@@ -26,63 +26,59 @@ class DesktopReader extends StatelessWidget {
       print('current index: $current');
     });
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(vm.book.name),
-      ),
-      body: ScrollablePositionedList.builder(
-          initialScrollIndex: vm.currentPage == null ? 0 : vm.currentPage! - 1,
-          itemScrollController: itemScrollController,
-          itemPositionsListener: itemPositionsListener,
-          itemCount: vm.pages.length,
-          itemBuilder: (_, index) {
-            var content = vm.getPageContentForDesktop(index);
-            final script = context.read<ScriptLanguageProvider>().currentScript;
-            // transciption
-            content = PaliScript.getScriptOf(
-              script: script,
-              romanText: content,
-              isHtmlText: true,
-            );
-            content = _formatContent(content, script);
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: HtmlWidget(
-                content,
-                customStylesBuilder: (element) {
-                  // if (element.className == 'title' ||
-                  //     element.className == 'book' ||
-                  //     element.className == 'chapter' ||
-                  //     element.className == 'subhead' ||
-                  //     element.className == 'nikaya') {
-                  //   return {
-                  //     'text-align': 'center',
-                  //     // 'text-decoration': 'none',
-                  //   };
-                  // }
-                  if (element.localName == 'a') {
-                    // print('found a tag: ${element.outerHtml}');
-                    return {
-                      'color': 'black',
-                      'text-decoration': 'none',
-                    };
-                  }
-                  // no style
-                  return {'text-decoration': 'none'};
-                },
-                onTapUrl: (word) async {
-                  showDictionary(context, word);
-                  return true;
-                },
-              ),
-            );
-          }),
+    return ScrollablePositionedList.builder(
+      initialScrollIndex: vm.currentPage == null ? 0 : vm.currentPage! - 1,
+      itemScrollController: vm.itemScrollController,
+      itemPositionsListener: itemPositionsListener,
+      itemCount: vm.pages.length,
+      itemBuilder: (_, index) {
+        var content = vm.getPageContentForDesktop(index);
+        final script = context.read<ScriptLanguageProvider>().currentScript;
+        // transciption
+        content = PaliScript.getScriptOf(
+          script: script,
+          romanText: content,
+          isHtmlText: true,
+        );
+        content = _formatContent(content, script, vm.fontSize);
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: HtmlWidget(
+            content,
+            customStylesBuilder: (element) {
+              // if (element.className == 'title' ||
+              //     element.className == 'book' ||
+              //     element.className == 'chapter' ||
+              //     element.className == 'subhead' ||
+              //     element.className == 'nikaya') {
+              //   return {
+              //     'text-align': 'center',
+              //     // 'text-decoration': 'none',
+              //   };
+              // }
+              if (element.localName == 'a') {
+                // print('found a tag: ${element.outerHtml}');
+                return {
+                  'color': 'black',
+                  'text-decoration': 'none',
+                };
+              }
+              // no style
+              return {'text-decoration': 'none'};
+            },
+            onTapUrl: (word) async {
+              showDictionary(context, word);
+              return true;
+            },
+          ),
+        );
+      },
     );
   }
 
-  String _formatContent(String content, Script script) {
+  String _formatContent(String content, Script script, int fontSize) {
     content = _makeClickable(content, script);
-    content = _changeToInlineStyle(content);
+    content = _changeToInlineStyle(content,fontSize);
     return content;
   }
 
@@ -121,7 +117,7 @@ class DesktopReader extends StatelessWidget {
     */
   }
 
-  String _changeToInlineStyle(String content) {
+  String _changeToInlineStyle(String content, int fontsize) {
     final styleMaps = <String, String>{
       r'class="bld"': r'style="font-weight:bold;"',
       r'class="centered"': r'style="text-align:center;"',
