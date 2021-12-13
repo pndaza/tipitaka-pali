@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:fwfh_selectable_text/fwfh_selectable_text.dart';
-import 'package:tipitaka_pali/utils/pali_script_converter.dart';
+
+import '../../../../utils/pali_script_converter.dart';
 
 class PaliPageWidget extends StatelessWidget {
   final String htmlContent;
   final Script script;
-  final int fontSize;
+  final double fontSize;
   final Function(String clickedWord)? onClick;
   const PaliPageWidget({
     Key? key,
@@ -22,8 +23,9 @@ class PaliPageWidget extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: HtmlWidget(
-          _formatContent(htmlContent, script, fontSize),
+          _formatContent(htmlContent, script),
           factoryBuilder: () => _MyFactory(),
+          textStyle: TextStyle(fontSize: fontSize),
           customStylesBuilder: (element) {
             // if (element.className == 'title' ||
             //     element.className == 'book' ||
@@ -56,9 +58,9 @@ class PaliPageWidget extends StatelessWidget {
     );
   }
 
-  String _formatContent(String content, Script script, int fontSize) {
+  String _formatContent(String content, Script script) {
     content = _makeClickable(content, script);
-    content = _changeToInlineStyle(content,fontSize);
+    content = _changeToInlineStyle(content);
     return content;
   }
 
@@ -97,7 +99,7 @@ class PaliPageWidget extends StatelessWidget {
     */
   }
 
-  String _changeToInlineStyle(String content, int fontsize) {
+  String _changeToInlineStyle(String content) {
     final styleMaps = <String, String>{
       r'class="bld"': r'style="font-weight:bold;"',
       r'class="centered"': r'style="text-align:center;"',
@@ -181,7 +183,6 @@ class PaliPageWidget extends StatelessWidget {
         return RegExp(r'[a-zA-ZāīūṅñṭḍṇḷṃĀĪŪṄÑṬḌHṆḶṂ]+(?![^<>]*>)');
     }
   }
-
 }
 
-class _MyFactory extends WidgetFactory with SelectableTextFactory {}
+class _MyFactory extends WidgetFactory with SelectableTextFactory{}

@@ -401,6 +401,9 @@ class ReaderViewModel with ChangeNotifier {
 
   void increaseFontSize() {
     fontSize++;
+    Prefs.fontSize = fontSize;
+    notifyListeners();
+    /*
     var currentPageIndex = currentPage! - book.firstPage!;
 
     webViewControllers[currentPageIndex]!
@@ -422,10 +425,14 @@ class ReaderViewModel with ChangeNotifier {
       webViewControllers[pageIndex]!.loadUrl(
           getUriFrom(data: getPageContent(currentPageIndex)).toString());
     }
+    */
   }
 
   void decreaseFontSize() {
     fontSize--;
+    Prefs.fontSize = fontSize;
+    notifyListeners();
+    /*
     var currentPageIndex = currentPage! - book.firstPage!;
     webViewControllers[currentPageIndex]!
         .loadUrl(getUriFrom(data: getPageContent(currentPageIndex)).toString());
@@ -446,6 +453,7 @@ class ReaderViewModel with ChangeNotifier {
       webViewControllers[pageIndex]!.loadUrl(
           getUriFrom(data: getPageContent(currentPageIndex)).toString());
     }
+    */
   }
 
   void saveToBookmark(String note) {

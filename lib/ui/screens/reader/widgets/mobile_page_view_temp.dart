@@ -25,6 +25,7 @@ class MobilePageViewTemp extends StatelessWidget {
       controller: vm.pageController,
       itemCount: vm.pages.length,
       itemBuilder: (context, index) {
+
         var content = vm.getPageContentForDesktop(index);
         final script = context.read<ScriptLanguageProvider>().currentScript;
         // transciption
@@ -37,7 +38,7 @@ class MobilePageViewTemp extends StatelessWidget {
         return PaliPageWidget(
           htmlContent: content,
           script: script,
-          fontSize: vm.fontSize,
+          fontSize: vm.fontSize + 0.0,
           onClick: (clickedWord) {
             vm.showDictionary(clickedWord);
           },
