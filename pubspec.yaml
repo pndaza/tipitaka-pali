@@ -32,7 +32,7 @@ dependencies:
   sqflite: ^2.0.0+3
   path: ^1.8.0
   path_provider: ^2.0.2
-  webview_flutter: ^2.1.1
+  webview_flutter: ^3.0.0
   shared_preferences: ^2.0.9
   modal_bottom_sheet: ^2.0.0
   flutter_slidable: ^1.1.0
@@ -50,7 +50,8 @@ dependencies:
   sliding_sheet: ^0.5.0
   bottom_sheet: ^1.0.1
   flutter_typeahead: ^3.2.1
-  flutter_widget_from_html_core: ^0.8.3-beta.1
+  flutter_widget_from_html_core: 0.8.3+1
+  fwfh_selectable_text: ^0.8.3
   styled_text:
     git:
       url: https://github.com/toeydevelopment/styled_text_package

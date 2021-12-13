@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
+import 'package:fwfh_selectable_text/fwfh_selectable_text.dart';
 import 'package:provider/provider.dart';
 import 'package:tipitaka_pali/utils/script_detector.dart';
 
@@ -157,7 +158,11 @@ class DictionaryContentView extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: HtmlWidget(
                   content,
-                  // isSelectable: true,
+                  //isSelectable: true,
+                  //onSelectionChanged: (selection, cause) {
+                  //  print(selection);
+                  //},
+                  factoryBuilder: () => _MyFactory(),
                 ))),
         noData: () => const SizedBox(
               height: 100,
@@ -165,3 +170,5 @@ class DictionaryContentView extends StatelessWidget {
             ));
   }
 }
+
+class _MyFactory extends WidgetFactory with SelectableTextFactory {}
