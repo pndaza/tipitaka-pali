@@ -6,10 +6,10 @@ import 'package:preload_page_view/preload_page_view.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
-import 'package:tipitaka_pali/services/dao/bookmark_dao.dart';
-import 'package:tipitaka_pali/services/dao/recent_dao.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../../services/dao/bookmark_dao.dart';
+import '../../services/dao/recent_dao.dart';
 import '../../services/database/database_helper.dart';
 import '../../services/prefs.dart';
 import '../../services/provider/script_language_provider.dart';
@@ -47,7 +47,8 @@ class ReaderViewModel with ChangeNotifier {
   late String javascriptData;
   bool loadFinished = false;
   final int preLoadPageCount = 2;
-  PreloadPageController? pageController;
+  PreloadPageController? preloadPageController;
+  PageController? pageController;
   ItemScrollController? itemScrollController;
   late final List<WebViewController?> webViewControllers;
 
@@ -380,8 +381,9 @@ class ReaderViewModel with ChangeNotifier {
 
   Future gotoPage(double value) async {
     currentPage = value.toInt();
-    pageController?.jumpToPage(currentPage! - book.firstPage!);
     final index = currentPage! - book.firstPage!;
+    preloadPageController?.jumpToPage(index);
+    pageController?.jumpToPage(index);
     itemScrollController?.jumpTo(index: index);
 
     //await _saveToRecent();
@@ -390,7 +392,9 @@ class ReaderViewModel with ChangeNotifier {
   Future gotoPageAndScroll(double value, String tocText) async {
     currentPage = value.toInt();
     tocHeader = tocText;
-    pageController?.jumpToPage(currentPage! - book.firstPage!);
+    final index = currentPage! - book.firstPage!;
+    preloadPageController?.jumpToPage(index);
+    pageController?.jumpToPage(index);
     itemScrollController?.jumpTo(index: currentPage! - book.firstPage!);
     //await _saveToRecent();
   }

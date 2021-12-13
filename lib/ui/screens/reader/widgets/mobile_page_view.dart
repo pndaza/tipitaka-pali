@@ -17,7 +17,7 @@ class MobilePageView extends StatelessWidget {
     myLogger.i('building pageview');
     final vm = Provider.of<ReaderViewModel>(context, listen: false);
 
-    vm.pageController = PreloadPageController(
+    vm.preloadPageController = PreloadPageController(
         initialPage: vm.currentPage! - vm.book.firstPage!);
 
     return PreloadPageView.builder(
@@ -25,7 +25,7 @@ class MobilePageView extends StatelessWidget {
       physics: const ClampingScrollPhysics() ,
       pageSnapping: true,
       preloadPagesCount: vm.preLoadPageCount,
-      controller: vm.pageController,
+      controller: vm.preloadPageController,
       itemCount: vm.pages.length,
       itemBuilder: (context, index) {
         return WebView(
