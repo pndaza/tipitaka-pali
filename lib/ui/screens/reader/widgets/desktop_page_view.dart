@@ -13,18 +13,24 @@ class DesktopPageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final vm = Provider.of<ReaderViewModel>(context, listen: true);
+    int pageIndex = vm.currentPage! - vm.book.firstPage!;
+
     vm.itemScrollController = ItemScrollController();
     final ItemPositionsListener itemPositionsListener =
         ItemPositionsListener.create();
+
     itemPositionsListener.itemPositions.addListener(() {
-      final current = itemPositionsListener.itemPositions.value.first.index;
-      // vm.currentPage = current + 1;
-      vm.onPageChanged(current);
-      print('current index: $current');
+      // final firstIndex = itemPositionsListener.itemPositions.value.first.index;
+      final lastIndex = itemPositionsListener.itemPositions.value.last.index;
+
+      if (pageIndex != lastIndex) {
+        debugPrint('scrolled to next or previous page');
+        vm.onPageChanged(lastIndex);
+      }
     });
 
     return ScrollablePositionedList.builder(
-      initialScrollIndex: vm.currentPage == null ? 0 : vm.currentPage! - 1,
+      initialScrollIndex: pageIndex,
       itemScrollController: vm.itemScrollController,
       itemPositionsListener: itemPositionsListener,
       itemCount: vm.pages.length,
@@ -48,5 +54,4 @@ class DesktopPageView extends StatelessWidget {
       },
     );
   }
-
 }

@@ -368,7 +368,6 @@ class ReaderViewModel with ChangeNotifier {
   }
 
   Future onPageChanged(int index) async {
-    print("onpagechanged");
     currentPage = book.firstPage! + index;
     notifyListeners();
     await _saveToRecent();
