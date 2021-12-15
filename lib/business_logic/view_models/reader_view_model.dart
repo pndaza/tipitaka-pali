@@ -6,7 +6,7 @@ import 'package:preload_page_view/preload_page_view.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+// import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../services/dao/bookmark_dao.dart';
 import '../../services/dao/recent_dao.dart';
@@ -50,7 +50,7 @@ class ReaderViewModel with ChangeNotifier {
   PreloadPageController? preloadPageController;
   PageController? pageController;
   ItemScrollController? itemScrollController;
-  late final List<WebViewController?> webViewControllers;
+  // late final List<WebViewController?> webViewControllers;
 
   late final bool _isDarkMode;
 
@@ -89,7 +89,7 @@ class ReaderViewModel with ChangeNotifier {
     // book.lastPage = pages.length;
     numberOfPage = pages.length;
     //print('inititalizing controllers for pages');
-    webViewControllers = List.filled(pages.length, null);
+    // webViewControllers = List.filled(pages.length, null);
     // List<WebViewController>(pages.length);
 
     loadFinished = true;
