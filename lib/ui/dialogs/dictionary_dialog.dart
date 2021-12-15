@@ -11,6 +11,7 @@ import '../../business_logic/view_models/dictionary_view_model.dart';
 import '../../services/provider/script_language_provider.dart';
 import '../../utils/pali_script.dart';
 import '../../utils/pali_tools.dart';
+import 'package:tipitaka_pali/services/prefs.dart';
 
 class DictionaryDialog extends StatelessWidget {
   final String? word;
@@ -158,11 +159,12 @@ class DictionaryContentView extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: HtmlWidget(
                   content,
+                  textStyle: TextStyle(fontSize: Prefs.fontSize.toDouble()),
+                  factoryBuilder: () => _MyFactory(),
                   //isSelectable: true,
                   //onSelectionChanged: (selection, cause) {
                   //  print(selection);
                   //},
-                  factoryBuilder: () => _MyFactory(),
                 ))),
         noData: () => const SizedBox(
               height: 100,
