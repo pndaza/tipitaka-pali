@@ -79,6 +79,7 @@ class _DictionarySearchFieldState extends State<DictionarySearchField> {
   @override
   Widget build(BuildContext context) {
     return TypeAheadField(
+      suggestionsBoxDecoration: const SuggestionsBoxDecoration(hasScrollbar: false),
         textFieldConfiguration: TextFieldConfiguration(
             autocorrect: false,
             controller: textEditingController,
@@ -102,11 +103,13 @@ class _DictionarySearchFieldState extends State<DictionarySearchField> {
             final inputLanguage = ScriptDetector.getLanguage(text);
             final romanText = PaliScript.getRomanScriptFrom(
                 script: inputLanguage, text: text);
-            return context
+            final suggestions = await context
                 .read<DictionaryViewModel>()
                 .getSuggestions(romanText);
+            return suggestions;
           }
         },
+        debounceDuration: Duration.zero,
         itemBuilder: (context, String suggestion) {
           return ListTile(
               title: Text(PaliScript.getScriptOf(

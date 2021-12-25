@@ -32,7 +32,6 @@ dependencies:
   sqflite: ^2.0.0+3
   path: ^1.8.0
   path_provider: ^2.0.2
-  # webview_flutter: ^3.0.0
   shared_preferences: ^2.0.9
   modal_bottom_sheet: ^2.0.0
   flutter_slidable: ^1.1.0
@@ -49,15 +48,14 @@ dependencies:
   freezed: ^1.0.0
   sliding_sheet: ^0.5.0
   bottom_sheet: ^1.0.1
-  flutter_typeahead: ^3.2.1
+  flutter_typeahead:
+    git:
+      url: https://github.com/pndaza/flutter_typeahead.git
+      # ref: ceb2c3c    
   flutter_widget_from_html_core: 0.8.3+1
   fwfh_selectable_text: ^0.8.3
-  styled_text:
-    git:
-      url: https://github.com/toeydevelopment/styled_text_package
-      path: styled_text/
+  styled_text: 4.0.0+1
   from_css_color: ^2.0.0
-  backdrop: ^0.6.2
   http: ^0.13.4
   scrollable_positioned_list: ^0.2.3
 

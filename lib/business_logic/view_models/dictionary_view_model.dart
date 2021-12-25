@@ -5,7 +5,7 @@ import 'package:tipitaka_pali/business_logic/models/definition.dart';
 import 'package:tipitaka_pali/business_logic/view_models/dictionary_state.dart';
 import 'package:tipitaka_pali/services/database/database_helper.dart';
 import 'package:tipitaka_pali/services/database/dictionary_service.dart';
-import 'package:tipitaka_pali/services/repositories/ditionary_repo.dart';
+import 'package:tipitaka_pali/services/repositories/dictionary_repo.dart';
 import 'package:from_css_color/from_css_color.dart';
 
 enum DictAlgorithm { Auto, TPR, DPR }

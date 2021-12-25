@@ -34,7 +34,7 @@ class DictionaryDatabaseRepository implements DictionaryRepository {
       SELECT word from dictionary, dictionary_books 
       WHERE word LIKE '$word%' AND dictionary.book_id = dictionary_books.id
       AND dictionary_books.user_choice = 1
-      ORDER BY dictionary_books.user_order
+      ORDER BY dictionary_books.user_order LIMIT 200
     ''';
     List<Map<String, dynamic>> maps = await db.rawQuery(sql);
     return maps.map((e) => e['word'] as String).toList();

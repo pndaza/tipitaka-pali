@@ -1,6 +1,6 @@
 import '../../business_logic/models/definition.dart';
 import '../../utils/pali_stemmer.dart';
-import '../repositories/ditionary_repo.dart';
+import '../repositories/dictionary_repo.dart';
 
 const kdartTheme = 'default_dark_theme';
 const kblackTheme = 'black';
