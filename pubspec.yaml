@@ -50,8 +50,7 @@ dependencies:
   bottom_sheet: ^1.0.1
   flutter_typeahead:
     git:
-      url: https://github.com/pndaza/flutter_typeahead.git
-      # ref: ceb2c3c    
+      url: https://github.com/pndaza/flutter_typeahead.git   
   flutter_widget_from_html_core: 0.8.3+1
   fwfh_selectable_text: ^0.8.3
   styled_text: 4.0.0+1

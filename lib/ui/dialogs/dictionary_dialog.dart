@@ -1,9 +1,9 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:fwfh_selectable_text/fwfh_selectable_text.dart';
 import 'package:provider/provider.dart';
+import 'package:tipitaka_pali/services/prefs.dart';
 import 'package:tipitaka_pali/utils/script_detector.dart';
 
 import '../../business_logic/view_models/dictionary_state.dart';
@@ -11,7 +11,6 @@ import '../../business_logic/view_models/dictionary_view_model.dart';
 import '../../services/provider/script_language_provider.dart';
 import '../../utils/pali_script.dart';
 import '../../utils/pali_tools.dart';
-import 'package:tipitaka_pali/services/prefs.dart';
 
 class DictionaryDialog extends StatelessWidget {
   final String? word;
