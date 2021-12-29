@@ -287,7 +287,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: ee6f0f3173cd91116519a967ecaef2d1a3032a22
+      resolved-ref: d6900a90b20fb4dc3e4903aaa37d7ccf5c233867
       url: "https://github.com/pndaza/flutter_typeahead.git"
     source: git
     version: "3.2.4"

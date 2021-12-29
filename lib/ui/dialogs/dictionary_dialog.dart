@@ -78,7 +78,6 @@ class _DictionarySearchFieldState extends State<DictionarySearchField> {
   @override
   Widget build(BuildContext context) {
     return TypeAheadField(
-      suggestionsBoxDecoration: const SuggestionsBoxDecoration(hasScrollbar: false),
         textFieldConfiguration: TextFieldConfiguration(
             autocorrect: false,
             controller: textEditingController,
