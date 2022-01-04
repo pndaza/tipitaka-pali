@@ -11,7 +11,7 @@ slots:
   dbus-tipitaka-pali-reader: # adjust accordingly to your app name
     interface: dbus
     bus: session
-    name: com.paauk.tipitakapalireader # adjust accordingly to your app name and
+    name: com.paauk.tipitaka_pali_reader # adjust accordingly to your app name and
     
 apps:
   tipitaka-pali-reader:
