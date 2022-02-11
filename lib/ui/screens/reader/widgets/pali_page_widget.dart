@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
-import 'package:fwfh_selectable_text/fwfh_selectable_text.dart';
 
 import '../../../../utils/pali_script_converter.dart';
 
-class PaliPageWidget extends StatelessWidget {
+class PaliPageWidget extends StatefulWidget {
   final String htmlContent;
   final Script script;
   final double fontSize;
@@ -18,14 +17,28 @@ class PaliPageWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<PaliPageWidget> createState() => _PaliPageWidgetState();
+}
+
+class _PaliPageWidgetState extends State<PaliPageWidget> {
+  final _myFactory = _MyFactory();
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      _myFactory.onTapUrl('#goto');
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: HtmlWidget(
-          _formatContent(htmlContent, script),
-          factoryBuilder: () => _MyFactory(),
-          textStyle: TextStyle(fontSize: fontSize),
+          _formatContent(widget.htmlContent, widget.script),
+          factoryBuilder: () => _myFactory,
+          textStyle: TextStyle(fontSize: widget.fontSize),
           customStylesBuilder: (element) {
             // if (element.className == 'title' ||
             //     element.className == 'book' ||
@@ -48,10 +61,13 @@ class PaliPageWidget extends StatelessWidget {
             return {'text-decoration': 'none'};
           },
           onTapUrl: (word) {
-            if (onClick != null) {
-              onClick!(word);
+            if (widget.onClick != null) {
+              // #goto is used for scrolling to selected text
+              if (word != '#goto') {
+                widget.onClick!(word);
+              }
             }
-            return true;
+            return false;
           },
         ),
       ),
@@ -207,10 +223,12 @@ class _MyFactory extends WidgetFactory {
         textAlign: tsh.textAlign ?? TextAlign.start,
         textDirection: tsh.textDirection,
         onSelectionChanged: (selection, cause) {
+          /*
           final int start = selection.baseOffset;
           final int end = selection.extentOffset;
-          print('baseOffset: $start');
-          print('extendedOffset: $end');
+          debugPrint('baseOffset: $start');
+          debugPrint('extendedOffset: $end');
+          */
         },
       );
     }

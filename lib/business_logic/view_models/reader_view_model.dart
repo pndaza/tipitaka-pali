@@ -30,7 +30,7 @@ import '../models/recent.dart';
 
 const kdartTheme = 'default_dark_theme';
 const kblackTheme = 'black';
-const String kGotoID = 'goto_001';
+const String kGotoID = 'goto';
 
 class ReaderViewModel with ChangeNotifier {
   final BuildContext context;
@@ -287,7 +287,7 @@ class ReaderViewModel with ChangeNotifier {
       content = content.replaceAll(textToHighlight, replace);
       // adding id to scroll
       content = content.replaceFirst('<span class = "highlighted">',
-          '<span id="goto_001" class="highlighted">');
+          '<span id="$kGotoID" class="highlighted">');
 
       return content;
     }
@@ -313,13 +313,13 @@ class ReaderViewModel with ChangeNotifier {
     }
     // adding id to scroll
     content = content.replaceFirst('<span class = "highlighted">',
-        '<span id="goto_001" class="highlighted">');
+        '<span id="$kGotoID" class="highlighted">');
 
     return content;
   }
 
   String addIDforScroll(String content, String tocHeader) {
-    String _tocHeader = '<span id="goto_001">' + tocHeader + "</span>";
+    String _tocHeader = '<span id="$kGotoID">' + tocHeader + "</span>";
     content = content.replaceAll(tocHeader, _tocHeader);
 
     return content;

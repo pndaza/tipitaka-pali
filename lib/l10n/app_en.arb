@@ -36,10 +36,9 @@
   "font":                 "Font",
   "exact":                "Exact",
   "prefix":               "Prefix",
-  "distance":             "Distance"
+  "distance":             "Distance",
+  "anywhere":             "anywhere"
 
-
-   
 
 }
 

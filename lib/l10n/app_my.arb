@@ -28,15 +28,15 @@
     "close": "ပိတ်",
     "paragraph_number": "စာပိုဒ်အမှတ်",
     "table_of_contents": "မာတိကာ",
-    "goto":"သို့",
+    "goto": "သို့",
     "paragraph": "စာပိုဒ်",
     "go": "သွား",
     "toc": "မာတိကာ",
     "mat": "အဖွင့်",
     "font":"ဖောင့်",
-    "exact":                "အတိအကျ",
-    "prefix":               "အစတူ",
-    "distance":             "ပုဒ်အကွာအဝေး"
-
+    "exact": "အတိအကျ",
+    "prefix":  "အစတူ",
+    "distance": "ပုဒ်အကွာအဝေး",
+    "anywhere": "နေရာမရွေး"
     
 }
