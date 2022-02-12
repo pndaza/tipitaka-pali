@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
+import 'package:provider/src/provider.dart';
 
+import '../../../../services/provider/theme_change_notifier.dart';
 import '../../../../utils/pali_script_converter.dart';
 
 class PaliPageWidget extends StatefulWidget {
@@ -52,10 +54,17 @@ class _PaliPageWidgetState extends State<PaliPageWidget> {
             // }
             if (element.localName == 'a') {
               // print('found a tag: ${element.outerHtml}');
-              return {
-                'color': 'black',
-                'text-decoration': 'none',
-              };
+              if (context.read<ThemeChangeNotifier>().isDarkMode) {
+                return {
+                  'color': 'white',
+                  'text-decoration': 'none',
+                };
+              } else {
+                return {
+                  'color': 'black',
+                  'text-decoration': 'none',
+                };
+              }
             }
             // no style
             return {'text-decoration': 'none'};
