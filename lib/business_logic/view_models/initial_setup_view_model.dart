@@ -89,23 +89,20 @@ class InitialSetupViewModel extends ChangeNotifier {
   }
 
   Future<void> _copyFromAssets(String dbFilePath) async {
-    final assetsDatabasePath = join(
-      AssetsFile.baseAssetsFolderPath,
-      AssetsFile.databaseFolderPath,
-    );
-
     final dbFile = File(dbFilePath);
     final timeBeforeCopy = DateTime.now();
     final int count = AssetsFile.partsOfDatabase.length;
     int partNo = 0;
     for (String part in AssetsFile.partsOfDatabase) {
       // reading from assets
-      final bytes = await rootBundle.load(join(assetsDatabasePath, part));
+      // using join method on assets path does not work for windows
+      final bytes = await rootBundle.load(
+          '${AssetsFile.baseAssetsFolderPath}/${AssetsFile.databaseFolderPath}/$part');
       // appending to output dbfile
       await dbFile.writeAsBytes(
           bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes),
           mode: FileMode.append);
-          int percent = ((++partNo / count) * 100).round();
+      int percent = ((++partNo / count) * 100).round();
       _status = "Finished copying $percent% of database.";
 
       notifyListeners();
