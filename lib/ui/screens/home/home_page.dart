@@ -59,21 +59,24 @@ class HomePage extends StatelessWidget {
         // Important: Remove any padding from the ListView.
         padding: EdgeInsets.zero,
         children: [
-          DrawerHeader(
-            decoration: const BoxDecoration(),
-            child: Column(
-              children: [
-                ColoredText(AppLocalizations.of(context)!.tipitaka_pali_reader,
-                    style: const TextStyle(
-                      fontSize: 17,
-                    )),
-                const SizedBox(height: 25.0),
-                Image.asset(
-                  "assets/icon/icon.png",
-                  height: 90,
-                  width: 90,
-                ),
-              ],
+          SizedBox(
+            height: 250,
+            child: DrawerHeader(
+              decoration: const BoxDecoration(),
+              child: Column(
+                children: [
+                  ColoredText(AppLocalizations.of(context)!.tipitaka_pali_reader,
+                      style: const TextStyle(
+                        fontSize: 17,
+                      )),
+                  const SizedBox(height: 25.0),
+                  Image.asset(
+                    "assets/icon/icon.png",
+                    height: 90,
+                    width: 90,
+                  ),
+                ],
+              ),
             ),
           ),
           ListTile(
