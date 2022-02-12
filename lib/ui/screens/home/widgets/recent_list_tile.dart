@@ -51,7 +51,12 @@ class RecentListTile extends StatelessWidget {
                       children: [
                         Text('${AppLocalizations.of(context)!.page} -'),
                         Expanded(
-                            child: Text('${recent.pageNumber}',
+                            child: Text(
+                                PaliScript.getScriptOf(
+                                    script: context
+                                        .read<ScriptLanguageProvider>()
+                                        .currentScript,
+                                    romanText: recent.pageNumber.toString()),
                                 textAlign: TextAlign.end)),
                       ],
                     ),

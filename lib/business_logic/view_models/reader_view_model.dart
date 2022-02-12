@@ -187,7 +187,7 @@ class ReaderViewModel with ChangeNotifier {
 
     pageContent = _fixSafari(pageContent);
     return '''
-            <p style="color:blue;text-align:right;">[page-${index + book.firstPage!}]</p>
+            <p style="color:blue;text-align:right;">${index + book.firstPage!}</p>
             <div id="page_content">
               $pageContent
             </div>

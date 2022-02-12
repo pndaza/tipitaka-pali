@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:tipitaka_pali/ui/screens/home/search_page/easy_number_input.dart';
 
 import 'search_page.dart';
@@ -39,14 +40,14 @@ class _SearchModeViewState extends State<SearchModeView> {
         mainAxisSize: MainAxisSize.min,
         children: [
           RadioListTile<QueryMode>(
-              title: const Text('Exact'),
+              title: Text(AppLocalizations.of(context)!.exact),
               value: QueryMode.exact,
               groupValue: currentQueryMode,
               onChanged: (value) {
                 _onChanged(value);
               }),
           RadioListTile<QueryMode>(
-              title: const Text('Prefix'),
+              title: Text(AppLocalizations.of(context)!.prefix),
               value: QueryMode.prefix,
               groupValue: currentQueryMode,
               onChanged: (value) {
@@ -56,7 +57,7 @@ class _SearchModeViewState extends State<SearchModeView> {
             children: [
               Expanded(
                 child: RadioListTile<QueryMode>(
-                  title: const Text('Distance'),
+                  title: Text(AppLocalizations.of(context)!.distance),
                   value: QueryMode.distance,
                   groupValue: currentQueryMode,
                   onChanged: (value) {
@@ -73,8 +74,8 @@ class _SearchModeViewState extends State<SearchModeView> {
               const SizedBox(width: 16)
             ],
           ),
-         RadioListTile<QueryMode>(
-              title: const Text('Anywhere'),
+          RadioListTile<QueryMode>(
+              title: Text(AppLocalizations.of(context)!.anywhere),
               value: QueryMode.anywhere,
               groupValue: currentQueryMode,
               onChanged: (value) {

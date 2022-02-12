@@ -45,9 +45,8 @@ class BookmarkListTile extends StatelessWidget {
                   },
                   title: Text(bookmark.note),
                   subtitle: Text(PaliScript.getScriptOf(
-                      script: context
-                          .read<ScriptLanguageProvider>()
-                          .currentScript,
+                      script:
+                          context.read<ScriptLanguageProvider>().currentScript,
                       romanText: bookmark.bookName!)),
                   trailing: SizedBox(
                     width: 100,
@@ -56,9 +55,12 @@ class BookmarkListTile extends StatelessWidget {
                         Text('${AppLocalizations.of(context)!.page} -'),
                         Expanded(
                             child: Text(
-                          '${bookmark.pageNumber}',
-                          textAlign: TextAlign.end,
-                        )),
+                                PaliScript.getScriptOf(
+                                    script: context
+                                        .read<ScriptLanguageProvider>()
+                                        .currentScript,
+                                    romanText: bookmark.pageNumber.toString()),
+                                textAlign: TextAlign.end)),
                       ],
                     ),
                   ),
