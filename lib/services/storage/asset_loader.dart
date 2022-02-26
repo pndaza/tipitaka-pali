@@ -19,11 +19,14 @@ class AssetsProvider {
   }
 
   static Future<String> loadCSS(String cssFileName) async {
-    final path = join(_assetsPath, _cssFolderPath, cssFileName);
+    // proper way is below but does not work for MS Windos
+    //  final path = join(_assetsPath, _cssFolderPath, cssFileName);
+    // fix is here below
+    final path = '$_assetsPath/$_cssFolderPath/$cssFileName';
     return await rootBundle.loadString(path);
   }
 
-    static Future<String> loadJS(String jsFileName) async {
+  static Future<String> loadJS(String jsFileName) async {
     final path = join(_assetsPath, _jsFolderPath, jsFileName);
     return await rootBundle.loadString(path);
   }
