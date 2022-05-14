@@ -57,6 +57,7 @@ dependencies:
   from_css_color: ^2.0.0
   http: ^0.13.4
   scrollable_positioned_list: ^0.2.3
+  word_selectable_text: ^0.2.0
 
 dev_dependencies:
   flutter_test:

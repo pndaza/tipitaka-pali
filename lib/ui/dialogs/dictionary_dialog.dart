@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
-import 'package:fwfh_selectable_text/fwfh_selectable_text.dart';
 import 'package:provider/provider.dart';
+import 'package:word_selectable_text/word_selectable_text.dart';
+
 import 'package:tipitaka_pali/services/prefs.dart';
 import 'package:tipitaka_pali/utils/script_detector.dart';
 
@@ -57,26 +58,35 @@ class DictionarySearchField extends StatefulWidget {
 }
 
 class _DictionarySearchFieldState extends State<DictionarySearchField> {
-  late final TextEditingController textEditingController;
+  // late final TextEditingController textEditingController;
   @override
   void initState() {
-    textEditingController = TextEditingController(
-        text: widget.initialValue == null
-            ? null
+    context.read<DictionaryViewModel>().textEditingController.text =
+        widget.initialValue == null
+            ? ''
             : PaliScript.getScriptOf(
                 script: context.read<ScriptLanguageProvider>().currentScript,
-                romanText: widget.initialValue!));
+                romanText: widget.initialValue!);
+
+    // textEditingController = TextEditingController(
+    //     text: widget.initialValue == null
+    //         ? null
+    //         : PaliScript.getScriptOf(
+    //             script: context.read<ScriptLanguageProvider>().currentScript,
+    //             romanText: widget.initialValue!));
     super.initState();
   }
 
   @override
   void dispose() {
-    textEditingController.dispose();
+    // textEditingController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final textEditingController =
+        context.watch<DictionaryViewModel>().textEditingController;
     return TypeAheadField(
         textFieldConfiguration: TextFieldConfiguration(
             autocorrect: false,
@@ -161,7 +171,12 @@ class DictionaryContentView extends StatelessWidget {
                 child: HtmlWidget(
                   content,
                   textStyle: TextStyle(fontSize: Prefs.fontSize.toDouble()),
-                  factoryBuilder: () => _MyFactory(),
+                  factoryBuilder: () => _MyFactory(
+                    onClicked: (word) {
+                      print(word);
+                      context.read<DictionaryViewModel>().onWordClicked(word);
+                    },
+                  ),
                   //isSelectable: true,
                   //onSelectionChanged: (selection, cause) {
                   //  print(selection);
@@ -174,4 +189,60 @@ class DictionaryContentView extends StatelessWidget {
   }
 }
 
-class _MyFactory extends WidgetFactory with SelectableTextFactory {}
+typedef WordChanged = void Function(String word);
+
+class _MyFactory extends WidgetFactory {
+  /// Controls whether text is rendered with [SelectableText] or [RichText].
+  ///
+  /// Default: `true`.
+  bool get selectableText => true;
+
+  /// The callback when user changes the selection of text.
+  ///
+  /// See [SelectableText.onSelectionChanged].
+  SelectionChangedCallback? get selectableTextOnChanged => null;
+  WordChanged? onClicked;
+  _MyFactory({this.onClicked});
+
+  @override
+  Widget? buildText(BuildMetadata meta, TextStyleHtml tsh, InlineSpan text) {
+    if (selectableText &&
+        meta.overflow == TextOverflow.clip &&
+        text is TextSpan) {
+      /*
+      return SelectableText.rich(
+        text,
+        maxLines: meta.maxLines > 0 ? meta.maxLines : null,
+        textAlign: tsh.textAlign ?? TextAlign.start,
+        textDirection: tsh.textDirection,
+        onSelectionChanged: (selection, cause) {
+          /*
+          final int start = selection.baseOffset;
+          final int end = selection.extentOffset;
+          debugPrint('baseOffset: $start');
+          debugPrint('extendedOffset: $end');
+          */
+        },
+      );
+      */
+      if (text.text == null) {
+        return SelectableText.rich(
+          text,
+          maxLines: meta.maxLines > 0 ? meta.maxLines : null,
+          textAlign: tsh.textAlign ?? TextAlign.start,
+        );
+      }
+
+      return WordSelectableText(
+        text: text.text!,
+        selectable: false,
+        highlight: false,
+        onWordTapped: (word, index) {
+          onClicked?.call(word);
+        },
+      );
+    }
+
+    return super.buildText(meta, tsh, text);
+  }
+}
