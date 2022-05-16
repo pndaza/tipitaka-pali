@@ -233,8 +233,17 @@ class _MyFactory extends WidgetFactory {
         );
       }
 
+      String inlineText = text.text!;
+      // inlineText = inlineText.replaceAll('+', ' + '); // add space between +
+       // add space before + if not exist
+      inlineText = inlineText.replaceAllMapped(RegExp(r'(?<!\s)\+'), (match) => ' +');
+       // add space after + if not exist
+      inlineText = inlineText.replaceAllMapped(RegExp(r'\+(?!\s)'), (match) => '+ ');
+       // add space after . if not exist
+      inlineText = inlineText.replaceAllMapped(RegExp(r'\.(?!\s)'), (match) => '. ');
+
       return WordSelectableText(
-        text: text.text!,
+        text: inlineText,
         selectable: false,
         highlight: false,
         onWordTapped: (word, index) {
