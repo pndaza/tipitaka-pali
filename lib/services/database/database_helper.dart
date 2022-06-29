@@ -29,7 +29,7 @@ class DatabaseHelper {
       dbPath = await getDatabasesPath();
     }
     if (Platform.isLinux || Platform.isWindows) {
-      final docDirPath = await getApplicationDocumentsDirectory();
+      final docDirPath = await getApplicationSupportDirectory();
       dbPath = docDirPath.path;
     }
     var path = join(dbPath, DatabaseInfo.fileName);
@@ -104,6 +104,7 @@ class DatabaseHelper {
     await dbInstance
         .execute('''CREATE VIRTUAL TABLE IF NOT EXISTS fts_pages USING FTS4
          (id, bookid, page, content, paranum)''');
+
 
     final mapsOfCount =
         await dbInstance.rawQuery('SELECT count(*) cnt FROM pages');

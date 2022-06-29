@@ -30,7 +30,7 @@ class InitialSetupViewModel extends ChangeNotifier {
       databasesDirPath = await getDatabasesPath();
     }
     if (Platform.isLinux || Platform.isWindows) {
-      final docDirPath = await getApplicationDocumentsDirectory();
+      final docDirPath = await getApplicationSupportDirectory();
       databasesDirPath = docDirPath.path;
     }
     // final databasesDirPath = await getApplicationDocumentsDirectory();
@@ -51,8 +51,9 @@ class InitialSetupViewModel extends ChangeNotifier {
       debugPrint('dictionary books: ${dictionaries.length}');
       await databaseHelper.close();
       // deleting old database file
-      await deleteDatabase(dbFilePath);
     }
+      
+    await deleteDatabase(dbFilePath);
 
     //Check if parent directory exists
     try {
@@ -100,8 +101,8 @@ class InitialSetupViewModel extends ChangeNotifier {
           '${AssetsFile.baseAssetsFolderPath}/${AssetsFile.databaseFolderPath}/$part');
       // appending to output dbfile
       await dbFile.writeAsBytes(
-          bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes),
-          mode: FileMode.append);
+        bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes),
+        mode: FileMode.append);
       int percent = ((++partNo / count) * 100).round();
       _status = "Finished copying $percent% of database.";
 
