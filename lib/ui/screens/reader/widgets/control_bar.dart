@@ -1,7 +1,12 @@
+import 'dart:io';
+
+import 'package:aligned_dialog/aligned_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
+import 'package:side_sheet/side_sheet.dart';
+import 'package:tipitaka_pali/utils/platform_info.dart';
 import '../../../../app.dart';
 import '../../../../business_logic/models/book.dart';
 import '../../../../business_logic/models/paragraph_mapping.dart';
@@ -50,53 +55,90 @@ class ControlBar extends StatelessWidget {
         controller: ModalScrollController.of(context),
         child: Padding(
           padding: const EdgeInsets.all(12.0),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  IconTextButton(
-                      icon: Icons.directions_walk,
-                      text: AppLocalizations.of(context)!.goto,
-                      onPressed: () => _openGotoDialog(context, vm)),
-                  IconTextButton(
-                      icon: Icons.local_library,
-                      text: AppLocalizations.of(context)!.mat,
-                      onPressed: () => _selectParagraphDialog(context, vm)),
-                  IconTextButton(
-                      icon: Icons.toc,
-                      text: AppLocalizations.of(context)!.toc,
-                      onPressed: () => _openTocDialog(context, vm)),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  IconTextButton(
-                      icon: Icons.book_outlined,
-                      text: AppLocalizations.of(context)!.bookmark,
-                      onPressed: () {
-                        _addBookmark(vm, context);
-                      }),
-                  IconTextButton(
-                      icon: Icons.remove_circle_outline,
-                      text: AppLocalizations.of(context)!.font,
-                      onPressed: vm.decreaseFontSize),
-                  IconTextButton(
-                      icon: Icons.add_circle_outline,
-                      text: AppLocalizations.of(context)!.font,
-                      onPressed: vm.increaseFontSize),
-                  IconTextButton(
-                      icon: Icons.settings,
-                      text: AppLocalizations.of(context)!.settings,
-                      onPressed: () => _openSettingPage(context)),
-                ],
-              ),
-            ],
-          ),
+          child: PlatformInfo.isDesktop
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    IconTextButton(
+                        icon: Icons.directions_walk,
+                        text: AppLocalizations.of(context)!.goto,
+                        onPressed: () => _openGotoDialog(context, vm)),
+                    IconTextButton(
+                        icon: Icons.local_library,
+                        text: AppLocalizations.of(context)!.mat,
+                        onPressed: () => _selectParagraphDialog(context, vm)),
+                    IconTextButton(
+                        icon: Icons.toc,
+                        text: AppLocalizations.of(context)!.toc,
+                        onPressed: () => _openTocDialog(context, vm)),
+                    IconTextButton(
+                        icon: Icons.book_outlined,
+                        text: AppLocalizations.of(context)!.bookmark,
+                        onPressed: () {
+                          _addBookmark(vm, context);
+                        }),
+                    IconTextButton(
+                        icon: Icons.remove_circle_outline,
+                        text: AppLocalizations.of(context)!.font,
+                        onPressed: vm.decreaseFontSize),
+                    IconTextButton(
+                        icon: Icons.add_circle_outline,
+                        text: AppLocalizations.of(context)!.font,
+                        onPressed: vm.increaseFontSize),
+                    IconTextButton(
+                        icon: Icons.settings,
+                        text: AppLocalizations.of(context)!.settings,
+                        onPressed: () => _openSettingPage(context)),
+                  ],
+                )
+              : Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        IconTextButton(
+                            icon: Icons.directions_walk,
+                            text: AppLocalizations.of(context)!.goto,
+                            onPressed: () => _openGotoDialog(context, vm)),
+                        IconTextButton(
+                            icon: Icons.local_library,
+                            text: AppLocalizations.of(context)!.mat,
+                            onPressed: () =>
+                                _selectParagraphDialog(context, vm)),
+                        IconTextButton(
+                            icon: Icons.toc,
+                            text: AppLocalizations.of(context)!.toc,
+                            onPressed: () => _openTocDialog(context, vm)),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        IconTextButton(
+                            icon: Icons.book_outlined,
+                            text: AppLocalizations.of(context)!.bookmark,
+                            onPressed: () {
+                              _addBookmark(vm, context);
+                            }),
+                        IconTextButton(
+                            icon: Icons.remove_circle_outline,
+                            text: AppLocalizations.of(context)!.font,
+                            onPressed: vm.decreaseFontSize),
+                        IconTextButton(
+                            icon: Icons.add_circle_outline,
+                            text: AppLocalizations.of(context)!.font,
+                            onPressed: vm.increaseFontSize),
+                        IconTextButton(
+                            icon: Icons.settings,
+                            text: AppLocalizations.of(context)!.settings,
+                            onPressed: () => _openSettingPage(context)),
+                      ],
+                    ),
+                  ],
+                ),
         ),
       ),
     );
@@ -210,6 +252,29 @@ class ControlBar extends StatelessWidget {
   }
 
   void _openTocDialog(BuildContext context, ReaderViewModel vm) async {
+    // closing navigation bar
+    Navigator.pop(context);
+
+    if (PlatformInfo.isDesktop) {
+
+      final toc = await showDialog<Toc>(
+        barrierDismissible: true,
+        context: context,
+        builder: (BuildContext context) {
+          return Align(
+            alignment: Alignment.centerRight,
+            child: SizedBox(width: 400, child: TocDialog(bookID: vm.book.id)),
+          );
+        },
+      );
+
+      if (toc != null) {
+        vm.gotoPageAndScroll(toc.pageNumber.toDouble(), toc.name);
+      }
+
+      return;
+    }
+
     final toc = await showBarModalBottomSheet<Toc>(
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),

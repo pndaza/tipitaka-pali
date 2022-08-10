@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tipitaka_pali/app.dart';
@@ -7,9 +5,10 @@ import 'package:tipitaka_pali/business_logic/models/book.dart';
 import 'package:tipitaka_pali/business_logic/view_models/reader_view_model.dart';
 import 'package:tipitaka_pali/ui/screens/reader/widgets/app_bar.dart';
 import 'package:tipitaka_pali/ui/screens/reader/widgets/control_bar.dart';
-import 'package:tipitaka_pali/ui/screens/reader/widgets/mobile_page_view_temp.dart';
+import 'package:tipitaka_pali/ui/screens/reader/widgets/mobile_book_view.dart';
+import 'package:tipitaka_pali/utils/platform_info.dart';
 
-import 'widgets/desktop_page_view.dart';
+import 'widgets/desktop_book_view.dart';
 
 class Reader extends StatelessWidget {
   final Book book;
@@ -37,17 +36,15 @@ class Reader extends StatelessWidget {
               future: !vm.loadFinished ? vm.loadAllData() : vm.loadCached(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  if (Platform.isMacOS ||
-                      Platform.isLinux ||
-                      Platform.isWindows) {
+                  if (PlatformInfo.isDesktop) {
                     return const Scaffold(
-                    appBar: ReaderAppBar(),
-                    body: DesktopPageView(),
-                    bottomNavigationBar: SafeArea(child: ControlBar()));
+                        // appBar: ReaderAppBar(),
+                        body: DesktopBookView(),
+                        bottomNavigationBar: SafeArea(child: ControlBar()));
                   }
-                  return Scaffold(
+                  return const Scaffold(
                     appBar: ReaderAppBar(),
-                    body: MobilePageViewTemp(),
+                    body: MobileBookView(),
                     bottomNavigationBar: SafeArea(child: ControlBar()),
                   );
                 }

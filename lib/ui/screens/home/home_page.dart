@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:tipitaka_pali/ui/screens/home/opened_books_provider.dart';
+import 'package:tipitaka_pali/utils/platform_info.dart';
 
 import '../../../business_logic/models/list_item.dart';
 import '../../../business_logic/view_models/home_page_view_model.dart';
@@ -24,6 +28,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isMobile = Platform.isAndroid || Platform.isIOS;
+
     return DefaultTabController(
       length: 4,
       child: Scaffold(
@@ -42,7 +48,7 @@ class HomePage extends StatelessWidget {
                   .toList(),
             ),
           ),
-          drawer: _buildDrawer(context),
+          drawer: isMobile ? _buildDrawer(context) : null,
           body: TabBarView(
               children: _mainCategories.entries
                   .map((category) => _buildBookList(category.key))
@@ -65,7 +71,8 @@ class HomePage extends StatelessWidget {
               decoration: const BoxDecoration(),
               child: Column(
                 children: [
-                  ColoredText(AppLocalizations.of(context)!.tipitaka_pali_reader,
+                  ColoredText(
+                      AppLocalizations.of(context)!.tipitaka_pali_reader,
                       style: const TextStyle(
                         fontSize: 17,
                       )),
@@ -135,8 +142,14 @@ class HomePage extends StatelessWidget {
     if (listItem.runtimeType == BookItem) {
       BookItem bookItem = listItem as BookItem;
       debugPrint('book name: ${bookItem.book.name}');
-      Navigator.pushNamed(context, readerRoute,
-          arguments: {'book': bookItem.book});
+
+      if (PlatformInfo.isDesktop) {
+        final homeController = context.read<OpenedBooksProvider>();
+        homeController.add(book: bookItem.book);
+      } else {
+        Navigator.pushNamed(context, readerRoute,
+            arguments: {'book': bookItem.book});
+      }
     }
   }
 

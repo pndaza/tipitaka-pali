@@ -51,13 +51,18 @@ dependencies:
   flutter_typeahead:
     git:
       url: https://github.com/pndaza/flutter_typeahead.git
-  flutter_widget_from_html_core: 0.8.5+1
+  flutter_widget_from_html_core: 0.8.5+3
   fwfh_selectable_text: ^0.8.3
   styled_text: 4.0.0+1
   from_css_color: ^2.0.0
   http: ^0.13.4
   scrollable_positioned_list: ^0.2.3
   word_selectable_text: ^0.2.0
+  multi_split_view: ^2.1.0
+  tabbed_view: ^1.13.0+1
+  fwfh_text_style: ^2.22.08
+  aligned_dialog: ^0.0.6
+  side_sheet: ^1.0.2
 
 dev_dependencies:
   flutter_test:

@@ -8,6 +8,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "38.0.0"
+  aligned_dialog:
+    dependency: "direct main"
+    description:
+      name: aligned_dialog
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.6"
   analyzer:
     dependency: transitive
     description:
@@ -281,7 +288,7 @@ packages:
       name: flutter_widget_from_html_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.8.5+1"
+    version: "0.8.5+3"
   freezed:
     dependency: "direct main"
     description:
@@ -318,12 +325,12 @@ packages:
     source: hosted
     version: "0.8.3+1"
   fwfh_text_style:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: fwfh_text_style
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.7.3+2"
+    version: "2.22.08"
   glob:
     dependency: transitive
     description:
@@ -450,6 +457,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
+  multi_split_view:
+    dependency: "direct main"
+    description:
+      name: multi_split_view
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.0"
   nested:
     dependency: transitive
     description:
@@ -653,6 +667,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
+  side_sheet:
+    dependency: "direct main"
+    description:
+      name: side_sheet
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -756,6 +777,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.0+2"
+  tabbed_view:
+    dependency: "direct main"
+    description:
+      name: tabbed_view
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.13.0+1"
   term_glyph:
     dependency: transitive
     description:

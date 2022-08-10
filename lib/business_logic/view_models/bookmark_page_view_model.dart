@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../routes.dart';
 import '../../services/repositories/bookmark_repo.dart';
+import '../../ui/screens/home/opened_books_provider.dart';
+import '../../utils/platform_info.dart';
 import '../models/book.dart';
 import '../models/bookmark.dart';
 
@@ -31,8 +34,13 @@ class BookmarkPageViewModel extends ChangeNotifier {
 
   void openBook(Bookmark bookmark, BuildContext context) async {
     final book = Book(id: bookmark.bookID, name: bookmark.bookName!);
-    await Navigator.pushNamed(context, readerRoute,
-        arguments: {'book': book, 'currentPage': bookmark.pageNumber});
+    if (PlatformInfo.isDesktop) {
+      final homeController = context.read<OpenedBooksProvider>();
+      homeController.add(book: book, currentPage: bookmark.pageNumber);
+    } else {
+      await Navigator.pushNamed(context, readerRoute,
+          arguments: {'book': book, 'currentPage': bookmark.pageNumber});
+    }
     // update bookmarks
     _bookmarks = await repository.getBookmarks();
     notifyListeners();

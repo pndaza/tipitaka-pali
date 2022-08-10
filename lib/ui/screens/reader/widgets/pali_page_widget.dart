@@ -34,51 +34,49 @@ class _PaliPageWidgetState extends State<PaliPageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: HtmlWidget(
-          _formatContent(widget.htmlContent, widget.script),
-          factoryBuilder: () => _myFactory,
-          textStyle: TextStyle(fontSize: widget.fontSize),
-          customStylesBuilder: (element) {
-            // if (element.className == 'title' ||
-            //     element.className == 'book' ||
-            //     element.className == 'chapter' ||
-            //     element.className == 'subhead' ||
-            //     element.className == 'nikaya') {
-            //   return {
-            //     'text-align': 'center',
-            //     // 'text-decoration': 'none',
-            //   };
-            // }
-            if (element.localName == 'a') {
-              // print('found a tag: ${element.outerHtml}');
-              if (context.read<ThemeChangeNotifier>().isDarkMode) {
-                return {
-                  'color': 'white',
-                  'text-decoration': 'none',
-                };
-              } else {
-                return {
-                  'color': 'black',
-                  'text-decoration': 'none',
-                };
-              }
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: HtmlWidget(
+        _formatContent(widget.htmlContent, widget.script),
+        factoryBuilder: () => _myFactory,
+        textStyle: TextStyle(fontSize: widget.fontSize, inherit: false),
+        customStylesBuilder: (element) {
+          // if (element.className == 'title' ||
+          //     element.className == 'book' ||
+          //     element.className == 'chapter' ||
+          //     element.className == 'subhead' ||
+          //     element.className == 'nikaya') {
+          //   return {
+          //     'text-align': 'center',
+          //     // 'text-decoration': 'none',
+          //   };
+          // }
+          if (element.localName == 'a') {
+            // print('found a tag: ${element.outerHtml}');
+            if (context.read<ThemeChangeNotifier>().isDarkMode) {
+              return {
+                'color': 'white',
+                'text-decoration': 'none',
+              };
+            } else {
+              return {
+                'color': 'black',
+                'text-decoration': 'none',
+              };
             }
-            // no style
-            return {'text-decoration': 'none'};
-          },
-          onTapUrl: (word) {
-            if (widget.onClick != null) {
-              // #goto is used for scrolling to selected text
-              if (word != '#goto') {
-                widget.onClick!(word);
-              }
+          }
+          // no style
+          return {'text-decoration': 'none'};
+        },
+        onTapUrl: (word) {
+          if (widget.onClick != null) {
+            // #goto is used for scrolling to selected text
+            if (word != '#goto') {
+              widget.onClick!(word);
             }
-            return false;
-          },
-        ),
+          }
+          return false;
+        },
       ),
     );
   }

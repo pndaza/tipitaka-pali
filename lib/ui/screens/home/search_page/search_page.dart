@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
@@ -41,6 +40,7 @@ class _SearchPageState extends State<SearchPage> {
         child: Consumer<SearchPageViewModel>(builder: (context, vm, child) {
           return Scaffold(
               appBar: AppBar(
+                automaticallyImplyLeading: false,
                 title: Text(AppLocalizations.of(context)!.search),
                 centerTitle: true,
               ),

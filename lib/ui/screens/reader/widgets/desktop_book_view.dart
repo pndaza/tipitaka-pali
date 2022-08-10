@@ -7,8 +7,8 @@ import '../../../../services/provider/script_language_provider.dart';
 import '../../../../utils/pali_script.dart';
 import 'pali_page_widget.dart';
 
-class DesktopPageView extends StatelessWidget {
-  const DesktopPageView({Key? key}) : super(key: key);
+class DesktopBookView extends StatelessWidget {
+  const DesktopBookView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +43,8 @@ class DesktopPageView extends StatelessWidget {
           romanText: content,
           isHtmlText: true,
         );
+
+        // return Text(content);
         return PaliPageWidget(
           htmlContent: content,
           script: script,

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tipitaka_pali/ui/screens/home/opened_books_provider.dart';
 import 'package:tipitaka_pali/ui/screens/home/search_page/search_page.dart';
+import 'package:tipitaka_pali/utils/platform_info.dart';
 
 import '../../../business_logic/models/search_result.dart';
 import '../../../routes.dart';
@@ -96,10 +99,19 @@ class SearchResultController extends ChangeNotifier {
   }
 
   void openBook(SearchResult result, BuildContext context) {
-    Navigator.pushNamed(context, readerRoute, arguments: {
-      'book': result.book,
-      'currentPage': result.pageNumber,
-      'textToHighlight': searchWord
-    });
+    if (PlatformInfo.isDesktop) {
+      final openedBooksProvider = context.read<OpenedBooksProvider>();
+      openedBooksProvider.add(
+        book: result.book,
+        currentPage: result.pageNumber,
+        textToHighlight: searchWord,
+      );
+    } else {
+      Navigator.pushNamed(context, readerRoute, arguments: {
+        'book': result.book,
+        'currentPage': result.pageNumber,
+        'textToHighlight': searchWord
+      });
+    }
   }
 }
