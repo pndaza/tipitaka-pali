@@ -23,58 +23,105 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends State<Home> with TickerProviderStateMixin {
   // final isMobile = Platform.isAndroid || Platform.isIOS;
 
   int _currentIndex = 0;
-
   bool isExtended = false;
+
+  late final AnimationController _animationController;
+
+  late double masterWidth;
+  @override
+  void initState() {
+    super.initState();
+    masterWidth = 350;
+    _animationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 500));
+  }
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         create: (_) => OpenedBooksProvider(),
         child: Scaffold(
-            body: Row(
+            body: Stack(
               children: [
-                NavigationRail(
-                  leading: Ink.image(
-                    height: 64,
-                    width: 64,
-                    image: const AssetImage('assets/icon/icon.png'),
-                    fit: BoxFit.scaleDown,
-                  ),
-                  destinations: [
-                    NavigationRailDestination(
-                      icon: const Icon(Icons.home),
-                      label: Text(AppLocalizations.of(context)!.home),
+                Row(
+                  children: [
+                    NavigationRail(
+                      leading: Ink.image(
+                        height: 48,
+                        width: 48,
+                        image: const AssetImage('assets/icon/icon.png'),
+                        fit: BoxFit.scaleDown,
+                      ),
+                      destinations: [
+                        NavigationRailDestination(
+                          icon: const Icon(Icons.home),
+                          label: Text(AppLocalizations.of(context)!.home),
+                        ),
+                        NavigationRailDestination(
+                          icon: const Icon(Icons.history),
+                          label: Text(AppLocalizations.of(context)!.recent),
+                        ),
+                        NavigationRailDestination(
+                          icon: const Icon(Icons.bookmark),
+                          label: Text(AppLocalizations.of(context)!.bookmark),
+                        ),
+                        NavigationRailDestination(
+                          icon: const Icon(Icons.search),
+                          label: Text(AppLocalizations.of(context)!.search),
+                        ),
+                        NavigationRailDestination(
+                          icon: const Icon(Icons.find_in_page),
+                          label: Text(AppLocalizations.of(context)!.dictionary),
+                        ),
+                        NavigationRailDestination(
+                          icon: const Icon(Icons.settings),
+                          label: Text(AppLocalizations.of(context)!.settings),
+                        ),
+                      ],
+                      // labelType: NavigationRailLabelType.all,
+                      groupAlignment: -1.0,
+                      selectedIndex: _currentIndex,
+                      extended: isExtended,
+                      onDestinationSelected: _changePage,
                     ),
-                    NavigationRailDestination(
-                      icon: const Icon(Icons.history),
-                      label: Text(AppLocalizations.of(context)!.recent),
-                    ),
-                    NavigationRailDestination(
-                      icon: const Icon(Icons.bookmark),
-                      label: Text(AppLocalizations.of(context)!.bookmark),
-                    ),
-                    NavigationRailDestination(
-                      icon: const Icon(Icons.search),
-                      label: Text(AppLocalizations.of(context)!.search),
-                    ),
-                    NavigationRailDestination(
-                      icon: const Icon(Icons.find_in_page),
-                      label: Text(AppLocalizations.of(context)!.dictionary),
-                    ),
-                    NavigationRailDestination(
-                      icon: const Icon(Icons.settings),
-                      label: Text(AppLocalizations.of(context)!.settings),
-                    ),
+                    Expanded(
+                        child: MasterDetailContainer(
+                      master: _getScreen(context, _currentIndex),
+                      detail: const ReaderContainer(),
+                      isDesktop: PlatformInfo.isDesktop,
+                      masterWidth: masterWidth,
+                    )),
                   ],
-                  selectedIndex: _currentIndex,
-                  extended: isExtended,
-                  onDestinationSelected: _changePage,
                 ),
-                Expanded(child: _getScreen(context, _currentIndex)),
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: SizedBox(
+                    width: 64,
+                    height: 64,
+                    child: Center(
+                      child: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              if (masterWidth == 0) {
+                                _animationController.reverse();
+                                masterWidth = 350;
+                              } else {
+                                _animationController.forward();
+                                masterWidth = 0;
+                              }
+                            });
+                          },
+                          icon: AnimatedIcon(
+                            icon: AnimatedIcons.arrow_menu,
+                            progress: _animationController,
+                          )),
+                    ),
+                  ),
+                )
               ],
             ),
             bottomNavigationBar: !PlatformInfo.isDesktop
@@ -111,48 +158,25 @@ class _HomeState extends State<Home> {
     });
   }
 
-  _getScreen(BuildContext context, int index) {
-    const readerContainer = ReaderContainer();
+  Widget _getScreen(BuildContext context, int index) {
     switch (index) {
       case 0:
-        return MasterDetailContainer(
-          master: HomePage(),
-          detail: readerContainer,
-          isDesktop: PlatformInfo.isDesktop,
-        );
+        return HomePage();
       case 1:
-        return MasterDetailContainer(
-          master: const RecentPage(),
-          detail: readerContainer,
-          isDesktop: PlatformInfo.isDesktop,
-        );
+        return const RecentPage();
       case 2:
-        return MasterDetailContainer(
-          master: const BookmarkPage(),
-          detail: readerContainer,
-          isDesktop: PlatformInfo.isDesktop,
-        );
+        return const BookmarkPage();
       case 3:
-        return MasterDetailContainer(
-          master: const Navigator(
+        return const Navigator(
             initialRoute: '/search',
-            onGenerateRoute: RouteGenerator.generateRoute),
-          detail: readerContainer,
-          isDesktop: PlatformInfo.isDesktop,
-        );
+            onGenerateRoute: RouteGenerator.generateRoute);
       // only in desktop
       case 4:
-        return MasterDetailContainer(
-          master: const DictionaryPage(),
-          detail: readerContainer,
-          isDesktop: PlatformInfo.isDesktop,
-        );
+        return const DictionaryPage();
       case 5:
-        return MasterDetailContainer(
-          master: const SettingPage(),
-          detail: readerContainer,
-          isDesktop: PlatformInfo.isDesktop,
-        );
+        return const SettingPage();
+      default:
+        return HomePage();
     }
   }
 }
