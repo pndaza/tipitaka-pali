@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 import 'package:tabbed_view/tabbed_view.dart';
 import 'package:provider/provider.dart';
 import 'package:tipitaka_pali/ui/screens/home/opened_books_provider.dart';
@@ -47,8 +46,7 @@ class _ReaderContainerState extends State<ReaderContainer> {
           child: Text(
             PaliScript.getScriptOf(
               script: context.watch<ScriptLanguageProvider>().currentScript,
-              romanText: (
-                '''
+              romanText: ('''
 Sabbapāpassa akaraṇaṃ
 Kusalassa upasampadā
 Sacittapa⁠riyodāpanaṃ
@@ -85,6 +83,12 @@ Etaṃ buddhānasāsanaṃ
         // final book = books.elementAt(index)['book'] as Book;
         // final currentPage = books.elementAt(index)['current_page'] as int?;
         provider.remove(index: index);
+      },
+      onTabSelection: (selectedIndex) {
+        if (selectedIndex != null) {
+          final openedBookController = context.read<OpenedBooksProvider>();
+          openedBookController.updateSelectedBookIndex(selectedIndex);
+        }
       },
     );
   }

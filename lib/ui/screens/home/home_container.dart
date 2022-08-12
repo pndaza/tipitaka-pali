@@ -38,7 +38,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     super.initState();
 
     _scaleAnimationController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 300));
+        vsync: this, duration: const Duration(milliseconds: 500));
 
     _animation = CurvedAnimation(
       parent: _scaleAnimationController,
@@ -99,13 +99,21 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                           child: Center(
                             child: IconButton(
                                 onPressed: () {
-                                  if (_isShowing) {
-                                    _animatedIconController.reverse();
+                                  if (_scaleAnimationController.status ==
+                                      AnimationStatus.completed) {
                                     _scaleAnimationController.reverse();
+                                    _animatedIconController.reverse();
                                   } else {
-                                    _animatedIconController.forward();
                                     _scaleAnimationController.forward();
+                                    _animatedIconController.forward();
                                   }
+                                  // if (_isShowing) {
+                                  //   _animatedIconController.reverse();
+                                  //   _scaleAnimationController.reverse();
+                                  // } else {
+                                  //   _animatedIconController.forward();
+                                  //   _scaleAnimationController.forward();
+                                  // }
                                   _isShowing = !_isShowing;
                                 },
                                 icon: AnimatedIcon(
@@ -127,14 +135,16 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   void _changePage(int index) {
-    setState(() {
-      _currentIndex = index;
-      if (!_isShowing) {
-        _animatedIconController.forward();
-        _scaleAnimationController.forward();
-      }
-      _isShowing = !_isShowing;
-    });
+    if (_scaleAnimationController.status == AnimationStatus.completed) {
+      _scaleAnimationController.reverse();
+      _animatedIconController.reverse();
+    }
+    if (index != _currentIndex) {
+      setState(() {
+        _currentIndex = index;
+        _isShowing = !_isShowing;
+      });
+    }
   }
 
   Widget _getScreen(BuildContext context, int index) {

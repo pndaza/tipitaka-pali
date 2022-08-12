@@ -1,11 +1,10 @@
-import 'dart:io';
-
 import 'package:aligned_dialog/aligned_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:side_sheet/side_sheet.dart';
+import 'package:tipitaka_pali/ui/screens/home/opened_books_provider.dart';
 import 'package:tipitaka_pali/utils/platform_info.dart';
 import '../../../../app.dart';
 import '../../../../business_logic/models/book.dart';
@@ -245,6 +244,12 @@ class ControlBar extends StatelessWidget {
       BuildContext context, String bookID, String bookName, int pageNumber) {
     Navigator.of(context).pop();
     final book = Book(id: bookID, name: bookName);
+
+    if (PlatformInfo.isDesktop) {
+      final openedBookController = context.read<OpenedBooksProvider>();
+      openedBookController.add(book: book, currentPage: pageNumber);
+    }
+
     Navigator.pushNamed(context, readerRoute, arguments: {
       'book': book,
       'currentPage': pageNumber,
@@ -256,7 +261,6 @@ class ControlBar extends StatelessWidget {
     Navigator.pop(context);
 
     if (PlatformInfo.isDesktop) {
-
       final toc = await showDialog<Toc>(
         barrierDismissible: true,
         context: context,

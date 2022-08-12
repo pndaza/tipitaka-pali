@@ -6,6 +6,7 @@ import 'package:preload_page_view/preload_page_view.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
+import 'package:tipitaka_pali/ui/screens/home/opened_books_provider.dart';
 // import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../services/dao/bookmark_dao.dart';
@@ -370,6 +371,9 @@ class ReaderViewModel with ChangeNotifier {
   Future onPageChanged(int index) async {
     currentPage = book.firstPage! + index;
     notifyListeners();
+
+    final openedBookController = context.read<OpenedBooksProvider>();
+    openedBookController.update(newPageNumber: currentPage!);
     await _saveToRecent();
   }
 
