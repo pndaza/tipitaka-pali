@@ -19,7 +19,8 @@ class MasterDetailContainer extends StatefulWidget {
   State<MasterDetailContainer> createState() => _MasterDetailContainerState();
 }
 
-class _MasterDetailContainerState extends State<MasterDetailContainer> with TickerProviderStateMixin{
+class _MasterDetailContainerState extends State<MasterDetailContainer>
+    with TickerProviderStateMixin {
   late final MultiSplitViewController multiSplitViewController;
 
   @override
@@ -62,14 +63,7 @@ class _MasterDetailContainerState extends State<MasterDetailContainer> with Tick
         child: MultiSplitView(
             controller: multiSplitViewController,
             children: [
-              AnimatedSize(
-                child: widget.masterWidth == 0
-                    ? const SizedBox.shrink()
-                    : widget.master,
-                duration: const Duration(milliseconds: 1500),
-                alignment: Alignment.centerLeft,
-              ),
-              // widget.master,
+              widget.master,
               widget.detail,
             ],
             resizable: true,

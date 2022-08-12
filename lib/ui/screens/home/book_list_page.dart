@@ -13,7 +13,7 @@ import '../../../services/provider/script_language_provider.dart';
 import '../../../utils/pali_script.dart';
 import '../../widgets/colored_text.dart';
 
-class HomePage extends StatelessWidget {
+class BookListPage extends StatelessWidget {
   // key will be use for load book list from database
   // value will be use for TabBar Title
 
@@ -24,7 +24,7 @@ class HomePage extends StatelessWidget {
     'annya': 'Añña'
   };
 
-  HomePage({Key? key}) : super(key: key);
+  BookListPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -113,6 +113,7 @@ class HomePage extends StatelessWidget {
           if (snapshot.hasData) {
             final listItems = snapshot.data!;
             return ListView.separated(
+              controller: ScrollController(),
                 itemCount: listItems.length,
                 itemBuilder: (context, index) => ListTile(
                       title: listItems[index].build(context),
