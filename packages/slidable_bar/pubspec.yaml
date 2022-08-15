@@ -1,0 +1,24 @@
+name: slidable_bar
+description: A Flutter package to show SideBar and hide it and custimaze your clicker.
+version: 1.1.1
+issue_tracker: https://github.com/mahmoud-haj-ali/slidable_bar/issues
+homepage: https://github.com/mahmoud-haj-ali/slidable_bar
+publish_to: none
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+
+flutter:
+

@@ -1,9 +1,9 @@
-import 'package:aligned_dialog/aligned_dialog.dart';
+// import 'package:aligned_dialog/aligned_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
-import 'package:side_sheet/side_sheet.dart';
+// import 'package:side_sheet/side_sheet.dart';
 import 'package:tipitaka_pali/ui/screens/home/opened_books_provider.dart';
 import 'package:tipitaka_pali/utils/platform_info.dart';
 import '../../../../app.dart';

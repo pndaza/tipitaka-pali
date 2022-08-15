@@ -380,6 +380,7 @@ class ReaderViewModel with ChangeNotifier {
   Future onSliderChanged(double value) async {
     currentPage = value.toInt();
     notifyListeners();
+
   }
 
   Future gotoPage(double value) async {
@@ -388,6 +389,9 @@ class ReaderViewModel with ChangeNotifier {
     preloadPageController?.jumpToPage(index);
     pageController?.jumpToPage(index);
     itemScrollController?.jumpTo(index: index);
+    
+    final openedBookController = context.read<OpenedBooksProvider>();
+    openedBookController.update(newPageNumber: currentPage!);
 
     //await _saveToRecent();
   }
