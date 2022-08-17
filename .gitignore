@@ -108,6 +108,10 @@ unlinked_spec.ds
 # macOS
 **/macos/Flutter/GeneratedPluginRegistrant.swift
 
+#appimage related
+TipitakaPaliReader.AppDir
+*.AppImage
+
 # Coverage
 coverage/
 
