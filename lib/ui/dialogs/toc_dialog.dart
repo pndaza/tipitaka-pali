@@ -10,13 +10,14 @@ class TocDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
+    return Material(
+      child: Column(
         children: [
           Stack(alignment: Alignment.center, children: [
             Text(
               AppLocalizations.of(context)!.table_of_contents,
-              style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+              style:
+                  const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
             ),
             Align(
                 alignment: Alignment.centerRight,

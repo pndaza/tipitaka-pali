@@ -61,8 +61,8 @@ dependencies:
   multi_split_view: ^2.1.0
   tabbed_view: ^1.13.0+1
   fwfh_text_style: ^2.22.08
-  aligned_dialog: ^0.0.6
-  # side_sheet: ^1.0.2
+  # aligned_dialog: ^0.0.6
+  side_sheet: ^1.0.2
   slidable_bar:
     path: packages/slidable_bar
 

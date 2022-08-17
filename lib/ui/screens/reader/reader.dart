@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:slidable_bar/slidable_bar.dart';
 import 'package:tipitaka_pali/app.dart';
 import 'package:tipitaka_pali/business_logic/models/book.dart';
 import 'package:tipitaka_pali/business_logic/view_models/reader_view_model.dart';
@@ -38,9 +39,18 @@ class Reader extends StatelessWidget {
                 if (snapshot.hasData) {
                   if (PlatformInfo.isDesktop) {
                     return const Scaffold(
-                        // appBar: ReaderAppBar(),
-                        body: DesktopBookView(),
-                        bottomNavigationBar: SafeArea(child: ControlBar()));
+                      // appBar: ReaderAppBar(),
+                      body: SlidableBar(
+                        side: Side.bottom,
+                        child: DesktopBookView(),
+                        barContent: ControlBar(),
+                        size: 100,
+                        frontColor: Colors.tealAccent,
+                        clickerSize: 32,
+                        clickerPosition: 0.98,
+                      ),
+                      // bottomNavigationBar: SafeArea(child: ControlBar()),
+                    );
                   }
                   return const Scaffold(
                     appBar: ReaderAppBar(),
