@@ -47,8 +47,9 @@ class SimpleInputDialog extends StatelessWidget {
         border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16.0), gapPadding: 0.0),
       ),
-      maxLines: null,
-      maxLength: 50,
+      minLines: 3,
+      maxLines: 4,
+      maxLength: 70,
       // autofocus: true,
     );
   }

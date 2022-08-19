@@ -38,14 +38,30 @@ class Reader extends StatelessWidget {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   if (PlatformInfo.isDesktop) {
-                    return const Scaffold(
+                    return Scaffold(
                       // appBar: ReaderAppBar(),
                       body: SlidableBar(
                         side: Side.bottom,
-                        child: DesktopBookView(),
-                        barContent: ControlBar(),
+                        child: const DesktopBookView(),
+                        barContent: const ControlBar(),
                         size: 100,
-                        frontColor: Colors.tealAccent,
+                        clicker: Container(
+                          width: 32,
+                          height: 20,
+                          child: const Icon(
+                            Icons.keyboard_arrow_up,
+                            color: Colors.white,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.blue.withOpacity(0.5),
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(16),
+                              topRight: Radius.circular(16),
+                            ),
+                          ),
+                        ),
+                        frontColor: Colors.white,
+                        backgroundColor: Colors.blue.withOpacity(0.3),
                         clickerSize: 32,
                         clickerPosition: 0.98,
                       ),

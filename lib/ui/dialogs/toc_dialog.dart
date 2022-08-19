@@ -29,7 +29,7 @@ class TocDialog extends StatelessWidget {
                   ),
                 ))
           ]),
-          const Divider(),
+          const Divider(color: Colors.grey),
           FutureBuilder<List<TocListItem>>(
               future: TocViewModel(bookID).fetchTocListItems(),
               builder: (context, snapshot) {

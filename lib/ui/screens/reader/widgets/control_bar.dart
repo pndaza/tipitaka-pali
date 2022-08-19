@@ -3,21 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
-import 'package:side_sheet/side_sheet.dart';
-// import 'package:side_sheet/side_sheet.dart';
 import 'package:tipitaka_pali/ui/screens/home/opened_books_provider.dart';
 import 'package:tipitaka_pali/utils/platform_info.dart';
+
 import '../../../../app.dart';
 import '../../../../business_logic/models/book.dart';
 import '../../../../business_logic/models/paragraph_mapping.dart';
 import '../../../../business_logic/models/toc.dart';
 import '../../../../business_logic/view_models/reader_view_model.dart';
 import '../../../../routes.dart';
+import '../../../../services/provider/script_language_provider.dart';
+import '../../../../utils/pali_script.dart';
 import '../../../dialogs/goto_dialog.dart';
 import '../../../dialogs/simple_input_dialog.dart';
 import '../../../dialogs/toc_dialog.dart';
 import 'slider.dart';
-import '../../../widgets/icon_text_button.dart';
 
 class ControlBar extends StatelessWidget {
   const ControlBar({Key? key}) : super(key: key);
@@ -36,273 +36,6 @@ class ControlBar extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  _openNavDialog(BuildContext context, ReaderViewModel vm) async {
-    showMaterialModalBottomSheet(
-      context: context,
-      builder: (context) => SingleChildScrollView(
-        controller: ModalScrollController.of(context),
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: PlatformInfo.isDesktop
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    IconTextButton(
-                        icon: Icons.directions_walk,
-                        text: AppLocalizations.of(context)!.goto,
-                        onPressed: () => _openGotoDialog(context, vm)),
-                    IconTextButton(
-                        icon: Icons.local_library,
-                        text: AppLocalizations.of(context)!.mat,
-                        onPressed: () => _selectParagraphDialog(context, vm)),
-                    IconTextButton(
-                        icon: Icons.toc,
-                        text: AppLocalizations.of(context)!.toc,
-                        onPressed: () => _openTocDialog(context, vm)),
-                    IconTextButton(
-                        icon: Icons.book_outlined,
-                        text: AppLocalizations.of(context)!.bookmark,
-                        onPressed: () {
-                          _addBookmark(vm, context);
-                        }),
-                    IconTextButton(
-                        icon: Icons.remove_circle_outline,
-                        text: AppLocalizations.of(context)!.font,
-                        onPressed: vm.decreaseFontSize),
-                    IconTextButton(
-                        icon: Icons.add_circle_outline,
-                        text: AppLocalizations.of(context)!.font,
-                        onPressed: vm.increaseFontSize),
-                    IconTextButton(
-                        icon: Icons.settings,
-                        text: AppLocalizations.of(context)!.settings,
-                        onPressed: () => _openSettingPage(context)),
-                  ],
-                )
-              : Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        IconTextButton(
-                            icon: Icons.directions_walk,
-                            text: AppLocalizations.of(context)!.goto,
-                            onPressed: () => _openGotoDialog(context, vm)),
-                        IconTextButton(
-                            icon: Icons.local_library,
-                            text: AppLocalizations.of(context)!.mat,
-                            onPressed: () =>
-                                _selectParagraphDialog(context, vm)),
-                        IconTextButton(
-                            icon: Icons.toc,
-                            text: AppLocalizations.of(context)!.toc,
-                            onPressed: () => _openTocDialog(context, vm)),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        IconTextButton(
-                            icon: Icons.book_outlined,
-                            text: AppLocalizations.of(context)!.bookmark,
-                            onPressed: () {
-                              _addBookmark(vm, context);
-                            }),
-                        IconTextButton(
-                            icon: Icons.remove_circle_outline,
-                            text: AppLocalizations.of(context)!.font,
-                            onPressed: vm.decreaseFontSize),
-                        IconTextButton(
-                            icon: Icons.add_circle_outline,
-                            text: AppLocalizations.of(context)!.font,
-                            onPressed: vm.increaseFontSize),
-                        IconTextButton(
-                            icon: Icons.settings,
-                            text: AppLocalizations.of(context)!.settings,
-                            onPressed: () => _openSettingPage(context)),
-                      ],
-                    ),
-                  ],
-                ),
-        ),
-      ),
-    );
-  }
-
-  void _openGotoDialog(BuildContext context, ReaderViewModel vm) async {
-    final firstParagraph = await vm.getFirstParagraph();
-    final lastParagraph = await vm.getLastParagraph();
-    final gotoResult = await showDialog<GotoDialogResult>(
-      context: context,
-      builder: (BuildContext context) => GotoDialog(
-        firstPage: vm.book.firstPage!,
-        lastPage: vm.book.lastPage!,
-        firstParagraph: firstParagraph,
-        lastParagraph: lastParagraph,
-      ),
-    );
-    if (gotoResult != null) {
-      final int pageNumber = gotoResult.type == GotoType.page
-          ? gotoResult.number
-          : await vm.getPageNumber(gotoResult.number);
-      vm.gotoPage(pageNumber.toDouble());
-    }
-  }
-
-  void _selectParagraphDialog(BuildContext context, ReaderViewModel vm) async {
-    final paragraphs = await vm.getParagraphs();
-    paragraphs.isEmpty
-        ? _showNoExplanationDialog(context)
-        : _showParagraphSelectDialog(context, paragraphs);
-  }
-
-  Future<void> _showNoExplanationDialog(BuildContext context) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: true, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          // title: Text('AlertDialog Title'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              // ignore: prefer_const_literals_to_create_immutables
-              children: <Widget>[
-                // if current book is mula pali , it opens corresponded atthakatha
-                // if attha, will open tika
-                Text(AppLocalizations.of(context)!.unable_open_page),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text(AppLocalizations.of(context)!.close),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> _showParagraphSelectDialog(
-      BuildContext context, List<ParagraphMapping> paragraphs) {
-    return showModalBottomSheet<void>(
-        context: context,
-        builder: (BuildContext bc) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Center(
-                child: Text(
-                  AppLocalizations.of(context)!.select_paragraph,
-                  style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-              ),
-              const Divider(),
-              SizedBox(
-                height: 280,
-                child: ListView.separated(
-                    itemBuilder: (_, i) => ListTile(
-                          subtitle: Text(
-                              '${paragraphs[i].bookName} - ${paragraphs[i].expPageNumber}'),
-                          title: Text(
-                              '${AppLocalizations.of(context)!.paragraph_number}: ${paragraphs[i].paragraph}'),
-                          onTap: () {
-                            _openBook(
-                                context,
-                                paragraphs[i].expBookID,
-                                paragraphs[i].bookName,
-                                paragraphs[i].expPageNumber);
-                          },
-                        ),
-                    separatorBuilder: (_, __) => const Divider(),
-                    itemCount: paragraphs.length),
-              ),
-            ],
-          );
-        });
-  }
-
-  void _openBook(
-      BuildContext context, String bookID, String bookName, int pageNumber) {
-    Navigator.of(context).pop();
-    final book = Book(id: bookID, name: bookName);
-
-    if (PlatformInfo.isDesktop) {
-      final openedBookController = context.read<OpenedBooksProvider>();
-      openedBookController.add(book: book, currentPage: pageNumber);
-    }
-
-    Navigator.pushNamed(context, readerRoute, arguments: {
-      'book': book,
-      'currentPage': pageNumber,
-    });
-  }
-
-  void _openTocDialog(BuildContext context, ReaderViewModel vm) async {
-    // closing navigation bar
-    Navigator.pop(context);
-
-    if (PlatformInfo.isDesktop) {
-      final toc = await showDialog<Toc>(
-        barrierDismissible: true,
-        context: context,
-        builder: (BuildContext context) {
-          return Align(
-            alignment: Alignment.centerRight,
-            child: SizedBox(width: 400, child: TocDialog(bookID: vm.book.id)),
-          );
-        },
-      );
-
-      if (toc != null) {
-        vm.gotoPageAndScroll(toc.pageNumber.toDouble(), toc.name);
-      }
-
-      return;
-    }
-
-    final toc = await showBarModalBottomSheet<Toc>(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
-        ),
-        expand: false,
-        context: context,
-        builder: (context) {
-          return TocDialog(bookID: vm.book.id);
-        });
-    if (toc != null) {
-      vm.gotoPageAndScroll(toc.pageNumber.toDouble(), toc.name);
-    }
-  }
-
-  void _openSettingPage(BuildContext context) async {
-    await Navigator.pushNamed(context, settingRoute);
-  }
-
-  void _addBookmark(ReaderViewModel vm, BuildContext context) async {
-    final note = await showDialog<String>(
-      context: context,
-      builder: (context) {
-        return SimpleInputDialog(
-          hintText: AppLocalizations.of(context)!.enter_note,
-          cancelLabel: AppLocalizations.of(context)!.cancel,
-          okLabel: AppLocalizations.of(context)!.save,
-        );
-      },
-    );
-    //print(note);
-    if (note != null) {
-      vm.saveToBookmark(note);
-    }
   }
 }
 
@@ -328,9 +61,16 @@ class UpperRow extends StatelessWidget {
     final vm = context.read<ReaderViewModel>();
     final firstParagraph = await vm.getFirstParagraph();
     final lastParagraph = await vm.getLastParagraph();
-    final gotoResult = await showDialog<GotoDialogResult>(
+    final gotoResult = await showGeneralDialog<GotoDialogResult>(
       context: context,
-      builder: (BuildContext context) => GotoDialog(
+      transitionDuration: const Duration(milliseconds: 300),
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        return FadeTransition(
+          opacity: animation,
+          child: ScaleTransition(scale: animation, child: child),
+        );
+      },
+      pageBuilder: (context, animation, secondaryAnimation) => GotoDialog(
         firstPage: vm.book.firstPage!,
         lastPage: vm.book.lastPage!,
         firstParagraph: firstParagraph,
@@ -367,16 +107,19 @@ class UpperRow extends StatelessWidget {
         pageBuilder: (context, animation, secondaryAnimation) {
           return Align(
             alignment: Alignment.centerRight,
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+            child: Material(
+              type: MaterialType.transparency,
               child: Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
                 width: MediaQuery.of(context).size.width > 600
                     ? sideSheetWidth
                     : double.infinity,
-                decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(32),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.background,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(16),
+                      bottomLeft: Radius.circular(16),
                     )),
                 child: TocDialog(bookID: vm.book.id),
               ),
@@ -416,7 +159,7 @@ class LowerRow extends StatelessWidget {
         children: [
           IconButton(
               onPressed: () => _onMATButtomClicked(context),
-              icon: const Icon(Icons.local_library_outlined)),
+              icon: const Icon(Icons.comment_outlined)),
           IconButton(
               onPressed: () => _onIncreaseButtonClicked(context),
               icon: const Icon(Icons.add_circle_outline)),
@@ -444,9 +187,16 @@ class LowerRow extends StatelessWidget {
 
   void _addBookmark(BuildContext context) async {
     final vm = context.read<ReaderViewModel>();
-    final note = await showDialog<String>(
+    final note = await showGeneralDialog<String>(
       context: context,
-      builder: (context) {
+      transitionDuration: const Duration(milliseconds: 300),
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        return FadeTransition(
+          opacity: animation,
+          child: ScaleTransition(scale: animation, child: child),
+        );
+      },
+      pageBuilder: (context, animation, secondaryAnimation) {
         return SimpleInputDialog(
           hintText: AppLocalizations.of(context)!.enter_note,
           cancelLabel: AppLocalizations.of(context)!.cancel,
@@ -529,43 +279,59 @@ class LowerRow extends StatelessWidget {
       BuildContext context, List<ParagraphMapping> paragraphs) {
     return showModalBottomSheet<Map<String, dynamic>>(
         context: context,
+        constraints: const BoxConstraints(maxWidth: 400),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0)),
+        ),
         builder: (BuildContext bc) {
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Center(
+              Container(
+                padding: const EdgeInsets.all(16.0),
                 child: Text(
                   AppLocalizations.of(context)!.select_paragraph,
+                  textAlign: TextAlign.center,
                   style: const TextStyle(
                       fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
-              const Divider(),
-              SizedBox(
-                height: 280,
-                child: ListView.separated(
-                    itemBuilder: (_, i) => ListTile(
-                          subtitle: Text(
-                              '${paragraphs[i].bookName} - ${paragraphs[i].expPageNumber}'),
-                          title: Text(
-                              '${AppLocalizations.of(context)!.paragraph_number}: ${paragraphs[i].paragraph}'),
-                          onTap: () {
-                            Navigator.pop(context, {
-                              'book_id': paragraphs[i].expBookID,
-                              'book_name': paragraphs[i].bookName,
-                              'page_number': paragraphs[i].expPageNumber,
-                            });
-
-                            // _openBook(
-                            //     context,
-                            //     paragraphs[i].expBookID,
-                            //     paragraphs[i].bookName,
-                            //     paragraphs[i].expPageNumber);
-                          },
-                        ),
-                    separatorBuilder: (_, __) => const Divider(),
-                    itemCount: paragraphs.length),
+              Divider(
+                height: 1,
+                color: Colors.grey.withOpacity(0.5),
               ),
+              ListView.separated(
+                  shrinkWrap: true,
+                  itemBuilder: (_, i) {
+                    return ListTile(
+                      subtitle: Text(
+                        PaliScript.getScriptOf(
+                            script: context
+                                .read<ScriptLanguageProvider>()
+                                .currentScript,
+                            romanText:
+                                '${paragraphs[i].bookName} - ${paragraphs[i].expPageNumber}'),
+                      ),
+                      title: Text(
+                          '${AppLocalizations.of(context)!.paragraph_number}: ${paragraphs[i].paragraph}'),
+                      onTap: () {
+                        Navigator.pop(context, {
+                          'book_id': paragraphs[i].expBookID,
+                          'book_name': paragraphs[i].bookName,
+                          'page_number': paragraphs[i].expPageNumber,
+                        });
+
+                        // _openBook(
+                        //     context,
+                        //     paragraphs[i].expBookID,
+                        //     paragraphs[i].bookName,
+                        //     paragraphs[i].expPageNumber);
+                      },
+                    );
+                  },
+                  separatorBuilder: (_, __) => const Divider(),
+                  itemCount: paragraphs.length),
             ],
           );
         });

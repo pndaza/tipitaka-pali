@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
 import 'package:tipitaka_pali/ui/screens/home/opened_books_provider.dart';
+import 'package:tipitaka_pali/utils/platform_info.dart';
 // import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../services/dao/bookmark_dao.dart';
@@ -380,7 +381,6 @@ class ReaderViewModel with ChangeNotifier {
   Future onSliderChanged(double value) async {
     currentPage = value.toInt();
     notifyListeners();
-
   }
 
   Future gotoPage(double value) async {
@@ -389,7 +389,7 @@ class ReaderViewModel with ChangeNotifier {
     preloadPageController?.jumpToPage(index);
     pageController?.jumpToPage(index);
     itemScrollController?.jumpTo(index: index);
-    
+
     final openedBookController = context.read<OpenedBooksProvider>();
     openedBookController.update(newPageNumber: currentPage!);
 
@@ -484,48 +484,92 @@ class ReaderViewModel with ChangeNotifier {
     word = word.replaceAll(RegExp(r'[^a-zA-ZāīūṅñṭḍṇḷṃĀĪŪṄÑṬḌHṆḶṂ]'), '');
     // convert ot lower case
     word = word.toLowerCase();
-    await showSlidingBottomSheet(context, builder: (context) {
-      //Widget for SlidingSheetDialog's builder method
-      final statusBarHeight = MediaQuery.of(context).padding.top;
-      final screenHeight = MediaQuery.of(context).size.height;
-      const marginTop = 24.0;
-      final slidingSheetDialogContent = SizedBox(
-        height: screenHeight - (statusBarHeight + marginTop),
-        child: DictionaryDialog(word: word),
-      );
 
-      return SlidingSheetDialog(
-        elevation: 8,
-        cornerRadius: 16,
-        // minHeight: 200,
-        snapSpec: const SnapSpec(
-          snap: true,
-          snappings: [0.4, 0.6, 0.8, 1.0],
-          positioning: SnapPositioning.relativeToSheetHeight,
-        ),
-        headerBuilder: (context, _) {
-          // building drag handle view
-          return Center(
-              heightFactor: 1,
-              child: Container(
-                width: 56,
-                height: 10,
-                // color: Colors.black45,
-                decoration: BoxDecoration(
-                  // border: Border.all(color: Colors.red),
-                  color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ));
+    if (PlatformInfo.isDesktop) {
+      const sideSheetWidth = 350.0;
+      showGeneralDialog(
+        context: context,
+        barrierLabel: 'TOC',
+        barrierDismissible: true,
+        transitionDuration: const Duration(milliseconds: 500),
+        transitionBuilder: (context, animation, secondaryAnimation, child) {
+          return SlideTransition(
+            position: Tween(begin: const Offset(-1, 0), end: const Offset(0, 0))
+                .animate(
+              CurvedAnimation(parent: animation, curve: Curves.linear),
+            ),
+            child: child,
+          );
         },
-        // this builder is called when state change
-        // normaly three states occurs
-        // first state - isLaidOut = false
-        // second state - islaidOut = true , isShown = false
-        // thirs state - islaidOut = true , isShown = ture
-        // to avoid there times rebuilding, return  prebuild content
-        builder: (context, state) => slidingSheetDialogContent,
+        pageBuilder: (context, animation, secondaryAnimation) {
+          return Align(
+            alignment: Alignment.centerLeft,
+            child: Material(
+              type: MaterialType.transparency,
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+                width: sideSheetWidth,
+                decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.background,
+                    borderRadius: const BorderRadius.only(
+                      topRight: Radius.circular(16),
+                      bottomRight: Radius.circular(16),
+                    )),
+                child: DictionaryDialog(word: word),
+              ),
+            ),
+          );
+        },
       );
-    });
+      return;
+    } else {
+      await showSlidingBottomSheet(
+        context,
+        builder: (context) {
+          //Widget for SlidingSheetDialog's builder method
+          final statusBarHeight = MediaQuery.of(context).padding.top;
+          final screenHeight = MediaQuery.of(context).size.height;
+          const marginTop = 24.0;
+          final slidingSheetDialogContent = SizedBox(
+            height: screenHeight - (statusBarHeight + marginTop),
+            child: DictionaryDialog(word: word),
+          );
+
+          return SlidingSheetDialog(
+            elevation: 8,
+            cornerRadius: 16,
+            // minHeight: 200,
+            snapSpec: const SnapSpec(
+              snap: true,
+              snappings: [0.4, 0.6, 0.8, 1.0],
+              positioning: SnapPositioning.relativeToSheetHeight,
+            ),
+            headerBuilder: (context, _) {
+              // building drag handle view
+              return Center(
+                  heightFactor: 1,
+                  child: Container(
+                    width: 56,
+                    height: 10,
+                    // color: Colors.black45,
+                    decoration: BoxDecoration(
+                      // border: Border.all(color: Colors.red),
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ));
+            },
+            // this builder is called when state change
+            // normaly three states occurs
+            // first state - isLaidOut = false
+            // second state - islaidOut = true , isShown = false
+            // thirs state - islaidOut = true , isShown = ture
+            // to avoid there times rebuilding, return  prebuild content
+            builder: (context, state) => slidingSheetDialogContent,
+          );
+        },
+      );
+    }
   }
 }
