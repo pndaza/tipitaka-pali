@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:tipitaka_pali/providers/navigation_provider.dart';
+import 'package:provider/provider.dart';
 
 class DeskTopNavigationBar extends StatelessWidget {
   const DeskTopNavigationBar({
     Key? key,
-    required this.selectedIndex,
-    this.onDestinationSelected,
+    // required this.selectedIndex,
+    // this.onDestinationSelected,
   }) : super(key: key);
 
-  final int selectedIndex;
-  final ValueChanged<int>? onDestinationSelected;
+  // final int selectedIndex;
+  // final ValueChanged<int>? onDestinationSelected;
 
   @override
   Widget build(BuildContext context) {
     const padding = EdgeInsets.zero;
+
+    final currentNaviagtionItem = context
+        .select<NavigationProvider, int>((value) => value.currentNavigation);
 
     return NavigationRail(
       leading: Ink.image(
@@ -22,6 +27,7 @@ class DeskTopNavigationBar extends StatelessWidget {
         image: const AssetImage('assets/icon/icon.png'),
         fit: BoxFit.scaleDown,
       ),
+      useIndicator: true,
       destinations: [
         NavigationRailDestination(
           icon: const Icon(Icons.home_outlined),
@@ -61,8 +67,9 @@ class DeskTopNavigationBar extends StatelessWidget {
         ),
       ],
       // labelType: NavigationRailLabelType.all,
-      selectedIndex: selectedIndex,
-      onDestinationSelected: onDestinationSelected,
+      selectedIndex: currentNaviagtionItem,
+      onDestinationSelected: (index) =>
+          context.read<NavigationProvider>().onClickedNavigationItem(index),
     );
   }
 }
