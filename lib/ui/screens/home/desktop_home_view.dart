@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tipitaka_pali/data/constants.dart';
 import 'package:tipitaka_pali/providers/navigation_provider.dart';
 
 import '../../widgets/my_vertical_divider.dart';
@@ -84,7 +85,7 @@ class _DesktopHomeViewState extends State<DesktopHomeView>
         Align(
           alignment: Alignment.bottomLeft,
           child: SizedBox(
-            width: 64,
+            width: navigationBarWidth,
             height: 64,
             child: Center(
               child: IconButton(

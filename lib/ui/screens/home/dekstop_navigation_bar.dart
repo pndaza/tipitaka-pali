@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:tipitaka_pali/data/constants.dart';
 import 'package:tipitaka_pali/providers/navigation_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -21,9 +22,10 @@ class DeskTopNavigationBar extends StatelessWidget {
         .select<NavigationProvider, int>((value) => value.currentNavigation);
 
     return NavigationRail(
+      minWidth: navigationBarWidth,
       leading: Ink.image(
-        height: 48,
-        width: 48,
+        height: navigationBarWidth,
+        width: navigationBarWidth,
         image: const AssetImage('assets/icon/icon.png'),
         fit: BoxFit.scaleDown,
       ),

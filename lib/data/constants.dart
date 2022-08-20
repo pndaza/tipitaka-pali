@@ -25,3 +25,5 @@ class AssetsFile {
     // 'tipitaka_pali_part.al',
   ];
 }
+
+double navigationBarWidth = 56;
