@@ -7,6 +7,8 @@ class NavigationProvider extends ChangeNotifier {
   int currentNavigation = 0;
   bool isNavigationPaneOpened = true;
 
+  final int _indexOfDictionaryNavigation = 4;
+
   void onClickedNavigationItem(int index) {
     if (!isNavigationPaneOpened) {
       isNavigationPaneOpened = !isNavigationPaneOpened;
@@ -21,6 +23,11 @@ class NavigationProvider extends ChangeNotifier {
 
   void toggleNavigationPane() {
     isNavigationPaneOpened = !isNavigationPaneOpened;
+    notifyListeners();
+  }
+
+  void moveToDictionaryPage() {
+    currentNavigation = _indexOfDictionaryNavigation;
     notifyListeners();
   }
 }

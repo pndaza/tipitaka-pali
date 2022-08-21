@@ -8,7 +8,7 @@ class DictionaryAlgorithmModeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final algoMode = context.select<DictionaryViewModel, DictAlgorithm>(
+    final algoMode = context.select<DictionaryController, DictAlgorithm>(
         (vm) => vm.currentAlgorithmMode);
 
     return DropdownButton<DictAlgorithm>(
@@ -17,7 +17,7 @@ class DictionaryAlgorithmModeView extends StatelessWidget {
           .map((algo) => DropdownMenuItem<DictAlgorithm>(
               value: algo, child: Text(algo.toStr())))
           .toList(),
-      onChanged: context.read<DictionaryViewModel>().onModeChanged,
+      onChanged: context.read<DictionaryController>().onModeChanged,
     );
   }
 }

@@ -12,8 +12,9 @@ class DictionaryDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<DictionaryViewModel>(
-      create: (context) => DictionaryViewModel(context, word),
+    return ChangeNotifierProvider<DictionaryController>(
+      create: (context) =>
+          DictionaryController(lookupWord: word)..onLoad(),
       child: Material(
         child: Stack(
           children: [
@@ -28,7 +29,7 @@ class DictionaryDialog extends StatelessWidget {
                   icon: const Icon(Icons.close, color: Colors.black),
                   onPressed: () => Navigator.pop(context),
                 ),
-                Expanded(child: DictionarySearchField(initialValue: word)),
+                const Expanded(child: DictionarySearchField()),
                 const Padding(
                   padding: EdgeInsets.all(8.0),
                   child: DictionaryAlgorithmModeView(),

@@ -9,57 +9,64 @@ import '../../../../utils/script_detector.dart';
 import '../controller/dictionary_controller.dart';
 
 class DictionarySearchField extends StatefulWidget {
-  const DictionarySearchField({Key? key, this.initialValue}) : super(key: key);
-  final String? initialValue;
+  const DictionarySearchField({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<DictionarySearchField> createState() => _DictionarySearchFieldState();
 }
 
 class _DictionarySearchFieldState extends State<DictionarySearchField> {
-  // late final TextEditingController textEditingController;
+  late final TextEditingController textEditingController;
+  late final DictionaryController dictionaryController;
+
   @override
   void initState() {
-    context.read<DictionaryViewModel>().textEditingController.text =
-        widget.initialValue == null
-            ? ''
-            : PaliScript.getScriptOf(
-                script: context.read<ScriptLanguageProvider>().currentScript,
-                romanText: widget.initialValue!);
-
-    // textEditingController = TextEditingController(
-    //     text: widget.initialValue == null
-    //         ? null
-    //         : PaliScript.getScriptOf(
-    //             script: context.read<ScriptLanguageProvider>().currentScript,
-    //             romanText: widget.initialValue!));
     super.initState();
+
+    dictionaryController = context.read<DictionaryController>();
+    textEditingController = TextEditingController();
+
+    final lookupWord = dictionaryController.lookupWord;
+    if (lookupWord != null) {
+      textEditingController.text = PaliScript.getScriptOf(
+          script: context.read<ScriptLanguageProvider>().currentScript,
+          romanText: lookupWord);
+    } else {
+      textEditingController.text = '';
+    }
+    dictionaryController.addListener(_lookUpWordListener);
   }
 
   @override
   void dispose() {
-    // textEditingController.dispose();
+    textEditingController.dispose();
     super.dispose();
+  }
+
+  void _lookUpWordListener() {
+    final lookupWord = dictionaryController.lookupWord;
+    if (lookupWord != null) {
+      textEditingController.text = PaliScript.getScriptOf(
+          script: context.read<ScriptLanguageProvider>().currentScript,
+          romanText: lookupWord);
+    } else {
+      textEditingController.text = '';
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final textEditingController =
-        context.watch<DictionaryViewModel>().textEditingController;
     return TypeAheadField(
         textFieldConfiguration: TextFieldConfiguration(
             autocorrect: false,
             controller: textEditingController,
             decoration: const InputDecoration(
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(16),
-                ),
+                borderRadius: BorderRadius.all(Radius.circular(16)),
               ),
-              contentPadding: EdgeInsets.symmetric(
-                vertical: 0,
-                horizontal: 4,
-              ),
+              contentPadding: EdgeInsets.symmetric(horizontal: 4),
             ),
             onChanged: (text) {
               // convert velthuis input to uni
@@ -78,7 +85,7 @@ class _DictionarySearchFieldState extends State<DictionarySearchField> {
             final romanText = PaliScript.getRomanScriptFrom(
                 script: inputLanguage, text: text);
             final suggestions = await context
-                .read<DictionaryViewModel>()
+                .read<DictionaryController>()
                 .getSuggestions(romanText);
             return suggestions;
           }
@@ -95,7 +102,7 @@ class _DictionarySearchFieldState extends State<DictionarySearchField> {
               ScriptDetector.getLanguage(textEditingController.text);
           textEditingController.text = PaliScript.getScriptOf(
               script: inputLanguage, romanText: suggestion);
-          context.read<DictionaryViewModel>().onClickSuggestion(suggestion);
+          context.read<DictionaryController>().onLookup(suggestion);
         });
   }
 }

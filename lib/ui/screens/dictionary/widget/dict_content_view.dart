@@ -12,8 +12,8 @@ class DictionaryContentView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final state = context.select<DictionaryViewModel, DictionaryState>(
-        (DictionaryViewModel vm) => vm.dictionaryState);
+    final state = context.select<DictionaryController, DictionaryState>(
+        (controller) => controller.dictionaryState);
 
     return state.when(
         initial: () => Container(),
@@ -24,11 +24,11 @@ class DictionaryContentView extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: HtmlWidget(
                   content,
-                  textStyle: TextStyle(fontSize: Prefs.fontSize.toDouble()),
+                  textStyle: TextStyle(fontSize: Prefs.fontSize.toDouble(), inherit: false),
                   factoryBuilder: () => _MyFactory(
                     onClicked: (word) {
-                      print(word);
-                      context.read<DictionaryViewModel>().onWordClicked(word);
+                      debugPrint(word);
+                      context.read<DictionaryController>().onWordClicked(word);
                     },
                   ),
                   //isSelectable: true,
@@ -89,12 +89,15 @@ class _MyFactory extends WidgetFactory {
 
       String inlineText = text.text!;
       // inlineText = inlineText.replaceAll('+', ' + '); // add space between +
-       // add space before + if not exist
-      inlineText = inlineText.replaceAllMapped(RegExp(r'(?<!\s)\+'), (match) => ' +');
-       // add space after + if not exist
-      inlineText = inlineText.replaceAllMapped(RegExp(r'\+(?!\s)'), (match) => '+ ');
-       // add space after . if not exist
-      inlineText = inlineText.replaceAllMapped(RegExp(r'\.(?!\s)'), (match) => '. ');
+      // add space before + if not exist
+      inlineText =
+          inlineText.replaceAllMapped(RegExp(r'(?<!\s)\+'), (match) => ' +');
+      // add space after + if not exist
+      inlineText =
+          inlineText.replaceAllMapped(RegExp(r'\+(?!\s)'), (match) => '+ ');
+      // add space after . if not exist
+      inlineText =
+          inlineText.replaceAllMapped(RegExp(r'\.(?!\s)'), (match) => '. ');
 
       return WordSelectableText(
         text: inlineText,

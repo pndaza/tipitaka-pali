@@ -9,7 +9,8 @@ import 'package:tipitaka_pali/services/repositories/dictionary_repo.dart';
 
 import 'dictionary_state.dart';
 
-
+// global variable
+ValueNotifier<String?> globalLookupWord = ValueNotifier<String?>(null);
 
 enum DictAlgorithm { Auto, TPR, DPR }
 
@@ -19,37 +20,49 @@ extension ParseToString on DictAlgorithm {
   }
 }
 
-class DictionaryViewModel with ChangeNotifier {
-  final BuildContext context;
-  String? _word;
+class DictionaryController with ChangeNotifier {
+  String? _lookupWord = '';
+  String? get lookupWord => _lookupWord;
 
-  late DictionaryState _dictionaryState;
+  DictionaryState _dictionaryState = const DictionaryState.initial();
   DictionaryState get dictionaryState => _dictionaryState;
+
   DictAlgorithm _currentAlgorithmMode = DictAlgorithm.Auto;
   DictAlgorithm get currentAlgorithmMode => _currentAlgorithmMode;
 
-  TextEditingController textEditingController = TextEditingController();
+  // TextEditingController textEditingController = TextEditingController();
 
-  DictionaryViewModel(this.context, this._word) {
-    _init();
+  DictionaryController({String? lookupWord}) : _lookupWord = lookupWord;
+
+  void onLoad() {
+    debugPrint('init dictionary controller');
+    globalLookupWord.addListener(_lookupWordListener);
+
+    if (_lookupWord != null) {
+      _lookupDefinition();
+    }
   }
 
-  Future<void> _init() async {
-    //
-    if (_word == null) {
-      //print('there is no initial lookup word');
-      _dictionaryState = const DictionaryState.initial();
-      notifyListeners();
-      return;
+  @override
+  void dispose() {
+    debugPrint('dictionary Controller is disposed');
+    globalLookupWord.removeListener(_lookupWordListener);
+    super.dispose();
+  }
+
+  void _lookupWordListener() {
+    if (globalLookupWord.value != null) {
+      _lookupWord = globalLookupWord.value;
+      debugPrint('lookup word: $_lookupWord');
+      _lookupDefinition();
     }
-    _lookupDefinition();
   }
 
   Future<void> _lookupDefinition() async {
     _dictionaryState = const DictionaryState.loading();
     notifyListeners();
     // loading definitions
-    final definition = await loadDefinition(_word!);
+    final definition = await loadDefinition(_lookupWord!);
     if (definition.isEmpty) {
       _dictionaryState = const DictionaryState.noData();
       notifyListeners();
@@ -119,7 +132,8 @@ class DictionaryViewModel with ChangeNotifier {
     String formatedDefintion = '<b>$word</b> - ';
     final firstPartOfBreakupText =
         breakupText.substring(0, breakupText.indexOf(' '));
-    final cssColor = Theme.of(context).primaryColor.toCssString();
+    // final cssColor = Theme.of(context).primaryColor.toCssString();
+    const cssColor = Colors.orangeAccent;
     String lastPartOfBreakupText =
         words.map((word) => '<b style="color:$cssColor">$word</b>').join(' + ');
     formatedDefintion += '$firstPartOfBreakupText [ $lastPartOfBreakupText ]';
@@ -137,8 +151,8 @@ class DictionaryViewModel with ChangeNotifier {
     return formatedDefintion;
   }
 
-  Future<void> onClickSuggestion(String word) async {
-    _word = word;
+  Future<void> onLookup(String word) async {
+    _lookupWord = word;
     _lookupDefinition();
   }
 
@@ -196,13 +210,13 @@ class DictionaryViewModel with ChangeNotifier {
     word = _romoveNonCharacter(word);
 
     word = word.toLowerCase();
-    _word = word;
-    textEditingController.text = word;
+    _lookupWord = word;
     _lookupDefinition();
   }
 
   String _romoveNonCharacter(String word) {
-    word = word.replaceAllMapped(RegExp(r'[\[\]\+\.\)\(\-,:;")]'), (match) => '');
+    word = word.replaceAllMapped(
+        RegExp(r'[\[\]\+\.\)\(\-,:;")\\]'), (match) => '');
     return word;
   }
 }

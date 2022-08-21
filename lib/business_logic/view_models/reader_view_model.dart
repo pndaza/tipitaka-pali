@@ -6,6 +6,9 @@ import 'package:preload_page_view/preload_page_view.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
+import 'package:tipitaka_pali/providers/navigation_provider.dart';
+import 'package:tipitaka_pali/ui/screens/dictionary/controller/dictionary_controller.dart';
+import 'package:tipitaka_pali/ui/screens/dictionary/widget/dict_content_view.dart';
 import 'package:tipitaka_pali/ui/screens/home/opened_books_provider.dart';
 import 'package:tipitaka_pali/utils/platform_info.dart';
 // import 'package:webview_flutter/webview_flutter.dart';
@@ -475,7 +478,7 @@ class ReaderViewModel with ChangeNotifier {
     recentRepository.insertOrReplace(Recent(book.id, currentPage!));
   }
 
-  Future<void> showDictionary(String word) async {
+  Future<void> onClickedWord(String word) async {
     // removing puntuations etc.
     // convert to roman if display script is not roman
     word = PaliScript.getRomanScriptFrom(
@@ -486,43 +489,51 @@ class ReaderViewModel with ChangeNotifier {
     word = word.toLowerCase();
 
     if (PlatformInfo.isDesktop) {
-      const sideSheetWidth = 350.0;
-      showGeneralDialog(
-        context: context,
-        barrierLabel: 'TOC',
-        barrierDismissible: true,
-        transitionDuration: const Duration(milliseconds: 500),
-        transitionBuilder: (context, animation, secondaryAnimation, child) {
-          return SlideTransition(
-            position: Tween(begin: const Offset(-1, 0), end: const Offset(0, 0))
-                .animate(
-              CurvedAnimation(parent: animation, curve: Curves.linear),
-            ),
-            child: child,
-          );
-        },
-        pageBuilder: (context, animation, secondaryAnimation) {
-          return Align(
-            alignment: Alignment.centerLeft,
-            child: Material(
-              type: MaterialType.transparency,
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
-                width: sideSheetWidth,
-                decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.background,
-                    borderRadius: const BorderRadius.only(
-                      topRight: Radius.circular(16),
-                      bottomRight: Radius.circular(16),
-                    )),
-                child: DictionaryDialog(word: word),
+      if (context.read<NavigationProvider>().isNavigationPaneOpened) {
+        context.read<NavigationProvider>().moveToDictionaryPage();
+        // delay a little miliseconds to wait for DictionaryPage Initialation
+        Future.delayed(const Duration(milliseconds: 50),
+            () => globalLookupWord.value = word);
+      } else {
+        const sideSheetWidth = 350.0;
+        showGeneralDialog(
+          context: context,
+          barrierLabel: 'TOC',
+          barrierDismissible: true,
+          transitionDuration: const Duration(milliseconds: 500),
+          transitionBuilder: (context, animation, secondaryAnimation, child) {
+            return SlideTransition(
+              position:
+                  Tween(begin: const Offset(-1, 0), end: const Offset(0, 0))
+                      .animate(
+                CurvedAnimation(parent: animation, curve: Curves.linear),
               ),
-            ),
-          );
-        },
-      );
-      return;
+              child: child,
+            );
+          },
+          pageBuilder: (context, animation, secondaryAnimation) {
+            return Align(
+              alignment: Alignment.centerLeft,
+              child: Material(
+                type: MaterialType.transparency,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 8.0, horizontal: 8.0),
+                  width: sideSheetWidth,
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.background,
+                      borderRadius: const BorderRadius.only(
+                        topRight: Radius.circular(16),
+                        bottomRight: Radius.circular(16),
+                      )),
+                  child: DictionaryDialog(word: word),
+                ),
+              ),
+            );
+          },
+        );
+        return;
+      }
     } else {
       await showSlidingBottomSheet(
         context,

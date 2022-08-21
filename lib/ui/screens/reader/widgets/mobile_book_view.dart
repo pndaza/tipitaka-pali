@@ -39,7 +39,7 @@ class MobileBookView extends StatelessWidget {
             script: script,
             fontSize: vm.fontSize + 0.0,
             onClick: (clickedWord) {
-              vm.showDictionary(clickedWord);
+              vm.onClickedWord(clickedWord);
             },
           ),
         );
