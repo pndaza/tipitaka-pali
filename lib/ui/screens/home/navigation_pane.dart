@@ -4,7 +4,7 @@ import 'package:tipitaka_pali/providers/navigation_provider.dart';
 
 import '../../../routes.dart';
 import '../../../utils/platform_info.dart';
-import '../dictionary_page.dart';
+import '../dictionary/dictionary_page.dart';
 import '../settings/settings.dart';
 import 'book_list_page.dart';
 import 'bookmark_page.dart';
