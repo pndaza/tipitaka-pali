@@ -216,7 +216,10 @@ class DictionaryController with ChangeNotifier {
 
   String _romoveNonCharacter(String word) {
     word = word.replaceAllMapped(
-        RegExp(r'[\[\]\+\.\)\(\-,:;")\\]'), (match) => '');
+        RegExp(r'[\[\]\+/\.\)\(\-,:;")\\]'), (match) => ' ');
+    List<String> ls = word.split(' ');
+    word = ls[0];
+
     return word;
   }
 }
