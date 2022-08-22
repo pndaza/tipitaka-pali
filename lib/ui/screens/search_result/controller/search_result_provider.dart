@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tipitaka_pali/ui/screens/home/opened_books_provider.dart';
-import 'package:tipitaka_pali/ui/screens/home/search_page/search_page.dart';
-import 'package:tipitaka_pali/utils/platform_info.dart';
 
-import '../../../business_logic/models/search_result.dart';
-import '../../../routes.dart';
-import '../../../services/search_service.dart';
+import '../../../../business_logic/models/search_result.dart';
+import '../../../../routes.dart';
+import '../../../../services/search_service.dart';
+import '../../../../utils/platform_info.dart';
+import '../../home/opened_books_provider.dart';
+import '../../home/search_page/search_page.dart';
 import 'search_filter_provider.dart';
 import 'search_result_state.dart';
 
@@ -26,6 +26,8 @@ class SearchResultController extends ChangeNotifier {
   SearchResultState _state = const SearchResultState.loading();
   SearchResultState get state => _state;
   bool _isInitialized = false;
+
+  // String get readerRoute => null;
 
   void init() async {
     var startTime = DateTime.now();

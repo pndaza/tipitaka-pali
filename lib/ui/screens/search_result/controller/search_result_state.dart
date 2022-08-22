@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../business_logic/models/search_result.dart';
+import '../../../../business_logic/models/search_result.dart';
 
 part 'search_result_state.freezed.dart';
 

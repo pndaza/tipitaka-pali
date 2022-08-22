@@ -65,6 +65,7 @@ dependencies:
   side_sheet: ^1.0.2
   slidable_bar:
     path: packages/slidable_bar
+  huge_listview: ^2.0.2
 
 dev_dependencies:
   flutter_test:
