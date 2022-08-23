@@ -10,7 +10,7 @@ class MobileNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-        final currentNaviagtionItem = context
+    final currentNaviagtionItem = context
         .select<NavigationProvider, int>((value) => value.currentNavigation);
 
     return NavigationBar(
@@ -32,17 +32,18 @@ class MobileNavigationBar extends StatelessWidget {
         ),
         NavigationDestination(
           label: AppLocalizations.of(context)!.search,
-          icon: const Icon(Icons.find_in_page_outlined),
-          selectedIcon: const Icon(Icons.find_in_page),
+          icon: const Icon(Icons.search),
+          selectedIcon: const Icon(Icons.search),
         ),
         NavigationDestination(
           label: AppLocalizations.of(context)!.dictionary,
-          icon: const Icon(Icons.search_outlined),
-          selectedIcon: const Icon(Icons.search),
+          icon: Image.asset("assets/icon/tpr_dictionary.png"),
+          selectedIcon: Image.asset("assets/icon/tpr_dictionary.png"),
         ),
       ],
       selectedIndex: currentNaviagtionItem,
-      onDestinationSelected:(index) => context.read<NavigationProvider>().onClickedNavigationItem(index),
+      onDestinationSelected: (index) =>
+          context.read<NavigationProvider>().onClickedNavigationItem(index),
     );
   }
 }

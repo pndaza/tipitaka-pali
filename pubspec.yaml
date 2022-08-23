@@ -89,6 +89,7 @@ flutter:
     - assets/database/
     - assets/web/
     - assets/icon/icon.png
+    - assets/icon/tpr_dictionary.png
 
   fonts:
     - family: NotoSansMyanmar

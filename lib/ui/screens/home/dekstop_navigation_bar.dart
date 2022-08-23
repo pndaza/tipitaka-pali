@@ -50,14 +50,14 @@ class DeskTopNavigationBar extends StatelessWidget {
           padding: padding,
         ),
         NavigationRailDestination(
-          icon: const Icon(Icons.find_in_page_outlined),
-          selectedIcon: const Icon(Icons.find_in_page),
+          icon: const Icon(Icons.search),
+          selectedIcon: const Icon(Icons.search_outlined),
           label: Text(AppLocalizations.of(context)!.search),
           padding: padding,
         ),
         NavigationRailDestination(
-          icon: const Icon(Icons.search_outlined),
-          selectedIcon: const Icon(Icons.search),
+          icon: Image.asset("assets/icon/tpr_dictionary.png"),
+          selectedIcon: Image.asset("assets/icon/tpr_dictionary.png"),
           label: Text(AppLocalizations.of(context)!.dictionary),
           padding: padding,
         ),
