@@ -71,10 +71,18 @@ class _DictionarySearchFieldState extends State<DictionarySearchField> {
             onChanged: (text) {
               // convert velthuis input to uni
               if (text.isNotEmpty) {
+                // text controller naturally pushes to the beginning
+                // fixed to keep natural position
+
+                // before conversion get cursor position and length
+                int origTextLen = text.length;
+                int pos = textEditingController.selection.start;
                 final uniText = PaliTools.velthuisToUni(velthiusInput: text);
+                // after conversion get length and add the difference (if any)
+                int uniTextlen = uniText.length;
                 textEditingController.text = uniText;
                 textEditingController.selection = TextSelection.fromPosition(
-                    TextPosition(offset: textEditingController.text.length));
+                    TextPosition(offset: pos + uniTextlen - origTextLen));
               }
             }),
         suggestionsCallback: (text) async {
