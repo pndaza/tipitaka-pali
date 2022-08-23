@@ -25,7 +25,7 @@ class ResultListView extends StatelessWidget {
   Widget build(BuildContext context) {
     final notifier = context.read<SearchResultController>();
 
-    const int pageSize = 5;
+    const int pageSize = 20;
     final scrollController = ItemScrollController(); // no need to dispose
 
     return Scaffold(
@@ -48,8 +48,11 @@ class ResultListView extends StatelessWidget {
             },
             thumbBuilder: (Color backgroundColor, Color drawColor,
                 double height, int index) {
-              return ScrollBarThumb(
-                  backgroundColor, drawColor, height, '${index + 1}');
+              if (results.length < 150) {
+                return const SizedBox.shrink();
+              }
+              return ScrollBarThumb(Theme.of(context).colorScheme.primary,
+                  drawColor, height, '${index + 1}');
             },
             itemBuilder: (_, index, result) {
               return SearchResultListTile(
@@ -57,7 +60,7 @@ class ResultListView extends StatelessWidget {
                 onTap: () => notifier.openBook(result, context),
               );
             },
-            placeholderBuilder: (_, __) => const SizedBox(height: 400),
+            placeholderBuilder: (_, __) => const SizedBox(height: 300),
             emptyResultBuilder: (_) => const Center(
               child: Text('Not any more exist in other books'),
             ),
@@ -99,16 +102,19 @@ class ScrollBarThumb extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Container(
+          width: 64,
+          // alignment: Alignment.center,
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.blue),
-            borderRadius: BorderRadius.circular(10),
-            color: Colors.white.withOpacity(1),
+            // border: Border.all(color: Colors.blue),
+            borderRadius: BorderRadius.circular(32),
+            color: Theme.of(context).primaryColor,
           ),
           child: Text(
             title,
+            textAlign: TextAlign.center,
             style: TextStyle(
-              color: Theme.of(context).colorScheme.primary,
+              color: Theme.of(context).colorScheme.onPrimary,
               backgroundColor: Colors.transparent,
               fontSize: 14,
             ),
