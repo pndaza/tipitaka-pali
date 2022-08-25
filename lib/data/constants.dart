@@ -26,4 +26,8 @@ class AssetsFile {
   ];
 }
 
-double navigationBarWidth = 56;
+const double navigationBarWidth = 56;
+
+const String kdartTheme = 'default_dark_theme';
+const String kblackTheme = 'black';
+const String kGotoID = 'goto';

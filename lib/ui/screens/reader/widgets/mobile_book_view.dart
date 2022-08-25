@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../app.dart';
-import '../../../../business_logic/view_models/reader_view_model.dart';
+import '../controller/reader_view_controller.dart';
 import '../../../../services/provider/script_language_provider.dart';
 import '../../../../utils/pali_script.dart';
 import 'pali_page_widget.dart';
@@ -12,7 +12,7 @@ class MobileBookView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     myLogger.i('building pageview for mobile');
-    final vm = Provider.of<ReaderViewModel>(context, listen: false);
+    final vm = Provider.of<ReaderViewController>(context, listen: false);
 
     vm.pageController =
         PageController(initialPage: vm.currentPage! - vm.book.firstPage!);

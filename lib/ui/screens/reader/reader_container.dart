@@ -41,7 +41,7 @@ class _ReaderContainerState extends State<ReaderContainer> {
 
     if (books.isEmpty) {
       return Container(
-        color: Colors.blueGrey[200],
+        color: Colors.blueGrey[50],
         child: Center(
           child: Text(
             PaliScript.getScriptOf(

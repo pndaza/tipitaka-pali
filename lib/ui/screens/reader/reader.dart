@@ -3,9 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:slidable_bar/slidable_bar.dart';
 import 'package:tipitaka_pali/app.dart';
 import 'package:tipitaka_pali/business_logic/models/book.dart';
-import 'package:tipitaka_pali/business_logic/view_models/reader_view_model.dart';
-import 'package:tipitaka_pali/ui/screens/reader/widgets/app_bar.dart';
-import 'package:tipitaka_pali/ui/screens/reader/widgets/control_bar.dart';
+import 'package:tipitaka_pali/ui/screens/reader/controller/reader_view_controller.dart';
+import 'package:tipitaka_pali/ui/screens/reader/widgets/reader_app_bar.dart';
+import 'package:tipitaka_pali/ui/screens/reader/widgets/reader_tool_bar.dart';
 import 'package:tipitaka_pali/ui/screens/reader/widgets/mobile_book_view.dart';
 import 'package:tipitaka_pali/utils/platform_info.dart';
 
@@ -25,14 +25,14 @@ class Reader extends StatelessWidget {
     // logger.i('current Page in Reader Screen: $currentPage');
     // logger.i('textToHighlight in Reader Screen: $textToHighlight');
 
-    return ChangeNotifierProvider<ReaderViewModel>(
-        create: (context) => ReaderViewModel(
+    return ChangeNotifierProvider<ReaderViewController>(
+        create: (context) => ReaderViewController(
             context: context,
             book: book,
             currentPage: currentPage,
             textToHighlight: textToHighlight),
         builder: (context, child) {
-          final vm = Provider.of<ReaderViewModel>(context);
+          final vm = Provider.of<ReaderViewController>(context);
           return FutureBuilder<bool>(
               future: !vm.loadFinished ? vm.loadAllData() : vm.loadCached(),
               builder: (context, snapshot) {
@@ -43,7 +43,7 @@ class Reader extends StatelessWidget {
                       body: SlidableBar(
                         side: Side.bottom,
                         child: const DesktopBookView(),
-                        barContent: const ControlBar(),
+                        barContent: const ReaderToolbar(),
                         size: 100,
                         clicker: Container(
                           width: 32,
@@ -71,7 +71,7 @@ class Reader extends StatelessWidget {
                   return const Scaffold(
                     appBar: ReaderAppBar(),
                     body: MobileBookView(),
-                    bottomNavigationBar: SafeArea(child: ControlBar()),
+                    bottomNavigationBar: SafeArea(child: ReaderToolbar()),
                   );
                 }
                 return Container();

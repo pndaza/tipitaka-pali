@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-import '../../../../business_logic/view_models/reader_view_model.dart';
+import '../controller/reader_view_controller.dart';
 import '../../../../services/provider/script_language_provider.dart';
 import '../../../../utils/pali_script.dart';
 import 'pali_page_widget.dart';
@@ -12,7 +12,7 @@ class DesktopBookView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final vm = Provider.of<ReaderViewModel>(context, listen: true);
+    final vm = Provider.of<ReaderViewController>(context, listen: true);
     int pageIndex = vm.currentPage! - vm.book.firstPage!;
 
     vm.itemScrollController = ItemScrollController();

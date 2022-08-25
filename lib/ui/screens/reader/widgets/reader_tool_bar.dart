@@ -10,17 +10,17 @@ import '../../../../app.dart';
 import '../../../../business_logic/models/book.dart';
 import '../../../../business_logic/models/paragraph_mapping.dart';
 import '../../../../business_logic/models/toc.dart';
-import '../../../../business_logic/view_models/reader_view_model.dart';
+import '../controller/reader_view_controller.dart';
 import '../../../../routes.dart';
 import '../../../../services/provider/script_language_provider.dart';
 import '../../../../utils/pali_script.dart';
 import '../../../dialogs/goto_dialog.dart';
 import '../../../dialogs/simple_input_dialog.dart';
 import '../../../dialogs/toc_dialog.dart';
-import 'slider.dart';
+import 'book_slider.dart';
 
-class ControlBar extends StatelessWidget {
-  const ControlBar({Key? key}) : super(key: key);
+class ReaderToolbar extends StatelessWidget {
+  const ReaderToolbar({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     myLogger.i('building control bar');
@@ -49,7 +49,7 @@ class UpperRow extends StatelessWidget {
         IconButton(
             onPressed: () => _openGotoDialog(context),
             icon: const Icon(Icons.directions_walk_outlined)),
-        const Expanded(child: MySlider()),
+        const Expanded(child: BookSlider()),
         IconButton(
             onPressed: () => _openTocDialog(context),
             icon: const Icon(Icons.list_outlined)),
@@ -58,7 +58,7 @@ class UpperRow extends StatelessWidget {
   }
 
   void _openGotoDialog(BuildContext context) async {
-    final vm = context.read<ReaderViewModel>();
+    final vm = context.read<ReaderViewController>();
     final firstParagraph = await vm.getFirstParagraph();
     final lastParagraph = await vm.getLastParagraph();
     final gotoResult = await showGeneralDialog<GotoDialogResult>(
@@ -86,7 +86,7 @@ class UpperRow extends StatelessWidget {
   }
 
   void _openTocDialog(BuildContext context) async {
-    final vm = context.read<ReaderViewModel>();
+    final vm = context.read<ReaderViewController>();
 
     if (PlatformInfo.isDesktop) {
       const sideSheetWidth = 400.0;
@@ -186,7 +186,7 @@ class LowerRow extends StatelessWidget {
   }
 
   void _addBookmark(BuildContext context) async {
-    final vm = context.read<ReaderViewModel>();
+    final vm = context.read<ReaderViewController>();
     final note = await showGeneralDialog<String>(
       context: context,
       transitionDuration: const Duration(milliseconds: 300),
@@ -211,15 +211,15 @@ class LowerRow extends StatelessWidget {
   }
 
   void _onIncreaseButtonClicked(BuildContext context) {
-    context.read<ReaderViewModel>().increaseFontSize();
+    context.read<ReaderViewController>().increaseFontSize();
   }
 
   void _onDecreaseButtonClicked(BuildContext context) {
-    context.read<ReaderViewModel>().decreaseFontSize();
+    context.read<ReaderViewController>().decreaseFontSize();
   }
 
   void _onMATButtomClicked(BuildContext context) async {
-    final vm = context.read<ReaderViewModel>();
+    final vm = context.read<ReaderViewController>();
     final paragraphs = await vm.getParagraphs();
     if (paragraphs.isEmpty) {
       _showNoExplanationDialog(context);

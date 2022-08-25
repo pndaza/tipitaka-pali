@@ -6,38 +6,36 @@ import 'package:preload_page_view/preload_page_view.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
-import 'package:tipitaka_pali/providers/navigation_provider.dart';
-import 'package:tipitaka_pali/ui/screens/dictionary/controller/dictionary_controller.dart';
-import 'package:tipitaka_pali/ui/screens/dictionary/widget/dict_content_view.dart';
-import 'package:tipitaka_pali/ui/screens/home/opened_books_provider.dart';
-import 'package:tipitaka_pali/utils/platform_info.dart';
-// import 'package:webview_flutter/webview_flutter.dart';
 
-import '../../services/dao/bookmark_dao.dart';
-import '../../services/dao/recent_dao.dart';
-import '../../services/database/database_helper.dart';
-import '../../services/prefs.dart';
-import '../../services/provider/script_language_provider.dart';
-import '../../services/repositories/book_repo.dart';
-import '../../services/repositories/bookmark_repo.dart';
-import '../../services/repositories/page_content_repo.dart';
-import '../../services/repositories/paragraph_mapping_repo.dart';
-import '../../services/repositories/paragraph_repo.dart';
-import '../../services/repositories/recent_repo.dart';
-import '../../services/storage/asset_loader.dart';
-import '../../ui/dialogs/dictionary_dialog.dart';
-import '../../utils/pali_script.dart';
-import '../models/book.dart';
-import '../models/bookmark.dart';
-import '../models/page_content.dart';
-import '../models/paragraph_mapping.dart';
-import '../models/recent.dart';
+import '../../../../business_logic/models/book.dart';
+import '../../../../business_logic/models/bookmark.dart';
+import '../../../../business_logic/models/page_content.dart';
+import '../../../../business_logic/models/paragraph_mapping.dart';
+import '../../../../business_logic/models/recent.dart';
 
-const kdartTheme = 'default_dark_theme';
-const kblackTheme = 'black';
-const String kGotoID = 'goto';
+import '../../../../data/constants.dart';
+import '../../../../providers/navigation_provider.dart';
+import '../../../../services/dao/bookmark_dao.dart';
+import '../../../../services/dao/recent_dao.dart';
+import '../../../../services/database/database_helper.dart';
+import '../../../../services/prefs.dart';
+import '../../../../services/provider/script_language_provider.dart';
+import '../../../../services/repositories/book_repo.dart';
+import '../../../../services/repositories/bookmark_repo.dart';
+import '../../../../services/repositories/page_content_repo.dart';
+import '../../../../services/repositories/paragraph_mapping_repo.dart';
+import '../../../../services/repositories/paragraph_repo.dart';
+import '../../../../services/repositories/recent_repo.dart';
+import '../../../../services/storage/asset_loader.dart';
+import '../../../../utils/pali_script.dart';
+import '../../../../utils/platform_info.dart';
+import '../../../dialogs/dictionary_dialog.dart';
+import '../../dictionary/controller/dictionary_controller.dart';
+import '../../home/opened_books_provider.dart';
 
-class ReaderViewModel with ChangeNotifier {
+
+
+class ReaderViewController with ChangeNotifier {
   final BuildContext context;
   final Book book;
   int? currentPage;
@@ -65,7 +63,7 @@ class ReaderViewModel with ChangeNotifier {
   late final bool _isShowThaiPageNumber;
   late final bool _isShowVriPageNubmer;
 
-  ReaderViewModel({
+  ReaderViewController({
     required this.context,
     required this.book,
     this.currentPage,
@@ -532,6 +530,7 @@ class ReaderViewModel with ChangeNotifier {
             );
           },
         );
+
         return;
       }
     } else {
