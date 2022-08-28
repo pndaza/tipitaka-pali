@@ -2,36 +2,63 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tipitaka_pali/ui/screens/reader/controller/reader_view_controller.dart';
 
-class BookSlider extends StatelessWidget {
+class BookSlider extends StatefulWidget {
   const BookSlider({Key? key}) : super(key: key);
+
+  @override
+  State<BookSlider> createState() => _BookSliderState();
+}
+
+class _BookSliderState extends State<BookSlider> {
+  late final ReaderViewController readerViewController;
+  late final double min;
+  late final double max;
+  late final int divisions;
+  late int currentPage;
+
+  @override
+  void initState() {
+    super.initState();
+    readerViewController =
+        Provider.of<ReaderViewController>(context, listen: false);
+
+    min = readerViewController.book.firstPage!.toDouble();
+    max = readerViewController.book.lastPage!.toDouble();
+    divisions = (readerViewController.book.lastPage! -
+            readerViewController.book.firstPage!) +
+        1;
+    currentPage = readerViewController.currentPage.value;
+    readerViewController.currentPage.addListener(_listenPageChange);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    //final themeData = ThemeProvider.themeOf(context).data;
-    final vm = Provider.of<ReaderViewController>(context);
-
-    return /* SliderTheme(
-      data: SliderThemeData(
-          //activeTrackColor: themeData.accentColor,
-          inactiveTrackColor: Colors.grey,
-          //thumbColor: themeData.accentColor,
-          trackHeight: 2.0,
-          //valueIndicatorColor: themeData.accentColor,
-          //valueIndicatorTextStyle: themeData.accentTextTheme.bodyText1),
-      child: */
-        Slider(
-      value: vm.currentPage!.toDouble(),
-      min: vm.book.firstPage!.toDouble(),
-      max: vm.book.lastPage!.toDouble(),
-      label: vm.currentPage.toString(),
-      divisions: vm.pages.length,
+    return Slider(
+      value: currentPage.toDouble(),
+      min: min,
+      max: max,
+      label: currentPage.toString(),
+      divisions: divisions,
       onChanged: (value) {
-        // vm.currentPage = value.toInt();
-        vm.onSliderChanged(value);
+        setState(() {
+          currentPage = value.toInt();
+        });
       },
       // onChangeStart: null,
       onChangeEnd: (value) {
-        vm.gotoPage(value);
+        readerViewController.onGoto(pageNumber: value.toInt());
       },
     );
+  }
+
+  void _listenPageChange() {
+    setState(() {
+      currentPage = readerViewController.currentPage.value;
+    });
   }
 }

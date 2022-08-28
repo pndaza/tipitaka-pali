@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
+import 'package:tipitaka_pali/providers/font_provider.dart';
 import 'package:tipitaka_pali/ui/screens/home/opened_books_provider.dart';
 import 'package:tipitaka_pali/utils/platform_info.dart';
 
@@ -81,7 +82,8 @@ class UpperRow extends StatelessWidget {
       final int pageNumber = gotoResult.type == GotoType.page
           ? gotoResult.number
           : await vm.getPageNumber(gotoResult.number);
-      vm.gotoPage(pageNumber.toDouble());
+      vm.onGoto(pageNumber: pageNumber);
+      // vm.gotoPage(pageNumber.toDouble());
     }
   }
 
@@ -129,7 +131,10 @@ class UpperRow extends StatelessWidget {
       );
 
       if (toc != null) {
-        vm.gotoPageAndScroll(toc.pageNumber.toDouble(), toc.name);
+        // not only goto page
+        // but also to highlight toc and scroll to it
+        vm.onGoto(pageNumber: toc.pageNumber);
+        // vm.gotoPageAndScroll(toc.pageNumber.toDouble(), toc.name);
       }
     } else {
       final toc = await showBarModalBottomSheet<Toc>(
@@ -142,7 +147,10 @@ class UpperRow extends StatelessWidget {
             return TocDialog(bookID: vm.book.id);
           });
       if (toc != null) {
-        vm.gotoPageAndScroll(toc.pageNumber.toDouble(), toc.name);
+                // not only goto page
+        // but also to highlight toc and scroll to it
+        vm.onGoto(pageNumber: toc.pageNumber);
+        // vm.gotoPageAndScroll(toc.pageNumber.toDouble(), toc.name);
       }
     }
   }
@@ -211,11 +219,11 @@ class LowerRow extends StatelessWidget {
   }
 
   void _onIncreaseButtonClicked(BuildContext context) {
-    context.read<ReaderViewController>().increaseFontSize();
+    context.read<FontProvider>().onIncreaseFontSize();
   }
 
   void _onDecreaseButtonClicked(BuildContext context) {
-    context.read<ReaderViewController>().decreaseFontSize();
+    context.read<FontProvider>().onDecreaseFontSize();
   }
 
   void _onMATButtomClicked(BuildContext context) async {

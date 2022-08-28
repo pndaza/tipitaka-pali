@@ -1,50 +1,141 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sliding_sheet/sliding_sheet.dart';
 
-import '../../../../app.dart';
-import '../controller/reader_view_controller.dart';
+import '../../../../business_logic/models/page_content.dart';
 import '../../../../services/provider/script_language_provider.dart';
 import '../../../../utils/pali_script.dart';
+import '../../../dialogs/dictionary_dialog.dart';
+import '../controller/reader_view_controller.dart';
 import 'pali_page_widget.dart';
 
-class MobileBookView extends StatelessWidget {
+class MobileBookView extends StatefulWidget {
   const MobileBookView({Key? key}) : super(key: key);
+
+  @override
+  State<MobileBookView> createState() => _MobileBookViewState();
+}
+
+class _MobileBookViewState extends State<MobileBookView> {
+  late final ReaderViewController readerViewController;
+  late final PageController pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    readerViewController =
+        Provider.of<ReaderViewController>(context, listen: false);
+    pageController = PageController(
+        initialPage: readerViewController.currentPage.value -
+            readerViewController.book.firstPage!);
+
+    readerViewController.currentPage.addListener(_listenPageChange);
+  }
+
+  @override
+  void dispose() {
+    readerViewController.currentPage.removeListener(_listenPageChange);
+    pageController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    myLogger.i('building pageview for mobile');
-    final vm = Provider.of<ReaderViewController>(context, listen: false);
-
-    vm.pageController =
-        PageController(initialPage: vm.currentPage! - vm.book.firstPage!);
+    final readerViewController =
+        Provider.of<ReaderViewController>(context, listen: false);
 
     return PageView.builder(
-      // physics: RangeMaintainingScrollPhysics(),
-      physics: const ClampingScrollPhysics(),
+      controller: pageController,
+      physics: const ClampingScrollPhysics(parent: PageScrollPhysics()),
       pageSnapping: true,
-      controller: vm.pageController,
-      itemCount: vm.pages.length,
+      itemCount: readerViewController.pages.length,
       itemBuilder: (context, index) {
-        var content = vm.getPageContentForDesktop(index);
+        final PageContent pageContent = readerViewController.pages[index];
         final script = context.read<ScriptLanguageProvider>().currentScript;
         // transciption
-        content = PaliScript.getScriptOf(
+        String htmlContent = PaliScript.getScriptOf(
           script: script,
-          romanText: content,
+          romanText: pageContent.content,
           isHtmlText: true,
         );
-        // content = _formatContent(content, script, vm.fontSize);
+
         return SingleChildScrollView(
           child: PaliPageWidget(
-            htmlContent: content,
+            pageNumber: pageContent.pageNumber!,
+            htmlContent: htmlContent,
             script: script,
-            fontSize: vm.fontSize + 0.0,
-            onClick: (clickedWord) {
-              vm.onClickedWord(clickedWord);
-            },
+            onClick: onClickedWord,
           ),
         );
       },
-      onPageChanged: vm.onPageChanged,
+      onPageChanged: (value) {
+        int pageNumber = value + readerViewController.book.firstPage!;
+        readerViewController.onGoto(pageNumber: pageNumber);
+      },
+    );
+  }
+
+  void _listenPageChange() {
+    int pageIndex = readerViewController.currentPage.value -
+        readerViewController.book.firstPage!;
+    pageController.jumpToPage(pageIndex);
+  }
+
+  Future<void> onClickedWord(String word) async {
+    // removing puntuations etc.
+    // convert to roman if display script is not roman
+    word = PaliScript.getRomanScriptFrom(
+        script: context.read<ScriptLanguageProvider>().currentScript,
+        text: word);
+    word = word.replaceAll(RegExp(r'[^a-zA-ZāīūṅñṭḍṇḷṃĀĪŪṄÑṬḌHṆḶṂ]'), '');
+    // convert ot lower case
+    word = word.toLowerCase();
+
+    await showSlidingBottomSheet(
+      context,
+      builder: (context) {
+        //Widget for SlidingSheetDialog's builder method
+        final statusBarHeight = MediaQuery.of(context).padding.top;
+        final screenHeight = MediaQuery.of(context).size.height;
+        const marginTop = 24.0;
+        final slidingSheetDialogContent = SizedBox(
+          height: screenHeight - (statusBarHeight + marginTop),
+          child: DictionaryDialog(word: word),
+        );
+
+        return SlidingSheetDialog(
+          elevation: 8,
+          cornerRadius: 16,
+          // minHeight: 200,
+          snapSpec: const SnapSpec(
+            snap: true,
+            snappings: [0.4, 0.6, 0.8, 1.0],
+            positioning: SnapPositioning.relativeToSheetHeight,
+          ),
+          headerBuilder: (context, _) {
+            // building drag handle view
+            return Center(
+                heightFactor: 1,
+                child: Container(
+                  width: 56,
+                  height: 10,
+                  // color: Colors.black45,
+                  decoration: BoxDecoration(
+                    // border: Border.all(color: Colors.red),
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ));
+          },
+          // this builder is called when state change
+          // normaly three states occurs
+          // first state - isLaidOut = false
+          // second state - islaidOut = true , isShown = false
+          // thirs state - islaidOut = true , isShown = ture
+          // to avoid there times rebuilding, return  prebuild content
+          builder: (context, state) => slidingSheetDialogContent,
+        );
+      },
     );
   }
 }

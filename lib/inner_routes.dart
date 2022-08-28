@@ -45,7 +45,7 @@ class RouteGenerator {
         if (arguments is Map) {
           screen = Reader(
             book: arguments['book'],
-            currentPage: arguments['currentPage'],
+            initialPage: arguments['currentPage'],
             textToHighlight: arguments['textToHighlight'],
           );
         }

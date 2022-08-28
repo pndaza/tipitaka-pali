@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tipitaka_pali/providers/font_provider.dart';
 
 import '../../../providers/navigation_provider.dart';
 import '../../../utils/platform_info.dart';
@@ -17,7 +18,8 @@ class Home extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => NavigationProvider()),
-        ChangeNotifierProvider(create: (_) => OpenedBooksProvider())
+        ChangeNotifierProvider(create: (_) => OpenedBooksProvider()),
+        ChangeNotifierProvider(create: (_) => FontProvider()),
       ],
       child: Scaffold(
           body: PlatformInfo.isDesktop

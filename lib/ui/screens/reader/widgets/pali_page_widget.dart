@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:provider/provider.dart';
+import 'package:tipitaka_pali/providers/font_provider.dart';
+import 'package:tipitaka_pali/services/prefs.dart';
 
+import '../../../../data/constants.dart';
 import '../../../../services/provider/theme_change_notifier.dart';
 import '../../../../utils/pali_script_converter.dart';
 
 class PaliPageWidget extends StatefulWidget {
+  final int pageNumber;
   final String htmlContent;
   final Script script;
-  final double fontSize;
+  final String? highlightedWord;
   final Function(String clickedWord)? onClick;
   const PaliPageWidget({
     Key? key,
+    required this.pageNumber,
     required this.htmlContent,
     required this.script,
-    required this.fontSize,
+    this.highlightedWord,
     this.onClick,
   }) : super(key: key);
 
@@ -24,6 +29,7 @@ class PaliPageWidget extends StatefulWidget {
 
 class _PaliPageWidgetState extends State<PaliPageWidget> {
   final _myFactory = _MyFactory();
+
   @override
   void initState() {
     super.initState();
@@ -34,12 +40,16 @@ class _PaliPageWidgetState extends State<PaliPageWidget> {
 
   @override
   Widget build(BuildContext context) {
+
+    int fontSize = context.watch<FontProvider>().fontSize;
+    String html = _formatContent(widget.htmlContent, widget.script);
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: HtmlWidget(
-        _formatContent(widget.htmlContent, widget.script),
+        html,
         factoryBuilder: () => _myFactory,
-        textStyle: TextStyle(fontSize: widget.fontSize, inherit: false),
+        textStyle: TextStyle(fontSize: fontSize.toDouble(), inherit: false),
         customStylesBuilder: (element) {
           // if (element.className == 'title' ||
           //     element.className == 'book' ||
@@ -84,6 +94,7 @@ class _PaliPageWidgetState extends State<PaliPageWidget> {
   String _formatContent(String content, Script script) {
     content = _makeClickable(content, script);
     content = _changeToInlineStyle(content);
+    content = _formatWithUserSetting(content);
     return content;
   }
 
@@ -205,6 +216,91 @@ class _PaliPageWidgetState extends State<PaliPageWidget> {
       default:
         return RegExp(r'[a-zA-ZāīūṅñṭḍṇḷṃĀĪŪṄÑṬḌHṆḶṂ]+(?![^<>]*>)');
     }
+  }
+
+  String _formatWithUserSetting(String pageContent) {
+    // return pages[index].content;
+    if (widget.highlightedWord != null) {
+      pageContent = setHighlight(pageContent, widget.highlightedWord!);
+    }
+
+    // if (tocHeader != null) {
+    //   pageContent = addIDforScroll(pageContent, tocHeader!);
+    // }
+
+    // showing page number based on user settings
+    var publicationKeys = <String>['P', 'T', 'V'];
+    if (!Prefs.isShowPtsNumber) publicationKeys.remove('P');
+    if (!Prefs.isShowThaiNumber) publicationKeys.remove('T');
+    if (!Prefs.isShowVriNumber) publicationKeys.remove('V');
+
+    if (publicationKeys.isNotEmpty) {
+      for (var publicationKey in publicationKeys) {
+        final publicationFormat =
+            RegExp('(<a name="$publicationKey(\\d+)\\.(\\d+)">)');
+        pageContent = pageContent.replaceAllMapped(publicationFormat, (match) {
+          final volume = match.group(2)!;
+          // remove leading zero from page number
+          final pageNumber = int.parse(match.group(3)!).toString();
+          return '${match.group(1)}[$publicationKey $volume.$pageNumber]';
+        });
+      }
+    }
+
+    return '''
+            <p style="color:blue;text-align:right;">${widget.pageNumber}</p>
+            <div id="page_content">
+              $pageContent
+            </div>
+    ''';
+  }
+
+  String setHighlight(String content, String textToHighlight) {
+    // TODO - optimize highlight for some query text
+
+    //
+    if (content.contains(textToHighlight)) {
+      final replace =
+          '<span class = "highlighted">' + textToHighlight + "</span>";
+      content = content.replaceAll(textToHighlight, replace);
+      // adding id to scroll
+      content = content.replaceFirst('<span class = "highlighted">',
+          '<span id="$kGotoID" class="highlighted">');
+
+      return content;
+    }
+
+    final words = textToHighlight.trim().split(' ');
+    for (final word in words) {
+      if (content.contains(word)) {
+        final String replace =
+            '<span class = "highlighted">' + word + "</span>";
+        content = content.replaceAll(word, replace);
+      } else {
+        // bolded word case
+        // Log.d("if not found highlight", "yes");
+        // removing ti (တိ) at end
+        String trimmedWord = word.replaceAll(RegExp(r'(nti|ti)$'), '');
+        // print('trimmedWord: $trimmedWord');
+        final replace =
+            '<span class = "highlighted">' + trimmedWord + "</span>";
+
+        content = content.replaceAll(trimmedWord, replace);
+      }
+      //
+    }
+    // adding id to scroll
+    content = content.replaceFirst('<span class = "highlighted">',
+        '<span id="$kGotoID" class="highlighted">');
+
+    return content;
+  }
+
+  String addIDforScroll(String content, String tocHeader) {
+    String _tocHeader = '<span id="$kGotoID">' + tocHeader + "</span>";
+    content = content.replaceAll(tocHeader, _tocHeader);
+
+    return content;
   }
 }
 

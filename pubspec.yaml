@@ -40,12 +40,11 @@ dependencies:
   toggle_switch: ^1.2.0
   collection: ^1.15.0
   logger: ^1.0.0
-  preload_page_view: ^0.1.6
   cupertino_icons: ^1.0.3
   flex_color_scheme: ^4.1.1
   sqflite_common: ^2.0.1+1
+  freezed_annotation: ^1.0.0
   sqflite_common_ffi: ^2.0.0+3
-  freezed: ^1.0.0
   sliding_sheet: ^0.5.0
   bottom_sheet: ^1.0.1
   flutter_typeahead:
@@ -55,14 +54,11 @@ dependencies:
   fwfh_selectable_text: ^0.8.3
   styled_text: 4.0.0+1
   from_css_color: ^2.0.0
-  http: ^0.13.4
   scrollable_positioned_list: ^0.2.3
   word_selectable_text: ^0.2.0
   multi_split_view: ^2.1.0
   tabbed_view: ^1.13.0+1
   fwfh_text_style: ^2.22.08
-  # aligned_dialog: ^0.0.6
-  side_sheet: ^1.0.2
   slidable_bar:
     path: packages/slidable_bar
   huge_listview: ^2.0.2
@@ -71,7 +67,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^1.0.0
-  freezed_annotation: ^1.0.0
+  freezed: ^1.0.0
   build_runner: ^2.1.2
 
 

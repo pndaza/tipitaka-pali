@@ -1,12 +1,11 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:flutter/material.dart';
-import 'package:from_css_color/from_css_color.dart';
-import 'package:tipitaka_pali/business_logic/models/definition.dart';
-import 'package:tipitaka_pali/services/database/database_helper.dart';
-import 'package:tipitaka_pali/services/database/dictionary_service.dart';
-import 'package:tipitaka_pali/services/repositories/dictionary_repo.dart';
 
+import '../../../../business_logic/models/definition.dart';
+import '../../../../services/database/database_helper.dart';
+import '../../../../services/database/dictionary_service.dart';
+import '../../../../services/repositories/dictionary_repo.dart';
 import 'dictionary_state.dart';
 
 // global variable

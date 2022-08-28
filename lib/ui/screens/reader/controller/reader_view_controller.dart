@@ -1,92 +1,53 @@
-import 'dart:convert';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:preload_page_view/preload_page_view.dart';
 import 'package:provider/provider.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import 'package:sliding_sheet/sliding_sheet.dart';
 
 import '../../../../business_logic/models/book.dart';
 import '../../../../business_logic/models/bookmark.dart';
 import '../../../../business_logic/models/page_content.dart';
 import '../../../../business_logic/models/paragraph_mapping.dart';
 import '../../../../business_logic/models/recent.dart';
-
-import '../../../../data/constants.dart';
-import '../../../../providers/navigation_provider.dart';
 import '../../../../services/dao/bookmark_dao.dart';
 import '../../../../services/dao/recent_dao.dart';
 import '../../../../services/database/database_helper.dart';
-import '../../../../services/prefs.dart';
-import '../../../../services/provider/script_language_provider.dart';
 import '../../../../services/repositories/book_repo.dart';
 import '../../../../services/repositories/bookmark_repo.dart';
 import '../../../../services/repositories/page_content_repo.dart';
 import '../../../../services/repositories/paragraph_mapping_repo.dart';
 import '../../../../services/repositories/paragraph_repo.dart';
 import '../../../../services/repositories/recent_repo.dart';
-import '../../../../services/storage/asset_loader.dart';
-import '../../../../utils/pali_script.dart';
-import '../../../../utils/platform_info.dart';
-import '../../../dialogs/dictionary_dialog.dart';
-import '../../dictionary/controller/dictionary_controller.dart';
 import '../../home/opened_books_provider.dart';
-
-
 
 class ReaderViewController with ChangeNotifier {
   final BuildContext context;
+  final PageContentRepository pageContentRepository;
+  final BookRepository bookRepository;
   final Book book;
-  int? currentPage;
+  int? initialPage;
   String? textToHighlight;
+
+  bool isloadingFinished = false;
+  late ValueNotifier<int> _currentPage;
+  ValueListenable<int> get currentPage => _currentPage;
   // will be use this for scroll to this
   String? tocHeader;
   late List<PageContent> pages;
   late int numberOfPage;
-  late int fontSize;
-  late String _cssFont;
-  late String _cssData;
-  late String javascriptData;
-  bool loadFinished = false;
-  final int preLoadPageCount = 2;
-  PreloadPageController? preloadPageController;
-  PageController? pageController;
-  ItemScrollController? itemScrollController;
-  // late final List<WebViewController?> webViewControllers;
 
-  late final bool _isDarkMode;
-
-  // script features
-  late final bool _isShowAlternatePali;
-  late final bool _isShowPtsPageNumber;
-  late final bool _isShowThaiPageNumber;
-  late final bool _isShowVriPageNubmer;
+  // // script features
+  // late final bool _isShowAlternatePali;
 
   ReaderViewController({
     required this.context,
+    required this.pageContentRepository,
+    required this.bookRepository,
     required this.book,
-    this.currentPage,
+    this.initialPage,
     this.textToHighlight,
   });
 
-  Future<bool> loadAllData() async {
-    // disable embedding font
-    // final fontName = 'NotoSansMyanmar-Regular.otf';
-    // _cssFont = await loadCssFont(fontName: fontName);
-    //print('loading all data');
-    _cssFont = '';
-    fontSize = Prefs.fontSize;
-    _isDarkMode = Prefs.darkThemeOn;
-    // load script feature and will modify css value
-    _isShowAlternatePali = Prefs.isShowAlternatePali;
-    _isShowPtsPageNumber = Prefs.isShowPtsNumber;
-    _isShowThaiPageNumber = Prefs.isShowThaiNumber;
-    _isShowVriPageNubmer = Prefs.isShowVriNumber;
-
-    _cssData = await loadCssData();
-    javascriptData = await loadJavaScript('click.js');
-    pages = await loadBook(book.id);
+  Future<void> loadDocument() async {
+    pages = await _loadPages(book.id);
     await _loadBookInfo(book.id);
     // book.firstPage = 1;
     // book.lastPage = pages.length;
@@ -95,244 +56,28 @@ class ReaderViewController with ChangeNotifier {
     // webViewControllers = List.filled(pages.length, null);
     // List<WebViewController>(pages.length);
 
-    loadFinished = true;
+    isloadingFinished = true;
     // save to recent table on load of the book.
     // from general book opening and also tapping a search result tile..
     await _saveToRecent();
 
-    return true;
+    notifyListeners();
     // print('number of pages: ${pages.length}');
     // print('loading finished');
   }
 
-// current fix for reloading data
-// Todo to find why widget is rebuilding
-  Future<bool> loadCached() async {
-    return true;
-  }
-
-  Future<ByteData> loadFont(String fontName) async {
-    return await AssetsProvider.loadFont(fontName);
-  }
-
-  Future<String> loadCssFont(
-      {required String fontName,
-      String fontExt = 'otf',
-      String fontMineType = 'font/truetype'}) async {
-    final fontData = await loadFont(fontName);
-    final buffer = fontData.buffer;
-    final fontUri = Uri.dataFromBytes(
-            buffer.asUint8List(fontData.offsetInBytes, fontData.lengthInBytes),
-            mimeType: fontMineType)
-        .toString();
-    return '@font-face { font-family: NotoSansMyanmar; src: url($fontUri); }';
-  }
-
-  Future<String> loadCssData() async {
-    final cssFileName = _isDarkMode ? 'style_night.css' : 'style_day.css';
-    String cssData = await AssetsProvider.loadCSS(cssFileName);
-    // alternate pali will be displayed based on user setting
-    if (_isShowAlternatePali) {
-      cssData = cssData.replaceAll('display: none;', '');
-    }
-    return cssData;
-  }
-
-  Future<String> loadJavaScript(String fileName) async {
-    return await AssetsProvider.loadCSS(fileName);
-  }
-
-  Future<List<PageContent>> loadBook(String bookID) async {
-    final DatabaseHelper databaseProvider = DatabaseHelper();
-    final PageContentRepository pageContentRepository =
-        PageContentDatabaseRepository(databaseProvider);
+  Future<List<PageContent>> _loadPages(String bookID) async {
     return await pageContentRepository.getPages(bookID);
   }
 
   Future<void> _loadBookInfo(String bookID) async {
-    final DatabaseHelper databaseProvider = DatabaseHelper();
-    final BookRepository bookRepository =
-        BookDatabaseRepository(databaseProvider);
     book.firstPage = await bookRepository.getFirstPage(bookID);
     book.lastPage = await bookRepository.getLastPage(bookID);
-    currentPage ??= book.firstPage!;
-  }
-
-  String getPageContentForDesktop(int index) {
-    // return pages[index].content;
-    String pageContent = pages[index].content;
-    if (textToHighlight != null) {
-      pageContent = setHighlight(pageContent, textToHighlight!);
+    if (initialPage == null) {
+      _currentPage = ValueNotifier(book.firstPage!);
+    } else {
+      _currentPage = ValueNotifier(book.lastPage!);
     }
-
-    if (tocHeader != null) {
-      pageContent = addIDforScroll(pageContent, tocHeader!);
-    }
-
-    // showing page number based on user settings
-    var publicationKeys = <String>['P', 'T', 'V'];
-    if (!_isShowPtsPageNumber) publicationKeys.remove('P');
-    if (!_isShowThaiPageNumber) publicationKeys.remove('T');
-    if (!_isShowVriPageNubmer) publicationKeys.remove('V');
-
-    if (publicationKeys.isNotEmpty) {
-      for (var publicationKey in publicationKeys) {
-        final publicationFormat =
-            RegExp('(<a name="$publicationKey(\\d+)\\.(\\d+)">)');
-        pageContent = pageContent.replaceAllMapped(publicationFormat, (match) {
-          final volume = match.group(2)!;
-          // remove leading zero from page number
-          final pageNumber = int.parse(match.group(3)!).toString();
-          return '${match.group(1)}[$publicationKey $volume.$pageNumber]';
-        });
-      }
-    }
-
-    pageContent = _fixSafari(pageContent);
-    return '''
-            <p style="color:blue;text-align:right;">${index + book.firstPage!}</p>
-            <div id="page_content">
-              $pageContent
-            </div>
-    ''';
-  }
-
-  String getPageContent(int index) {
-    String pageContent = pages[index].content;
-    if (textToHighlight != null) {
-      pageContent = setHighlight(pageContent, textToHighlight!);
-    }
-
-    if (tocHeader != null) {
-      pageContent = addIDforScroll(pageContent, tocHeader!);
-    }
-
-    // showing page number based on user settings
-    var publicationKeys = <String>['P', 'T', 'V'];
-    if (!_isShowPtsPageNumber) publicationKeys.remove('P');
-    if (!_isShowThaiPageNumber) publicationKeys.remove('T');
-    if (!_isShowVriPageNubmer) publicationKeys.remove('V');
-
-    if (publicationKeys.isNotEmpty) {
-      for (var publicationKey in publicationKeys) {
-        final publicationFormat =
-            RegExp('(<a name="$publicationKey(\\d+)\\.(\\d+)">)');
-        pageContent = pageContent.replaceAllMapped(publicationFormat, (match) {
-          final volume = match.group(2)!;
-          // remove leading zero from page number
-          final pageNumber = int.parse(match.group(3)!).toString();
-          return '${match.group(1)}[$publicationKey $volume.$pageNumber]';
-        });
-      }
-    }
-
-    pageContent = _fixSafari(pageContent);
-    pageContent = PaliScript.getScriptOf(
-        script: context.read<ScriptLanguageProvider>().currentScript,
-        romanText: pageContent,
-        isHtmlText: true);
-    return '''
-    <!DOCTYPE html>
-          <html>
-          <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          </head>
-          <style>
-            html {font-size: ${fontSize.toString()}px}
-            $_cssFont
-            $_cssData
-          </style>
-          <body>
-            <p>${index + book.firstPage!}</p>
-            <div id="page_content">
-              $pageContent
-            </div>
-          </body>
-          </html>
-    ''';
-    /*
-    return Uri.dataFromString('''
-    <!DOCTYPE html>
-          <html>
-          <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          </head>
-          <style>
-            html {font-size: ${_fontSize.toString()}px}
-            $_cssFont
-            $_cssData
-          </style>
-          <body>
-            <p>${index + book.firstPage!}</p>
-            <div id="page_content">
-              $pageContent
-            </div>
-          </body>
-          </html>
-    ''', mimeType: 'text/html', encoding: Encoding.getByName('utf-8'));
-    */
-  }
-
-  Uri getUriFrom({required String data}) {
-    return Uri.dataFromString(data,
-        mimeType: 'text/html', encoding: Encoding.getByName('utf-8'));
-  }
-
-  String setHighlight(String content, String textToHighlight) {
-    // TODO - optimize highlight for some query text
-
-    //
-    if (content.contains(textToHighlight)) {
-      final replace =
-          '<span class = "highlighted">' + textToHighlight + "</span>";
-      content = content.replaceAll(textToHighlight, replace);
-      // adding id to scroll
-      content = content.replaceFirst('<span class = "highlighted">',
-          '<span id="$kGotoID" class="highlighted">');
-
-      return content;
-    }
-
-    final words = textToHighlight.trim().split(' ');
-    for (final word in words) {
-      if (content.contains(word)) {
-        final String replace =
-            '<span class = "highlighted">' + word + "</span>";
-        content = content.replaceAll(word, replace);
-      } else {
-        // bolded word case
-        // Log.d("if not found highlight", "yes");
-        // removing ti (တိ) at end
-        String trimmedWord = word.replaceAll(RegExp(r'(nti|ti)$'), '');
-        // print('trimmedWord: $trimmedWord');
-        final replace =
-            '<span class = "highlighted">' + trimmedWord + "</span>";
-
-        content = content.replaceAll(trimmedWord, replace);
-      }
-      //
-    }
-    // adding id to scroll
-    content = content.replaceFirst('<span class = "highlighted">',
-        '<span id="$kGotoID" class="highlighted">');
-
-    return content;
-  }
-
-  String addIDforScroll(String content, String tocHeader) {
-    String _tocHeader = '<span id="$kGotoID">' + tocHeader + "</span>";
-    content = content.replaceAll(tocHeader, _tocHeader);
-
-    return content;
-  }
-
-  String _fixSafari(String pageContent) {
-    // add space bofore span content
-    pageContent = pageContent.replaceAll('class="bld">', 'class="bld"> ');
-    pageContent = pageContent.replaceAll('class="note">', 'class="note"> ');
-    return pageContent;
   }
 
   Future<int> getFirstParagraph() async {
@@ -349,18 +94,12 @@ class ReaderViewController with ChangeNotifier {
     return await repository.getLastParagraph(book.id);
   }
 
-  List<int> getFakeParagraphs() {
-    List<int> paragraphs = <int>[1, 2];
-
-    return paragraphs;
-  }
-
   Future<List<ParagraphMapping>> getParagraphs() async {
     final DatabaseHelper databaseProvider = DatabaseHelper();
     final ParagraphMappingRepository repository =
         ParagraphMappingDatabaseRepository(databaseProvider);
 
-    return await repository.getParagraphMappings(book.id, currentPage!);
+    return await repository.getParagraphMappings(book.id, _currentPage.value);
   }
 
   Future<int> getPageNumber(int paragraphNumber) async {
@@ -370,216 +109,55 @@ class ReaderViewController with ChangeNotifier {
     return await repository.getPageNumber(book.id, paragraphNumber);
   }
 
-  Future onPageChanged(int index) async {
-    currentPage = book.firstPage! + index;
-    notifyListeners();
-
+  Future<void> onGoto({required int pageNumber, String? word}) async {
+    // update current page
+    _currentPage.value = pageNumber;
+    // update opened book list
     final openedBookController = context.read<OpenedBooksProvider>();
-    openedBookController.update(newPageNumber: currentPage!);
+    openedBookController.update(newPageNumber: _currentPage.value);
+    // persit
     await _saveToRecent();
   }
 
-  Future onSliderChanged(double value) async {
-    currentPage = value.toInt();
-    notifyListeners();
-  }
+  // Future onPageChanged(int index) async {
+  //   _currentPage.value = book.firstPage! + index;
+  //   // notifyListeners();
 
-  Future gotoPage(double value) async {
-    currentPage = value.toInt();
-    final index = currentPage! - book.firstPage!;
-    preloadPageController?.jumpToPage(index);
-    pageController?.jumpToPage(index);
-    itemScrollController?.jumpTo(index: index);
+  //   final openedBookController = context.read<OpenedBooksProvider>();
+  //   openedBookController.update(newPageNumber: _currentPage.value);
+  //   await _saveToRecent();
+  // }
 
-    final openedBookController = context.read<OpenedBooksProvider>();
-    openedBookController.update(newPageNumber: currentPage!);
+  // Future gotoPage(double value) async {
+  //   _currentPage.value = value.toInt();
+  //   final index = _currentPage.value - book.firstPage!;
+  //   // pageController?.jumpToPage(index);
+  //   // itemScrollController?.jumpTo(index: index);
 
-    //await _saveToRecent();
-  }
+  //   final openedBookController = context.read<OpenedBooksProvider>();
+  //   openedBookController.update(newPageNumber: _currentPage.value);
 
-  Future gotoPageAndScroll(double value, String tocText) async {
-    currentPage = value.toInt();
-    tocHeader = tocText;
-    final index = currentPage! - book.firstPage!;
-    preloadPageController?.jumpToPage(index);
-    pageController?.jumpToPage(index);
-    itemScrollController?.jumpTo(index: currentPage! - book.firstPage!);
-    //await _saveToRecent();
-  }
+  //   //await _saveToRecent();
+  // }
 
-  void increaseFontSize() {
-    fontSize++;
-    Prefs.fontSize = fontSize;
-    notifyListeners();
-    /*
-    var currentPageIndex = currentPage! - book.firstPage!;
-
-    webViewControllers[currentPageIndex]!
-        .loadUrl(getUriFrom(data: getPageContent(currentPageIndex)).toString());
-    // notifyListeners();
-    Prefs.fontSize = fontSize;
-    // update preload pages
-    // for right pages
-    var count = 0;
-    var pageIndex = currentPageIndex;
-    while (pageIndex++ < numberOfPage && count++ < preLoadPageCount) {
-      webViewControllers[pageIndex]!.loadUrl(
-          getUriFrom(data: getPageContent(currentPageIndex)).toString());
-    }
-    // for left pages
-    count = 0;
-    pageIndex = currentPageIndex;
-    while (pageIndex-- > 0 && count++ < preLoadPageCount) {
-      webViewControllers[pageIndex]!.loadUrl(
-          getUriFrom(data: getPageContent(currentPageIndex)).toString());
-    }
-    */
-  }
-
-  void decreaseFontSize() {
-    fontSize--;
-    Prefs.fontSize = fontSize;
-    notifyListeners();
-    /*
-    var currentPageIndex = currentPage! - book.firstPage!;
-    webViewControllers[currentPageIndex]!
-        .loadUrl(getUriFrom(data: getPageContent(currentPageIndex)).toString());
-    // notifyListeners();
-    Prefs.fontSize = fontSize;
-    // update preload pages
-    // for right pages
-    var count = 0;
-    var pageIndex = currentPageIndex;
-    while (pageIndex++ < numberOfPage && count++ < preLoadPageCount) {
-      webViewControllers[pageIndex]!.loadUrl(
-          getUriFrom(data: getPageContent(currentPageIndex)).toString());
-    }
-    // left pages
-    count = 0;
-    pageIndex = currentPageIndex;
-    while (pageIndex-- > 0 && count++ < preLoadPageCount) {
-      webViewControllers[pageIndex]!.loadUrl(
-          getUriFrom(data: getPageContent(currentPageIndex)).toString());
-    }
-    */
-  }
+  // Future gotoPageAndScroll(double value, String tocText) async {
+  //   _currentPage = value.toInt();
+  //   tocHeader = tocText;
+  //   final index = _currentPage! - book.firstPage!;
+  //   // pageController?.jumpToPage(index);
+  //   // itemScrollController?.jumpTo(index: _currentPage! - book.firstPage!);
+  //   //await _saveToRecent();
+  // }
 
   void saveToBookmark(String note) {
     BookmarkRepository repository =
         BookmarkDatabaseRepository(DatabaseHelper(), BookmarkDao());
-    repository.insert(Bookmark(book.id, currentPage!, note));
+    repository.insert(Bookmark(book.id, _currentPage.value, note));
   }
 
   Future _saveToRecent() async {
     final RecentRepository recentRepository =
         RecentDatabaseRepository(DatabaseHelper(), RecentDao());
-    recentRepository.insertOrReplace(Recent(book.id, currentPage!));
-  }
-
-  Future<void> onClickedWord(String word) async {
-    // removing puntuations etc.
-    // convert to roman if display script is not roman
-    word = PaliScript.getRomanScriptFrom(
-        script: context.read<ScriptLanguageProvider>().currentScript,
-        text: word);
-    word = word.replaceAll(RegExp(r'[^a-zA-ZāīūṅñṭḍṇḷṃĀĪŪṄÑṬḌHṆḶṂ]'), '');
-    // convert ot lower case
-    word = word.toLowerCase();
-
-    if (PlatformInfo.isDesktop) {
-      if (context.read<NavigationProvider>().isNavigationPaneOpened) {
-        context.read<NavigationProvider>().moveToDictionaryPage();
-        // delay a little miliseconds to wait for DictionaryPage Initialation
-        Future.delayed(const Duration(milliseconds: 50),
-            () => globalLookupWord.value = word);
-      } else {
-        const sideSheetWidth = 350.0;
-        showGeneralDialog(
-          context: context,
-          barrierLabel: 'TOC',
-          barrierDismissible: true,
-          transitionDuration: const Duration(milliseconds: 500),
-          transitionBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-              position:
-                  Tween(begin: const Offset(-1, 0), end: const Offset(0, 0))
-                      .animate(
-                CurvedAnimation(parent: animation, curve: Curves.linear),
-              ),
-              child: child,
-            );
-          },
-          pageBuilder: (context, animation, secondaryAnimation) {
-            return Align(
-              alignment: Alignment.centerLeft,
-              child: Material(
-                type: MaterialType.transparency,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 8.0, horizontal: 8.0),
-                  width: sideSheetWidth,
-                  decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.background,
-                      borderRadius: const BorderRadius.only(
-                        topRight: Radius.circular(16),
-                        bottomRight: Radius.circular(16),
-                      )),
-                  child: DictionaryDialog(word: word),
-                ),
-              ),
-            );
-          },
-        );
-
-        return;
-      }
-    } else {
-      await showSlidingBottomSheet(
-        context,
-        builder: (context) {
-          //Widget for SlidingSheetDialog's builder method
-          final statusBarHeight = MediaQuery.of(context).padding.top;
-          final screenHeight = MediaQuery.of(context).size.height;
-          const marginTop = 24.0;
-          final slidingSheetDialogContent = SizedBox(
-            height: screenHeight - (statusBarHeight + marginTop),
-            child: DictionaryDialog(word: word),
-          );
-
-          return SlidingSheetDialog(
-            elevation: 8,
-            cornerRadius: 16,
-            // minHeight: 200,
-            snapSpec: const SnapSpec(
-              snap: true,
-              snappings: [0.4, 0.6, 0.8, 1.0],
-              positioning: SnapPositioning.relativeToSheetHeight,
-            ),
-            headerBuilder: (context, _) {
-              // building drag handle view
-              return Center(
-                  heightFactor: 1,
-                  child: Container(
-                    width: 56,
-                    height: 10,
-                    // color: Colors.black45,
-                    decoration: BoxDecoration(
-                      // border: Border.all(color: Colors.red),
-                      color: Theme.of(context).primaryColor,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ));
-            },
-            // this builder is called when state change
-            // normaly three states occurs
-            // first state - isLaidOut = false
-            // second state - islaidOut = true , isShown = false
-            // thirs state - islaidOut = true , isShown = ture
-            // to avoid there times rebuilding, return  prebuild content
-            builder: (context, state) => slidingSheetDialogContent,
-          );
-        },
-      );
-    }
+    recentRepository.insertOrReplace(Recent(book.id, _currentPage.value));
   }
 }

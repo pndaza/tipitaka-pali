@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tabbed_view/tabbed_view.dart';
 import 'package:provider/provider.dart';
+import 'package:tipitaka_pali/services/provider/theme_change_notifier.dart';
 import 'package:tipitaka_pali/ui/screens/home/opened_books_provider.dart';
 import 'package:tipitaka_pali/ui/screens/reader/reader.dart';
 
@@ -29,6 +30,8 @@ class _ReaderContainerState extends State<ReaderContainer> {
   @override
   Widget build(BuildContext context) {
     final openedBookProvider = context.watch<OpenedBooksProvider>();
+    final isDarkMode = context
+        .select<ThemeChangeNotifier, bool>((notifier) => notifier.isDarkMode);
     final books = openedBookProvider.openedBooks;
 
     final tabDatas = books
@@ -59,37 +62,40 @@ Etaṃ buddhānasāsanaṃ
         ),
       );
     }
-    return TabbedView(
-      controller: TabbedViewController(
-        tabDatas,
+    return TabbedViewTheme(
+      data: isDarkMode
+          ? TabbedViewThemeData.dark()
+          : TabbedViewThemeData.classic(),
+      child: TabbedView(
+        controller: TabbedViewController(tabDatas),
+        contentBuilder: (_, index) {
+          final book = books.elementAt(index)['book'] as Book;
+          final currentPage = books.elementAt(index)['current_page'] as int?;
+          final textToHighlight =
+              books.elementAt(index)['text_to_highlight'] as String?;
+          return Reader(
+            book: book,
+            initialPage: currentPage,
+            textToHighlight: textToHighlight,
+          );
+          // return Container(
+          //     child: Center(
+          //   child: Text(book.name),
+          // ));
+        },
+        onTabClose: (index, tabData) {
+          final provider = context.read<OpenedBooksProvider>();
+          // final book = books.elementAt(index)['book'] as Book;
+          // final currentPage = books.elementAt(index)['current_page'] as int?;
+          provider.remove(index: index);
+        },
+        onTabSelection: (selectedIndex) {
+          if (selectedIndex != null) {
+            final openedBookController = context.read<OpenedBooksProvider>();
+            openedBookController.updateSelectedBookIndex(selectedIndex);
+          }
+        },
       ),
-      contentBuilder: (_, index) {
-        final book = books.elementAt(index)['book'] as Book;
-        final currentPage = books.elementAt(index)['current_page'] as int?;
-        final textToHighlight =
-            books.elementAt(index)['text_to_highlight'] as String?;
-        return Reader(
-          book: book,
-          currentPage: currentPage,
-          textToHighlight: textToHighlight,
-        );
-        // return Container(
-        //     child: Center(
-        //   child: Text(book.name),
-        // ));
-      },
-      onTabClose: (index, tabData) {
-        final provider = context.read<OpenedBooksProvider>();
-        // final book = books.elementAt(index)['book'] as Book;
-        // final currentPage = books.elementAt(index)['current_page'] as int?;
-        provider.remove(index: index);
-      },
-      onTabSelection: (selectedIndex) {
-        if (selectedIndex != null) {
-          final openedBookController = context.read<OpenedBooksProvider>();
-          openedBookController.updateSelectedBookIndex(selectedIndex);
-        }
-      },
     );
   }
 }

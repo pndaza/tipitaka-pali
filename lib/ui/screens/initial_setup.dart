@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tipitaka_pali/business_logic/view_models/initial_setup_view_model.dart';
@@ -8,8 +7,8 @@ import 'package:tipitaka_pali/ui/widgets/select_language_widget.dart';
 
 class InitialSetup extends StatelessWidget {
   final bool isUpdateMode;
-  InitialSetup({Key? key, this.isUpdateMode = false}) : super(key: key);
-  
+  const InitialSetup({Key? key, this.isUpdateMode = false}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Material(
