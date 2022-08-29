@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -47,23 +48,14 @@ class ReaderViewController with ChangeNotifier {
   });
 
   Future<void> loadDocument() async {
-    pages = await _loadPages(book.id);
-    await _loadBookInfo(book.id);
-    // book.firstPage = 1;
-    // book.lastPage = pages.length;
+    pages = List.unmodifiable(await _loadPages(book.id));
     numberOfPage = pages.length;
-    //print('inititalizing controllers for pages');
-    // webViewControllers = List.filled(pages.length, null);
-    // List<WebViewController>(pages.length);
-
+    await _loadBookInfo(book.id);
     isloadingFinished = true;
+    notifyListeners();
     // save to recent table on load of the book.
     // from general book opening and also tapping a search result tile..
     await _saveToRecent();
-
-    notifyListeners();
-    // print('number of pages: ${pages.length}');
-    // print('loading finished');
   }
 
   Future<List<PageContent>> _loadPages(String bookID) async {
@@ -73,11 +65,7 @@ class ReaderViewController with ChangeNotifier {
   Future<void> _loadBookInfo(String bookID) async {
     book.firstPage = await bookRepository.getFirstPage(bookID);
     book.lastPage = await bookRepository.getLastPage(bookID);
-    if (initialPage == null) {
-      _currentPage = ValueNotifier(book.firstPage!);
-    } else {
-      _currentPage = ValueNotifier(book.lastPage!);
-    }
+    _currentPage = ValueNotifier(initialPage ?? book.firstPage!);
   }
 
   Future<int> getFirstParagraph() async {

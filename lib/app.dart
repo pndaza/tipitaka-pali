@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -11,14 +12,16 @@ import 'services/provider/theme_change_notifier.dart';
 import 'ui/screens/splash_screen.dart';
 
 final Logger myLogger = Logger(
-    printer: PrettyPrinter(
-  methodCount: 0,
-  errorMethodCount: 5,
-  lineLength: 50,
-  colors: true,
-  printEmojis: true,
-  printTime: false,
-));
+  printer: PrettyPrinter(
+    methodCount: 0,
+    errorMethodCount: 5,
+    lineLength: 50,
+    colors: true,
+    printEmojis: true,
+    printTime: false,
+  ),
+  level: kDebugMode ? Level.verbose : Level.nothing,
+);
 
 class App extends StatelessWidget {
   //final List<AppTheme> themes = MyTheme.fetchAll();

@@ -5,6 +5,7 @@ import 'package:tipitaka_pali/services/provider/theme_change_notifier.dart';
 import 'package:tipitaka_pali/ui/screens/home/opened_books_provider.dart';
 import 'package:tipitaka_pali/ui/screens/reader/reader.dart';
 
+import '../../../app.dart';
 import '../../../business_logic/models/book.dart';
 import '../../../services/provider/script_language_provider.dart';
 import '../../../utils/pali_script.dart';
@@ -29,7 +30,15 @@ class _ReaderContainerState extends State<ReaderContainer> {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: There are two states, empty state and data state
+    // only rebuild when states are not equal.
+    // when previous and new state is same,
+    // add new books to tabbed view by TabbedViewController
     final openedBookProvider = context.watch<OpenedBooksProvider>();
+
+    // tabbed view uses custom theme and provide TabbedViewTheme.
+    // need to watch theme change and rebuild TabbedViewTheme with new one
+
     final isDarkMode = context
         .select<ThemeChangeNotifier, bool>((notifier) => notifier.isDarkMode);
     final books = openedBookProvider.openedBooks;
@@ -44,7 +53,7 @@ class _ReaderContainerState extends State<ReaderContainer> {
 
     if (books.isEmpty) {
       return Container(
-        color: Colors.blueGrey[50],
+        color: const Color.fromARGB(200, 254, 229, 171),
         child: Center(
           child: Text(
             PaliScript.getScriptOf(
@@ -54,10 +63,14 @@ Sabbapāpassa akaraṇaṃ
 Kusalassa upasampadā
 Sacittapa⁠riyodāpanaṃ
 Etaṃ buddhānasāsanaṃ
-          '''),
+'''),
             ),
             textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 25),
+            style: const TextStyle(
+              fontSize: 22,
+              color: Colors.brown,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       );
@@ -78,21 +91,14 @@ Etaṃ buddhānasāsanaṃ
             initialPage: currentPage,
             textToHighlight: textToHighlight,
           );
-          // return Container(
-          //     child: Center(
-          //   child: Text(book.name),
-          // ));
         },
-        onTabClose: (index, tabData) {
-          final provider = context.read<OpenedBooksProvider>();
-          // final book = books.elementAt(index)['book'] as Book;
-          // final currentPage = books.elementAt(index)['current_page'] as int?;
-          provider.remove(index: index);
-        },
+        onTabClose: (index, tabData) =>
+            context.read<OpenedBooksProvider>().remove(index: index),
         onTabSelection: (selectedIndex) {
           if (selectedIndex != null) {
-            final openedBookController = context.read<OpenedBooksProvider>();
-            openedBookController.updateSelectedBookIndex(selectedIndex);
+            context
+                .read<OpenedBooksProvider>()
+                .updateSelectedBookIndex(selectedIndex);
           }
         },
       ),

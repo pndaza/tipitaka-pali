@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:tipitaka_pali/app.dart';
 
 import '../../../../business_logic/models/page_content.dart';
 import '../../../../providers/navigation_provider.dart';
@@ -46,6 +47,8 @@ class _DesktopBookViewState extends State<DesktopBookView> {
     int pageIndex = readerViewController.currentPage.value -
         readerViewController.book.firstPage!;
 
+    debugPrint('page index: $pageIndex');
+
     return ScrollablePositionedList.builder(
       initialScrollIndex: pageIndex,
       itemScrollController: itemScrollController,
@@ -81,29 +84,29 @@ class _DesktopBookViewState extends State<DesktopBookView> {
 
     final firstPageOfBook = readerViewController.book.firstPage!;
     final currentPage = readerViewController.currentPage.value;
+    final upperPageInView = itemPositionsListener.itemPositions.value.first;
+    final pageNumberOfUpperPage = upperPageInView.index + firstPageOfBook;
+    final lowerPageInView = itemPositionsListener.itemPositions.value.last;
+    final pageNumberOfLowerPage = lowerPageInView.index + firstPageOfBook;
 
-    final upperPage = itemPositionsListener.itemPositions.value.first;
-
-    final upperPageHeight =
-        upperPage.itemTrailingEdge - upperPage.itemLeadingEdge;
-
-    final lowerPage = itemPositionsListener.itemPositions.value.last;
-
-    final lowerPageHeight =
-        lowerPage.itemTrailingEdge - lowerPage.itemLeadingEdge;
-    // update upperpage as current page
-    if (upperPageHeight > lowerPageHeight &&
-        upperPage.index + firstPageOfBook != currentPage) {
-      readerViewController.onGoto(
-          pageNumber: upperPage.index + firstPageOfBook);
+    // scrolling down ( natural scrolling )
+    //update lower page as current page
+    if (lowerPageInView.itemLeadingEdge < 0.4 &&
+        pageNumberOfLowerPage != currentPage) {
+      myLogger.i('recorded current page: $currentPage');
+      myLogger.i('lower page-height is over half');
+      myLogger.i('page number of it: $pageNumberOfLowerPage');
+      readerViewController.onGoto(pageNumber: pageNumberOfLowerPage);
       return;
     }
 
-    //update lower page as current page
-    if (lowerPageHeight > upperPageHeight &&
-        lowerPage.index + firstPageOfBook != currentPage) {
-      readerViewController.onGoto(
-          pageNumber: lowerPage.index + firstPageOfBook);
+    // scrolling up ( natural scrolling )
+    if (upperPageInView.itemTrailingEdge > 0.6 &&
+        pageNumberOfUpperPage != currentPage) {
+      myLogger.i('recorded current page: $currentPage');
+      myLogger.i('upper page-height is over half');
+      myLogger.i('page number of it: $pageNumberOfUpperPage');
+      readerViewController.onGoto(pageNumber: pageNumberOfUpperPage);
       return;
     }
   }
