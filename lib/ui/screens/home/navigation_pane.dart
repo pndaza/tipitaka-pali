@@ -62,7 +62,7 @@ class _DetailNavigationPaneState extends State<DetailNavigationPane> {
       case 2:
         return const BookmarkPage();
       case 3:
-        if (PlatformInfo.isDesktop) {
+        if (PlatformInfo.isDesktop|| Mobile.isTablet(context)) {
           return const Navigator(
               initialRoute: '/search',
               onGenerateRoute: RouteGenerator.generateRoute);

@@ -101,7 +101,7 @@ class SearchResultController extends ChangeNotifier {
   }
 
   void openBook(SearchResult result, BuildContext context) {
-    if (PlatformInfo.isDesktop) {
+    if (PlatformInfo.isDesktop|| Mobile.isTablet(context)) {
       final openedBooksProvider = context.read<OpenedBooksProvider>();
       openedBooksProvider.add(
         book: result.book,

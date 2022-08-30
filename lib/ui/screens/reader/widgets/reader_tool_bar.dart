@@ -90,7 +90,7 @@ class UpperRow extends StatelessWidget {
   void _openTocDialog(BuildContext context) async {
     final vm = context.read<ReaderViewController>();
 
-    if (PlatformInfo.isDesktop) {
+    if (PlatformInfo.isDesktop|| Mobile.isTablet(context)) {
       const sideSheetWidth = 400.0;
       final toc = await showGeneralDialog<Toc>(
         context: context,
@@ -187,7 +187,7 @@ class LowerRow extends StatelessWidget {
   }
 
   void _openSettingPage(BuildContext context) async {
-    if (PlatformInfo.isDesktop) {
+    if (PlatformInfo.isDesktop|| Mobile.isTablet(context)) {
     } else {
       await Navigator.pushNamed(context, settingRoute);
     }
@@ -241,7 +241,7 @@ class LowerRow extends StatelessWidget {
 
       final book = Book(id: bookId, name: bookName);
 
-      if (PlatformInfo.isDesktop) {
+      if (PlatformInfo.isDesktop|| Mobile.isTablet(context)) {
         final openedBookController = context.read<OpenedBooksProvider>();
         openedBookController.add(book: book, currentPage: pageNumber);
       } else {

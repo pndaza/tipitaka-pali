@@ -26,7 +26,7 @@ class AssetsFile {
   ];
 }
 
-const double navigationBarWidth = 56;
+const double navigationBarWidth = 48;
 
 const String kdartTheme = 'default_dark_theme';
 const String kblackTheme = 'black';

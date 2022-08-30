@@ -66,48 +66,43 @@ class ReaderView extends StatelessWidget {
       );
     }
 
-    //
-    if (PlatformInfo.isDesktop) {
-      return Scaffold(
-        // appBar: ReaderAppBar(),
-        body: Container(
-          color: context.read<ThemeChangeNotifier>().isDarkMode
-              ? Colors.grey[800]
-              : const Color.fromARGB(200, 254, 229, 171),
-          child: SlidableBar(
-            side: Side.bottom,
-            child: const DesktopBookView(),
-            barContent: const ReaderToolbar(),
-            size: 100,
-            clicker: Container(
-              width: 32,
-              height: 20,
-              child: const Icon(
-                Icons.keyboard_arrow_up,
-                color: Colors.white,
-              ),
-              decoration: BoxDecoration(
-                color: Colors.blue.withOpacity(0.5),
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(16),
-                  topRight: Radius.circular(16),
-                ),
+    return Scaffold(
+      appBar: PlatformInfo.isDesktop || Mobile.isTablet(context)
+          ? null
+          : const ReaderAppBar(),
+      body: Container(
+        color: context.read<ThemeChangeNotifier>().isDarkMode
+            ? Colors.grey[800]
+            : const Color.fromARGB(200, 254, 229, 171),
+        child: SlidableBar(
+          side: Side.bottom,
+          child: PlatformInfo.isDesktop || Mobile.isTablet(context)
+              ? const DesktopBookView()
+              : const MobileBookView(),
+          barContent: const ReaderToolbar(),
+          size: 100,
+          clicker: Container(
+            width: 32,
+            height: 20,
+            child: const Icon(
+              Icons.keyboard_arrow_up,
+              color: Colors.white,
+            ),
+            decoration: BoxDecoration(
+              color: Colors.blue.withOpacity(0.5),
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(16),
+                topRight: Radius.circular(16),
               ),
             ),
-            frontColor: Colors.white,
-            backgroundColor: Colors.blue.withOpacity(0.3),
-            clickerSize: 32,
-            clickerPosition: 0.98,
           ),
+          frontColor: Colors.white,
+          backgroundColor: Colors.blue.withOpacity(0.3),
+          clickerSize: 32,
+          clickerPosition: 0.98,
         ),
-        // bottomNavigationBar: SafeArea(child: ControlBar()),
-      );
-    }
-    // default mobile
-    return const Scaffold(
-      appBar: ReaderAppBar(),
-      body: MobileBookView(),
-      bottomNavigationBar: SafeArea(child: ReaderToolbar()),
+      ),
+      // bottomNavigationBar: SafeArea(child: ControlBar()),
     );
   }
 }

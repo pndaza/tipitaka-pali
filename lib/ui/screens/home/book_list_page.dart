@@ -1,8 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+
+import 'package:tipitaka_pali/app.dart';
 import 'package:tipitaka_pali/ui/screens/home/opened_books_provider.dart';
 import 'package:tipitaka_pali/utils/platform_info.dart';
 
@@ -14,6 +14,10 @@ import '../../../utils/pali_script.dart';
 import '../../widgets/colored_text.dart';
 
 class BookListPage extends StatelessWidget {
+  BookListPage({Key? key, this.isAddtoOpenningBooks = false}) : super(key: key);
+
+  final bool isAddtoOpenningBooks;
+
   // key will be use for load book list from database
   // value will be use for TabBar Title
 
@@ -24,35 +28,60 @@ class BookListPage extends StatelessWidget {
     'annya': 'Añña'
   };
 
-  BookListPage({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    bool isMobile = Platform.isAndroid || Platform.isIOS;
-
     return DefaultTabController(
       length: 4,
       child: Scaffold(
-          appBar: AppBar(
-            title: Text(AppLocalizations.of(context)!.tipitaka_pali_reader),
-            centerTitle: true,
-            actions: const [],
-            bottom: TabBar(
-              tabs: _mainCategories.entries
-                  .map((category) => Tab(
-                      text: PaliScript.getScriptOf(
-                          script: context
-                              .watch<ScriptLanguageProvider>()
-                              .currentScript,
-                          romanText: category.value)))
-                  .toList(),
-            ),
-          ),
-          drawer: isMobile ? _buildDrawer(context) : null,
-          body: TabBarView(
-              children: _mainCategories.entries
-                  .map((category) => _buildBookList(category.key))
-                  .toList())),
+          appBar: Mobile.isPhone(context)
+              ? AppBar(
+                  leading: isAddtoOpenningBooks
+                      ? IconButton(
+                          onPressed: () => Navigator.pop(context),
+                          icon: const Icon(Icons.arrow_back),
+                        )
+                      : null,
+                  title:
+                      Text(AppLocalizations.of(context)!.tipitaka_pali_reader),
+                  centerTitle: true,
+                )
+              : null,
+          drawer: (PlatformInfo.isDesktop || Mobile.isTablet(context))
+              ? null
+              : isAddtoOpenningBooks
+                  ? null
+                  : _buildDrawer(context),
+          body: Column(
+            children: [
+              Container(
+                height: 58,
+                color: Theme.of(context).appBarTheme.backgroundColor,
+                child: TabBar(
+                  tabs: _mainCategories.entries
+                      .map((category) => Tab(
+                          text: PaliScript.getScriptOf(
+                              script: context
+                                  .watch<ScriptLanguageProvider>()
+                                  .currentScript,
+                              romanText: category.value)))
+                      .toList(),
+                  indicator: BoxDecoration(
+                    color: Colors.white.withOpacity(0.1),
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(15),
+                      topRight: Radius.circular(15),
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: TabBarView(
+                    children: _mainCategories.entries
+                        .map((category) => _buildBookList(category.key))
+                        .toList()),
+              ),
+            ],
+          )),
     );
   }
 
@@ -113,7 +142,7 @@ class BookListPage extends StatelessWidget {
           if (snapshot.hasData) {
             final listItems = snapshot.data!;
             return ListView.separated(
-              controller: ScrollController(),
+                controller: ScrollController(),
                 itemCount: listItems.length,
                 itemBuilder: (context, index) => ListTile(
                       title: listItems[index].build(context),
@@ -125,8 +154,9 @@ class BookListPage extends StatelessWidget {
                   );
                 });
           }
-          // will be dispaly blank while loading instead of circular progress indicator
-          return const Center(child: CircularProgressIndicator());
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
         });
   }
 
@@ -144,10 +174,10 @@ class BookListPage extends StatelessWidget {
       BookItem bookItem = listItem as BookItem;
       debugPrint('book name: ${bookItem.book.name}');
 
-      if (PlatformInfo.isDesktop) {
-        final homeController = context.read<OpenedBooksProvider>();
-        homeController.add(book: bookItem.book);
-      } else {
+      final homeController = context.read<OpenedBooksProvider>();
+      homeController.add(book: bookItem.book);
+
+      if (!isAddtoOpenningBooks) {
         Navigator.pushNamed(context, readerRoute,
             arguments: {'book': bookItem.book});
       }

@@ -60,11 +60,15 @@ class _MobileBookViewState extends State<MobileBookView> {
         );
 
         return SingleChildScrollView(
-          child: PaliPageWidget(
-            pageNumber: pageContent.pageNumber!,
-            htmlContent: htmlContent,
-            script: script,
-            onClick: onClickedWord,
+          child: Padding(
+            padding: const EdgeInsets.only(
+                bottom: 100.0), // estimated toolbar height
+            child: PaliPageWidget(
+              pageNumber: pageContent.pageNumber!,
+              htmlContent: htmlContent,
+              script: script,
+              onClick: onClickedWord,
+            ),
           ),
         );
       },

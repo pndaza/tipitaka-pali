@@ -1,7 +1,7 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tipitaka_pali/app.dart';
 
 import '../../../../business_logic/models/book.dart';
 import '../../../../business_logic/models/bookmark.dart';
@@ -98,6 +98,7 @@ class ReaderViewController with ChangeNotifier {
   }
 
   Future<void> onGoto({required int pageNumber, String? word}) async {
+    myLogger.i('current page number: $pageNumber');
     // update current page
     _currentPage.value = pageNumber;
     // update opened book list

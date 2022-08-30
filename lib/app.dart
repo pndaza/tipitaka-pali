@@ -4,7 +4,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
+import 'package:tipitaka_pali/ui/screens/home/opened_books_provider.dart';
 
+import 'providers/font_provider.dart';
 import 'routes.dart';
 import 'services/provider/locale_change_notifier.dart';
 import 'services/provider/script_language_provider.dart';
@@ -37,15 +39,15 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MultiProvider(
           providers: [
+            // placing at top of MaterialApp to access in differnt routes
             ChangeNotifierProvider<ThemeChangeNotifier>(
-              create: (context) => ThemeChangeNotifier(),
-            ),
+                create: (_) => ThemeChangeNotifier()),
             ChangeNotifierProvider<LocaleChangeNotifier>(
-              create: (context) => LocaleChangeNotifier(),
-            ),
+                create: (_) => LocaleChangeNotifier()),
             ChangeNotifierProvider<ScriptLanguageProvider>(
-              create: (context) => ScriptLanguageProvider(),
-            ),
+                create: (_) => ScriptLanguageProvider()),
+            ChangeNotifierProvider<FontProvider>(create: (_) => FontProvider()),
+            ChangeNotifierProvider<OpenedBooksProvider>(create: (_)=> OpenedBooksProvider())
           ],
           builder: (context, _) {
             final themeChangeNotifier =

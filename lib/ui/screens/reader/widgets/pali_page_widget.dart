@@ -248,7 +248,7 @@ class _PaliPageWidgetState extends State<PaliPageWidget> {
     }
 
     return '''
-            <p style="color:blue;text-align:right;">${widget.pageNumber}</p>
+            <p style="color:brown;text-align:right;">${widget.pageNumber}</p>
             <div id="page_content">
               $pageContent
             </div>

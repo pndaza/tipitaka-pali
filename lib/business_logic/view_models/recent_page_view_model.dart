@@ -34,7 +34,7 @@ class RecentPageViewModel extends ChangeNotifier {
 
   void openBook(Recent recent, BuildContext context) async {
     final book = Book(id: recent.bookID, name: recent.bookName!);
-    if (PlatformInfo.isDesktop) {
+    if (PlatformInfo.isDesktop|| Mobile.isTablet(context)) {
       final homeController = context.read<OpenedBooksProvider>();
       homeController.add(book: book, currentPage: recent.pageNumber);
     } else {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tabbed_view/tabbed_view.dart';
 import 'package:provider/provider.dart';
+import 'package:tipitaka_pali/data/flex_theme_data.dart';
 import 'package:tipitaka_pali/services/provider/theme_change_notifier.dart';
 import 'package:tipitaka_pali/ui/screens/home/opened_books_provider.dart';
 import 'package:tipitaka_pali/ui/screens/reader/reader.dart';
@@ -78,7 +79,10 @@ Etaṃ buddhānasāsanaṃ
     return TabbedViewTheme(
       data: isDarkMode
           ? TabbedViewThemeData.dark()
-          : TabbedViewThemeData.classic(),
+          : TabbedViewThemeData.mobile(
+              accentColor:
+                  Theme.of(context).appBarTheme.backgroundColor ?? Colors.blue,
+            ),
       child: TabbedView(
         controller: TabbedViewController(tabDatas),
         contentBuilder: (_, index) {

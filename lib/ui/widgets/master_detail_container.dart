@@ -1,3 +1,5 @@
+/*
+
 import 'package:flutter/material.dart';
 import 'package:multi_split_view/multi_split_view.dart';
 
@@ -84,3 +86,4 @@ class _MasterDetailContainerState extends State<MasterDetailContainer>
     }
   }
 }
+*/

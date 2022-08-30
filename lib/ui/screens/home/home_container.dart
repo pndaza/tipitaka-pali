@@ -18,15 +18,25 @@ class Home extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => NavigationProvider()),
-        ChangeNotifierProvider(create: (_) => OpenedBooksProvider()),
-        ChangeNotifierProvider(create: (_) => FontProvider()),
       ],
-      child: Scaffold(
-          body: PlatformInfo.isDesktop
-              ? const DesktopHomeView()
-              : const DetailNavigationPane(navigationCount: 5,),
-          bottomNavigationBar:
-              !PlatformInfo.isDesktop ? const MobileNavigationBar() : null),
+      child: Container(
+        color: Theme.of(context).appBarTheme.backgroundColor,
+        child: SafeArea(
+          left: false,
+          right: false,
+          bottom: false,
+          child: Scaffold(
+              body: PlatformInfo.isDesktop || Mobile.isTablet(context)
+                  ? const DesktopHomeView()
+                  : const DetailNavigationPane(
+                      navigationCount: 5,
+                    ),
+              bottomNavigationBar:
+                  !(PlatformInfo.isDesktop || Mobile.isTablet(context))
+                      ? const MobileNavigationBar()
+                      : null),
+        ),
+      ),
     );
   }
 }

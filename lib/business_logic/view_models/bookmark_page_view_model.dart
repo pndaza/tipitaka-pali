@@ -34,7 +34,7 @@ class BookmarkPageViewModel extends ChangeNotifier {
 
   void openBook(Bookmark bookmark, BuildContext context) async {
     final book = Book(id: bookmark.bookID, name: bookmark.bookName!);
-    if (PlatformInfo.isDesktop) {
+    if (PlatformInfo.isDesktop|| Mobile.isTablet(context)) {
       final homeController = context.read<OpenedBooksProvider>();
       homeController.add(book: book, currentPage: bookmark.pageNumber);
     } else {
