@@ -18,7 +18,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.1.2+12
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.18.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -33,32 +33,38 @@ dependencies:
   path: ^1.8.0
   path_provider: ^2.0.2
   shared_preferences: ^2.0.9
-  modal_bottom_sheet: ^2.0.0
-  flutter_slidable: ^1.1.0
+  # modal_bottom_sheet: ^2.0.0
+  flutter_slidable: ^2.0.0
   provider: ^6.0.0
   substring_highlight: ^1.0.33
-  toggle_switch: ^1.2.0
+  toggle_switch: ^2.0.1
   collection: ^1.15.0
   logger: ^1.0.0
   cupertino_icons: ^1.0.3
-  flex_color_scheme: ^4.1.1
+  flex_color_scheme: ^6.0.0
   sqflite_common: ^2.0.1+1
-  freezed_annotation: ^1.0.0
+  freezed_annotation: ^2.1.0
   sqflite_common_ffi: ^2.0.0+3
-  sliding_sheet: ^0.5.0
-  bottom_sheet: ^1.0.1
+  bottom_sheet: ^3.1.1
+  sliding_sheet:
+    git:
+      url: https://github.com/pndaza/sliding_sheet_bxqm.git
   flutter_typeahead:
     git:
       url: https://github.com/pndaza/flutter_typeahead.git
-  flutter_widget_from_html_core: 0.8.5+3
-  fwfh_selectable_text: ^0.8.3
-  styled_text: 4.0.0+1
+      ref: 1511c92
+  flutter_widget_from_html_core:
+    git:
+      url: https://github.com/daohoangson/flutter_widget_from_html.git
+      path: packages/core
+      ref: 4190a6c
+  fwfh_text_style: ^2.22.8+1
+  styled_text: ^5.1.0
   from_css_color: ^2.0.0
-  scrollable_positioned_list: ^0.2.3
+  scrollable_positioned_list: ^0.3.2
   word_selectable_text: ^0.2.0
   multi_split_view: ^2.1.0
   tabbed_view: ^1.13.0+1
-  fwfh_text_style: ^2.22.08
   slidable_bar:
     path: packages/slidable_bar
   huge_listview: ^2.0.2
@@ -66,8 +72,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^1.0.0
-  freezed: ^1.0.0
+  flutter_lints: ^2.0.1
+  freezed: ^2.1.0+1
   build_runner: ^2.1.2
 
 

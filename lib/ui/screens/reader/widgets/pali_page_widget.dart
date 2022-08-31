@@ -33,14 +33,13 @@ class _PaliPageWidgetState extends State<PaliPageWidget> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _myFactory.onTapUrl('#goto');
     });
   }
 
   @override
   Widget build(BuildContext context) {
-
     int fontSize = context.watch<FontProvider>().fontSize;
     String html = _formatContent(widget.htmlContent, widget.script);
 

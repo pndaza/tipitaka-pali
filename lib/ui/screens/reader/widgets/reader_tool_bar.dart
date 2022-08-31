@@ -1,7 +1,6 @@
 // import 'package:aligned_dialog/aligned_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:tipitaka_pali/providers/font_provider.dart';
 import 'package:tipitaka_pali/ui/screens/home/opened_books_provider.dart';
@@ -90,7 +89,6 @@ class UpperRow extends StatelessWidget {
   void _openTocDialog(BuildContext context) async {
     final vm = context.read<ReaderViewController>();
 
-    if (PlatformInfo.isDesktop|| Mobile.isTablet(context)) {
       const sideSheetWidth = 400.0;
       final toc = await showGeneralDialog<Toc>(
         context: context,
@@ -136,23 +134,7 @@ class UpperRow extends StatelessWidget {
         vm.onGoto(pageNumber: toc.pageNumber);
         // vm.gotoPageAndScroll(toc.pageNumber.toDouble(), toc.name);
       }
-    } else {
-      final toc = await showBarModalBottomSheet<Toc>(
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
-          ),
-          expand: false,
-          context: context,
-          builder: (context) {
-            return TocDialog(bookID: vm.book.id);
-          });
-      if (toc != null) {
-                // not only goto page
-        // but also to highlight toc and scroll to it
-        vm.onGoto(pageNumber: toc.pageNumber);
-        // vm.gotoPageAndScroll(toc.pageNumber.toDouble(), toc.name);
-      }
-    }
+
   }
 }
 

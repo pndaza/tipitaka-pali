@@ -31,18 +31,18 @@ const FlexSchemeColor myScheme1Dark = FlexSchemeColor(
 class MyThemes {
   static const FlexSchemeColor myScheme1Dark = FlexSchemeColor(
     primary: Color(0xFF9E7389),
-    primaryVariant: Color(0xFF775C69),
+    primaryContainer: Color(0xFF775C69),
     secondary: Color(0xFF738F81),
-    secondaryVariant: Color(0xFF5C7267),
+    secondaryContainer: Color(0xFF5C7267),
     // Again we use same secondaryVariant color as optional custom app bar color.
     appBarColor: Color(0xFF5C7267),
   );
 
   static const FlexSchemeColor myScheme1Light = FlexSchemeColor(
     primary: Color(0xFF4E0028),
-    primaryVariant: Color(0xFF320019),
+    primaryContainer: Color(0xFF320019),
     secondary: Color(0xFF003419),
-    secondaryVariant: Color(0xFF002411),
+    secondaryContainer: Color(0xFF002411),
     // The built in schemes use their secondary variant color as their
     // custom app bar color, it could of course be any color, but for consistency
     // we will do the same in this custom FlexSchemeColor.
@@ -53,9 +53,9 @@ class MyThemes {
 // Create a custom flex scheme color for a light theme.
 const FlexSchemeColor myScheme1Light = FlexSchemeColor(
   primary: Color(0xFF4E0028),
-  primaryVariant: Color(0xFF320019),
+  primaryContainer: Color(0xFF320019),
   secondary: Color(0xFF003419),
-  secondaryVariant: Color(0xFF002411),
+  secondaryContainer: Color(0xFF002411),
   // The built in schemes use their secondary variant color as their
   // custom app bar color, it could of course be any color, but for consistency
   // we will do the same in this custom FlexSchemeColor.
@@ -64,9 +64,9 @@ const FlexSchemeColor myScheme1Light = FlexSchemeColor(
 // Create a corresponding custom flex scheme color for a dark theme.
 const FlexSchemeColor myScheme1Dark = FlexSchemeColor(
   primary: Color(0xFF9E7389),
-  primaryVariant: Color(0xFF775C69),
+  primaryContainer: Color(0xFF775C69),
   secondary: Color(0xFF738F81),
-  secondaryVariant: Color(0xFF5C7267),
+  secondaryContainer: Color(0xFF5C7267),
   // Again we use same secondaryVariant color as optional custom app bar color.
   appBarColor: Color(0xFF5C7267),
 );

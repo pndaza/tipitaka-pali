@@ -26,8 +26,8 @@ class ThemeChangeNotifier extends ChangeNotifier {
         // pointed to by the current themeIndex.
         colors: myFlexSchemes[Prefs.themeIndex].dark,
         // Medium strength surface branding used in this example.
-        surfaceStyle: FlexSurface.medium,
-        visualDensity: FlexColorScheme.comfortablePlatformDensity,
+  surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
+          visualDensity: FlexColorScheme.comfortablePlatformDensity,
       ).toTheme;
 
   ThemeData get themeData =>
@@ -37,7 +37,7 @@ class ThemeChangeNotifier extends ChangeNotifier {
         // pointed to by the current themeIndex.
         colors: myFlexSchemes[Prefs.themeIndex].light,
         // Medium strength surface branding used in this example.
-        surfaceStyle: FlexSurface.medium,
+  surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
         visualDensity: FlexColorScheme.comfortablePlatformDensity,
       ).toTheme;
 }
