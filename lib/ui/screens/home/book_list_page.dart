@@ -177,7 +177,7 @@ class BookListPage extends StatelessWidget {
       final homeController = context.read<OpenedBooksProvider>();
       homeController.add(book: bookItem.book);
 
-      if (!isAddtoOpenningBooks) {
+      if (Mobile.isPhone(context) && !isAddtoOpenningBooks) {
         Navigator.pushNamed(context, readerRoute,
             arguments: {'book': bookItem.book});
       }

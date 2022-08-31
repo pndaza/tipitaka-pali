@@ -45,47 +45,49 @@ class _PaliPageWidgetState extends State<PaliPageWidget> {
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: HtmlWidget(
-        html,
-        factoryBuilder: () => _myFactory,
-        textStyle: TextStyle(fontSize: fontSize.toDouble(), inherit: false),
-        customStylesBuilder: (element) {
-          // if (element.className == 'title' ||
-          //     element.className == 'book' ||
-          //     element.className == 'chapter' ||
-          //     element.className == 'subhead' ||
-          //     element.className == 'nikaya') {
-          //   return {
-          //     'text-align': 'center',
-          //     // 'text-decoration': 'none',
-          //   };
-          // }
-          if (element.localName == 'a') {
-            // print('found a tag: ${element.outerHtml}');
-            if (context.read<ThemeChangeNotifier>().isDarkMode) {
-              return {
-                'color': 'white',
-                'text-decoration': 'none',
-              };
-            } else {
-              return {
-                'color': 'black',
-                'text-decoration': 'none',
-              };
+      child: SelectionArea(
+        child: HtmlWidget(
+          html,
+          factoryBuilder: () => _myFactory,
+          textStyle: TextStyle(fontSize: fontSize.toDouble(), inherit: false),
+          customStylesBuilder: (element) {
+            // if (element.className == 'title' ||
+            //     element.className == 'book' ||
+            //     element.className == 'chapter' ||
+            //     element.className == 'subhead' ||
+            //     element.className == 'nikaya') {
+            //   return {
+            //     'text-align': 'center',
+            //     // 'text-decoration': 'none',
+            //   };
+            // }
+            if (element.localName == 'a') {
+              // print('found a tag: ${element.outerHtml}');
+              if (context.read<ThemeChangeNotifier>().isDarkMode) {
+                return {
+                  'color': 'white',
+                  'text-decoration': 'none',
+                };
+              } else {
+                return {
+                  'color': 'black',
+                  'text-decoration': 'none',
+                };
+              }
             }
-          }
-          // no style
-          return {'text-decoration': 'none'};
-        },
-        onTapUrl: (word) {
-          if (widget.onClick != null) {
-            // #goto is used for scrolling to selected text
-            if (word != '#goto') {
-              widget.onClick!(word);
+            // no style
+            return {'text-decoration': 'none'};
+          },
+          onTapUrl: (word) {
+            if (widget.onClick != null) {
+              // #goto is used for scrolling to selected text
+              if (word != '#goto') {
+                widget.onClick!(word);
+              }
             }
-          }
-          return false;
-        },
+            return false;
+          },
+        ),
       ),
     );
   }
@@ -307,7 +309,7 @@ class _MyFactory extends WidgetFactory {
   /// Controls whether text is rendered with [SelectableText] or [RichText].
   ///
   /// Default: `true`.
-  bool get selectableText => true;
+  bool get selectableText => false;
 
   /// The callback when user changes the selection of text.
   ///
@@ -316,25 +318,14 @@ class _MyFactory extends WidgetFactory {
 
   @override
   Widget? buildText(BuildMetadata meta, TextStyleHtml tsh, InlineSpan text) {
-    if (selectableText &&
-        meta.overflow == TextOverflow.clip &&
-        text is TextSpan) {
-      return SelectableText.rich(
+    if (meta.overflow == TextOverflow.clip && text is TextSpan) {
+      return Text.rich(
         text,
         maxLines: meta.maxLines > 0 ? meta.maxLines : null,
         textAlign: tsh.textAlign ?? TextAlign.start,
         textDirection: tsh.textDirection,
-        onSelectionChanged: (selection, cause) {
-          /*
-          final int start = selection.baseOffset;
-          final int end = selection.extentOffset;
-          debugPrint('baseOffset: $start');
-          debugPrint('extendedOffset: $end');
-          */
-        },
       );
     }
-
     return super.buildText(meta, tsh, text);
   }
 }
