@@ -23,6 +23,7 @@ class DeskTopNavigationBar extends StatelessWidget {
 
     return NavigationRail(
       minWidth: navigationBarWidth,
+      indicatorColor: Theme.of(context).focusColor,
       leading: Ink.image(
         height: navigationBarWidth,
         width: navigationBarWidth,
