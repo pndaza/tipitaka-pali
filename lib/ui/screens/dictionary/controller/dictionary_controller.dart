@@ -170,7 +170,7 @@ class DictionaryController with ChangeNotifier {
   }
 
   String _addStyleToBook(String book) {
-    return '<h3>$book</h3>\n<br>\n';
+    return '<h3 style="color:red">$book</h3>\n<br>\n';
   }
 
   List<String> getWordsFrom({required String breakup}) {

@@ -52,7 +52,7 @@ class BookListPage extends StatelessWidget {
           body: Column(
             children: [
               Container(
-                height: 58,
+                height: 56,
                 color: Theme.of(context).appBarTheme.backgroundColor,
                 child: TabBar(
                   tabs: _mainCategories.entries
