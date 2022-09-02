@@ -125,8 +125,6 @@ class ScrollBarThumb extends StatelessWidget {
           foregroundPainter: _ArrowCustomPainter(drawColor),
           child: Material(
             elevation: 4.0,
-            child: Container(
-                constraints: BoxConstraints.tight(Size(height * 0.6, height))),
             color: backgroundColor,
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(height),
@@ -134,6 +132,8 @@ class ScrollBarThumb extends StatelessWidget {
               topRight: const Radius.circular(4.0),
               bottomRight: const Radius.circular(4.0),
             ),
+            child: Container(
+                constraints: BoxConstraints.tight(Size(height * 0.6, height))),
           ),
         ),
       ],

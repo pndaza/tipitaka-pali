@@ -2,16 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
-import 'package:tipitaka_pali/app.dart';
-import 'package:tipitaka_pali/ui/screens/home/opened_books_provider.dart';
-import 'package:tipitaka_pali/utils/platform_info.dart';
-
 import '../../../business_logic/models/list_item.dart';
 import '../../../business_logic/view_models/home_page_view_model.dart';
 import '../../../routes.dart';
 import '../../../services/provider/script_language_provider.dart';
 import '../../../utils/pali_script.dart';
+import '../../../utils/platform_info.dart';
 import '../../widgets/colored_text.dart';
+import 'opened_books_provider.dart';
 
 class BookListPage extends StatelessWidget {
   BookListPage({Key? key, this.isAddtoOpenningBooks = false}) : super(key: key);
@@ -43,14 +41,14 @@ class BookListPage extends StatelessWidget {
                       : null,
                   title:
                       Text(AppLocalizations.of(context)!.tipitaka_pali_reader),
-                  centerTitle: true,
+                  // centerTitle: true,
                 )
               : null,
-          drawer: (PlatformInfo.isDesktop || Mobile.isTablet(context))
-              ? null
-              : isAddtoOpenningBooks
-                  ? null
-                  : _buildDrawer(context),
+          drawer: Mobile.isPhone(context)
+              ? !isAddtoOpenningBooks
+                  ? _buildDrawer(context)
+                  : null
+              : null,
           body: Column(
             children: [
               Container(

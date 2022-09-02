@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:tabbed_view/tabbed_view.dart';
 import 'package:provider/provider.dart';
-import 'package:tipitaka_pali/data/flex_theme_data.dart';
-import 'package:tipitaka_pali/services/provider/theme_change_notifier.dart';
-import 'package:tipitaka_pali/ui/screens/home/opened_books_provider.dart';
-import 'package:tipitaka_pali/ui/screens/reader/reader.dart';
+import 'package:tabbed_view/tabbed_view.dart';
 
-import '../../../app.dart';
 import '../../../business_logic/models/book.dart';
 import '../../../services/provider/script_language_provider.dart';
+import '../../../services/provider/theme_change_notifier.dart';
 import '../../../utils/pali_script.dart';
+import '../home/opened_books_provider.dart';
+import 'reader.dart';
 
 class ReaderContainer extends StatefulWidget {
   const ReaderContainer({Key? key}) : super(key: key);

@@ -69,10 +69,23 @@ class _DesktopBookViewState extends State<DesktopBookView> {
           pageNumber: pageContent.pageNumber!,
           htmlContent: htmlContent,
           script: script,
+          highlightedWord: _needToHighlight(index),
           onClick: onClickedWord,
         );
       },
     );
+  }
+
+  String? _needToHighlight(int index) {
+    if (readerViewController.textToHighlight == null) return null;
+    if (readerViewController.initialPage == null) return null;
+
+    if (index ==
+        readerViewController.initialPage! -
+            readerViewController.book.firstPage!) {
+      return readerViewController.textToHighlight;
+    }
+    return null;
   }
 
   void _listenItemPosition() {

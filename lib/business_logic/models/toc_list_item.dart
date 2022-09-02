@@ -16,7 +16,7 @@ class TocHeadingOne implements TocListItem {
   @override
   final Toc toc;
   @override
-  set toc(Toc _toc) => toc = _toc;
+  set toc(Toc toc) => this.toc = toc;
 
   @override
   int getPageNumber() {
@@ -38,7 +38,7 @@ class TocHeadingTwo implements TocListItem {
   @override
   final Toc toc;
   @override
-  set toc(Toc _toc) => toc = _toc;
+  set toc(Toc toc) => this.toc = toc;
 
   @override
   int getPageNumber() {
@@ -62,7 +62,7 @@ class TocHeadingThree implements TocListItem {
   @override
   final Toc toc;
   @override
-  set toc(Toc _toc) => toc = _toc;
+  set toc(Toc toc) => this.toc = toc;
 
   @override
   int getPageNumber() {
@@ -85,7 +85,7 @@ class TocHeadingFour implements TocListItem {
   @override
   final Toc toc;
   @override
-  set toc(Toc _toc) => toc = _toc;
+  set toc(Toc toc) => this.toc = toc;
 
   @override
   int getPageNumber() {
@@ -108,7 +108,7 @@ class TocHeadingFive implements TocListItem {
   @override
   final Toc toc;
   @override
-  set toc(Toc _toc) => toc = _toc;
+  set toc(Toc toc) => this.toc = toc;
 
   @override
   int getPageNumber() {

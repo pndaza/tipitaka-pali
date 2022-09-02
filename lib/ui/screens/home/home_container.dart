@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tipitaka_pali/providers/font_provider.dart';
 
 import '../../../providers/navigation_provider.dart';
 import '../../../utils/platform_info.dart';
 import 'desktop_home_view.dart';
 import 'mobile_navigation_bar.dart';
 import 'navigation_pane.dart';
-import 'opened_books_provider.dart';
 
 // enum Screen { Home, Bookmark, Recent, Search }
 

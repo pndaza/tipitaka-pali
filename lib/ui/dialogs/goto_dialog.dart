@@ -9,7 +9,6 @@ class GotoDialogResult {
   final GotoType type;
   GotoDialogResult(this.number, this.type);
 }
-
 class GotoDialog extends StatefulWidget {
   final int firstPage;
   final int lastPage;
@@ -27,7 +26,7 @@ class GotoDialog extends StatefulWidget {
       : super(key: key);
 
   @override
-  _GotoDialogState createState() => _GotoDialogState();
+  State<GotoDialog> createState() => _GotoDialogState();
 }
 
 class _GotoDialogState extends State<GotoDialog> {
@@ -123,6 +122,13 @@ class _GotoDialogState extends State<GotoDialog> {
         controller: controller,
         decoration: InputDecoration(hintText: hintText),
         onChanged: _validate,
+        onSubmitted: (value) {
+          if (_isValid(value)) {
+            final result =
+                GotoDialogResult(int.parse(controller.text), selectedType);
+            Navigator.pop(context, result);
+          }
+        },
         keyboardType: TextInputType.number,
         autofocus: false,
       ),
@@ -142,35 +148,39 @@ class _GotoDialogState extends State<GotoDialog> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         TextButton(
-            child: Text(
-              AppLocalizations.of(context)!.go,
-            ),
             onPressed: !isValid
                 ? null
                 : () {
                     final result = GotoDialogResult(
                         int.parse(controller.text), selectedType);
                     Navigator.pop(context, result);
-                  }),
+                  },
+            child: Text(
+              AppLocalizations.of(context)!.go,
+            )),
       ],
     );
   }
 
+  bool _isValid(String input) {
+    if (input.isEmpty) return false;
+
+    bool isValid = false;
+    final inputNumber = int.parse(input);
+    switch (selectedType) {
+      case GotoType.page:
+        isValid = _isPageNumberValid(inputNumber);
+        break;
+      case GotoType.paragraph:
+        isValid = _isParagraphNumberValid(inputNumber);
+        break;
+    }
+    return isValid;
+  }
+
   void _validate(String input) {
     setState(() {
-      if (input.isEmpty) {
-        isValid = false;
-      } else {
-        final inputNumber = int.parse(input);
-        switch (selectedType) {
-          case GotoType.page:
-            isValid = _isPageNumberValid(inputNumber);
-            break;
-          case GotoType.paragraph:
-            isValid = _isParagraphNumberValid(inputNumber);
-            break;
-        }
-      }
+      isValid = _isValid(input);
     });
   }
 

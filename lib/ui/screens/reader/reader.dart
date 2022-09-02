@@ -76,18 +76,11 @@ class ReaderView extends StatelessWidget {
             : const Color.fromARGB(200, 254, 229, 171),
         child: SlidableBar(
           side: Side.bottom,
-          child: PlatformInfo.isDesktop || Mobile.isTablet(context)
-              ? const DesktopBookView()
-              : const MobileBookView(),
           barContent: const ReaderToolbar(),
           size: 100,
           clicker: Container(
             width: 32,
             height: 20,
-            child: const Icon(
-              Icons.keyboard_arrow_up,
-              color: Colors.white,
-            ),
             decoration: BoxDecoration(
               color: Colors.blue.withOpacity(0.5),
               borderRadius: const BorderRadius.only(
@@ -95,11 +88,18 @@ class ReaderView extends StatelessWidget {
                 topRight: Radius.circular(16),
               ),
             ),
+            child: const Icon(
+              Icons.keyboard_arrow_up,
+              color: Colors.white,
+            ),
           ),
           frontColor: Colors.white,
           backgroundColor: Colors.blue.withOpacity(0.3),
           clickerSize: 32,
           clickerPosition: 0.98,
+          child: PlatformInfo.isDesktop || Mobile.isTablet(context)
+              ? const DesktopBookView()
+              : const MobileBookView(),
         ),
       ),
       // bottomNavigationBar: SafeArea(child: ControlBar()),

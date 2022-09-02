@@ -65,15 +65,15 @@ class SimpleInputDialog extends StatelessWidget {
       children: [
         Expanded(
             child: TextButton(
-          child: Text(cancelLabel),
           style: buttonStyle,
           onPressed: () => Navigator.of(context).pop(),
+          child: Text(cancelLabel),
         )),
         Expanded(
             child: TextButton(
-          child: Text(okLabel),
           style: buttonStyle,
           onPressed: () => Navigator.of(context).pop(_controller.text),
+          child: Text(okLabel),
         )),
       ],
     );

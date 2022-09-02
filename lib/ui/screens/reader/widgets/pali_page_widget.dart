@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:provider/provider.dart';
@@ -46,6 +47,7 @@ class _PaliPageWidgetState extends State<PaliPageWidget> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SelectionArea(
+        selectionControls: CupertinoTextSelectionControls(),
         child: HtmlWidget(
           html,
           factoryBuilder: () => _myFactory,
@@ -93,6 +95,10 @@ class _PaliPageWidgetState extends State<PaliPageWidget> {
   }
 
   String _formatContent(String content, Script script) {
+        if (widget.highlightedWord != null) {
+      content = _addHighlight(content, widget.highlightedWord!);
+    }
+
     content = _makeClickable(content, script);
     content = _changeToInlineStyle(content);
     content = _formatWithUserSetting(content);
@@ -221,9 +227,6 @@ class _PaliPageWidgetState extends State<PaliPageWidget> {
 
   String _formatWithUserSetting(String pageContent) {
     // return pages[index].content;
-    if (widget.highlightedWord != null) {
-      pageContent = setHighlight(pageContent, widget.highlightedWord!);
-    }
 
     // if (tocHeader != null) {
     //   pageContent = addIDforScroll(pageContent, tocHeader!);
@@ -256,13 +259,12 @@ class _PaliPageWidgetState extends State<PaliPageWidget> {
     ''';
   }
 
-  String setHighlight(String content, String textToHighlight) {
+  String _addHighlight(String content, String textToHighlight) {
     // TODO - optimize highlight for some query text
 
     //
     if (content.contains(textToHighlight)) {
-      final replace =
-          '<span class = "highlighted">' + textToHighlight + "</span>";
+      final replace = '<span class = "highlighted">$textToHighlight</span>';
       content = content.replaceAll(textToHighlight, replace);
       // adding id to scroll
       content = content.replaceFirst('<span class = "highlighted">',
@@ -275,7 +277,7 @@ class _PaliPageWidgetState extends State<PaliPageWidget> {
     for (final word in words) {
       if (content.contains(word)) {
         final String replace =
-            '<span class = "highlighted">' + word + "</span>";
+            '<span class = "highlighted">$word</span>';
         content = content.replaceAll(word, replace);
       } else {
         // bolded word case
@@ -284,7 +286,7 @@ class _PaliPageWidgetState extends State<PaliPageWidget> {
         String trimmedWord = word.replaceAll(RegExp(r'(nti|ti)$'), '');
         // print('trimmedWord: $trimmedWord');
         final replace =
-            '<span class = "highlighted">' + trimmedWord + "</span>";
+            '<span class = "highlighted">$trimmedWord</span>';
 
         content = content.replaceAll(trimmedWord, replace);
       }
@@ -298,8 +300,8 @@ class _PaliPageWidgetState extends State<PaliPageWidget> {
   }
 
   String addIDforScroll(String content, String tocHeader) {
-    String _tocHeader = '<span id="$kGotoID">' + tocHeader + "</span>";
-    content = content.replaceAll(tocHeader, _tocHeader);
+    String tocHeaderWithID = '<span id="$kGotoID">$tocHeader</span>';
+    content = content.replaceAll(tocHeader, tocHeaderWithID);
 
     return content;
   }

@@ -71,16 +71,16 @@ class ConfirmDialog extends StatelessWidget {
       children: [
         Expanded(
             child: TextButton(
-          child: Text(cancelLabel),
           style: buttonStyle,
           // textTheme: ButtonTextTheme.accent,
           onPressed: () => Navigator.of(context).pop(OkCancelAction.cancel),
+          child: Text(cancelLabel),
         )),
         Expanded(
             child: TextButton(
-          child: Text(okLabel),
           style: buttonStyle,
           onPressed: () => Navigator.of(context).pop(OkCancelAction.ok),
+          child: Text(okLabel),
         )),
       ],
     );
