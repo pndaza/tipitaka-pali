@@ -57,8 +57,12 @@ class DeskTopNavigationBar extends StatelessWidget {
           padding: padding,
         ),
         NavigationRailDestination(
-          icon: Image.asset("assets/icon/tpr_dictionary.png"),
-          selectedIcon: Image.asset("assets/icon/tpr_dictionary.png"),
+          icon: Image.asset("assets/icon/tpr_dictionary.png",
+              color: Theme.of(context).iconTheme.color),
+          selectedIcon: Image.asset(
+            "assets/icon/tpr_dictionary.png",
+            color: Theme.of(context).primaryColor,
+          ),
           label: Text(AppLocalizations.of(context)!.dictionary),
           padding: padding,
         ),

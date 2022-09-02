@@ -37,8 +37,12 @@ class MobileNavigationBar extends StatelessWidget {
         ),
         NavigationDestination(
           label: AppLocalizations.of(context)!.dictionary,
-          icon: Image.asset("assets/icon/tpr_dictionary.png"),
-          selectedIcon: Image.asset("assets/icon/tpr_dictionary.png"),
+          icon: Image.asset("assets/icon/tpr_dictionary.png",
+              color: Theme.of(context).iconTheme.color),
+          selectedIcon: Image.asset(
+            "assets/icon/tpr_dictionary.png",
+            color: Theme.of(context).iconTheme.color,
+          ),
         ),
       ],
       selectedIndex: currentNaviagtionItem,
