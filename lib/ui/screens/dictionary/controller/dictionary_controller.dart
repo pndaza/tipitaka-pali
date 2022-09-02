@@ -22,6 +22,7 @@ extension ParseToString on DictAlgorithm {
 class DictionaryController with ChangeNotifier {
   String? _lookupWord = '';
   String? get lookupWord => _lookupWord;
+  BuildContext context;
 
   DictionaryState _dictionaryState = const DictionaryState.initial();
   DictionaryState get dictionaryState => _dictionaryState;
@@ -31,7 +32,8 @@ class DictionaryController with ChangeNotifier {
 
   // TextEditingController textEditingController = TextEditingController();
 
-  DictionaryController({String? lookupWord}) : _lookupWord = lookupWord;
+  DictionaryController({required BuildContext this.context, String? lookupWord})
+      : _lookupWord = lookupWord;
 
   void onLoad() {
     debugPrint('init dictionary controller');
@@ -170,7 +172,13 @@ class DictionaryController with ChangeNotifier {
   }
 
   String _addStyleToBook(String book) {
-    return '<h3 style="color:red">$book</h3>\n<br>\n';
+    // made variables for easy reading.. otherwise long
+    String bkColor =
+        Theme.of(context).primaryColor.value.toRadixString(16).substring(2);
+    String foreColor =
+        Theme.of(context).canvasColor.value.toRadixString(16).substring(2);
+
+    return '<h3 style="background-color: #$bkColor; color: #$foreColor">$book</h3>\n<br>\n';
   }
 
   List<String> getWordsFrom({required String breakup}) {

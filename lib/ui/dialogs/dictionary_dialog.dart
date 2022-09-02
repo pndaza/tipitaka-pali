@@ -14,7 +14,7 @@ class DictionaryDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<DictionaryController>(
       create: (context) =>
-          DictionaryController(lookupWord: word)..onLoad(),
+          DictionaryController(context: context, lookupWord: word)..onLoad(),
       child: Material(
         child: Stack(
           children: [

@@ -24,7 +24,9 @@ class _DictionaryPageState extends State<DictionaryPage>
         title: const Text('Dictionary'),
       ),
       body: ChangeNotifierProvider<DictionaryController>(
-        create: (context) => DictionaryController()..onLoad(),
+        create: (context) => DictionaryController(
+          context: context,
+        )..onLoad(),
         child: Padding(
           padding: const EdgeInsets.all(8),
           child: Column(children: [
