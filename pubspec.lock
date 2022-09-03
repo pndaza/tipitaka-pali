@@ -271,11 +271,9 @@ packages:
   flutter_widget_from_html_core:
     dependency: "direct main"
     description:
-      path: "packages/core"
-      ref: "4190a6c"
-      resolved-ref: "4190a6c1267774ce5fb3af48db159d0b89e1d32f"
-      url: "https://github.com/daohoangson/flutter_widget_from_html.git"
-    source: git
+      name: flutter_widget_from_html_core
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "0.8.5+3"
   freezed:
     dependency: "direct dev"
