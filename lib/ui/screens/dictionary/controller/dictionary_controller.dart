@@ -178,7 +178,7 @@ class DictionaryController with ChangeNotifier {
     String foreColor =
         Theme.of(context).canvasColor.value.toRadixString(16).substring(2);
 
-    return '<h3 style="background-color: #$bkColor; color: #$foreColor">$book</h3>\n<br>\n';
+    return '<h3 style="background-color: #$bkColor; color: #$foreColor; text-align:center;  padding-bottom:5px; padding-top: 5px;">$book</h3>\n<br>\n';
   }
 
   List<String> getWordsFrom({required String breakup}) {
