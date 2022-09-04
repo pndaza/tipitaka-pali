@@ -23,6 +23,9 @@ class DictionaryController with ChangeNotifier {
   String? _lookupWord = '';
   String? get lookupWord => _lookupWord;
   BuildContext context;
+  List<String> words = [];
+  String lastWord = "";
+  int wordIndex = 0;
 
   DictionaryState _dictionaryState = const DictionaryState.initial();
   DictionaryState get dictionaryState => _dictionaryState;
@@ -134,10 +137,13 @@ class DictionaryController with ChangeNotifier {
     final firstPartOfBreakupText =
         breakupText.substring(0, breakupText.indexOf(' '));
     // final cssColor = Theme.of(context).primaryColor.toCssString();
-    const cssColor = Colors.orangeAccent;
-    String lastPartOfBreakupText =
-        words.map((word) => '<b style="color:$cssColor">$word</b>').join(' + ');
-    formatedDefintion += '$firstPartOfBreakupText [ $lastPartOfBreakupText ]';
+    String cssColor =
+        "#${Theme.of(context).primaryColor.value.toRadixString(16).substring(2)}";
+    String csspreFormat =
+        '<p style="color:$cssColor; font-size:90%; font-weight=bold">';
+    String lastPartOfBreakupText = words.map((word) => word).join(' + ');
+    formatedDefintion +=
+        '$csspreFormat $firstPartOfBreakupText [ $lastPartOfBreakupText ] </p>';
 
     // getting definition per word
     for (var word in words) {
@@ -148,7 +154,7 @@ class DictionaryController with ChangeNotifier {
         formatedDefintion += _formatDefinitions(definitions);
       }
     }
-
+    debugPrint(formatedDefintion);
     return formatedDefintion;
   }
 
@@ -218,6 +224,14 @@ class DictionaryController with ChangeNotifier {
 
     word = word.toLowerCase();
     _lookupWord = word;
+/*
+    if (!words.contains(_lookupWord) //&&
+        /*globalLookupWord.value != lastWord*/) {
+      words.add(_lookupWord!);
+      //lastWord = globalLookupWord.value!;
+    }
+// if not null
+*/
     _lookupDefinition();
   }
 
@@ -226,7 +240,7 @@ class DictionaryController with ChangeNotifier {
         RegExp(r'[\[\]\+/\.\)\(\-,:;")\\]'), (match) => ' ');
     List<String> ls = word.split(' ');
     word = ls[0];
-
+    word.trim();
     return word;
   }
 }
