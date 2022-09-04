@@ -134,8 +134,9 @@ class DictionaryController with ChangeNotifier {
     final List<String> words = getWordsFrom(breakup: breakupText);
     // formating header
     String formatedDefintion = '<b>$word</b> - ';
-    final firstPartOfBreakupText =
+    String firstPartOfBreakupText =
         breakupText.substring(0, breakupText.indexOf(' '));
+    firstPartOfBreakupText = firstPartOfBreakupText.replaceAll("-", " · ");
     // final cssColor = Theme.of(context).primaryColor.toCssString();
     String cssColor =
         "#${Theme.of(context).primaryColor.value.toRadixString(16).substring(2)}";
