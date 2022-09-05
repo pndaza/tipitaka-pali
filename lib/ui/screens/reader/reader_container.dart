@@ -6,7 +6,7 @@ import '../../../business_logic/models/book.dart';
 import '../../../services/provider/script_language_provider.dart';
 import '../../../services/provider/theme_change_notifier.dart';
 import '../../../utils/pali_script.dart';
-import '../home/opened_books_provider.dart';
+import '../home/openning_books_provider.dart';
 import 'reader.dart';
 
 class ReaderContainer extends StatefulWidget {
@@ -33,14 +33,14 @@ class _ReaderContainerState extends State<ReaderContainer> {
     // only rebuild when states are not equal.
     // when previous and new state is same,
     // add new books to tabbed view by TabbedViewController
-    final openedBookProvider = context.watch<OpenedBooksProvider>();
+    final openedBookProvider = context.watch<OpenningBooksProvider>();
 
     // tabbed view uses custom theme and provide TabbedViewTheme.
     // need to watch theme change and rebuild TabbedViewTheme with new one
 
     final isDarkMode = context
         .select<ThemeChangeNotifier, bool>((notifier) => notifier.isDarkMode);
-    final books = openedBookProvider.openedBooks;
+    final books = openedBookProvider.books;
 
     final tabDatas = books
         .map((element) => TabData(
@@ -95,11 +95,11 @@ Etaṃ buddhānasāsanaṃ
           );
         },
         onTabClose: (index, tabData) =>
-            context.read<OpenedBooksProvider>().remove(index: index),
+            context.read<OpenningBooksProvider>().remove(index: index),
         onTabSelection: (selectedIndex) {
           if (selectedIndex != null) {
             context
-                .read<OpenedBooksProvider>()
+                .read<OpenningBooksProvider>()
                 .updateSelectedBookIndex(selectedIndex);
           }
         },

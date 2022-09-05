@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 
 import '../../../business_logic/models/book.dart';
 
-class OpenedBooksProvider extends ChangeNotifier {
-  final List<Map<String, dynamic>> _openedBooks = [];
-  List<Map<String, dynamic>> get openedBooks => _openedBooks;
+class OpenningBooksProvider extends ChangeNotifier {
+  final List<Map<String, dynamic>> _books = [];
+  List<Map<String, dynamic>> get books => _books;
 
   int _selectedBookIndex = 0;
   int get selectedBookIndex => _selectedBookIndex;
 
   void add({required Book book, int? currentPage, String? textToHighlight}) {
-    _openedBooks.insert(0, {
+    _books.insert(0, {
       'book': book,
       'current_page': currentPage,
       'text_to_highlight': textToHighlight,
@@ -19,17 +19,27 @@ class OpenedBooksProvider extends ChangeNotifier {
   }
 
   void remove({required int index}) {
-    openedBooks.removeAt(index);
+    books.removeAt(index);
+    if (books.isEmpty) {
+      _selectedBookIndex = 0;
+    }
+    notifyListeners();
+  }
+
+  void removeAll() {
+    books.clear();
+    _selectedBookIndex = 0;
     notifyListeners();
   }
 
   void update({required int newPageNumber}) {
-    var current = openedBooks[_selectedBookIndex];
+    var current = books[_selectedBookIndex];
     current['current_page'] = newPageNumber;
-    openedBooks[_selectedBookIndex] = current;
+    books[_selectedBookIndex] = current;
   }
 
   void updateSelectedBookIndex(int index) {
     _selectedBookIndex = index;
+    notifyListeners();
   }
 }

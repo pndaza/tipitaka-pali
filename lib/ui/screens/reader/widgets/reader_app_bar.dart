@@ -46,7 +46,7 @@ class ReaderAppBar extends StatelessWidget implements PreferredSizeWidget {
           );
         },
         pageBuilder: (context, animation, secondaryAnimation) => Material(
-              child: BookListPage(isAddtoOpenningBooks: true),
+              child: BookListPage(),
             ));
   }
 }

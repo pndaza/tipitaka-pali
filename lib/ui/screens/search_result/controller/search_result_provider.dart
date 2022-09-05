@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../business_logic/models/search_result.dart';
-import '../../../../routes.dart';
 import '../../../../services/search_service.dart';
 import '../../../../utils/platform_info.dart';
-import '../../home/opened_books_provider.dart';
+import '../../home/openning_books_provider.dart';
 import '../../home/search_page/search_page.dart';
+import '../../reader/mobile_reader_container.dart';
 import 'search_filter_provider.dart';
 import 'search_result_state.dart';
 
@@ -101,19 +101,18 @@ class SearchResultController extends ChangeNotifier {
   }
 
   void openBook(SearchResult result, BuildContext context) {
-    if (PlatformInfo.isDesktop|| Mobile.isTablet(context)) {
-      final openedBooksProvider = context.read<OpenedBooksProvider>();
-      openedBooksProvider.add(
-        book: result.book,
-        currentPage: result.pageNumber,
-        textToHighlight: searchWord,
-      );
-    } else {
-      Navigator.pushNamed(context, readerRoute, arguments: {
-        'book': result.book,
-        'currentPage': result.pageNumber,
-        'textToHighlight': searchWord
-      });
+    final openningBookProvider = context.read<OpenningBooksProvider>();
+    openningBookProvider.add(
+      book: result.book,
+      currentPage: result.pageNumber,
+      textToHighlight: searchWord,
+    );
+
+    if (Mobile.isPhone(context)) {
+      // Navigator.pushNamed(context, readerRoute,
+      //     arguments: {'book': bookItem.book});
+      Navigator.push(context,
+          MaterialPageRoute(builder: (_) => const MobileReaderContrainer()));
     }
   }
 }

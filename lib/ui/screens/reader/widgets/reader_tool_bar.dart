@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:tipitaka_pali/providers/font_provider.dart';
-import 'package:tipitaka_pali/ui/screens/home/opened_books_provider.dart';
+import 'package:tipitaka_pali/ui/screens/home/openning_books_provider.dart';
 import 'package:tipitaka_pali/utils/platform_info.dart';
 
 import '../../../../app.dart';
@@ -89,52 +89,51 @@ class UpperRow extends StatelessWidget {
   void _openTocDialog(BuildContext context) async {
     final vm = context.read<ReaderViewController>();
 
-      const sideSheetWidth = 400.0;
-      final toc = await showGeneralDialog<Toc>(
-        context: context,
-        barrierLabel: 'TOC',
-        barrierDismissible: true,
-        transitionDuration: const Duration(milliseconds: 800),
-        transitionBuilder: (context, animation, secondaryAnimation, child) {
-          return SlideTransition(
-            position: Tween(begin: const Offset(1, 0), end: const Offset(0, 0))
-                .animate(
-              CurvedAnimation(parent: animation, curve: Curves.easeInOutSine),
+    const sideSheetWidth = 400.0;
+    final toc = await showGeneralDialog<Toc>(
+      context: context,
+      barrierLabel: 'TOC',
+      barrierDismissible: true,
+      transitionDuration: const Duration(milliseconds: 800),
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        return SlideTransition(
+          position:
+              Tween(begin: const Offset(1, 0), end: const Offset(0, 0)).animate(
+            CurvedAnimation(parent: animation, curve: Curves.easeInOutSine),
+          ),
+          child: child,
+        );
+      },
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return Align(
+          alignment: Alignment.centerRight,
+          child: Material(
+            type: MaterialType.transparency,
+            child: Container(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+              width: MediaQuery.of(context).size.width > 600
+                  ? sideSheetWidth
+                  : double.infinity,
+              decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.background,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(16),
+                    bottomLeft: Radius.circular(16),
+                  )),
+              child: TocDialog(bookID: vm.book.id),
             ),
-            child: child,
-          );
-        },
-        pageBuilder: (context, animation, secondaryAnimation) {
-          return Align(
-            alignment: Alignment.centerRight,
-            child: Material(
-              type: MaterialType.transparency,
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
-                width: MediaQuery.of(context).size.width > 600
-                    ? sideSheetWidth
-                    : double.infinity,
-                decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.background,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(16),
-                      bottomLeft: Radius.circular(16),
-                    )),
-                child: TocDialog(bookID: vm.book.id),
-              ),
-            ),
-          );
-        },
-      );
+          ),
+        );
+      },
+    );
 
-      if (toc != null) {
-        // not only goto page
-        // but also to highlight toc and scroll to it
-        vm.onGoto(pageNumber: toc.pageNumber);
-        // vm.gotoPageAndScroll(toc.pageNumber.toDouble(), toc.name);
-      }
-
+    if (toc != null) {
+      // not only goto page
+      // but also to highlight toc and scroll to it
+      vm.onGoto(pageNumber: toc.pageNumber);
+      // vm.gotoPageAndScroll(toc.pageNumber.toDouble(), toc.name);
+    }
   }
 }
 
@@ -169,7 +168,7 @@ class LowerRow extends StatelessWidget {
   }
 
   void _openSettingPage(BuildContext context) async {
-    if (PlatformInfo.isDesktop|| Mobile.isTablet(context)) {
+    if (PlatformInfo.isDesktop || Mobile.isTablet(context)) {
     } else {
       await Navigator.pushNamed(context, settingRoute);
     }
@@ -223,8 +222,8 @@ class LowerRow extends StatelessWidget {
 
       final book = Book(id: bookId, name: bookName);
 
-      if (PlatformInfo.isDesktop|| Mobile.isTablet(context)) {
-        final openedBookController = context.read<OpenedBooksProvider>();
+      if (PlatformInfo.isDesktop || Mobile.isTablet(context)) {
+        final openedBookController = context.read<OpenningBooksProvider>();
         openedBookController.add(book: book, currentPage: pageNumber);
       } else {
         Navigator.pushNamed(context, readerRoute, arguments: {

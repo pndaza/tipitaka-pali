@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:tipitaka_pali/ui/screens/reader/mobile_reader_container.dart';
 
 import '../../../business_logic/models/list_item.dart';
 import '../../../business_logic/view_models/home_page_view_model.dart';
@@ -9,12 +10,10 @@ import '../../../services/provider/script_language_provider.dart';
 import '../../../utils/pali_script.dart';
 import '../../../utils/platform_info.dart';
 import '../../widgets/colored_text.dart';
-import 'opened_books_provider.dart';
+import 'openning_books_provider.dart';
 
 class BookListPage extends StatelessWidget {
-  BookListPage({Key? key, this.isAddtoOpenningBooks = false}) : super(key: key);
-
-  final bool isAddtoOpenningBooks;
+  BookListPage({Key? key}) : super(key: key);
 
   // key will be use for load book list from database
   // value will be use for TabBar Title
@@ -33,22 +32,12 @@ class BookListPage extends StatelessWidget {
       child: Scaffold(
           appBar: Mobile.isPhone(context)
               ? AppBar(
-                  leading: isAddtoOpenningBooks
-                      ? IconButton(
-                          onPressed: () => Navigator.pop(context),
-                          icon: const Icon(Icons.arrow_back),
-                        )
-                      : null,
                   title:
                       Text(AppLocalizations.of(context)!.tipitaka_pali_reader),
                   // centerTitle: true,
                 )
               : null,
-          drawer: Mobile.isPhone(context)
-              ? !isAddtoOpenningBooks
-                  ? _buildDrawer(context)
-                  : null
-              : null,
+          drawer: Mobile.isPhone(context) ? _buildDrawer(context) : null,
           body: Column(
             children: [
               Container(
@@ -172,12 +161,14 @@ class BookListPage extends StatelessWidget {
       BookItem bookItem = listItem as BookItem;
       debugPrint('book name: ${bookItem.book.name}');
 
-      final homeController = context.read<OpenedBooksProvider>();
-      homeController.add(book: bookItem.book);
+      final openningBookProvider = context.read<OpenningBooksProvider>();
+      openningBookProvider.add(book: bookItem.book);
 
-      if (Mobile.isPhone(context) && !isAddtoOpenningBooks) {
-        Navigator.pushNamed(context, readerRoute,
-            arguments: {'book': bookItem.book});
+      if (Mobile.isPhone(context)) {
+        // Navigator.pushNamed(context, readerRoute,
+        //     arguments: {'book': bookItem.book});
+        Navigator.push(context,
+            MaterialPageRoute(builder: (_) => const MobileReaderContrainer()));
       }
     }
   }

@@ -17,9 +17,9 @@ import '../../../../services/repositories/page_content_repo.dart';
 import '../../../../services/repositories/paragraph_mapping_repo.dart';
 import '../../../../services/repositories/paragraph_repo.dart';
 import '../../../../services/repositories/recent_repo.dart';
-import '../../home/opened_books_provider.dart';
+import '../../home/openning_books_provider.dart';
 
-class ReaderViewController with ChangeNotifier {
+class ReaderViewController extends ChangeNotifier {
   final BuildContext context;
   final PageContentRepository pageContentRepository;
   final BookRepository bookRepository;
@@ -52,7 +52,11 @@ class ReaderViewController with ChangeNotifier {
     numberOfPage = pages.length;
     await _loadBookInfo(book.id);
     isloadingFinished = true;
+    myLogger.i('loading finished for: ${book.name}');
     notifyListeners();
+    // update opened book list
+    final openedBookController = context.read<OpenningBooksProvider>();
+    openedBookController.update(newPageNumber: _currentPage.value);
     // save to recent table on load of the book.
     // from general book opening and also tapping a search result tile..
     await _saveToRecent();
@@ -102,7 +106,7 @@ class ReaderViewController with ChangeNotifier {
     // update current page
     _currentPage.value = pageNumber;
     // update opened book list
-    final openedBookController = context.read<OpenedBooksProvider>();
+    final openedBookController = context.read<OpenningBooksProvider>();
     openedBookController.update(newPageNumber: _currentPage.value);
     // persit
     await _saveToRecent();

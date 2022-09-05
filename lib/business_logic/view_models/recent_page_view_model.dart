@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../routes.dart';
 import '../../services/repositories/recent_repo.dart';
-import '../../ui/screens/home/opened_books_provider.dart';
+import '../../ui/screens/home/openning_books_provider.dart';
+import '../../ui/screens/reader/mobile_reader_container.dart';
 import '../../utils/platform_info.dart';
 import '../models/book.dart';
 import '../models/recent.dart';
@@ -34,15 +34,16 @@ class RecentPageViewModel extends ChangeNotifier {
 
   void openBook(Recent recent, BuildContext context) async {
     final book = Book(id: recent.bookID, name: recent.bookName!);
-    if (PlatformInfo.isDesktop|| Mobile.isTablet(context)) {
-      final homeController = context.read<OpenedBooksProvider>();
-      homeController.add(book: book, currentPage: recent.pageNumber);
-    } else {
-      await Navigator.pushNamed(context, readerRoute, arguments: {
-        'book': book,
-        'currentPage': recent.pageNumber,
-      });
+    final openningBookProvider = context.read<OpenningBooksProvider>();
+    openningBookProvider.add(book: book);
+
+    if (Mobile.isPhone(context)) {
+      // Navigator.pushNamed(context, readerRoute,
+      //     arguments: {'book': bookItem.book});
+      Navigator.push(context,
+          MaterialPageRoute(builder: (_) => const MobileReaderContrainer()));
     }
+
     // update recents
     _recents = await repository.getRecents();
     notifyListeners();

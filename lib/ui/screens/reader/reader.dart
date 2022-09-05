@@ -67,9 +67,9 @@ class ReaderView extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: PlatformInfo.isDesktop || Mobile.isTablet(context)
-          ? null
-          : const ReaderAppBar(),
+      // appBar: PlatformInfo.isDesktop || Mobile.isTablet(context)
+      //     ? null
+      //     : const ReaderAppBar(),
       body: Container(
         color: context.read<ThemeChangeNotifier>().isDarkMode
             ? Colors.grey[800]

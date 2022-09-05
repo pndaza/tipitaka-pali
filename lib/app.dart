@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
-import 'package:tipitaka_pali/ui/screens/home/opened_books_provider.dart';
+import 'package:tipitaka_pali/ui/screens/home/openning_books_provider.dart';
 
 import 'providers/font_provider.dart';
 import 'routes.dart';
@@ -47,7 +47,8 @@ class App extends StatelessWidget {
             ChangeNotifierProvider<ScriptLanguageProvider>(
                 create: (_) => ScriptLanguageProvider()),
             ChangeNotifierProvider<FontProvider>(create: (_) => FontProvider()),
-            ChangeNotifierProvider<OpenedBooksProvider>(create: (_)=> OpenedBooksProvider())
+            ChangeNotifierProvider<OpenningBooksProvider>(
+                create: (_) => OpenningBooksProvider())
           ],
           builder: (context, _) {
             final themeChangeNotifier =
