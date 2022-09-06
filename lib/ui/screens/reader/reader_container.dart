@@ -34,12 +34,6 @@ class _ReaderContainerState extends State<ReaderContainer> {
     // when previous and new state is same,
     // add new books to tabbed view by TabbedViewController
     final openedBookProvider = context.watch<OpenningBooksProvider>();
-
-    // tabbed view uses custom theme and provide TabbedViewTheme.
-    // need to watch theme change and rebuild TabbedViewTheme with new one
-
-    final isDarkMode = context
-        .select<ThemeChangeNotifier, bool>((notifier) => notifier.isDarkMode);
     final books = openedBookProvider.books;
 
     final tabDatas = books
@@ -47,7 +41,7 @@ class _ReaderContainerState extends State<ReaderContainer> {
             text: PaliScript.getScriptOf(
                 script: context.watch<ScriptLanguageProvider>().currentScript,
                 romanText: (element['book'] as Book).name),
-            keepAlive: true))
+            keepAlive: false))
         .toList();
 
     if (books.isEmpty) {
@@ -74,36 +68,49 @@ Etaṃ buddhānasāsanaṃ
         ),
       );
     }
-    return TabbedViewTheme(
-      data: isDarkMode
-          ? TabbedViewThemeData.dark()
-          : TabbedViewThemeData.mobile(
-              accentColor:
-                  Theme.of(context).appBarTheme.backgroundColor ?? Colors.blue,
-            ),
-      child: TabbedView(
-        controller: TabbedViewController(tabDatas),
-        contentBuilder: (_, index) {
-          final book = books.elementAt(index)['book'] as Book;
-          final currentPage = books.elementAt(index)['current_page'] as int?;
-          final textToHighlight =
-              books.elementAt(index)['text_to_highlight'] as String?;
-          return Reader(
-            book: book,
-            initialPage: currentPage,
-            textToHighlight: textToHighlight,
-          );
-        },
-        onTabClose: (index, tabData) =>
-            context.read<OpenningBooksProvider>().remove(index: index),
-        onTabSelection: (selectedIndex) {
-          if (selectedIndex != null) {
-            context
-                .read<OpenningBooksProvider>()
-                .updateSelectedBookIndex(selectedIndex);
-          }
-        },
-      ),
+
+    // cannot watch two notifiers simultaneity in a single widget
+    // so warp in consumer for watching theme change
+    return Consumer<ThemeChangeNotifier>(
+      builder: ((context, themeChangeNotifier, child) {
+
+    // tabbed view uses custom theme and provide TabbedViewTheme.
+    // need to watch theme change and rebuild TabbedViewTheme with new one
+
+        return TabbedViewTheme(
+          data: themeChangeNotifier.isDarkMode
+              ? TabbedViewThemeData.dark()
+              : TabbedViewThemeData.mobile(
+                  accentColor:
+                      Theme.of(context).appBarTheme.backgroundColor ?? Colors.blue,
+                ),
+          // data: TabbedViewThemeData.minimalist(),
+          child: TabbedView(
+            controller: TabbedViewController(tabDatas),
+            contentBuilder: (_, index) {
+              final book = books.elementAt(index)['book'] as Book;
+              final currentPage =
+                  books.elementAt(index)['current_page'] as int?;
+              final textToHighlight =
+                  books.elementAt(index)['text_to_highlight'] as String?;
+              return Reader(
+                book: book,
+                initialPage: currentPage,
+                textToHighlight: textToHighlight,
+              );
+            },
+            onTabClose: (index, tabData) =>
+                context.read<OpenningBooksProvider>().remove(index: index),
+            onTabSelection: (selectedIndex) {
+              if (selectedIndex != null) {
+                context
+                    .read<OpenningBooksProvider>()
+                    .updateSelectedBookIndex(selectedIndex);
+              }
+            },
+          ),
+        );
+      }),
     );
   }
 }
