@@ -54,7 +54,7 @@ class _MobileReaderContrainerState extends State<MobileReaderContrainer> {
                 if (selectedIndex != null) {
                   context
                       .read<OpenningBooksProvider>()
-                      .updateSelectedBookIndex(selectedIndex);
+                      .updateSelectedBookIndex(selectedIndex, forceNotify: true);
                   setState(() {
                     // title need to update
                     pageController.jumpToPage(selectedIndex);

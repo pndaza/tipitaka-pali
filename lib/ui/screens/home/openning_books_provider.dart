@@ -38,8 +38,11 @@ class OpenningBooksProvider extends ChangeNotifier {
     books[_selectedBookIndex] = current;
   }
 
-  void updateSelectedBookIndex(int index) {
+  void updateSelectedBookIndex(int index,{bool forceNotify =false}) {
     _selectedBookIndex = index;
+    if(forceNotify){
+
     notifyListeners();
+    }
   }
 }
