@@ -2,8 +2,8 @@ class PaliStemmer {
   static String getStem(String word) {
     String stemWord = word.trim();
     // remove punctuation
-    stemWord = stemWord.replaceAll(
-        RegExp(r'[\u104a\u104b\u2018\u2019",\.\?]'), '');
+    stemWord =
+        stemWord.replaceAll(RegExp(r'[\u104a\u104b\u2018\u2019",\.\?]'), '');
 
     // various ending of pada
     List<RegExp> endings = [];
@@ -44,8 +44,7 @@ class PaliStemmer {
     endings.add(RegExp(r'(?<=i)yā$')); // iyā ိယာ
     // endings.add(new RegExp(
     //     r'(?<=[\u102b\u102c])\u101a\u1036?$')); //  āya or āyaṃ  ါယ or ါယံ or ာယ or ာယံ
-    endings.add(
-        RegExp(r'(?<=ā)yaṃ?$')); //  āya or āyaṃ  ါယ or ါယံ or ာယ or ာယံ
+    endings.add(RegExp(r'(?<=ā)yaṃ?$')); //  āya or āyaṃ  ါယ or ါယံ or ာယ or ာယံ
     // su (သု) preceded by vowel ā or ī or ū
     // first, will find with dīgha vowel in dict
     // if not find , convert to rassa vowel and will find again
@@ -60,7 +59,7 @@ class PaliStemmer {
     */
     endings.add(RegExp(r'o$')); // dependent vowel o  ော
     endings.add(RegExp(r'e$')); // dependent vowel E ေ
-    endings.add(RegExp(r'ṃ$')); // niggahita ṃ ံ
+    //endings.add(RegExp(r'ṃ$')); // niggahita ṃ ံ
 
     for (RegExp ending in endings) {
       if (ending.hasMatch(stemWord)) {
@@ -68,7 +67,10 @@ class PaliStemmer {
         break;
       }
     }
-
+    // fix for nigahitta in roman  for cittaṃ
+    if (stemWord.endsWith("ṃ")) {
+      stemWord = stemWord.substring(0, stemWord.length - 1);
+    }
     return stemWord;
   }
 
