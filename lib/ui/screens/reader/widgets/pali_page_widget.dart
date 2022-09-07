@@ -29,11 +29,13 @@ class PaliPageWidget extends StatefulWidget {
 }
 
 class _PaliPageWidgetState extends State<PaliPageWidget> {
+  String? highlightedWord;
   final _myFactory = _MyFactory();
 
   @override
   void initState() {
     super.initState();
+    highlightedWord = widget.highlightedWord;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _myFactory.onTapUrl('#goto');
     });
@@ -81,12 +83,20 @@ class _PaliPageWidgetState extends State<PaliPageWidget> {
             return {'text-decoration': 'none'};
           },
           onTapUrl: (word) {
+            if(mounted){
+
+            setState(() {
+              highlightedWord = word;
+            });
+            }
+
             if (widget.onClick != null) {
               // #goto is used for scrolling to selected text
               if (word != '#goto') {
                 widget.onClick!(word);
               }
             }
+
             return false;
           },
         ),
@@ -95,8 +105,8 @@ class _PaliPageWidgetState extends State<PaliPageWidget> {
   }
 
   String _formatContent(String content, Script script) {
-        if (widget.highlightedWord != null) {
-      content = _addHighlight(content, widget.highlightedWord!);
+    if (highlightedWord != null) {
+      content = _addHighlight(content, highlightedWord!);
     }
 
     content = _makeClickable(content, script);
@@ -276,8 +286,7 @@ class _PaliPageWidgetState extends State<PaliPageWidget> {
     final words = textToHighlight.trim().split(' ');
     for (final word in words) {
       if (content.contains(word)) {
-        final String replace =
-            '<span class = "highlighted">$word</span>';
+        final String replace = '<span class = "highlighted">$word</span>';
         content = content.replaceAll(word, replace);
       } else {
         // bolded word case
@@ -285,8 +294,7 @@ class _PaliPageWidgetState extends State<PaliPageWidget> {
         // removing ti (တိ) at end
         String trimmedWord = word.replaceAll(RegExp(r'(nti|ti)$'), '');
         // print('trimmedWord: $trimmedWord');
-        final replace =
-            '<span class = "highlighted">$trimmedWord</span>';
+        final replace = '<span class = "highlighted">$trimmedWord</span>';
 
         content = content.replaceAll(trimmedWord, replace);
       }
