@@ -92,9 +92,16 @@ class DictionaryController with ChangeNotifier {
     // Audo mode will use TPR algorithm first
     // if defintion was found, will be display this definition
     // Otherwise will be display result of DPR a
-    final definition = await searchWithTPR(word);
-    if (definition.isNotEmpty) return definition;
-    return await searchWithDPR(word);
+
+    final before = DateTime.now();
+
+    String definition = await searchWithTPR(word);
+    if (definition.isEmpty) definition = await searchWithDPR(word);
+    final after = DateTime.now();
+    final differnt = after.difference(before);
+    print('compute time: $differnt');
+
+    return definition;
   }
 
   Future<String> searchWithTPR(String word) async {
@@ -103,7 +110,14 @@ class DictionaryController with ChangeNotifier {
         DictionarySerice(DictionaryDatabaseRepository(DatabaseHelper()));
     final definitions =
         await dictionaryProvider.getDefinition(word, isAlreadyStem: false);
+    final String dpdHeadWord = await dictionaryProvider.getDpdHeadwords(word);
 
+    if (dpdHeadWord.isNotEmpty) {
+      Definition dpdDefinition =
+          await dictionaryProvider.getDpdDefinition(dpdHeadWord);
+      definitions.insert(0, dpdDefinition);
+      definitions.sort((a, b) => a.userOrder.compareTo(b.userOrder));
+    }
     if (definitions.isEmpty) return '';
 
     return _formatDefinitions(definitions);
@@ -117,9 +131,19 @@ class DictionaryController with ChangeNotifier {
     // frist dpr_stem will be used for stem
     // stem is single word mostly
     final String dprStem = await dictionaryProvider.getDprStem(word);
-    if (dprStem.isNotEmpty) {
-      final definitions =
+    final String dpdHeadWord = await dictionaryProvider.getDpdHeadwords(word);
+    if (dprStem.isNotEmpty || dpdHeadWord.isNotEmpty) {
+      Definition dpdDefinition =
+          await dictionaryProvider.getDpdDefinition(dpdHeadWord);
+
+      List<Definition> definitions =
           await dictionaryProvider.getDefinition(dprStem, isAlreadyStem: true);
+
+      debugPrint(dpdDefinition.definition);
+
+      definitions.insert(0, dpdDefinition);
+      definitions.sort((a, b) => a.userOrder.compareTo(b.userOrder));
+
       if (definitions.isNotEmpty) {
         return _formatDefinitions(definitions);
       }
@@ -145,7 +169,6 @@ class DictionaryController with ChangeNotifier {
     String lastPartOfBreakupText = words.map((word) => word).join(' + ');
     formatedDefintion +=
         '$csspreFormat $firstPartOfBreakupText [ $lastPartOfBreakupText ] </p>';
-
     // getting definition per word
     for (var word in words) {
       final definitions =
@@ -240,7 +263,14 @@ class DictionaryController with ChangeNotifier {
     word = word.replaceAllMapped(
         RegExp(r'[\[\]\+/\.\)\(\-,:;")\\]'), (match) => ' ');
     List<String> ls = word.split(' ');
-    word = ls[0];
+    // fix for first character being a non-word-char in above list
+    // if so, first split will be empty.
+    // if length is >1
+    if (ls.length > 1 && ls[0].isEmpty) {
+      word = ls[1];
+    } else {
+      word = ls[0];
+    }
     word.trim();
     return word;
   }

@@ -29,13 +29,11 @@ class PaliPageWidget extends StatefulWidget {
 }
 
 class _PaliPageWidgetState extends State<PaliPageWidget> {
-  String? highlightedWord;
   final _myFactory = _MyFactory();
 
   @override
   void initState() {
     super.initState();
-    highlightedWord = widget.highlightedWord;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _myFactory.onTapUrl('#goto');
     });
@@ -83,20 +81,12 @@ class _PaliPageWidgetState extends State<PaliPageWidget> {
             return {'text-decoration': 'none'};
           },
           onTapUrl: (word) {
-            if(mounted){
-
-            setState(() {
-              highlightedWord = word;
-            });
-            }
-
             if (widget.onClick != null) {
               // #goto is used for scrolling to selected text
               if (word != '#goto') {
                 widget.onClick!(word);
               }
             }
-
             return false;
           },
         ),
@@ -105,8 +95,8 @@ class _PaliPageWidgetState extends State<PaliPageWidget> {
   }
 
   String _formatContent(String content, Script script) {
-    if (highlightedWord != null) {
-      content = _addHighlight(content, highlightedWord!);
+    if (widget.highlightedWord != null) {
+      content = _addHighlight(content, widget.highlightedWord!);
     }
 
     content = _makeClickable(content, script);

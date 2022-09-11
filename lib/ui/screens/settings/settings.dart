@@ -5,6 +5,7 @@ import 'package:tipitaka_pali/ui/widgets/select_language_widget.dart';
 import 'package:tipitaka_pali/ui/widgets/select_theme_widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:tipitaka_pali/data/constants.dart';
 
 import 'script_setting_view.dart';
 
@@ -59,17 +60,33 @@ class DarkModeSettingView extends StatelessWidget {
     return Card(
       elevation: 8,
       child: ListTile(
-          leading: const Icon(Icons.brightness_2_outlined),
-          title: Text(
-            AppLocalizations.of(context)!.darkMode,
-            style: Theme.of(context).textTheme.headline6,
-          ),
-          trailing: Switch(
-            onChanged: (value) {
-              context.read<ThemeChangeNotifier>().toggleTheme(value);
-            },
-            value: context.read<ThemeChangeNotifier>().isDarkMode,
-          )),
+        leading: const Icon(Icons.brightness_2_outlined),
+        trailing: ToggleButtons(
+          color: Colors.red,
+          onPressed: (int index) {
+            context.read<ThemeChangeNotifier>().toggleTheme(index);
+          },
+          isSelected: context.read<ThemeChangeNotifier>().isSelected,
+          children: <Widget>[
+            CircleAvatar(
+              backgroundColor: Theme.of(context).highlightColor,
+              child: const Icon(Icons.article, color: Colors.white),
+            ),
+            CircleAvatar(
+              backgroundColor: Theme.of(context).highlightColor,
+              child: const Icon(Icons.article, color: Color(seypia)),
+            ),
+            CircleAvatar(
+              backgroundColor: Theme.of(context).highlightColor,
+              child: const Icon(Icons.article, color: Colors.black),
+            ),
+          ],
+        ),
+        title: Text(
+          AppLocalizations.of(context)!.darkMode,
+          style: Theme.of(context).textTheme.headline6,
+        ),
+      ),
     );
   }
 }

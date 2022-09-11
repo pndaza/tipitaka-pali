@@ -63,7 +63,7 @@ class _DictionaryPageState extends State<DictionaryPage>
                         _lastWord = _words[index];
                         _words.removeLast(); // remove from list
                         dc.onWordClicked(_lastWord);
-                        debugPrint("onpressed:  _words:  ${_words.toString()}");
+                        //debugPrint("onpressed:  _words:  ${_words.toString()}");
                       }
                     },
                   ),

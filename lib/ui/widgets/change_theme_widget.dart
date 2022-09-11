@@ -11,6 +11,8 @@ class ChangeThemeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     //final themeProvider = Provider.of<ThemeChangeNotifier>(context);
 
+// This code is not used.. old code 
+// now use 3 state button
     return Switch(
       value: Prefs.darkThemeOn,
       activeThumbImage: const AssetImage("assets/sun.png"),
@@ -18,8 +20,8 @@ class ChangeThemeWidget extends StatelessWidget {
       onChanged: (value) {
         final provider =
             Provider.of<ThemeChangeNotifier>(context, listen: false);
-        Prefs.dartThemeOn = value;
-        provider.toggleTheme(value);
+        Prefs.darkThemeOn = value;
+        provider.toggleTheme(1); // not used.. old cod
       },
     );
   }

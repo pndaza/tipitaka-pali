@@ -1,30 +1,88 @@
+import 'package:beautiful_soup_dart/beautiful_soup.dart';
+import 'package:flutter/material.dart';
 import 'package:tipitaka_pali/business_logic/models/definition.dart';
-import 'package:tipitaka_pali/services/dao/dictionary_dao.dart';
 import 'package:tipitaka_pali/services/database/database_helper.dart';
+import 'package:tipitaka_pali/services/prefs.dart';
 
 abstract class DictionaryRepository {
   Future<List<Definition>> getDefinition(String id);
+  Future<Definition> getDpdDefinition(String headwords);
   Future<List<String>> getSuggestions(String word);
   Future<String> getDprBreakup(String word);
   Future<String> getDprStem(String word);
+  Future<String> getDpdHeadwords(String word);
 }
 
 class DictionaryDatabaseRepository implements DictionaryRepository {
-  final dao = DictionaryDao();
   final DatabaseHelper databaseHelper;
   DictionaryDatabaseRepository(this.databaseHelper);
 
   @override
   Future<List<Definition>> getDefinition(String word) async {
     final db = await databaseHelper.database;
-    final sql = '''
-      SELECT word, definition, dictionary_books.name from dictionary, dictionary_books 
+    String sql = '''
+      SELECT word, definition, dictionary_books.name,user_order from dictionary, dictionary_books 
       WHERE word = '$word' AND dictionary.book_id = dictionary_books.id
       AND dictionary_books.user_choice = 1
       ORDER BY dictionary_books.user_order
     ''';
     List<Map<String, dynamic>> maps = await db.rawQuery(sql);
-    return dao.fromList(maps);
+    List<Definition> defs = maps.map((x) => Definition.fromJson(x)).toList();
+
+    return _adjustPEU(word, defs);
+  }
+
+  @override
+  Future<Definition> getDpdDefinition(String headwords) async {
+    final db = await databaseHelper.database;
+
+    String line = headwords.replaceAll('[', "");
+    line = line.replaceAll(']', "");
+    line = line.replaceAll('\'', "");
+    String htmlDefs = "";
+    String stripDefs = '';
+    List<String> words = line.split(',');
+    String bookName = '';
+    int order = 0;
+
+    for (var element in words) {
+      final sql = '''
+      SELECT word, definition, user_order, name from dpd, dictionary_books 
+      WHERE word = '${element.trimLeft()}' AND user_choice =1  AND dictionary_books.id = dpd.book_id
+    ''';
+      List<Map<String, dynamic>> maps = await db.rawQuery(sql);
+      if (maps.isNotEmpty) {
+        htmlDefs = maps.first['definition'] as String;
+
+        BeautifulSoup bs = BeautifulSoup(htmlDefs);
+        List<Bs4Element> bs4List = bs.findAll('*', class_: "dpd");
+        stripDefs +=
+            '<p style="font-weight: normal;"> [ ${bs4List[0].string} ] : ';
+        debugPrint(bs4List[0].string);
+
+        // now get either the summary or the bold .
+        //<p span class=font-weight: normal;>
+        Bs4Element? bs4 = bs.find('summary', class_: 'dpd');
+        bs4 ??= bs.find('p', class_: 'dpd');
+        stripDefs += '  ${bs4!.string} </p>';
+        stripDefs = stripDefs.replaceAll('🔧', '');
+        debugPrint(bs4.string);
+        order = maps.first['user_order'];
+        bookName = maps.first['name'];
+      }
+    }
+
+    // We will build a list from the headwords (if mulitple headwords)
+    // Then we will do a raw query for each word and add to definition
+    //
+
+    Definition def = Definition(
+        word: line,
+        definition: stripDefs,
+        bookName: bookName,
+        userOrder: order);
+
+    return def;
   }
 
   @override
@@ -54,11 +112,117 @@ class DictionaryDatabaseRepository implements DictionaryRepository {
   @override
   Future<String> getDprStem(String word) async {
     final db = await databaseHelper.database;
-    final List<Map<String, dynamic>> maps = await db.query('dpr_stem',
-        columns: ['stem'], where: 'word = ?', whereArgs: [word]);
+
+    String sql = '''
+      SELECT stem from dpr_stem where word = '$word'
+''';
+
+    final List<Map<String, dynamic>> maps = await db.rawQuery(sql);
     // word column is unqiue
     // so list always one entry
     if (maps.isEmpty) return '';
     return maps.first['stem'] as String;
+  }
+
+  @override
+  Future<String> getDpdHeadwords(String word) async {
+    final db = await databaseHelper.database;
+
+    String sql = '''
+        SELECT headwords 
+        FROM dpd_inflections_to_headwords
+        WHERE inflection = "$word";
+''';
+    final List<Map<String, dynamic>> maps = await db.rawQuery(sql);
+    // word column is unqiue
+    // so list always one entry
+    if (maps.isEmpty) return '';
+    return maps.first['headwords'] as String;
+  }
+
+  Future<List<Definition>> _adjustPEU(
+      String word, List<Definition> defs) async {
+    // before giving the list of definitions.. check to see if peu was selected.
+    // if selected, reduce the search item up to 5 char.
+    // result should not be bigger than original and not less than 5 chars (assuming we have all of these)
+    //if (defs.contains(element.)
+    final db = await databaseHelper.database;
+
+    if (Prefs.isPeuOn) {
+      bool hasPeu = false;
+      for (int x = 0; x < defs.length; x++) {
+        if (defs[x].bookName.contains("PEU")) {
+          hasPeu = true;
+          return defs; // there is a definition found with normal query
+        }
+      }
+
+      // the peu is selected
+      // the PEU does not have a definition
+      // We now need to adjust this.
+      // see if we can get a hit.
+      if (!hasPeu && word.length >= 14) {
+        // reduce one by one up to 4 times to see if the word exists
+        // add those words to the list.
+        for (int reduce = 1; reduce < 5; reduce++) {
+          String sql = '''
+      SELECT word, definition, "PEU Algo Used" as "name" from dictionary 
+             WHERE
+                dictionary.book_id = 8
+                AND dictionary.word LIKE '${word.substring(0, word.length - reduce)}%' 
+                AND  length(dictionary.word) <= ${word.length}
+                  ''';
+
+// TODO manually remove the word if bigger than original.
+
+          List<Map> list = await db.rawQuery(sql);
+          if (list.isNotEmpty) {
+            // we found the word.. now need to add it.
+            debugPrint("found word in peu ${list[0].toString()}");
+
+            var peuDefs = list.map((x) => Definition.fromJson(x)).toList();
+
+            Definition def = peuDefs[0];
+            def.definition = formatePeuAlgoDef(word, def.word!, def.definition);
+            debugPrint(def.definition);
+            defs.add(def);
+            return defs;
+          }
+        }
+      }
+    } // peu is selected
+
+/*
+  Future<List<InterviewDetails>> getAllInterviewDetails() async {
+    //await initDatabase();
+    final _db = await _dbHelper.database;
+
+    String dbQuery =
+        '''Select residentDetails.id_code, residentDetails.dhamma_name, residentDetails.passport_name,residentDetails.kuti, residentDetails.country, interviews.stime, interviews.teacher, interviews.pk
+          FROM residentDetails, interviews
+          WHERE residentDetails.id_code = interviews.id_code
+          ORDER BY interviews.stime DESC''';
+
+    List<Map> list = await _db.rawQuery(dbQuery);
+    return list
+        .map((interviewdetails) => InterviewDetails.fromJson(interviewdetails))
+        .toList();
+
+    //return list.map((trail) => Trail.fromJson(trail)).toList();
+  }
+*/
+
+    return defs;
+  }
+
+  String formatePeuAlgoDef(String fullWord, String foundWord, String def) {
+    //"<p>PEU-Algo Activated: </p> ${def.definition}";
+
+    // get word plus remainter.
+    BeautifulSoup bs = BeautifulSoup(def);
+    String newdef =
+        "<p> [ $foundWord+${fullWord.substring(foundWord.length)} ] ${bs.text}";
+
+    return newdef;
   }
 }

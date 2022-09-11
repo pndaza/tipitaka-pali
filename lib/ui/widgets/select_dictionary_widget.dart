@@ -28,7 +28,8 @@ class SelectDictionaryWidget extends StatelessWidget {
                 ListTile(
                   leading: Checkbox(
                     value: dictionaries[index].userChoice,
-                    onChanged: (value) => vm.onCheckedChange(index, value!),
+                    onChanged: (value) => vm.onCheckedChange(
+                        index, value!, dictionaries[index].bookID),
                   ),
                   title: Text(dictionaries[index].name),
                   // subtitle: Text('${vm.userDicts[index].userOrder}'),

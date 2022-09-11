@@ -9,6 +9,11 @@ class DictionarySerice {
   DictionarySerice(this.dictionaryRepository);
   final DictionaryRepository dictionaryRepository;
 
+  Future<Definition> getDpdDefinition(String headword) async {
+    final definitions = await dictionaryRepository.getDpdDefinition(headword);
+    return definitions;
+  }
+
   Future<List<Definition>> getDefinition(String word,
       {bool isAlreadyStem = false}) async {
     if (!isAlreadyStem) {
@@ -33,11 +38,13 @@ class DictionarySerice {
 
   Future<String> getDprBreakup(String word) async {
     return dictionaryRepository.getDprBreakup(word);
-    
   }
 
-    Future<String> getDprStem(String word) async {
+  Future<String> getDprStem(String word) async {
     return dictionaryRepository.getDprStem(word);
-    
+  }
+
+  Future<String> getDpdHeadwords(String word) async {
+    return dictionaryRepository.getDpdHeadwords(word);
   }
 }

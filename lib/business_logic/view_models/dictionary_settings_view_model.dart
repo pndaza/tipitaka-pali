@@ -4,6 +4,7 @@ import 'package:tipitaka_pali/business_logic/models/recent.dart';
 import 'package:tipitaka_pali/business_logic/models/dictionary.dart';
 import 'package:tipitaka_pali/services/database/database_helper.dart';
 import 'package:tipitaka_pali/services/repositories/dictionary_book_repo.dart';
+import 'package:tipitaka_pali/services/prefs.dart';
 
 import '../../routes.dart';
 
@@ -29,9 +30,20 @@ class DictionarySettingController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> onCheckedChange(int index, bool value) async {
+  Future<void> onCheckedChange(int index, bool value, int bookID) async {
     userDicts[index] = userDicts[index].copyWith(userChoice: value);
     _repository.update(userDicts[index]);
+
+    // add prefs for dpd and peu so there is no need to test by sql query each time
+    // for special algo
+    if (bookID == 8) {
+      // peu
+      Prefs.isPeuOn = value;
+    }
+    if (bookID == 11) {
+      Prefs.isDpdOn = value;
+    }
+
     notifyListeners();
   }
 

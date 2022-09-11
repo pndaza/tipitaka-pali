@@ -7,6 +7,7 @@ class DictionaryDao implements Dao<Definition> {
   final String columnDefinition = 'definition';
   final String colunmnBookID = 'book_id';
   final String colunmnBookName = 'name';
+  final String columnUserOrder = 'user_order';
 /*
   final List<String> _books = [
     " ",
@@ -29,7 +30,8 @@ class DictionaryDao implements Dao<Definition> {
     return Definition(
         word: query[columnWord],
         definition: query[columnDefinition],
-        bookName: query[colunmnBookName]);
+        bookName: query[colunmnBookName],
+        userOrder: query[columnUserOrder]);
   }
 
   @override

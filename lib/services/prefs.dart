@@ -3,6 +3,7 @@
 
 // Shared prefs package import
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/material.dart';
 
 // preference names
 const String localeValPref = "localeVal";
@@ -18,6 +19,9 @@ const String isShowVriNumberPref = 'showVriNumber';
 const String currentScriptLocaleCodePref = 'currentScriptLocaleCode';
 const String queryModePref = 'queryMode';
 const String wordDistancePref = 'wordDistance';
+const String isPeuPref = "isPeuOn";
+const String isDpdPref = "isDpdOn";
+const String selectedPageColorPref = "selectedPageColor";
 
 // default pref values
 const int defaultLocaleVal = 0;
@@ -33,6 +37,9 @@ const bool defaultShowVRINumber = false;
 const String defaultScriptLanguage = 'ro';
 const int defaultQueryModeIndex = 0;
 const int defaultWordDistance = 10;
+const bool defaultIsPeuOn = true;
+const bool defaultIsDpdOn = true;
+int defaultSelectedPageColor = Colors.white.value;
 
 class Prefs {
   // prevent object creation
@@ -53,7 +60,7 @@ class Prefs {
 
   static bool get darkThemeOn =>
       instance.getBool(darkThemeOnPref) ?? defaultDarkThemeOn;
-  static set dartThemeOn(bool value) =>
+  static set darkThemeOn(bool value) =>
       instance.setBool(darkThemeOnPref, value);
 
   static int get fontSize => instance.getInt(fontSizePref) ?? defaultFontSize;
@@ -102,4 +109,15 @@ class Prefs {
       instance.getInt(wordDistancePref) ?? defaultWordDistance;
   static set wordDistance(int value) =>
       instance.setInt(wordDistancePref, value);
+
+  static bool get isPeuOn => instance.getBool(isPeuPref) ?? defaultIsPeuOn;
+  static set isPeuOn(bool value) => instance.setBool(isPeuPref, value);
+
+  static bool get isDpdOn => instance.getBool(isDpdPref) ?? defaultIsDpdOn;
+  static set isDpdOn(bool value) => instance.setBool(isDpdPref, value);
+
+  static int get selectedPageColor =>
+      instance.getInt(selectedPageColorPref) ?? defaultSelectedPageColor;
+  static set selectedPageColor(int value) =>
+      instance.setInt(selectedPageColorPref, value);
 }

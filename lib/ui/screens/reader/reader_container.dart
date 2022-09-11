@@ -46,7 +46,7 @@ class _ReaderContainerState extends State<ReaderContainer> {
 
     if (books.isEmpty) {
       return Container(
-        color: const Color.fromARGB(200, 254, 229, 171),
+        color: const Color(0xfffbf0da),
         child: Center(
           child: Text(
             PaliScript.getScriptOf(
@@ -73,16 +73,15 @@ Etaṃ buddhānasāsanaṃ
     // so warp in consumer for watching theme change
     return Consumer<ThemeChangeNotifier>(
       builder: ((context, themeChangeNotifier, child) {
-
-    // tabbed view uses custom theme and provide TabbedViewTheme.
-    // need to watch theme change and rebuild TabbedViewTheme with new one
+        // tabbed view uses custom theme and provide TabbedViewTheme.
+        // need to watch theme change and rebuild TabbedViewTheme with new one
 
         return TabbedViewTheme(
           data: themeChangeNotifier.isDarkMode
               ? TabbedViewThemeData.dark()
               : TabbedViewThemeData.mobile(
-                  accentColor:
-                      Theme.of(context).appBarTheme.backgroundColor ?? Colors.blue,
+                  accentColor: Theme.of(context).appBarTheme.backgroundColor ??
+                      Colors.blue,
                 ),
           // data: TabbedViewThemeData.minimalist(),
           child: TabbedView(
