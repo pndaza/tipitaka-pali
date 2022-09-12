@@ -35,7 +35,7 @@ class RecentPageViewModel extends ChangeNotifier {
   void openBook(Recent recent, BuildContext context) async {
     final book = Book(id: recent.bookID, name: recent.bookName!);
     final openningBookProvider = context.read<OpenningBooksProvider>();
-    openningBookProvider.add(book: book);
+    openningBookProvider.add(book: book, currentPage: recent.pageNumber);
 
     if (Mobile.isPhone(context)) {
       // Navigator.pushNamed(context, readerRoute,
