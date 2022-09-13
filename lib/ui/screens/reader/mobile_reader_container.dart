@@ -73,13 +73,16 @@ class _MobileReaderContrainerState extends State<MobileReaderContrainer> {
                 final openedBook = openningBooks[index];
                 final book = openedBook['book'] as Book;
                 final pageNumber = openedBook['current_page'] as int?;
-                myLogger.i('openning book index: $index');
-                myLogger.i('openning book name: ${book.name}');
+                              final textToHighlight =
+                  openedBook['text_to_highlight'] as String?;
+                // myLogger.i('openning book index: $index');
+                // myLogger.i('openning book name: ${book.name}');
 
                 return Reader(
                   key: Key('$index - ${book.id}'),
                   book: book,
                   initialPage: pageNumber,
+                  textToHighlight:  textToHighlight,
                 );
               }),
     );

@@ -46,31 +46,6 @@ class _SearchPageState extends State<SearchPage> {
               ),
               body: Column(
                 children: [
-                  // suggestion view
-                  Expanded(
-                      child: vm.suggestions.isEmpty
-                          ? _buildEmptyView(context)
-                          : ListView.separated(
-                              itemCount: vm.suggestions.length,
-                              itemBuilder: (_, index) => SuggestionListTile(
-                                suggestedWord: vm.suggestions[index].word,
-                                frequency: vm.suggestions[index].count,
-                                isFirstWord: vm.isFirstWord,
-                                onTap: () {
-                                  //
-                                  final inputText = controller.text;
-                                  final selectedWord =
-                                      vm.suggestions[index].word;
-
-                                  final words = inputText.split(' ');
-                                  words.last = selectedWord;
-                                  vm.onSubmmited(context, words.join(' '),
-                                      vm.queryMode, vm.wordDistance);
-                                },
-                              ),
-                              separatorBuilder: (_, __) =>
-                                  const Divider(height: 1),
-                            )),
                   Row(
                     children: [
                       Expanded(
@@ -128,6 +103,31 @@ class _SearchPageState extends State<SearchPage> {
                           )
                         : const SizedBox(height: 0),
                   ),
+                  // suggestion view
+                  Expanded(
+                      child: vm.suggestions.isEmpty
+                          ? _buildEmptyView(context)
+                          : ListView.separated(
+                              itemCount: vm.suggestions.length,
+                              itemBuilder: (_, index) => SuggestionListTile(
+                                suggestedWord: vm.suggestions[index].word,
+                                frequency: vm.suggestions[index].count,
+                                isFirstWord: vm.isFirstWord,
+                                onTap: () {
+                                  //
+                                  final inputText = controller.text;
+                                  final selectedWord =
+                                      vm.suggestions[index].word;
+
+                                  final words = inputText.split(' ');
+                                  words.last = selectedWord;
+                                  vm.onSubmmited(context, words.join(' '),
+                                      vm.queryMode, vm.wordDistance);
+                                },
+                              ),
+                              separatorBuilder: (_, __) =>
+                                  const Divider(height: 1),
+                            )),
                 ],
               ));
         }));

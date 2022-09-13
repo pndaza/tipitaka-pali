@@ -2,11 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:provider/provider.dart';
+import 'package:tipitaka_pali/app.dart';
 import 'package:tipitaka_pali/providers/font_provider.dart';
 import 'package:tipitaka_pali/services/prefs.dart';
+import 'package:tipitaka_pali/services/provider/script_language_provider.dart';
 
 import '../../../../data/constants.dart';
 import '../../../../services/provider/theme_change_notifier.dart';
+import '../../../../utils/pali_script.dart';
 import '../../../../utils/pali_script_converter.dart';
 
 class PaliPageWidget extends StatefulWidget {
@@ -30,10 +33,13 @@ class PaliPageWidget extends StatefulWidget {
 
 class _PaliPageWidgetState extends State<PaliPageWidget> {
   final _myFactory = _MyFactory();
+  String? highlightedWord;
 
   @override
   void initState() {
     super.initState();
+    highlightedWord = widget.highlightedWord;
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _myFactory.onTapUrl('#goto');
     });
@@ -77,6 +83,12 @@ class _PaliPageWidgetState extends State<PaliPageWidget> {
                 };
               }
             }
+            if (element.className == 'highlighted') {
+              return {
+                'background': 'rgb(255, 114, 20)',
+                'color': 'white',
+              };
+            }
             // no style
             return {'text-decoration': 'none'};
           },
@@ -84,7 +96,10 @@ class _PaliPageWidgetState extends State<PaliPageWidget> {
             if (widget.onClick != null) {
               // #goto is used for scrolling to selected text
               if (word != '#goto') {
-                widget.onClick!(word);
+                setState(() {
+                  highlightedWord = word;
+                  widget.onClick!(word);
+                });
               }
             }
             return false;
@@ -95,10 +110,9 @@ class _PaliPageWidgetState extends State<PaliPageWidget> {
   }
 
   String _formatContent(String content, Script script) {
-    if (widget.highlightedWord != null) {
-      content = _addHighlight(content, widget.highlightedWord!);
+    if (highlightedWord != null) {
+      content = _addHighlight(content, highlightedWord!);
     }
-
     content = _makeClickable(content, script);
     content = _changeToInlineStyle(content);
     content = _formatWithUserSetting(content);
@@ -166,8 +180,9 @@ class _PaliPageWidgetState extends State<PaliPageWidget> {
       r'class="gatha3"': r'style="margin-bottom: 0em; margin-left: 5em;"',
       r'class="gathalast"': r'style="margin-bottom: 1.3em; margin-left: 5em;"',
       r'class="pageheader"': r'style="font-size: 0.9em; color: deeppink;"',
-      r'class="highlighted"':
-          r'style="background: rgb(255, 114, 20); color: white;"',
+      r'class="note"': r'style="font-size: 0.8em; color: gray;"',
+      // r'class="highlighted"':
+      //     r'style="background: rgb(255, 114, 20); color: white;"',
     };
 
     styleMaps.forEach((key, value) {
@@ -262,14 +277,16 @@ class _PaliPageWidgetState extends State<PaliPageWidget> {
   String _addHighlight(String content, String textToHighlight) {
     // TODO - optimize highlight for some query text
 
-    //
+    textToHighlight = PaliScript.getScriptOf(
+        script: context.read<ScriptLanguageProvider>().currentScript,
+        romanText: textToHighlight);
+
     if (content.contains(textToHighlight)) {
       final replace = '<span class = "highlighted">$textToHighlight</span>';
       content = content.replaceAll(textToHighlight, replace);
       // adding id to scroll
       content = content.replaceFirst('<span class = "highlighted">',
           '<span id="$kGotoID" class="highlighted">');
-
       return content;
     }
 
@@ -321,6 +338,7 @@ class _MyFactory extends WidgetFactory {
     if (meta.overflow == TextOverflow.clip && text is TextSpan) {
       return Text.rich(
         text,
+        style: tsh.style,
         maxLines: meta.maxLines > 0 ? meta.maxLines : null,
         textAlign: tsh.textAlign ?? TextAlign.start,
         textDirection: tsh.textDirection,
