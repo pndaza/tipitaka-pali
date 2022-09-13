@@ -24,14 +24,14 @@ class PaliScript {
       }
     }
 
-    else if (script == Script.sinhala) {
-      if (!isHtmlText) {
-        return toSin(romanText);
-      } else {
-        return romanText.replaceAllMapped(
-            _regexPaliWord, (match) => toSin(match.group(0)!));
-      }
-    }
+    // else if (script == Script.sinhala) {
+    //   if (!isHtmlText) {
+    //     return toSin(romanText);
+    //   } else {
+    //     return romanText.replaceAllMapped(
+    //         _regexPaliWord, (match) => toSin(match.group(0)!));
+    //   }
+    // }
 
     else if (script == Script.devanagari) {
       if (!isHtmlText) {
@@ -59,8 +59,8 @@ class PaliScript {
       {required Script script, required String text}) {
     if (script == Script.myanmar) {
       return MmPali.toRoman(text);
-    } else if (script == Script.sinhala) {
-      return fromSin(text);
+    // } else if (script == Script.sinhala) {
+    //   return fromSin(text);
     } else {
       final sinhala = TextProcessor.convertFrom(text, script);
       return TextProcessor.convert(sinhala, Script.roman);
