@@ -67,8 +67,7 @@ class _MobileReaderContrainerState extends State<MobileReaderContrainer> {
           ? const Center(child: Text('There is no more openning book'))
           : PageView.builder(
               controller: pageController,
-              physics: const ClampingScrollPhysics(parent: PageScrollPhysics()),
-              pageSnapping: true,
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: openningBooks.length,
               itemBuilder: (context, index) {
                 final openedBook = openningBooks[index];
