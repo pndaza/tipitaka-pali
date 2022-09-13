@@ -52,9 +52,9 @@ class _MobileReaderContrainerState extends State<MobileReaderContrainer> {
               onPressed: () async {
                 final selectedIndex = await _openOpenningBookListView(context);
                 if (selectedIndex != null) {
-                  context
-                      .read<OpenningBooksProvider>()
-                      .updateSelectedBookIndex(selectedIndex, forceNotify: true);
+                  context.read<OpenningBooksProvider>().updateSelectedBookIndex(
+                      selectedIndex,
+                      forceNotify: true);
                   setState(() {
                     // title need to update
                     pageController.jumpToPage(selectedIndex);
@@ -73,8 +73,8 @@ class _MobileReaderContrainerState extends State<MobileReaderContrainer> {
                 final openedBook = openningBooks[index];
                 final book = openedBook['book'] as Book;
                 final pageNumber = openedBook['current_page'] as int?;
-                              final textToHighlight =
-                  openedBook['text_to_highlight'] as String?;
+                final textToHighlight =
+                    openedBook['text_to_highlight'] as String?;
                 // myLogger.i('openning book index: $index');
                 // myLogger.i('openning book name: ${book.name}');
 
@@ -82,7 +82,7 @@ class _MobileReaderContrainerState extends State<MobileReaderContrainer> {
                   key: Key('$index - ${book.id}'),
                   book: book,
                   initialPage: pageNumber,
-                  textToHighlight:  textToHighlight,
+                  textToHighlight: textToHighlight,
                 );
               }),
     );
