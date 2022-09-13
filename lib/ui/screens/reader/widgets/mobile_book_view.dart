@@ -47,7 +47,6 @@ class _MobileBookViewState extends State<MobileBookView> {
 
     return PageView.builder(
       controller: pageController,
-      physics: const ClampingScrollPhysics(parent: PageScrollPhysics()),
       pageSnapping: true,
       itemCount: readerViewController.pages.length,
       itemBuilder: (context, index) {
