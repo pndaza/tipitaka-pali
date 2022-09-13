@@ -45,14 +45,14 @@ class InitialSetupViewModel extends ChangeNotifier {
       final DatabaseHelper databaseHelper = DatabaseHelper();
       recents.addAll(await databaseHelper.backup(tableName: 'recent'));
       bookmarks.addAll(await databaseHelper.backup(tableName: 'bookmark'));
-      dictionaries
-          .addAll(await databaseHelper.backup(tableName: 'dictionary_books'));
+      //dictionaries
+      //  .addAll(await databaseHelper.backup(tableName: 'dictionary_books'));
 
-      debugPrint('dictionary books: ${dictionaries.length}');
+      //debugPrint('dictionary books: ${dictionaries.length}');
       await databaseHelper.close();
       // deleting old database file
     }
-      
+
     await deleteDatabase(dbFilePath);
 
     //Check if parent directory exists
@@ -101,8 +101,8 @@ class InitialSetupViewModel extends ChangeNotifier {
           '${AssetsFile.baseAssetsFolderPath}/${AssetsFile.databaseFolderPath}/$part');
       // appending to output dbfile
       await dbFile.writeAsBytes(
-        bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes),
-        mode: FileMode.append);
+          bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes),
+          mode: FileMode.append);
       int percent = ((++partNo / count) * 100).round();
       _status = "Finished copying $percent% of database.";
 
