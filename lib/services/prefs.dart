@@ -27,7 +27,8 @@ const String selectedPageColorPref = "selectedPageColor";
 const int defaultLocaleVal = 0;
 const int defaultThemeIndex = 24;
 const bool defaultDarkThemeOn = false;
-const int defaultFontSize = 17;
+//ToDo something is not right with release and font size
+const int defaultFontSize = 14;
 const int defaultDatabaseVersion = 1;
 const bool defaultIsDatabaseSaved = false;
 const bool defaultShowAlternatePali = false;
