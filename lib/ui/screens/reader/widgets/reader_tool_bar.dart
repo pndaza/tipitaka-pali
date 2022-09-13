@@ -222,15 +222,8 @@ class LowerRow extends StatelessWidget {
 
       final book = Book(id: bookId, name: bookName);
 
-      if (PlatformInfo.isDesktop || Mobile.isTablet(context)) {
-        final openedBookController = context.read<OpenningBooksProvider>();
-        openedBookController.add(book: book, currentPage: pageNumber);
-      } else {
-        Navigator.pushNamed(context, readerRoute, arguments: {
-          'book': book,
-          'currentPage': pageNumber,
-        });
-      }
+      final openedBookController = context.read<OpenningBooksProvider>();
+      openedBookController.add(book: book, currentPage: pageNumber);
     }
   }
 
