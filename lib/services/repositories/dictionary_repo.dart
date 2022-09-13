@@ -41,32 +41,28 @@ class DictionaryDatabaseRepository implements DictionaryRepository {
     line = line.replaceAll('\'', "");
     String htmlDefs = "";
     String stripDefs = '';
+    String word = "";
     List<String> words = line.split(',');
     String bookName = '';
     int order = 0;
 
     for (var element in words) {
+      word = element.trimLeft();
       final sql = '''
       SELECT word, definition, user_order, name from dpd, dictionary_books 
-      WHERE word = '${element.trimLeft()}' AND user_choice =1  AND dictionary_books.id = dpd.book_id
+      WHERE word = '$word' AND user_choice =1  AND dictionary_books.id = dpd.book_id
     ''';
       List<Map<String, dynamic>> maps = await db.rawQuery(sql);
-      if (maps.isNotEmpty) {
-        htmlDefs = maps.first['definition'] as String;
+      List<Definition> defs = maps.map((x) => Definition.fromJson(x)).toList();
+      if (defs.isNotEmpty) {
+        htmlDefs = defs[0].definition;
 
-        BeautifulSoup bs = BeautifulSoup(htmlDefs);
-        List<Bs4Element> bs4List = bs.findAll('*', class_: "dpd");
-        stripDefs +=
-            '<p style="font-weight: normal;"> [ ${bs4List[0].string} ] : ';
-        debugPrint(bs4List[0].string);
-
-        // now get either the summary or the bold .
-        //<p span class=font-weight: normal;>
-        Bs4Element? bs4 = bs.find('summary', class_: 'dpd');
-        bs4 ??= bs.find('p', class_: 'dpd');
-        stripDefs += '  ${bs4!.string} </p>';
-        stripDefs = stripDefs.replaceAll('🔧', '');
-        debugPrint(bs4.string);
+        if (htmlDefs.isNotEmpty) {
+          BeautifulSoup bs = BeautifulSoup(htmlDefs);
+          stripDefs += '<p style="font-weight: normal;"> [ $word ] : ';
+          stripDefs += bs.text;
+        }
+        stripDefs += '</P>';
         order = maps.first['user_order'];
         bookName = maps.first['name'];
       }
@@ -77,7 +73,7 @@ class DictionaryDatabaseRepository implements DictionaryRepository {
     //
 
     Definition def = Definition(
-        word: line,
+        word: word, //line,
         definition: stripDefs,
         bookName: bookName,
         userOrder: order);

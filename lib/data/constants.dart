@@ -21,8 +21,8 @@ class AssetsFile {
     'tipitaka_pali_part.ah',
     'tipitaka_pali_part.ai',
     'tipitaka_pali_part.aj',
-    'tipitaka_pali_part.ak',
-    'tipitaka_pali_part.al',
+//    'tipitaka_pali_part.ak',
+//    'tipitaka_pali_part.al',
   ];
 }
 

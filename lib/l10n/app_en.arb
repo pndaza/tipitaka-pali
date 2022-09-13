@@ -18,7 +18,7 @@
   "showThaiPageNumber":   "Show Thai PageNumber",
   "showVRIPageNumber":    "Show VRI PageNumber",
   "about":                "About",
-  "about_info":           "This app is still in Beta and most of the code was written by Venerable Pandazza.  However, it should be useful for accessing the Tipitaka Texts, and getting most dictionary definitions.  You can create issues and request features on the github website https://github.com/bksubhuti/tipitaka-pali-reader/issues , The Pali is claimmed to be copyright by VRI, The logo book is modified internet picture, Buddhaghosa or ajahn Jayaysaro youtube.",
+  "about_info":           "This is a new attempt to make the best Pāḷi reading app ever made.  To do this, Flutter was chosen as the new language with a SQLite database.  This is a major release and should be more usable than previous versions.  A Desktop version is expected to be ready by January, 2023. This version contains the September, 2022 edition of The Digital Pāḷi Dictionary created by Ven Bodhirasa as Creative Commons license.  The ​DPD website is here:  https://digitalpalidictionary.github.io/ .  We owe many thanks to this venerable for providing permission as well as formatted data tables.  His work is ongoing and active and we plan to have a dictionary updater without the need to upgrade the application.  Most of the code was written by Venerable Pandazza while I did most of the project management with some code additions.  The PEU (Pāḷi English Ultimate) Is a translated version of the abbreviated Pāli Myanmar Abhidhān Dictionary.  This is an ongoing project translated by humans and Google.  There are 168,000 entries with 72,000 translated by humans.  It is quite useful to help you get the meaning of some difficult words not found in any other dictionary.  You can create issues and request features on the github website https://github.com/bksubhuti/tipitaka-pali-reader/issues , The Pāḷi is claimed to be copyright by VRI, The logo book is modified internet picture, Buddhaghosa or ajahn Jayaysaro youtube.",
   "unable_open_page":     "Unable to open page for this page.",
   "enter_note":           "Enter note here",
   "save":                 "Save",
@@ -38,8 +38,6 @@
   "prefix":               "Prefix",
   "distance":             "Distance",
   "anywhere":             "anywhere"
-
-
 }
 
 

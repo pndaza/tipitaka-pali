@@ -84,6 +84,14 @@ class DatabaseHelper {
     await dbInstance.execute(
         'CREATE INDEX IF NOT EXISTS "dictionary_index" ON "dictionary" ("word");');
     await dbInstance.execute(
+        'CREATE INDEX IF NOT EXISTS "dictionary_book_id_index" ON "dictionary" ("word"	ASC,"book_id"	ASC);');
+    await dbInstance.execute(
+        'CREATE INDEX IF NOT EXISTS "dpd_headwords_index" ON "dpd_inflections_to_headwords" ("inflection"	ASC);');
+    await dbInstance.execute(
+        'CREATE INDEX IF NOT EXISTS "dpd_index" ON "dpd" ("word","book_id");');
+    await dbInstance.execute(
+        'CREATE INDEX IF NOT EXISTS "dpr_stem_index" ON "dpr_stem" ("word"	ASC);');
+    await dbInstance.execute(
         'CREATE INDEX IF NOT EXISTS "dpr_breakup_index" ON "dpr_breakup" ("word");');
     await dbInstance
         .execute('CREATE INDEX IF NOT EXISTS page_index ON pages ( bookid );');
@@ -104,7 +112,6 @@ class DatabaseHelper {
     await dbInstance
         .execute('''CREATE VIRTUAL TABLE IF NOT EXISTS fts_pages USING FTS4
          (id, bookid, page, content, paranum)''');
-
 
     final mapsOfCount =
         await dbInstance.rawQuery('SELECT count(*) cnt FROM pages');
