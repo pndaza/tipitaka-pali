@@ -155,10 +155,11 @@ class _PaliPageWidgetState extends State<PaliPageWidget> {
   }
 
   String _changeToInlineStyle(String content) {
+    String styleColor = (Prefs.darkThemeOn) ? "white" : "black";
     final styleMaps = <String, String>{
       r'class="bld"': r'style="font-weight:bold;"',
       r'class="centered"': r'style="text-align:center;"',
-      r'class="paranum"': r'style="font-weight: bold;"',
+      r'class="paranum"': 'style="font-weight: bold; color: $styleColor;"',
       r'class="indent"': r'style="text-indent:1.3em;margin-left:2em;"',
       r'class="bodytext"': r'style="text-indent:1.3em;"',
       r'class="unindented"': r'style=""',
@@ -166,15 +167,15 @@ class _PaliPageWidgetState extends State<PaliPageWidget> {
       r'class="book"':
           r'style="font-size: 1.9em; text-align:center; font-weight: bold;"',
       r'class="chapter"':
-          r'style="font-size: 1.7em; text-align:center; font-weight: bold;"',
+          'style="font-size: 1.7em; text-align:center; font-weight: bold; color: $styleColor;"',
       r'class="nikaya"':
-          r'style="font-size: 1.6em; text-align:center; font-weight: bold;"',
+          'style="font-size: 1.6em; text-align:center; font-weight: bold; color: $styleColor;"',
       r'class="title"':
-          r'style="font-size: 1.3em; text-align:center; font-weight: bold;"',
+          'style="font-size: 1.3em; text-align:center; font-weight: bold; color: $styleColor;"',
       r'class="subhead"':
-          r'style="font-size: 1.6em; text-align:center; font-weight: bold;"',
+          'style="font-size: 1.6em; text-align:center; font-weight: bold; color: $styleColor;"',
       r'class="subsubhead"':
-          r'style="font-size: 1.6em; text-align:center; font-weight: bold;"',
+          'style="font-size: 1.6em; text-align:center; font-weight: bold; color: $styleColor;"',
       r'class="gatha1"': r'style="margin-bottom: 0em; margin-left: 5em;"',
       r'class="gatha2"': r'style="margin-bottom: 0em; margin-left: 5em;"',
       r'class="gatha3"': r'style="margin-bottom: 0em; margin-left: 5em;"',
