@@ -49,7 +49,9 @@ class _DesktopBookViewState extends State<DesktopBookView> {
 
     debugPrint('page index: $pageIndex');
 
-    return ScrollablePositionedList.builder(
+    return ScrollConfiguration(
+      behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
+      child:  ScrollablePositionedList.builder(
       initialScrollIndex: pageIndex,
       itemScrollController: itemScrollController,
       itemPositionsListener: itemPositionsListener,
@@ -73,7 +75,7 @@ class _DesktopBookViewState extends State<DesktopBookView> {
           onClick: onClickedWord,
         );
       },
-    );
+    ));
   }
 
   String? _needToHighlight(int index) {
