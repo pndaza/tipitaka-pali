@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:tipitaka_pali/app.dart';
+import 'package:tipitaka_pali/ui/screens/reader/widgets/vertical_book_slider.dart';
 
 import '../../../../business_logic/models/page_content.dart';
 import '../../../../providers/navigation_provider.dart';
@@ -49,33 +51,48 @@ class _DesktopBookViewState extends State<DesktopBookView> {
 
     debugPrint('page index: $pageIndex');
 
-    return ScrollConfiguration(
-      behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
-      child:  ScrollablePositionedList.builder(
-      initialScrollIndex: pageIndex,
-      itemScrollController: itemScrollController,
-      itemPositionsListener: itemPositionsListener,
-      itemCount: readerViewController.pages.length,
-      itemBuilder: (_, index) {
-        final PageContent pageContent = readerViewController.pages[index];
-        final script = context.read<ScriptLanguageProvider>().currentScript;
-        // transciption
-        String htmlContent = PaliScript.getScriptOf(
-          script: script,
-          romanText: pageContent.content,
-          isHtmlText: true,
-        );
+    return LayoutBuilder(builder: (context, constraints) {
+      return Row(
+        children: [
+          Expanded(
+            child: ScrollConfiguration(
+                behavior:
+                    ScrollConfiguration.of(context).copyWith(scrollbars: false),
+                child: ScrollablePositionedList.builder(
+                  initialScrollIndex: pageIndex,
+                  itemScrollController: itemScrollController,
+                  itemPositionsListener: itemPositionsListener,
+                  itemCount: readerViewController.pages.length,
+                  itemBuilder: (_, index) {
+                    final PageContent pageContent =
+                        readerViewController.pages[index];
+                    final script =
+                        context.read<ScriptLanguageProvider>().currentScript;
+                    // transciption
+                    String htmlContent = PaliScript.getScriptOf(
+                      script: script,
+                      romanText: pageContent.content,
+                      isHtmlText: true,
+                    );
 
-        // return Text(content);
-        return PaliPageWidget(
-          pageNumber: pageContent.pageNumber!,
-          htmlContent: htmlContent,
-          script: script,
-          highlightedWord: _needToHighlight(index),
-          onClick: onClickedWord,
-        );
-      },
-    ));
+                    // return Text(content);
+                    return PaliPageWidget(
+                      pageNumber: pageContent.pageNumber!,
+                      htmlContent: htmlContent,
+                      script: script,
+                      highlightedWord: _needToHighlight(index),
+                      onClick: onClickedWord,
+                    );
+                  },
+                )),
+          ),
+          SizedBox(
+              width: 32,
+              height: constraints.maxHeight,
+              child: const VerticalBookSlider()),
+        ],
+      );
+    });
   }
 
   String? _needToHighlight(int index) {
