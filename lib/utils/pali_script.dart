@@ -22,25 +22,26 @@ class PaliScript {
         return romanText.replaceAllMapped(
             _regexPaliWord, (match) => MmPali.fromRoman(match.group(0)!));
       }
-    }
-
-    // else if (script == Script.sinhala) {
-    //   if (!isHtmlText) {
-    //     return toSin(romanText);
-    //   } else {
-    //     return romanText.replaceAllMapped(
-    //         _regexPaliWord, (match) => toSin(match.group(0)!));
-    //   }
-    // }
-
-    else if (script == Script.devanagari) {
+    } else if (script == Script.devanagari) {
       if (!isHtmlText) {
         return toDeva(romanText);
       } else {
         return romanText.replaceAllMapped(
             _regexPaliWord, (match) => toDeva(match.group(0)!));
       }
+    } else if (script == Script.sinhala) {
+      if (!isHtmlText) {
+        return TextProcessor.convertFrom(romanText, Script.roman);
+      } else {
+        return romanText.replaceAllMapped(
+            _regexPaliWord,
+            (match) =>
+                TextProcessor.convertFrom(match.group(0)!, Script.roman));
+      }
     } else {
+      // janaka's converter is based on sinhala
+      // cannot convert from roman to other lanuguage directly
+      // so convert to sinhal fist and then convert to other
       if (!isHtmlText) {
         final sinhala = TextProcessor.convertFrom(romanText, Script.roman);
         return TextProcessor.convert(sinhala, script);
@@ -52,16 +53,18 @@ class PaliScript {
         });
       }
     }
-
   }
 
   static String getRomanScriptFrom(
       {required Script script, required String text}) {
     if (script == Script.myanmar) {
       return MmPali.toRoman(text);
-    // } else if (script == Script.sinhala) {
-    //   return fromSin(text);
+    } else if (script == Script.sinhala) {
+      return TextProcessor.convert(text, Script.roman);
     } else {
+      // janaka's converter is based on sinhala
+      // cannot convert from other lanuguage to roman directly
+      // so convert to sinhal fist and then convert to roman
       final sinhala = TextProcessor.convertFrom(text, script);
       return TextProcessor.convert(sinhala, Script.roman);
     }
