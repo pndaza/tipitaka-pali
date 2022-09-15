@@ -63,6 +63,8 @@ dependencies:
     path: packages/slidable_bar
   huge_listview: ^2.0.2
   beautiful_soup_dart: ^0.3.0
+  msix: ^2.8.18
+  
 
 dev_dependencies:
   flutter_test:
@@ -70,6 +72,14 @@ dev_dependencies:
   flutter_lints: ^2.0.1
   freezed: ^2.1.0+1
   build_runner: ^2.1.2
+
+msix_config:
+  display_name: Tipitaka Pali Reader
+  publisher_display_name: Bhikkhu Sangha
+  identity_name: 26554BhikkhuSangha.TipitakaPaliReader 
+  publisher: CN=76DA55C6-0663-4AE1-AE5E-609E9823DC18
+  msix_version: 1.0.1.0
+  store: true
 
 
 # For information on the generic Dart part of this file, see the
