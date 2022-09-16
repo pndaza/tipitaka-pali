@@ -158,10 +158,10 @@ class _PaliPageWidgetState extends State<PaliPageWidget> {
     String styleColor = (Prefs.darkThemeOn) ? "white" : "black";
     final styleMaps = <String, String>{
       r'class="bld"': r'style="font-weight:bold;"',
-      r'class="centered"': r'style="text-align:center;"',
+      r'class="centered"': 'style="text-align:center;color: $styleColor;"',
       r'class="paranum"': 'style="font-weight: bold; color: $styleColor;"',
       r'class="indent"': r'style="text-indent:1.3em;margin-left:2em;"',
-      r'class="bodytext"': r'style="text-indent:1.3em;"',
+      r'class="bodytext"': 'style="text-indent:1.3em;color: $styleColor;"',
       r'class="unindented"': r'style=""',
       r'class="noindentbodytext"': r'style=""',
       r'class="book"':
