@@ -181,7 +181,7 @@ class BookListPage extends StatelessWidget {
     showAboutDialog(
         context: context,
         applicationName: AppLocalizations.of(context)!.tipitaka_pali_reader,
-        applicationVersion: 'Version 1.0',
+        applicationVersion: 'Version 1.5',
         children: [ColoredText(AppLocalizations.of(context)!.about_info)]);
   }
 }

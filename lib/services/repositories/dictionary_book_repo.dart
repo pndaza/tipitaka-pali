@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:tipitaka_pali/business_logic/models/dictionary.dart';
+import 'package:tipitaka_pali/business_logic/models/dictionary_book.dart';
 import 'package:tipitaka_pali/services/dao/dictionary_book_dao.dart';
 import 'package:tipitaka_pali/services/database/database_helper.dart';
 
 abstract class UserDictRepository {
   late DatabaseHelper databaseProvider;
 
-  Future<void> updateDall(List<Dictionary> userDicts);
-  Future<void> update(Dictionary dictionary);
+  Future<void> updateDall(List<DictionaryBook> userDicts);
+  Future<void> update(DictionaryBook dictionary);
 
-  Future<List<Dictionary>> getUserDicts();
+  Future<List<DictionaryBook>> getUserDicts();
 }
 
 class UserDictDatabaseRepository implements UserDictRepository {
@@ -20,7 +20,7 @@ class UserDictDatabaseRepository implements UserDictRepository {
   UserDictDatabaseRepository(this.databaseProvider);
 
   @override
-  Future<List<Dictionary>> getUserDicts() async {
+  Future<List<DictionaryBook>> getUserDicts() async {
     final db = await databaseProvider.database;
     List<Map<String, dynamic>> maps = await db.rawQuery('''
       SELECT * FROM ${dao.tableUserDict} ORDER BY ${dao.columnOrder} ASC
@@ -29,7 +29,7 @@ class UserDictDatabaseRepository implements UserDictRepository {
   }
 
   @override
-  Future<void> updateDall(List<Dictionary> userDicts) async {
+  Future<void> updateDall(List<DictionaryBook> userDicts) async {
     //
     final db = await databaseProvider.database;
     // delect previous records
@@ -44,7 +44,7 @@ class UserDictDatabaseRepository implements UserDictRepository {
   }
 
   @override
-  Future<void> update(Dictionary dictionary) async {
+  Future<void> update(DictionaryBook dictionary) async {
     final db = await databaseProvider.database;
     db.update(dao.tableUserDict, dao.toMap(dictionary),
         where: '${dao.columnBookId} = ?', whereArgs: [dictionary.bookID]);
