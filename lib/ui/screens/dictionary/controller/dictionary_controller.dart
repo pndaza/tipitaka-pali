@@ -35,7 +35,7 @@ class DictionaryController with ChangeNotifier {
 
   // TextEditingController textEditingController = TextEditingController();
 
-  DictionaryController({required BuildContext this.context, String? lookupWord})
+  DictionaryController({required this.context, String? lookupWord})
       : _lookupWord = lookupWord;
 
   void onLoad() {

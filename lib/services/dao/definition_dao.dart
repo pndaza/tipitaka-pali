@@ -1,7 +1,7 @@
 import 'package:tipitaka_pali/business_logic/models/definition.dart';
 import 'package:tipitaka_pali/services/dao/dao.dart';
 
-class DictionaryDao implements Dao<Definition> {
+class DefinitionDao implements Dao<Definition> {
   final String tableDict = 'dictionary';
   final String columnWord = 'word';
   final String columnDefinition = 'definition';

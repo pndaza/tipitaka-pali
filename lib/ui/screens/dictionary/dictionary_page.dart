@@ -44,13 +44,13 @@ class _DictionaryPageState extends State<DictionaryPage>
             child: Column(children: [
               Row(
                 children: [
-                  Expanded(child: DictionarySearchField()),
-                  SizedBox(width: 8), // padding
+                  Expanded(child: const DictionarySearchField()),
+                  const SizedBox(width: 8), // padding
                   IconButton(
                     padding: EdgeInsets.zero,
                     icon: const Icon(Icons.arrow_back, color: Colors.black),
                     onPressed: () {
-                      if (_words.length > 0) {
+                      if (_words.isNotEmpty) {
                         // i think this should be handled by the state, but I'm
                         // sure the notifier is always the same object, so I
                         // handle here in the ui.
@@ -67,7 +67,7 @@ class _DictionaryPageState extends State<DictionaryPage>
                       }
                     },
                   ),
-                  DictionaryAlgorithmModeView(),
+                  const DictionaryAlgorithmModeView(),
                 ],
               ),
               const SizedBox(height: 4), // padding

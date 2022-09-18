@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:word_selectable_text/word_selectable_text.dart';
 
 import '../screens/dictionary/controller/dictionary_controller.dart';
 import '../screens/dictionary/widget/dict_algo_selector.dart';

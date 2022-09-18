@@ -12,7 +12,6 @@ import '../../../utils/platform_info.dart';
 import 'controller/reader_view_controller.dart';
 import 'widgets/desktop_book_view.dart';
 import 'widgets/mobile_book_view.dart';
-import 'widgets/reader_app_bar.dart';
 import 'widgets/reader_tool_bar.dart';
 import 'package:tipitaka_pali/services/prefs.dart';
 
