@@ -49,16 +49,23 @@ class _PaliPageWidgetState extends State<PaliPageWidget> {
   Widget build(BuildContext context) {
     int fontSize = context.watch<FontProvider>().fontSize;
     String html = _formatContent(widget.htmlContent, widget.script);
-    final fontName = FontUtils.getfontName(script: context.read<ScriptLanguageProvider>().currentScript);
+    final fontName = FontUtils.getfontName(
+        script: context.read<ScriptLanguageProvider>().currentScript);
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SelectionArea(
+        focusNode: FocusNode(
+          canRequestFocus: false,
+        ),
         selectionControls: CupertinoTextSelectionControls(),
         child: HtmlWidget(
           html,
           factoryBuilder: () => _myFactory,
-          textStyle: TextStyle(fontSize: fontSize.toDouble(), inherit: false, fontFamily:fontName ),
+          textStyle: TextStyle(
+              fontSize: fontSize.toDouble(),
+              inherit: false,
+              fontFamily: fontName),
           customStylesBuilder: (element) {
             // if (element.className == 'title' ||
             //     element.className == 'book' ||

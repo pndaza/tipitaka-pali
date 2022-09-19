@@ -21,9 +21,7 @@ class OpenningBooksProvider extends ChangeNotifier {
   void remove({int? index}) {
     index ??= selectedBookIndex;
     books.removeAt(index);
-    if (books.isEmpty) {
       _selectedBookIndex = 0;
-    }
     notifyListeners();
   }
 
