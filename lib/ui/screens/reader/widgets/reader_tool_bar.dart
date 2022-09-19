@@ -94,7 +94,7 @@ class UpperRow extends StatelessWidget {
       context: context,
       barrierLabel: 'TOC',
       barrierDismissible: true,
-      transitionDuration: const Duration(milliseconds: 800),
+      transitionDuration: const Duration(milliseconds: 300),
       transitionBuilder: (context, animation, secondaryAnimation, child) {
         return SlideTransition(
           position:

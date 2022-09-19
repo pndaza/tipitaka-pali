@@ -183,7 +183,7 @@ class _DesktopBookViewState extends State<DesktopBookView> {
       context: context,
       barrierLabel: 'TOC',
       barrierDismissible: true,
-      transitionDuration: const Duration(milliseconds: 500),
+      transitionDuration: const Duration(milliseconds: 300),
       transitionBuilder: (context, animation, secondaryAnimation, child) {
         return SlideTransition(
           position: Tween(begin: const Offset(-1, 0), end: const Offset(0, 0))

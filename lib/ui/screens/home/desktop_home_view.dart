@@ -32,7 +32,7 @@ class _DesktopHomeViewState extends State<DesktopHomeView>
 
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 300),
     );
 
     _tween = Tween(begin: 1.0, end: 0.0);
