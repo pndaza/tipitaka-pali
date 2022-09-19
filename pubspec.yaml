@@ -99,10 +99,18 @@ flutter:
     - assets/icon/tpr_dictionary.png
 
   fonts:
-    - family: NotoSansMyanmar
+    - family: Pyidaungsu
       fonts:
-        - asset: assets/fonts/NotoSansMyanmar-Regular.otf
-        - asset: assets/fonts/NotoSansMyanmar-Bold.otf
+        - asset: assets/fonts/Pyidaungsu-Regular.ttf
+        - asset: assets/fonts/Pyidaungsu-Bold.ttf
+    - family: NotoSansDevanagari
+      fonts:
+        - asset: assets/fonts/NotoSansDevanagari-Regular.ttf
+        - asset: assets/fonts/NotoSansDevanagari-Bold.ttf
+    - family: NotoSansSinhala
+      fonts:
+        - asset: assets/fonts/NotoSansSinhala-Regular.ttf
+        - asset: assets/fonts/NotoSansSinhala-Bold.ttf
 
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

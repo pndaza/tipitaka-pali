@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:tipitaka_pali/providers/font_provider.dart';
 import 'package:tipitaka_pali/services/prefs.dart';
 import 'package:tipitaka_pali/services/provider/script_language_provider.dart';
+import 'package:tipitaka_pali/utils/font_utils.dart';
 
 import '../../../../data/constants.dart';
 import '../../../../services/provider/theme_change_notifier.dart';
@@ -48,6 +49,7 @@ class _PaliPageWidgetState extends State<PaliPageWidget> {
   Widget build(BuildContext context) {
     int fontSize = context.watch<FontProvider>().fontSize;
     String html = _formatContent(widget.htmlContent, widget.script);
+    final fontName = FontUtils.getfontName(script: context.read<ScriptLanguageProvider>().currentScript);
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -56,7 +58,7 @@ class _PaliPageWidgetState extends State<PaliPageWidget> {
         child: HtmlWidget(
           html,
           factoryBuilder: () => _myFactory,
-          textStyle: TextStyle(fontSize: fontSize.toDouble(), inherit: false),
+          textStyle: TextStyle(fontSize: fontSize.toDouble(), inherit: false, fontFamily:fontName ),
           customStylesBuilder: (element) {
             // if (element.className == 'title' ||
             //     element.className == 'book' ||
