@@ -1766,7 +1766,7 @@ class TextProcessor {
   static basicConvertFrom(String text, Script script) {
     convertFromFunc(script).forEach((func) => text = func(text, script));
     // (convert_from_func[script] || convert_from_func_default).forEach(func => text = func(text, script));
-    return text;
+    return beautify(text, Script.sinhala);
   }
 
   // script specific beautification

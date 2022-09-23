@@ -58,7 +58,7 @@ class _PaliPageWidgetState extends State<PaliPageWidget> {
         focusNode: FocusNode(
           canRequestFocus: false,
         ),
-        selectionControls: CupertinoTextSelectionControls(),
+        selectionControls: MaterialTextSelectionControls(),
         child: HtmlWidget(
           html,
           factoryBuilder: () => _myFactory,
