@@ -1,11 +1,13 @@
 name: tipitaka-pali-reader
-version: 0.1.0
+version: 1.1.0
 summary: Tipitaka Pali Reader
 description: Tipitaka Pali Reader Application
+
 
 confinement: strict
 base: core18
 grade: stable
+icon:  snap/gui/icon.png
 
 slots:
   dbus-tipitaka-pali-reader: # adjust accordingly to your app name
@@ -16,9 +18,10 @@ slots:
 apps:
   tipitaka-pali-reader:
     command: tipitaka_pali_reader
-    extensions: [flutter-master] # Where "master" defines which Flutter channel to use for the build
+    extensions: [flutter-stable] # Where "stable" defines which Flutter channel to use for the build
     plugs:
     - network
+    - desktop
     slots:
       - dbus-tipikata-pali-reader
 parts:

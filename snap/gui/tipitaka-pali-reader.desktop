@@ -2,7 +2,7 @@
   Name=Tipitaka Pali Reader
   Comment=Tipitaka Pali Reading Application
   Exec=tipitaka-pali-reader 
-  Icon=${SNAP}/meta/gui/tipitaka-pali-reader.png # replace name to your app name
+  Icon=${SNAP}/meta/gui/icon.png # replace name to your app name
   Terminal=false
   Type=Application
   Categories=Education; #adjust accordingly your snap category
