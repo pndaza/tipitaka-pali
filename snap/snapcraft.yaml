@@ -5,7 +5,7 @@ description: Tipitaka Pali Reader Application
 
 
 confinement: strict
-base: core18
+base: core20
 grade: stable
 icon:  snap/gui/icon.png
 
@@ -17,7 +17,7 @@ slots:
     
 apps:
   tipitaka-pali-reader:
-    command: tipitaka_pali_reader
+    command: tipitaka-pali-reader
     extensions: [flutter-stable] # Where "stable" defines which Flutter channel to use for the build
     plugs:
     - network
@@ -27,5 +27,5 @@ apps:
 parts:
   tipikata-pali-reader:
     source: .
-    plugin: flutter
+    plugin: nil
     flutter-target: lib/main.dart # The main entry-point file of the application
