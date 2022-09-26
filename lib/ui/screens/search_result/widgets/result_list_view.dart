@@ -25,9 +25,6 @@ class ResultListView extends StatelessWidget {
   Widget build(BuildContext context) {
     final notifier = context.read<SearchResultController>();
 
-    const int pageSize = 20;
-    final scrollController = ItemScrollController(); // no need to dispose
-
     return Scaffold(
       // key: _scaffoldKey,
       appBar: AppBar(
@@ -35,36 +32,17 @@ class ResultListView extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          HugeListView<SearchResult>(
-            // key: listKey,
-            controller: scrollController,
-            pageSize: pageSize,
-            startIndex: 0,
-            totalCount: results.length,
-            pageFuture: (page) async {
-              int from = page * pageSize;
-              int to = min(results.length, from + pageSize);
-              return results.sublist(from, to);
-            },
-            thumbBuilder: (Color backgroundColor, Color drawColor,
-                double height, int index) {
-              if (results.length < 150) {
-                return const SizedBox.shrink();
-              }
-              return ScrollBarThumb(Theme.of(context).colorScheme.primary,
-                  drawColor, height, '${index + 1}');
-            },
-            itemBuilder: (_, index, result) {
-              return SearchResultListTile(
-                result: result,
-                onTap: () => notifier.openBook(result, context),
-              );
-            },
-            placeholderBuilder: (_, __) => const SizedBox(height: 300),
-            emptyResultBuilder: (_) => const Center(
-              child: Text('Not any more exist in other books'),
-            ),
-          ),
+          results.isEmpty
+              ? const Center(
+                  child: Text('Not found'),
+                )
+              : ListView.builder(
+                  itemCount: results.length,
+                  itemBuilder: (context, index) => SearchResultListTile(
+                    result: results[index],
+                    onTap: () => notifier.openBook(results[index], context),
+                  ),
+                ),
           Positioned(
               bottom: 16,
               right: 16,
