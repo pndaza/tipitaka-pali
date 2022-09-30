@@ -22,23 +22,18 @@ class Home extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => NavigationProvider()),
       ],
       child: CallbackShortcuts(
-                          bindings: {
-                    SingleActivator(LogicalKeyboardKey.keyW,
-                        meta: Platform.isMacOS ? true : false,
-                        control: Platform.isWindows || Platform.isLinux
-                            ? true
-                            : false): () => context
-                        .read<OpenningBooksProvider>()
-                        .remove(),
-                  },
+        bindings: {
+          SingleActivator(LogicalKeyboardKey.keyW,
+              meta: Platform.isMacOS ? true : false,
+              control:
+                  Platform.isWindows || Platform.isLinux ? true : false): () =>
+              context.read<OpenningBooksProvider>().remove(),
+        },
         child: Focus(
           autofocus: true,
           child: Container(
             color: Theme.of(context).appBarTheme.backgroundColor,
             child: SafeArea(
-              left: false,
-              right: false,
-              bottom: false,
               child: Scaffold(
                   body: PlatformInfo.isDesktop || Mobile.isTablet(context)
                       ? const DesktopHomeView()
