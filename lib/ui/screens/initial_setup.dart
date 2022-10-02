@@ -4,6 +4,7 @@ import 'package:tipitaka_pali/business_logic/view_models/initial_setup_view_mode
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:tipitaka_pali/ui/widgets/colored_text.dart';
 import 'package:tipitaka_pali/ui/widgets/select_language_widget.dart';
+import 'package:tipitaka_pali/ui/screens/settings/select_script_language.dart';
 
 class InitialSetup extends StatelessWidget {
   final bool isUpdateMode;
@@ -34,6 +35,10 @@ class InitialSetup extends StatelessWidget {
           height: 20,
         ),
         SelectLanguageWidget(),
+        const SizedBox(
+          height: 20,
+        ),
+        const SelectScriptLanguageWidget(),
         const SizedBox(
           height: 20,
         ),
