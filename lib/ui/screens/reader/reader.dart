@@ -34,6 +34,7 @@ class Reader extends StatelessWidget {
     // logger.i('textToHighlight in Reader Screen: $textToHighlight');
 
     return ChangeNotifierProvider<ReaderViewController>(
+      key: Key(book.id),
       create: (context) => ReaderViewController(
           context: context,
           bookRepository: BookDatabaseRepository(DatabaseHelper()),
